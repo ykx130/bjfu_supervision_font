@@ -9,19 +9,14 @@ import 'Directives' // 指令
 import router from 'Plugins/router'
 import inject from 'Plugins/inject'
 import store from 'Plugins/store'
-import BootstrapVue from 'bootstrap-vue'
-// 引入组件库及其组件库样式
-import VueOnsen from 'vue-onsenui'
-import 'onsenui/css/onsenui.css'
-import 'onsenui/css/onsen-css-components.css'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
+
 // 引入根组件
 import App from './App'
 
 Vue.use(inject)
-Vue.use(VueOnsen)
-Vue.use(BootstrapVue)
+Vue.use(iView);
 
 // render
 new Vue({

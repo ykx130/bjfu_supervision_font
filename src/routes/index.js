@@ -1,5 +1,5 @@
-import car from './car'
+import dsq from './dsq'
 
 export default [
-	...car
+	...dsq
 ]
