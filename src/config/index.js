@@ -4,7 +4,7 @@ export const HOST_PLATFORM = 'WEB'
 export const NODE_ENV = process.env.NODE_ENV || 'prod'
 
 // 是否强制所有请求访问本地 MOCK，看到这里同学不难猜到，每个请求也可以单独控制是否请求 MOCK
-export const AJAX_LOCALLY_ENABLE = true
+export const AJAX_LOCALLY_ENABLE = false
 // 是否开启监控
 export const MONITOR_ENABLE = true
 // 路由默认配置，路由表并不从此注入
@@ -29,7 +29,7 @@ export const VUEX_DEFAULT_CONFIG = {
 // API 默认配置
 export const API_DEFAULT_CONFIG = {
     mockBaseURL: '',
-    mock: true,
+    mock: false,
     debug: false,
     sep: '/'
 }

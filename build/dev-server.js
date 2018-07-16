@@ -9,7 +9,7 @@ var opn = require('opn')
 var path = require('path')
 var express = require('express')
 var webpack = require('webpack')
-var proxyMiddleware = require('http-proxy-middleware')
+var proxy = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -45,7 +45,8 @@ Object.keys(proxyTable).forEach(function (context) {
   if (typeof options === 'string') {
     options = { target: options }
   }
-  app.use(proxyMiddleware(options.filter || context, options))
+  console.log("proxy", context, "to", options)
+  app.use(context,proxy(options))
 })
 
 // handle fallback for HTML5 history API
@@ -61,22 +62,6 @@ app.use(hotMiddleware)
 // serve pure static assets
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
-
-// 简易本地 mock
-// app.use('/mock', express.static('./mock'))
-
-// json-server
-var jsonServer = require('json-server')
-var apiServer = jsonServer.create()
-var apiRouter = jsonServer.router('./mock/db.json')
-var middlewares = jsonServer.defaults()
-
-apiServer.use(middlewares)
-apiServer.use('/', apiRouter)
-apiServer.listen(port + 1, function () {
-  console.log('JSON Server is running')
-})
-
 var uri = 'http://localhost:' + port
 
 var _resolve
