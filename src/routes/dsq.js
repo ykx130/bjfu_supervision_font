@@ -9,6 +9,11 @@ export default [{
       name: "问卷结构管理",
       path: "/meta",
       component: resolve => require(['Views/FormMetaManager/index'], resolve),
+    },
+    {
+      name: "问卷表单显示",
+      path: "/form_show",
+      component: resolve => require(['Views/FormShow/index'], resolve),
     }
   ]
 }]
