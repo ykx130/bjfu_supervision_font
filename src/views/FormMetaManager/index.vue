@@ -1,5 +1,4 @@
 <template>
-  <h1>问卷结构管理</h1>
   <Table border :columns="columns1" :data="data1"></Table>
 </template>
 <script>
@@ -14,20 +13,20 @@
           },
           {
             title: 'Age',
-            key: 'age'
-          },
-          {
-            title: 'Address',
-            key: 'address'
+            render: function (h,params) {
+              return (<span>{params.row.data.age}</span>)
+            }
           }
         ],
-        data1: []
+        data1: [{
+          name: "su",
+          data: {
+            age:"12"
+          }
+        }]
       }
     },
     mounted () {
-      getAllFormMetas().then((resp)=>{
-        this.data1 = resp.data.form_metas
-      })
     }
   }
 </script>
