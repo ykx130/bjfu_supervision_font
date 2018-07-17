@@ -1,8 +1,8 @@
 <template>
-  <Table border :columns="columns1" :data="data1"></Table>
+  <h1>这是问卷编辑</h1>
 </template>
 <script>
-  import { getAllFormMetas } from '../../service/api/dqs'
+  import { getAllFormMetas, getFormMeta } from '../../service/api/dqs'
   export default {
     data () {
       return {
@@ -20,13 +20,18 @@
             key: 'address'
           }
         ],
-        data1: []
+        data1: [
+          {
+            name: 'John Brown',
+            age: 18,
+            address: 'New York No. 1 Lake Park',
+            date: '2016-10-03'
+          }
+        ]
       }
     },
     mounted () {
-      getAllFormMetas().then((resp)=>{
-        this.data1 = resp.data.form_metas
-      })
+
     }
   }
 </script>
