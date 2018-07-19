@@ -49,7 +49,7 @@
 <script>
   //import
   export default {
-    name:'meta_editor_checkbox_options',
+    name:'checkbox_option.vue',
     data () {
       return {
         qsItem:{},
@@ -63,6 +63,10 @@
         modal1: false,
       }
     },
+    props:{
+      onOk: Function,
+      onCancle: Function
+    },
     methods: {
       handleAdd () {
         this.index++;
@@ -75,9 +79,9 @@
       handleRemove (index) {
         this.qsInputOptions[index].status = 0;
       },
-      itemTransfer(){
-        this.$emit('itemTranfer',this.qsItem)
-      },
+      // itemTransfer(){
+      //   this.$emit('itemTranfer',this.qsItem)
+      // },
       ok () {
         this.qsItem.id = '';
         this.qsItem.type = 'checkbox_options';
@@ -88,8 +92,10 @@
           if(this.qsInputOptions[i].status===1)
             this.qsItem.options.push(this.qsInputOptions[i].value);
         }
-        // itemTransfer();
+        this.$emit('onOk',this.qsItem);
         this.$Message.info('Clicked ok');
+        this.qsInputTitle="";
+        this.qsInputOptions=[{status:1}];
       },
       cancel () {
         this.$Message.info('Clicked cancel');

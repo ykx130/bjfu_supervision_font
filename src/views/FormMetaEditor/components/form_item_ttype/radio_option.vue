@@ -12,7 +12,7 @@
       @on-cancel="cancel">
       <Form :label-width="80" style="width: 300px">
         <FormItem label="题目:"
-                  >
+        >
           <Row>
             <Col span="18">
               <Input v-model="qsInputTitle" placeholder="Enter something..."></Input>
@@ -24,7 +24,7 @@
                   :key="index"
                   :label="'选项:'"
                   :prop="'items.' + index + '.value'"
-                  >
+        >
           <Row>
             <Col span="18">
               <Input v-model="item.value" placeholder="Enter something..."></Input>
@@ -49,7 +49,7 @@
 <script>
   //import
   export default {
-    name:'meta_editor_radio_options',
+    name:'radio_option.vue',
     data () {
       return {
         qsItem:{},
@@ -62,6 +62,10 @@
         }],
         modal1: false,
       }
+    },
+    props:{
+      onOk: Function,
+      onCancle: Function
     },
     methods: {
       handleAdd () {
@@ -76,7 +80,7 @@
         this.qsInputOptions[index].status = 0;
       },
       itemTransfer(){
-        this.$emit('itemTranfer',this.qsItem)
+        this.$emit('onOk',this.qsItem)
       },
       ok () {
         this.qsItem.id = '';
@@ -88,8 +92,10 @@
           if(this.qsInputOptions[i].status===1)
             this.qsItem.options.push(this.qsInputOptions[i].value);
         }
-        // itemTransfer();
+        this.$emit('onOk',this.qsItem);
         this.$Message.info('Clicked ok');
+        this.qsInputTitle="";
+        this.qsInputOptions=[{status:1}];
       },
       cancel () {
         this.$Message.info('Clicked cancel');

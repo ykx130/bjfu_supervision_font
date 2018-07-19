@@ -9,7 +9,8 @@
       v-model="modal1"
       title="增加一道文本题"
       @on-ok="ok"
-      @on-cancel="cancel">
+      @on-cancel="cancel"
+      :mask-closable="true">
       <Form :label-width="80" style="width: 300px">
         <FormItem label="题目:"
         >
@@ -26,7 +27,7 @@
 <script>
   //import
   export default {
-    name:'meta_editor',
+    name:"raw_text.vue",
     data () {
       return {
         qsItem:{},
@@ -35,17 +36,18 @@
       }
     },
     methods: {
-      itemTransfer(){
-        this.$emit('itemTranfer',this.qsItem)
-      },
+      // itemTransfer(){
+      //   this.$emit('itemTranfer',this.qsItem)
+      // },
       ok () {
         this.qsItem.id = '';
         this.qsItem.type = 'raw_text';
         this.qsItem.discribtion = '单行文本';
         this.qsItem.title = this.qsInputTitle;
         this.qsItem.options=[];
-        // itemTransfer();
+        this.$emit('onOk',this.qsItem);
         this.$Message.info('Clicked ok');
+        this.qsInputTitle="";
       },
       cancel () {
         this.$Message.info('Clicked cancel');
