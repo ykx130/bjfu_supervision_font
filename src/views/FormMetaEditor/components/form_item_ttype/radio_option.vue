@@ -1,21 +1,29 @@
 
 <template>
   <div>
-    <p>题目：{{qsItem.title}}</p>
-    <p>选项:{{qsItem.options}}</p>
-    <Button type="primary" @click="modal1 = true">单选题</Button>
+    <!--<p>题目：{{this.qsItem.item_name}}</p>-->
+    <!--<p>选项:{{this.qsItem.payload}}</p>-->
+    <!--<Button type="primary" @click="modal1 = true">单选题</Button>-->
     <Modal
-      value=""
-      v-model="modal1"
+      value="true"
+
       title="增加一道单选题"
       @on-ok="ok"
       @on-cancel="cancel">
-      <Form :label-width="80" style="width: 300px">
+      <Form :label-width="50" style="width: 400px">
         <FormItem label="题目:"
         >
           <Row>
             <Col span="18">
-              <Input v-model="qsInputTitle" placeholder="Enter something..."></Input>
+              <Input v-model="qsInputName" placeholder="Enter something..."></Input>
+            </Col>
+          </Row>
+        </FormItem>
+        <FormItem label="说明:"
+        >
+          <Row>
+            <Col span="18">
+              <Input v-model="qsInputExtra" placeholder="Enter something..."></Input>
             </Col>
           </Row>
         </FormItem>
@@ -23,11 +31,13 @@
                   v-if="item.status"
                   :key="index"
                   :label="'选项:'"
-                  :prop="'items.' + index + '.value'"
-        >
+                  :prop="'items.' + index + '.value'">
           <Row>
-            <Col span="18">
-              <Input v-model="item.value" placeholder="Enter something..."></Input>
+            <Col span="8">
+              <Input v-model="item.label" placeholder="label..."></Input>
+            </Col>
+            <Col span="8"offset="1">
+              <Input v-model="item.value" placeholder="value..."></Input>
             </Col>
             <Col span="4" offset="1">
               <Button type="ghost" @click="handleRemove(index)">Delete</Button>
@@ -53,9 +63,11 @@
     data () {
       return {
         qsItem:{},
-        qsInputTitle:'',
+        qsInputName:'',
+        qsInputExtra:'',
         index:1,
         qsInputOptions:[{
+          label:'',
           value:'',
           index:1,
           status:1
@@ -65,13 +77,14 @@
     },
     props:{
       onOk: Function,
-      onCancle: Function
+      onCancel: Function
     },
     methods: {
       handleAdd () {
         this.index++;
         this.qsInputOptions.push({
-          value: '',
+          label:'',
+          value:'',
           index: this.index,
           status: 1
         });
@@ -79,25 +92,32 @@
       handleRemove (index) {
         this.qsInputOptions[index].status = 0;
       },
-      itemTransfer(){
-        this.$emit('onOk',this.qsItem)
-      },
       ok () {
-        this.qsItem.id = '';
-        this.qsItem.type = 'radio_options';
-        this.qsItem.discribtion = '单项选择';
-        this.qsItem.title = this.qsInputTitle;
-        this.qsItem.options=[];
+        this.qsItem.item_id = '';
+        this.qsItem.item_name = this.qsInputName;
+        this.qsItem.item_type = 'radio_options';
+        this.qsItem.extra=this.qsInputExtra;
+        // this.qsItem.discribtion = '单项选择';
+        this.qsItem.type="form_item";
+        this.qsItem.payload={
+          options:[]
+        };
         for (var i=0;i<this.qsInputOptions.length;i++) {
-          if(this.qsInputOptions[i].status===1)
-            this.qsItem.options.push(this.qsInputOptions[i].value);
+          if(this.qsInputOptions[i].status===1){
+            this.qsItem.payload.options.push({
+              label: this.qsInputOptions[i].label,
+              value: this.qsInputOptions[i].value
+            })
+          }
         }
         this.$emit('onOk',this.qsItem);
         this.$Message.info('Clicked ok');
-        this.qsInputTitle="";
+        this.qsInputName="";
+        this.qsInputExtra="";
         this.qsInputOptions=[{status:1}];
       },
       cancel () {
+        this.$emit('onCancel','');
         this.$Message.info('Clicked cancel');
       }
     }

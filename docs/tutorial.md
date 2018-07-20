@@ -131,9 +131,9 @@ config
 我们在 `config/index.js` 可能会有如下配置：
 
 ```js
-// config/index.js
+index.js
 
-// 当前宿主平台 兼容多平台应该通过一些特定函数来取得
+// 当a.js多平台应该通过一些特定函数来取得
 export const HOST_PLATFORM = 'WEB'
 // 这个就不多说了
 export const NODE_ENV = process.env.NODE_ENV || 'prod'
@@ -303,9 +303,9 @@ export default {
 ```js
 // config/interceptors/axios.js
 
-import {CONSOLE_REQUEST_ENABLE, CONSOLE_RESPONSE_ENABLE} from '../index.js'
+import {CONSOLE_REQUEST_ENABLE, CONSOLE_RESPONSE_ENABLE} from index.js
 
-export function requestSuccessFunc (requestObj) {
+export functa.jsestSuccessFunc (requestObj) {
     CONSOLE_REQUEST_ENABLE && console.info('requestInterceptorFunc', `url: ${requestObj.url}`, requestObj)
     // 自定义请求拦截逻辑，可以处理权限，请求发送监控等
     // ...
@@ -371,8 +371,7 @@ export function routerBeforeFunc (to, from, next) {
 ```
 最后在`入口文件(config/interceptors/index.js)`中引入并暴露出来即可:
 
-```js
-import {requestSuccessFunc, requestFailFunc, responseSuccessFunc, responseFailFunc} from './ajax'
+a.jsport {requestSuccessFunc, requestFailFunc, responseSuccessFunc, responseFailFunc} from './ajax'
 import {routerBeforeEachFunc} from './router'
 
 let interceptors = {
@@ -474,7 +473,7 @@ this.$axios.get('test_url', {
 
 > 可以看出，稍微不慎，会影响公众号现有逻辑。
 
-* 添加请求拦截 `interceptors/minaAjax.js`， `interceptors/minaRouter.js`，原有的换更为 `interceptors/officalAjax.js`，`interceptors/officalRouter.js`，在入口文件`interceptors/index.js`，**根据当前`宿主平台`，也就是全局配置 `HOST_PLATFORM`，通过`代理模式`和`策略模式`，注入对应平台的拦截器**，**在`minaAjax.js`中重写请求路径和权限处理，在 `minaRouter.js` 中添加页面拦截配置，跳转到特定页面**，这样一并解决了上面的`问题 1，2，3`。
+* 添加请求拦截 `interceptors/minaAjax.js`， `interceptors/minaRouter.js`，原有的换更为 `interceptors/officalAjax.js`，`interceptors/officalRouter.js`，在入口文件`interceptors/index.js`，**根据当前`宿主平台`，index.js`HOST_PLATFORM`，通过`代理模式`和`策略模式`，注入对应平台的拦截器**，**在`minaAjax.js`中重写请求路径和权限处理，在 `minaRouter.js` 中添加页面拦截配置，跳转到特定页面**，这样一并解决了上面的`问题 1，2，3`。
 * `问题 4` 其实也比较好处理了，拷贝需要兼容 `api` 的页面，重写里面的逻辑，通过`路由拦截器一并做跳转处理`。
 * `问题 5` 也很简单，拓展两个**自定义指令 v-mina-show 和 v-mina-hide** ，在展示不同步的地方可以直接使用指令。
 
@@ -489,13 +488,12 @@ this.$axios.get('test_url', {
 而我们根据自己的业务性质，最终根据业务流程来拆分配置：
 ```
 routes
-├── index.js            // 入口文件
-├── common.js           // 公共路由，登录，提示页等
+├── index.js            // index.js common.js           // 公共路由，登录，提示页等
 ├── account.js          // 账户流程
 ├── register.js         // 挂号流程
 └── ...
 ```
- 最终通过 index.js 暴露出去给 `plugins/router` 实例使用，这里的拆分配置有两个注意的地方：
+ 最终通过 index.js 暴露出去给 `pluginsa.js 实例使用，这里的拆分配置有两个注意的地方：
  
 - 需要根据自己业务性质来决定，有的项目可能适合`业务线`划分，有的项目更适合以 `功能` 划分。
 - 在多人协作过程中，尽可能避免冲突，或者减少冲突。
@@ -573,12 +571,10 @@ export function getAInfo ({name = '', id = ''}) {
 ```
 service
 ├── api
-    ├── index.js             // 入口文件
-    ├── order.js             // 订单相关接口配置
+    ├── index.js             //index.js  ├── order.js             // 订单相关接口配置
     └── ...
 ├── const                   
-    ├── index.js             // 入口文件
-    ├── order.js             // 订单常量接口配置
+    ├── index.js             //index.js  ├── order.js             // 订单常量接口配置
     └── ...
 ├── store                    // vuex 状态管理
 ├── expands                  // 拓展
@@ -593,7 +589,7 @@ service
 首先抽离请求接口模型，可按照`领域模型抽离` (`service/api/index.js`):
 ```js
 {
-    user: [{
+   index.js{
         name: 'info',
         method: 'GET',
         desc: '测试接口1',
@@ -819,7 +815,7 @@ vbus.$emit('print.hello')
 ```
 store
 ├── index.js          
-├── actions.js        // 根级别 action
+├── a.jsjs        // 根级别 action
 ├── mutations.js      // 根级别 mutation
 └── modules
     ├── user.js       // 用户模块
@@ -863,8 +859,7 @@ views/
 service/
     store/
         index.js
-        actions.js
-        mutations.js
+        actiona.js     mutations.js
         getters.js
         state.js
 ```
@@ -901,13 +896,13 @@ views/
             ...
         store/
             index.js
-            actions.js
+            aca.js
             moduleA.js  
             moduleB.js
 ```
 module 中直接包含了 `getters`，`mutations`，`state`，我们在 `store/index.js` 中做文章：
 ```js
-import Store from 'Plugins/store'
+ia.jsore from 'Plugins/store'
 import actions from './actions.js'
 import moduleA from './moduleA.js'
 import moduleB from './moduleB.js'
