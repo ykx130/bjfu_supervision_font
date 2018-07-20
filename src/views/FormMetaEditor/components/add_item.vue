@@ -13,9 +13,9 @@
   </div>
 </template>
 <script>
-  import Radio from './form_item_ttype/radio_option'
-  import Checkbox from './form_item_ttype/checkbox_option'
-  import Raw_text from './form_item_ttype/raw_text'
+  import Radio from './form_item_type/radio_option'
+  import Checkbox from './form_item_type/checkbox_option'
+  import Raw_text from './form_item_type/raw_text'
   export default {
     components:{Radio,Checkbox,Raw_text},
     data () {
