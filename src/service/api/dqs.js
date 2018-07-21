@@ -1,7 +1,11 @@
 import axios from 'axios'
 
-export const getAllFormMetas =(params)=>{
+/*export const getAllFormMetas =(params)=> {
   return axios.get('/api/form_metas', {params: params})
+}*/
+
+export const getFormMeta = params =>{
+  return axios.get('/api/form_metas/'+ params)
 }
 
 export const handleDeleteFormMetas =(params)=>{
