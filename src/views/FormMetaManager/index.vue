@@ -1,32 +1,120 @@
 <template>
-  <Table border :columns="columns1" :data="data1"></Table>
+  <div>
+  <h1>问卷结构管理</h1>
+  <Table border stripe :columns="columns" :data="data"></Table>
+  </div>
 </template>
 <script>
   import { getAllFormMetas } from '../../service/api/dqs'
+  import { handleDeleteFormMetas } from '../../service/api/dqs'
   export default {
-    data () {
+    data: function () {
       return {
-        columns1: [
+        columns: [
           {
-            title: 'Name',
-            key: 'name'
+            title: '问卷名',
+            render: function (h, params) {
+            return (
+                <span>{ params.row.meta.table_name }</span>
+              )
+            }
           },
           {
-            title: 'Age',
-            render: function (h,params) {
-              return (<span>{params.row.data.age}</span>)
+            title: '版本',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.meta.version }</span>
+              )
+            }
+          },
+          {
+            title: '创建时间',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.meta.created_at }</span>
+              )
+            }
+          },
+          {
+            title: '创建人',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.meta.created_by }</span>
+              )
+            }
+          },
+          {
+            title: '最后更新时间',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.meta.updated_at }</span>
+              )
+            }
+          },
+          {
+            title: '操作',
+            align: 'center',
+            render: (h, params) => {
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.$router.push({path:'form_show'})
+                    }
+                  }
+                }, '查看'),
+                h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.$router.push({path:'meta_editor'})
+                   }
+                  }
+                }, '编辑'),
+                h('Button', {
+                  props: {
+                    type: 'error',
+                    size: 'small'
+                  },
+                  on: {
+                    click: () => {
+                      this.remove(params.row)
+                    }
+                  }
+                }, '删除')
+              ]);
             }
           }
         ],
-        data1: [{
-          name: "su",
-          data: {
-            age:"12"
-          }
-        }]
+        data: []
       }
     },
-    mounted () {
+    mounted: function () {
+      getAllFormMetas().then((resp) => {
+        this.data = resp.data.form_metas
+      })
+    },
+    methods: {
+      remove: function (params) {
+        handleDeleteFormMetas(params.id).then(()=>{
+          getAllFormMetas().then((resp) => {
+            this.data = resp.data.form_metas
+          })
+        })
+      }
     }
   }
 </script>
