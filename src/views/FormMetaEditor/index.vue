@@ -3,9 +3,19 @@
   <div style="width: 500px;">
 
     <!--adjust module begin-->
-    <div>
-      <AddItem @onOk="addItem"></AddItem>
-    </div>
+    <!--<Model v-model="addItemShow"-->
+           <!--@on-ok="ok"-->
+           <!--@on-cancel="cancel">-->
+      <!--<AddItem @onOk="addItem">-->
+      <!--</AddItem>-->
+    <!--</Model>-->
+    <Modal
+      v-model="addItemShow"
+      title="Common Modal dialog box title"
+      @on-ok="ok"
+      @on-cancel="cancel">
+      <AddItem v-if="addItemShow" @onOk="addItem"></AddItem>
+    </Modal>
     <!--adjust module end-->
 
     <!--form meta start-->
@@ -84,11 +94,14 @@
             <!--payload end-->
 
             <!--button begin-->
+
             <Button type="ghost"
                     style="width: 180px"
-                    v-on:click="prependNewBlock(item)">
+                    v-on:click="prependNewBlock(item)"
+                    @click="addItemShow = true">
               Prepend New Block
             </Button>
+
             <Button type="info"
                     style="width: 180px"
                     v-on:click="editBlock(item)">
@@ -108,7 +121,8 @@
         <!--single item end-->
         <Button type="success"
                 long
-                v-on:click="appendNewBlock">
+                v-on:click="appendNewBlock"
+                @click="addItemShow = true">
           Append New Block
         </Button>
       </div>
@@ -129,6 +143,7 @@
     components: { AddItem },
     data () {
       return {
+        addItemShow: false,
         "id":"213b52f",
         "meta": {
           "table_name": "测试问卷一",
@@ -177,6 +192,12 @@
       // AXIOS here
     },
     methods: {
+      ok () {
+        this.$Message.info('Clicked ok');
+      },
+      cancel () {
+        this.$Message.info('Clicked cancel');
+      },
       appendNewBlock: function () {
         this.items.push({
           "item_id": 100,
@@ -194,6 +215,7 @@
             }]
           }
         });
+        this.addItemShow = false;
         this.$Message.info('Items appended!');
       },
       prependNewBlock: function (item) {
@@ -214,6 +236,7 @@
             }]
           }
         });
+        this.addItemShow = false;
         this.$Message.info('Items prepended!');
       },
       editBlock: function (item) {
@@ -222,6 +245,10 @@
         this.items.splice(this.items.indexOf(item), 1);
         this.$Message.info('Items deleted!');
       }
+    },
+    props: {
+      onOk: Function,
+      onCancel: Function
     }
   }
 </script>
