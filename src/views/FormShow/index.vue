@@ -10,25 +10,26 @@
     <br>
     <div v-for="it in form_meta.items">
       <div v-if="it.item_type === 'sub_title_block_start'">
-        <h1 style="height: 80px;line-height: 80px">{{ it.payload.title }}</h1>
+        <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.title }}</h1>
       </div>
       <div v-if="it.item_type === 'radio_options'">
-        <h1 style="height: 70px;line-height: 70px">{{ it.extra }}</h1>
+        <h1 style="height: 70px;line-height: 70px;margin-left: 20px">{{ it.extra }}</h1>
         <RadioGroup>
-          <Radio label="满意" v-bind:style="{ fontSize:'15px' }">{{it.payload.options[0].label}}</Radio>
-          <Radio label="不满意" v-bind:style="{ fontSize:'15px' }">{{it.payload.options[1].label}}</Radio>
+          <Radio v-for="op in it.payload.options" :label="op.label" :key="op.value" v-bind:style="{ fontSize:'15px',marginLeft:'25px' }">
+            <span>{{op.label}}</span>
+          </Radio>
         </RadioGroup>
       </div>
       <div v-if="it.item_type === 'raw_text'">
-        <h1 style="height: 70px;line-height: 70px">{{ it.extra }}</h1>
-        <Input v-model="it.payload.options" type="textarea" placeholder="Satisfation about teachers..."></Input>
+        <h1 style="height: 70px;line-height: 70px;margin-left: 20px">{{ it.extra }}</h1>
+        <Input v-model="it.payload.options" type="textarea" placeholder="Satisfation about teachers..." v-bind:style="{marginLeft:'25px',width:'85%'}"></Input>
       </div>
       <div v-if="it.item_type === 'sub_title_block_end'">
-        <h1 style="height: 80px;line-height: 80px">{{ it.payload.opitons }}</h1>
+        <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.opitons }}</h1>
       </div>
     </div>
-    <Button type="primary">Submit</Button>
-    <Button type="ghost" style="margin-left: 8px">Cancel</Button>
+    <Button type="primary" style="margin-left: 20px">Submit</Button>
+    <Button type="ghost" style="margin-left: 28px">Cancel</Button>
   </div>
 </template>
 <script>
@@ -38,23 +39,23 @@
     data () {
       return {
         form_meta: {
-          id:"",
-          identity:"",
-          meta:{
-            table_name:"",
-            version:"",
-            created_at:"",
-            updated_at:"",
-            created_by:""
+          id: "",
+          identify: "",
+          meta: {
+            table_name: "",
+            version: "",
+            created_at: "",
+            updated_at: "",
+            created_by: ""
           },
-          items:[
+          items: [
             {
-              item_id:"",
-              item_name:"",
-              item_type:"",
-              extra:"",
-              type:"",
-              payload:{
+              item_id: "",
+              item_name: "",
+              item_type: "",
+              extra: "",
+              type: "",
+              payload: {
                 options:[]
               }
             }
@@ -63,7 +64,14 @@
       }
     },
     mounted() {
-      getFormMeta(1).then((resp)=>{this.form_meta=resp.data.form_meta})
+      let id=this.$route.params.id;
+      //let id='http://localhost:8080/#/form_show/:id'.split('//')[1].split('/')[3];
+      console.log(id);
+      getFormMeta(id).then(
+        (resp)=>{
+          this.form_meta=resp.data.form_meta
+        }
+        )
     }
   }
 </script>

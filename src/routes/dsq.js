@@ -1,6 +1,6 @@
 // 动态问卷相关的路由配置
 
-export default [{
+export default[{
   name: "问卷",
   path: "/",
   component: resolve => require(['Views/index'], resolve),
@@ -17,7 +17,7 @@ export default [{
     },
     {
       name: "问卷填写",
-      path: "/form_show", // hmx
+      path: "/form_show/:id", // hmx
       component: resolve => require(['Views/FormShow/index'], resolve),
     },
     {
