@@ -1,72 +1,189 @@
 <template>
-  <div style="text-align: center; width: 600px">
-    <!-- Whole -->
-    <h1>Form Editor</h1>
+  <!--whole form meta editor begin-->
+  <div style="width: 500px;">
+    <!--form meta start-->
     <div>
-      <!-- Form head -->
-      <div>
-        <h1>Name: </h1>
-        <Input v-model="item_type_name"
-               placeholder="Can't assign to none string..."
-               style="width: 400px">
-
-        </Input>
-        <br>
-        <h1>Signal: </h1>
-        <Input v-model="item_type_id"
-               placeholder="Can't assign to none string..."
-               style="width: 400px">
-
-        </Input>
-      </div>
-      <!-- head End -->
-
-      <!-- Form floater -->
-      <div>
-
-        <p>Here add a item</p>
-        <Row>
-          <Button type="primary"
-                  @click="addFloater">Click to add floater</Button>
-        </Row>
-
-        <div style="float: right">
-          <Row>
-            <Button type="primary"
-                    @click="addFloater"
-                    style="width: 100px">Add</Button>
-          </Row>
-          <Row>
-            <Button type="primary"
-                    @click="addFloater"
-                    style="width: 100px">Edit</Button>
-          </Row>
-          <Row>
-            <Button type="primary"
-                    @click="addFloater"
-                    style="width: 100px">Delete</Button>
-          </Row>
-        </div>
-
-      </div>
-      <!-- floater End -->
+      <h1>Form Editor</h1>
+      <Form :model="formLeft"
+            label-position="left"
+            :label-width="150">
+        <FormItem label="Form Name">
+          <Input v-model="meta.table_name"></Input>
+        </FormItem>
+        <FormItem label="Form Identifier">
+          <Input v-model="id"></Input>
+        </FormItem>
+      </Form>
     </div>
+    <!--form meta end-->
+
+    <!--form blocks start-->
+    <div>
+      <!--items begin-->
+      <div>
+        <!--single item begin-->
+        <Scroll>
+          <Form v-for="item in items"
+                :key="item.item_id"
+                :model="formLeft"
+                label-position="left"
+                label-width="150">
+            <FormItem label="Extra">
+              <Input v-model="item.extra"></Input>
+            </FormItem>
+            <FormItem label="Type">
+              <Input v-model="item.type"></Input>
+            </FormItem>
+            <Form v-for="option in item.payload.options"
+                  :key="option.value"
+                  :model="formLeft"
+                  label-position="left"
+                  :label-width="150">
+              <FormItem v-if="option.value === 'yes' "
+                        label="Satisfied">
+                <Input v-model="option.label"></Input>
+              </FormItem>
+              <FormItem v-else
+                        label="Not Satisfied">
+                <Input v-model="option.label"></Input>
+              </FormItem>
+            </Form>
+            <Button type="ghost"
+                    style="width: 180px"
+                    v-on:click="prependNewBlock(item)">
+              Prepend New Block
+            </Button>
+            <Button type="info"
+                    style="width: 180px"
+                    v-on:click="editBlock">
+              Edit this Block
+            </Button>
+            <Button type="error"
+                    style="width: 130px"
+                    v-on:click="deleteNewBlock(item)">
+              Delete this Block
+            </Button>
+            <br>
+            <br>
+          </Form>
+        </Scroll>
+        <!--single item end-->
+        <Button type="success"
+                long
+                v-on:click="appendNewBlock">
+          Append New Block
+        </Button>
+      </div>
+      <!--items end-->
+    </div>
+    <!--form blocks end-->
   </div>
+  <!--whole form meta editor end-->
+
 </template>
+
 
 <script>
   // import
   export default {
-    data() {
+    name: 'form_meta_editor',
+    components: {},
+    data () {
       return {
-        item_type_name: 'name',
-        item_type_id: 'signal'
+        "id":"213b52f",
+        "meta": {
+          "table_name": "测试问卷一",
+          "version": "3",
+          "created_at": "2018/08/01",
+          "updated_at": "2018/08/05",
+        },
+        "items": [{
+          "item_id": 1,
+          "item_name": "teach_satisfy",
+          "item_type":"radio_options",
+          "extra": "教师满意度",
+          "type": "form_item",
+          "payload": {
+            "options": [{
+              "label": "满意",
+              "value": "yes"
+            },{
+              "label": "不满意",
+              "value": "no"
+            }
+            ]
+          }
+        },
+          {
+            "item_id": 2,
+            "item_name": "study_satisfy",
+            "item_type":"radio_options",
+            "extra": "学生满意度",
+            "type": "form_item",
+            "payload": {
+              "options": [{
+                "label": "满意",
+                "value": "yes"
+              },{
+                "label": "不满意",
+                "value": "no"
+              }
+              ]
+            }
+          }
 
+        ]
       }
     },
+    created: {
+      // AXIOS here
+    },
     methods: {
-      addFloater() {
-        this.$Message.info('Adjusting button')
+      appendNewBlock: function () {
+        this.items.push({
+          "item_id": 100,
+          "item_name": "satisfy",
+          "item_type": "radio_options",
+          "extra": "满意度",
+          "type": "block",
+          "payload": {
+            "options": [{
+              "label": "满意",
+              "value": "yes",
+            }, {
+              "label": "不满意",
+              "value": "no"
+            }]
+          }
+        });
+        this.$Message.info('Items appended!');
+      },
+      prependNewBlock: function (item) {
+        var position = this.items.indexOf(item);
+        this.items.splice(position, 0, {
+          "item_id": 100,
+          "item_name": "satisfy",
+          "item_type": "radio_options",
+          "extra": "满意度",
+          "type": "block",
+          "payload": {
+            "options": [{
+              "label": "满意",
+              "value": "yes",
+            }, {
+              "label": "不满意",
+              "value": "no"
+            }]
+          }
+        });
+        this.$Message.info('Items prepended!');
+      },
+      editBlock: function () {
+
+      },
+      deleteNewBlock: function (item) {
+        this.items.splice(this.items.indexOf(item), 1);
+        this.$Message.info('Items deleted!');
       }
     }
   }
