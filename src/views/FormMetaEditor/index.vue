@@ -28,7 +28,7 @@
           <h4>ToAdd: sub_title_block_start</h4>
           <!--sub_title_block_start end-->
 
-          <Form v-for="item in items" :model="formLeft" label-position="left" label-width="150">
+          <Form v-for="(item, index) in items" label-position="left" label-width="150">
 
             <!--information begin-->
 
@@ -80,7 +80,7 @@
 
             <!--button begin-->
 
-            <Button type="ghost" style="width: 300px" @click="prependItemShow = true">
+            <Button type="ghost" style="width: 300px" @click="prependItemShow = true; nowIndex = index;">
               Prepend New Block
             </Button>
 
@@ -95,12 +95,17 @@
             <br>
             <!--button end-->
 
-            <!--Modals begin-->
-            <Modal v-model="prependItemShow" title="prependItem" @on-ok="ok" @on-cancel="cancel">
-              <AddItem @onOk="prependNewBlock(item, $event)"></AddItem>
-            </Modal>
-            <!--Modals end-->
           </Form>
+
+          <!--Modals begin-->
+          <Modal v-model="prependItemShow" title="Prepend Item" @on-ok="ok" @on-cancel="cancel">
+            <AddItem @onOk="prependNewBlock(nowIndex, $event)"></AddItem>
+          </Modal>
+
+          <Modal v-model="appendItemShow" title="Append Item" @on-ok="ok" @on-cancel="cancel">
+            <AddItem @onOk="appendNewBlock"></AddItem>
+          </Modal>
+          <!--Modals end-->
 
           <!--sub_title_block_end begin-->
           <h4>ToAdd: sub_title_block_end</h4>
@@ -110,17 +115,17 @@
 
         <!--single item end-->
 
-        <Button type="success" long @click="appendItemShow = true">
+        <Button type="success" @click="appendItemShow = true" style="width: 400px">
           Append New Block
         </Button>
-        <Modal v-model="appendItemShow" title="appendItem" @on-ok="ok" @on-cancel="cancel">
-          <AddItem @onOk="appendNewBlock"></AddItem>
-        </Modal>
+        <Button type="primary" @click="submitForm" style="width: 400px">Click to Submit</Button>
+
       </div>
       <!--items end-->
     </div>
     <!--form blocks end-->
   </div>
+
   <!--whole form meta editor end-->
 </template>
 
@@ -138,9 +143,11 @@
     },
     data() {
       return {
+        returnData: {},
         appendItemShow: false,
         prependItemShow: false,
         formEditable: false,
+        nowIndex: 0,
         "id": "213b52f",
         "meta": {
           "table_name": "测试问卷一",
@@ -192,6 +199,22 @@
                 "value": "no"
               }]
             }
+          },
+          {
+            "item_id": 4,
+            "item_name": "tea_satisfy",
+            "item_type": "radio_options",
+            "extra": "学生对该教师满意",
+            "type": "form_item",
+            "payload": {
+              "options": [{
+                "label": "满意",
+                "value": "yes"
+              }, {
+                "label": "不满意",
+                "value": "no"
+              }]
+            }
           }
         ]
       }
@@ -213,9 +236,8 @@
         this.items.push(value);
         this.$Message.info('Items appended!');
       },
-      prependNewBlock: function(item, value) {
-        var position = this.items.indexOf(item);
-        this.items.splice(position, 0, value);
+      prependNewBlock: function(index, value) {
+        this.items.splice(index, 0, value);
         this.$Message.info('Items prepended!');
       },
       editBlock: function() {
@@ -228,6 +250,11 @@
       deleteNewBlock: function(item) {
         this.items.splice(this.items.indexOf(item), 1);
         this.$Message.info('Items deleted!');
+      },
+      submitForm: function() {
+        this.$http.post('/api', this.returnData).then(function (response) {
+          // success actions
+        });
       }
     }
   }
