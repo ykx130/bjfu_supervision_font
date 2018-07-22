@@ -22,8 +22,8 @@ export default[{
     },
     {
       name: "问卷管理",
-      path: "/form_manager",
+      path: "/form_manager", // xzl
       component: resolve => require(['Views/FormManager/index'], resolve),
-    }
+    },
   ]
 }]

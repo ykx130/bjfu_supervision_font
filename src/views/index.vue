@@ -66,7 +66,6 @@
         <Content :style="{margin: '20px', background: '#fff', minHeight: '720px'}">
           <keep-alive>
             <router-view></router-view>
-
           </keep-alive>
         </Content>
       </Layout>
