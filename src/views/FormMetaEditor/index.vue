@@ -1,21 +1,7 @@
 <template>
   <!--whole form meta editor begin-->
-  <div style="width: 500px;">
-
-    <!--adjust module begin-->
-    <!--<Model v-model="addItemShow"-->
-           <!--@on-ok="ok"-->
-           <!--@on-cancel="cancel">-->
-      <!--<AddItem @onOk="addItem">-->
-      <!--</AddItem>-->
-    <!--</Model>-->
-    <Modal
-      v-model="addItemShow"
-      title="Common Modal dialog box title"
-      @on-ok="ok"
-      @on-cancel="cancel">
-      <AddItem v-if="addItemShow" @onOk="addItem"></AddItem>
-    </Modal>
+  <div style="width: 820px;">
+    <!--adjust module start-->
     <!--adjust module end-->
 
     <!--form meta start-->
@@ -41,90 +27,118 @@
       <!--items begin-->
       <div>
         <!--single item begin-->
-        <Scroll>
+        <Scroll height=600>
+          <!--sub_title_block_start begin-->
+          <h4>ToAdd: sub_title_block_start</h4>
+          <!--sub_title_block_start end-->
+
           <Form v-for="item in items"
-                :key="item.item_id"
                 :model="formLeft"
                 label-position="left"
                 label-width="150">
 
-            <!--payload begin-->
+            <!--information begin-->
 
             <!--if raw_text begin-->
             <div v-if="item.item_type === 'raw_text' ">
-              <FormItem label="Extra">
-                <Input v-model="item.extra"
-                       placeholder="enter extra..."></Input>
+              <FormItem label="TextItem">
+                <Input v-model="item.item_name" placeholder="enter name..."></Input>
+                <br><br>
+                <Input v-model="item.extra" placeholder="enter extra..."></Input>
               </FormItem>
-              <FormItem label="Type">
-                <Input v-model="item.type"
-                       placeholder="enter type..."></Input>
-              </FormItem>
-              <Form v-for="option in item.payload.options"
-                    :key="option.value"
-                    :model="formLeft"
-                    label-position="left"
-                    :label-width="150">
-                <FormItem v-if="option.value === 'yes' "
-                          label="Satisfied">
-                  <Input v-model="option.label"
-                         placeholder="enter..."></Input>
-                </FormItem>
-                <FormItem v-else
-                          label="Not Satisfied">
-                  <Input v-model="option.label"
-                         placeholder="enter..."></Input>
-                </FormItem>
-              </Form>
             </div>
             <!--if raw_text end-->
 
             <!--if radio_option start-->
-            <div v-if="item.item_type === 'radio_option' ">
-
+            <div v-if="item.item_type === 'radio_options' ">
+              <FormItem label="OptionItem">
+                <Input v-model="item.item_name" placeholder="enter name..."></Input>
+                <br><br>
+                <Input v-model="item.extra" placeholder="enter extra..."></Input>
+                <br><br>
+                <RadioGroup>
+                  <Radio v-for="option in item.payload.options" :label="option.label" :key="option.value">
+                    <span>{{ option.label }}</span>
+                  </Radio>
+                </RadioGroup>
+              </FormItem>
             </div>
             <!--if radio_option end-->
 
             <!--if checkbox_option start-->
-            <div v-if="item.item_type === 'checkbox_option' ">
-
+            <div v-if="item.item_type === 'checkbox_options' ">
+              <FormItem label="CheckboxItem">
+                <Input v-model="item.item_name" placeholder="enter name..."></Input>
+                <br><br>
+                <Input v-model="item.extra" placeholder="enter extra..."></Input>
+                <br><br>
+                <CheckboxGroup>
+                  <Checkbox v-for="option in item.payload.options" :label="option.label" :key="option.value">
+                    <span>{{ option.label }}</span>
+                  </Checkbox>
+                </CheckboxGroup>
+              </FormItem>
             </div>
             <!--if checkbox_option end-->
 
-            <!--payload end-->
+
+
+            <!--information end-->
 
             <!--button begin-->
 
             <Button type="ghost"
-                    style="width: 180px"
-                    v-on:click="prependNewBlock(item)"
-                    @click="addItemShow = true">
+                    style="width: 300px"
+                    @click="prependItemShow = true">
               Prepend New Block
             </Button>
 
             <Button type="info"
-                    style="width: 180px"
-                    v-on:click="editBlock(item)">
+                    style="width: 300px"
+                    v-on:click="editBlock()">
               Edit this Block
             </Button>
+
             <Button type="error"
-                    style="width: 130px"
+                    style="width: 200px"
                     v-on:click="deleteNewBlock(item)">
               Delete this Block
             </Button>
             <br>
             <br>
             <!--button end-->
+
+            <!--Modals begin-->
+            <Modal
+              v-model="prependItemShow"
+              title="prependItem"
+              @on-ok="ok"
+              @on-cancel="cancel">
+              <AddItem @onOk="prependNewBlock(item, value)"></AddItem>
+            </Modal>
+            <!--Modals end-->
           </Form>
+
+          <!--sub_title_block_end begin-->
+          <h4>ToAdd: sub_title_block_end</h4>
+          <!--sub_title_block_end end-->
+
         </Scroll>
 
         <!--single item end-->
+
         <Button type="success"
                 long
-                v-on:click="appendNewBlock"
-                @click="addItemShow = true">
+                @click="appendItemShow = true">
           Append New Block
         </Button>
+        <Modal
+          v-model="appendItemShow"
+          title="appendItem"
+          @on-ok="ok"
+          @on-cancel="cancel">
+          <AddItem @onOk="appendNewBlock"></AddItem>
+        </Modal>
       </div>
       <!--items end-->
     </div>
@@ -143,7 +157,9 @@
     components: { AddItem },
     data () {
       return {
-        addItemShow: false,
+        appendItemShow: false,
+        prependItemShow: false,
+        formEditable: false,
         "id":"213b52f",
         "meta": {
           "table_name": "测试问卷一",
@@ -153,16 +169,19 @@
         },
         "items": [{
           "item_id": 1,
-          "item_name": "teach_satisfy",
-          "item_type":"raw_text",
-          "extra": "教师满意度",
-          "type": "block",
+          "item_name": "teach_in_class",
+          "item_type": "checkbox_options",
+          "extra": "老师上课情况",
+          "type": "form_item",
           "payload": {
             "options": [{
-              "label": "满意",
+              "label": "认真上课",
               "value": "yes"
             },{
-              "label": "不满意",
+              "label": "平时分高",
+              "value": "no"
+            },{
+              "label": "考试不难",
               "value": "no"
             }
             ]
@@ -170,10 +189,20 @@
         },
           {
             "item_id": 2,
-            "item_name": "study_satisfy",
+            "item_name": "stu_satisfy",
             "item_type":"raw_text",
-            "extra": "学生满意度",
-            "type": "block",
+            "extra": "学生对该教师满意",
+            "type": "form_item",
+            "payload": {
+              "options": []
+            }
+          },
+          {
+            "item_id": 3,
+            "item_name": "tea_satisfy",
+            "item_type":"radio_options",
+            "extra": "教师对该教师满意",
+            "type": "form_item",
             "payload": {
               "options": [{
                 "label": "满意",
@@ -189,7 +218,10 @@
       }
     },
     created: {
-      // AXIOS here
+      // DK what to do
+    },
+    mounted: {
+      // DK what to do
     },
     methods: {
       ok () {
@@ -198,57 +230,26 @@
       cancel () {
         this.$Message.info('Clicked cancel');
       },
-      appendNewBlock: function () {
-        this.items.push({
-          "item_id": 100,
-          "item_name": "satisfy",
-          "item_type": "raw_text",
-          "extra": "满意度",
-          "type": "block",
-          "payload": {
-            "options": [{
-              "label": "满意",
-              "value": "yes",
-            }, {
-              "label": "不满意",
-              "value": "no"
-            }]
-          }
-        });
-        this.addItemShow = false;
+      appendNewBlock: function (value) {
+        this.items.push(value);
         this.$Message.info('Items appended!');
       },
-      prependNewBlock: function (item) {
+      prependNewBlock: function (item, value) {
         var position = this.items.indexOf(item);
-        this.items.splice(position, 0, {
-          "item_id": 100,
-          "item_name": "satisfy",
-          "item_type": "raw_text",
-          "extra": "满意度",
-          "type": "block",
-          "payload": {
-            "options": [{
-              "label": "满意",
-              "value": "yes",
-            }, {
-              "label": "不满意",
-              "value": "no"
-            }]
-          }
-        });
-        this.addItemShow = false;
+        this.items.splice(position, 0, value);
         this.$Message.info('Items prepended!');
       },
-      editBlock: function (item) {
+      editBlock: function () {
+        if (this.formEditable) {
+          this.formEditable = !this.formEditable;
+        } else {
+          this.formEditable = !this.formEditable;
+        }
       },
       deleteNewBlock: function (item) {
         this.items.splice(this.items.indexOf(item), 1);
         this.$Message.info('Items deleted!');
       }
-    },
-    props: {
-      onOk: Function,
-      onCancel: Function
     }
   }
 </script>
