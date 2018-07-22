@@ -114,7 +114,7 @@
               title="prependItem"
               @on-ok="ok"
               @on-cancel="cancel">
-              <AddItem @onOk="prependNewBlock(item, value)"></AddItem>
+              <AddItem @onOk="prependNewBlock(item, $event)"></AddItem>
             </Modal>
             <!--Modals end-->
           </Form>
