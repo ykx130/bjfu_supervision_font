@@ -252,7 +252,7 @@
         this.$Message.info('Items deleted!');
       },
       submitForm: function() {
-        this.$http.post('/api', this.returnData).then(function (response) {
+        this.$http.post('/api', this.returnData).then(function(response) {
           // success actions
         });
       }
