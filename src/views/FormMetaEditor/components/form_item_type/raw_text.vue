@@ -27,6 +27,14 @@
             </Col>
           </Row>
         </FormItem>
+        <FormItem label="权重:"
+        >
+          <Row>
+            <Col span="18">
+              <Input v-model="qsInputWeight" placeholder="Enter something..."></Input>
+            </Col>
+          </Row>
+        </FormItem>
       </Form>
     </Modal>
   </div>
@@ -40,6 +48,7 @@
         qsItem:{},
         qsInputName:'',
         qsInputExtra:'',
+        qsInputWeight:'',
         modal1: false,
       }
     },
@@ -53,6 +62,7 @@
         this.qsItem.item_name = this.qsInputName;
         this.qsItem.item_type = 'raw_text';
         this.qsItem.extra=this.qsInputExtra;
+        this.qsItem.weight=this.qsInputWeight;
         // this.qsItem.discribtion = '单行文本';
         this.qsItem.type="form_item";
         this.qsItem.payload={};
