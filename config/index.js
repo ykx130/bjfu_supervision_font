@@ -29,7 +29,7 @@ module.exports = {
         assetsPublicPath: '/',
         proxyTable: {
             '/api': {
-                target: 'https://www.easy-mock.com/mock/5b4c88248c48d539b3ad5e30/dqs', // 接口的域名
+                target: ' http://101.200.52.233:7000/mock/5b4e066fb0c7d86becf17d16/dqs/api', // 接口的域名
                 secure: true,  // 如果是https接口，需要配置这个参数
                 changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
             }

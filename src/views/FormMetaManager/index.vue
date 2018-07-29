@@ -1,6 +1,8 @@
 <template>
-  <h1>问卷结构管理</h1>
-  <Table border :columns="columns1" :data="data1"></Table>
+  <div>
+    <h1>问卷结构管理</h1>
+    <Table border :columns="columns1" :data="data1"></Table>
+  </div>
 </template>
 <script>
   import { getAllFormMetas } from '../../service/api/dqs'
