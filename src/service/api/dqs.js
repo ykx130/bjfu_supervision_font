@@ -19,3 +19,7 @@ export const getForms =(params)=> {
 export const handleDeleteForms =(params)=>{
   return axios.delete('/api/forms/' + params)
 };
+
+export const postFormMeta = (params) => {
+  return axios.post('/api/form_meta', {params: params})
+}
