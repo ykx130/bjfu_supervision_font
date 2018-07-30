@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-  import { getAllFormMetas } from '../../service/api/dqs'
+  import { queryFormMetas } from '../../service/api/dqs'
   import { handleDeleteFormMetas } from '../../service/api/dqs'
   export default {
     data: function () {
@@ -103,14 +103,14 @@
       }
     },
     mounted: function () {
-      getAllFormMetas().then((resp) => {
+      queryFormMetas().then((resp) => {
         this.data = resp.data.form_metas
       })
     },
     methods: {
       remove: function (params) {
         handleDeleteFormMetas(params.id).then(()=>{
-          getAllFormMetas().then((resp) => {
+          queryFormMetas().then((resp) => {
             this.data = resp.data.form_metas
           })
         })
