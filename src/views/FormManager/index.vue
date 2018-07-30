@@ -34,7 +34,7 @@
           dataCount: 0,
           pages: {
             _page: 1,
-            _per_page: 1
+            _per_page: 10
           },
           columns: [
             {
@@ -116,7 +116,7 @@
                     },
                     on: {
                       click: () => {
-                        this.$router.push({path: `/form_show/${params.row.id}`})
+                        this.$router.push({path: `/form_show/${params.row.meta_table_id}`})
                       }
                     }
                   }, '查看'),
@@ -143,7 +143,7 @@
       },
       methods: {
         onTableChange(query, pages) {
-          let args = {query, pages};
+          let args = {...query, ...pages};
           getForms(args).then((resp) => {
             this.data.length = 0;
             this.data = resp.data.data;
@@ -161,7 +161,7 @@
           this.onTableChange(this.query, this.pages)
         },
         remove: function (params) {
-          handleDeleteForms(params.id).then(() => {
+          handleDeleteForms(params.meta_table_id).then(() => {
             getForms().then((resp) => {
               this.data = resp.data.data
             })

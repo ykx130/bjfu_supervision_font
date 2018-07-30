@@ -91,17 +91,33 @@
             <!--button begin-->
 
             <div v-if="item.item_type === 'raw_text' || item.item_type === 'radio_options' || item.item_type === 'checkbox_options' ">
+              <Poptip placement="right" width="400">
               <Button type="ghost" style="width: 300px" @click="prependItemShow = true; nowIndex = index;">
                 Prepend New Block
               </Button>
+                <div class="api" slot="content">
+                  <AddItem @onOk="prependNewBlock(nowIndex, $event)"></AddItem>
+                </div>
+              </Poptip>
 
+              <Poptip placement="right" width="400">
               <Button type="info" style="width: 300px" @click="editItemShow = true; nowIndex = index;">
                 Edit this Block
               </Button>
+              <div class="api" slot="content">
+                <AddItem @onOk="editBlock(nowIndex, $event)"></AddItem>
+              </div>
+              </Poptip>
 
+              <Poptip placement="right" width="400">
               <Button type="error" style="width: 200px" v-on:click="deleteNewBlock(item)">
                 Delete this Block
               </Button>
+                <div class="api" slot="content">
+                  <AddItem @onOk="appendNewBlock(nowIndex, $event)"></AddItem>
+                </div>
+              </Poptip>
+
             </div>
             <br>
             <br>
@@ -110,17 +126,6 @@
           </Form>
 
           <!--Modals begin-->
-          <Modal v-model="prependItemShow" title="Prepend Item" @on-ok="ok" @on-cancel="cancel">
-            <AddItem @onOk="prependNewBlock(nowIndex, $event)"></AddItem>
-          </Modal>
-
-          <Modal v-model="appendItemShow" title="Append Item" @on-ok="ok" @on-cancel="cancel">
-            <AddItem @onOk="appendNewBlock"></AddItem>
-          </Modal>
-
-          <Modal v-model="editItemShow" title="Edit Item" @on-ok="ok" @on-cancel="cancel">
-            <AddItem @onOk="editBlock(nowIndex, $event)"></AddItem>
-          </Modal>
           <!--Modals end-->
 
 
@@ -157,9 +162,6 @@
     },
     data() {
       return {
-        appendItemShow: false,
-        prependItemShow: false,
-        editItemShow: false,
         nowIndex: 0,
         form_meta: {}
       }
