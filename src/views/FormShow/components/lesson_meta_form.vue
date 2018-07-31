@@ -57,7 +57,7 @@
 
 </template>
 <script>
-  import { getLessonFormMeta } from '../../service/api/dqs'
+  import { getLessons } from '../../../service/api/dqs'
   export default {
     data () {
       return {
@@ -72,7 +72,7 @@
       }
     },
     mounted () {
-      getLessonFormMeta().then((resp)=>{
+      getLessons().then((resp)=>{
         this.lessons = resp.data.data
       })
     },
