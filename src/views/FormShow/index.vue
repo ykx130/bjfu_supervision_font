@@ -71,8 +71,7 @@
         (resp)=>{
           this.form_meta=resp.data.form_meta
         }
-        )
+      )
     }
   }
 </script>
-
