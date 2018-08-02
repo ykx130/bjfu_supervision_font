@@ -5,7 +5,7 @@
     <!--<p>选项:{{this.qsItem.payload}}</p>-->
     <!--<Button type="primary" @click="modal1 = true">文本题</Button>-->
     <Modal
-      value="true"
+      :value="true"
 
       title="增加一道文本题"
       @on-ok="ok"
@@ -34,13 +34,12 @@
 <script>
   //import
   export default {
-    name:"raw_text.vue",
+    name:"raw_text",
     data () {
       return {
         qsItem:{},
         qsInputName:'',
         qsInputExtra:'',
-        modal1: false,
       }
     },
     props:{
@@ -49,7 +48,6 @@
     },
     methods: {
       ok () {
-        this.qsItem.item_id = '';
         this.qsItem.item_name = this.qsInputName;
         this.qsItem.item_type = 'raw_text';
         this.qsItem.extra=this.qsInputExtra;

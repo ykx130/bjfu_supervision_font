@@ -7,12 +7,12 @@
     <!--form meta start-->
     <div>
       <h1>Form Editor</h1>
-      <Form :model="formLeft" label-position="left" :label-width="150">
+      <Form :model="form_meta" label-position="left">
         <FormItem label="Form Name">
           <Input v-model="form_meta.meta.table_name" placeholder="enter name..."></Input>
         </FormItem>
         <FormItem label="Form Identifier">
-          <Input v-model="form_meta.id" placeholder="enter identifier..."></Input>
+          <Input v-model="form_meta.identify" placeholder="enter identifier..."></Input>
         </FormItem>
       </Form>
     </div>
@@ -92,7 +92,7 @@
 
             <div v-if="item.item_type === 'raw_text' || item.item_type === 'radio_options' || item.item_type === 'checkbox_options' ">
               <Poptip placement="right" width="400">
-              <Button type="ghost" style="width: 300px" @click="prependItemShow = true; nowIndex = index;">
+              <Button type="ghost" style="width: 300px">
                 Prepend New Block
               </Button>
                 <div class="api" slot="content">
@@ -109,14 +109,9 @@
               </div>
               </Poptip>
 
-              <Poptip placement="right" width="400">
               <Button type="error" style="width: 200px" v-on:click="deleteNewBlock(item)">
                 Delete this Block
               </Button>
-                <div class="api" slot="content">
-                  <AddItem @onOk="appendNewBlock(nowIndex, $event)"></AddItem>
-                </div>
-              </Poptip>
 
             </div>
             <br>
@@ -134,9 +129,14 @@
 
         <!--single item end-->
 
-        <Button type="success" @click="appendItemShow = true" style="width: 400px">
-          Append New Block
-        </Button>
+        <Poptip placement="right" width="400">
+          <Button type="ghost" style="width: 300px">
+            Append New Block
+          </Button>
+          <div class="api" slot="content">
+            <AddItem @onOk="appendNewBlock(nowIndex, $event)"></AddItem>
+          </div>
+        </Poptip>
         <Button type="primary" @click="submitForm" style="width: 400px">Click to Submit</Button>
 
       </div>
@@ -163,16 +163,20 @@
     data() {
       return {
         nowIndex: 0,
-        form_meta: {}
+        form_meta: {
+          identify: "",
+          meta: {},
+          items:[]
+        }
       }
     },
-    created: function() {
-      getFormMeta(0).then((response) => {
-        this.form_meta = response.data.form_meta;
-      })
-    },
     mounted: function() {
-      // DK what to do
+      const args = this.$route.params
+      if (args.id) {
+        getFormMeta(args.id).then((response) => {
+          this.form_meta = response.data.form_meta;
+        })
+      }
     },
     methods: {
       ok() {
@@ -181,7 +185,7 @@
       cancel() {
         this.$Message.info('Clicked cancel');
       },
-      appendNewBlock: function(value) {
+      appendNewBlock: function(index, value) {
         this.form_meta.items.push(value);
         this.$Message.info('Items appended!');
       },

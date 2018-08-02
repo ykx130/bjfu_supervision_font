@@ -66,7 +66,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path:`/form_show/${params.row.id}`})
+                      this.$router.push({path:`/form_show/${params.row._id}`})
                     }
                   }
                 }, '查看'),
@@ -80,7 +80,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path:`/meta_editor/`})
+                      this.$router.push({path:`/meta_editor/${params.row._id}`})
                     }
                   }
                 }, '编辑'),
