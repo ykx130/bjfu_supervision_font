@@ -57,7 +57,7 @@
 
 </template>
 <script>
-  import { getLessonFormMeta } from '../../service/api/dqs'
+  import { getLessons } from '../../../service/api/dqs'
   export default {
     data () {
       return {
@@ -72,7 +72,7 @@
       }
     },
     mounted () {
-      getLessonFormMeta().then((resp)=>{
+      getLessons().then((resp)=>{
         this.lessons = resp.data.data
       })
     },
@@ -92,47 +92,4 @@
       }
     }
   }
-
-  import { getFormMeta } from "../../service/api/dqs"
-
-  export default {
-    data() {
-      return {
-        form_meta: {
-          id: "",
-          identify: "",
-          meta: {
-            table_name: "",
-            version: "",
-            created_at: "",
-            updated_at: "",
-            created_by: ""
-          },
-          items: [
-            {
-              item_id: "",
-              item_name: "",
-              item_type: "",
-              extra: "",
-              type: "",
-              payload: {
-                options: []
-              }
-            }
-          ]
-        }
-      }
-    }
-  }
-  //   mounted() {
-  //     let id=this.$route.params.id;
-  //     //let id='http://localhost:8080/#/form_show/:id'.split('//')[1].split('/')[3];
-  //     console.log(id);
-  //     getFormMeta(id).then(
-  //       (resp)=>{
-  //         this.form_meta=resp.data.form_meta
-  //       }
-  //     )
-  //   }
-  // }
 </script>

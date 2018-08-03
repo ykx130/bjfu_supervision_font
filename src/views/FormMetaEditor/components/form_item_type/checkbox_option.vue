@@ -5,8 +5,7 @@
     <!--<p>选项:{{this.qsItem.payload}}</p>-->
     <!--<Button type="primary" @click="modal1 = true">多选题</Button>-->
     <Modal
-      value="true"
-
+      :value="true"
       title="增加一道多选题"
       @on-ok="ok"
       @on-cancel="cancel">
@@ -59,7 +58,7 @@
 <script>
   //import
   export default {
-    name:'checkbox_option.vue',
+    name:'checkbox_option',
     data () {
       return {
         qsItem:{},
@@ -93,7 +92,6 @@
         this.qsInputOptions[index].status = 0;
       },
       ok () {
-        this.qsItem.id = '';
         this.qsItem.item_name = this.qsInputTitle;
         this.qsItem.item_type = 'checkbox_options';
         this.qsItem.extra=this.qsInputExtra;

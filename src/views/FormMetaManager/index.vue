@@ -5,7 +5,7 @@
   </div>
 </template>
 <script>
-  import { getAllFormMetas } from '../../service/api/dqs'
+  import { queryFormMetas } from '../../service/api/dqs'
   import { handleDeleteFormMetas } from '../../service/api/dqs'
   export default {
     data: function () {
@@ -66,7 +66,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path:`/form_show/${params.row.id}`})
+                      this.$router.push({path:`/form_show/${params.row._id}`})
                     }
                   }
                 }, '查看'),
@@ -80,7 +80,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path:`/meta_editor/`})
+                      this.$router.push({path:`/meta_editor/${params.row._id}`})
                     }
                   }
                 }, '编辑'),
@@ -103,14 +103,14 @@
       }
     },
     mounted: function () {
-      getAllFormMetas().then((resp) => {
+      queryFormMetas().then((resp) => {
         this.data = resp.data.form_metas
       })
     },
     methods: {
       remove: function (params) {
         handleDeleteFormMetas(params.id).then(()=>{
-          getAllFormMetas().then((resp) => {
+          queryFormMetas().then((resp) => {
             this.data = resp.data.form_metas
           })
         })

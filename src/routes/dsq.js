@@ -16,14 +16,24 @@ export default[{
       component: resolve => require(['Views/FormMetaEditor/index'], resolve),
     },
     {
+      name: "问卷结构编辑有参数",
+      path: "/meta_editor/:id", // yzr
+      component: resolve => require(['Views/FormMetaEditor/index'], resolve),
+    },
+    {
       name: "问卷填写",
+      path: "/form_fill/:id", // hmx
+      component: resolve => require(['Views/FormFill/index'], resolve),
+    },
+    {
+      name: "问卷查看",
       path: "/form_show/:id", // hmx
       component: resolve => require(['Views/FormShow/index'], resolve),
     },
     {
       name: "问卷管理",
-      path: "/form_manager",
+      path: "/form_manager", // xzl
       component: resolve => require(['Views/FormManager/index'], resolve),
-    }
+    },
   ]
 }]
