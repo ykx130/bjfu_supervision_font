@@ -116,7 +116,7 @@
                     },
                     on: {
                       click: () => {
-                        this.$router.push({path: `/form_show/${params.row.meta_table_id}`})
+                        this.$router.push({path: `/form_show/${params.row._id}`})
                       }
                     }
                   }, '查看'),
@@ -145,8 +145,8 @@
         onTableChange(query, pages) {
           let args = {...query, ...pages};
           getForms(args).then((resp) => {
-            this.data.length = 0;
-            this.data = resp.data.data;
+            this.data = resp.data.forms;
+            this.dataCount = this.data.total;
             Object.assign(query,pages);
             this.$router.push({path: 'form_manager', query: query})
           })
@@ -163,7 +163,8 @@
         remove: function (params) {
           handleDeleteForms(params.meta_table_id).then(() => {
             getForms().then((resp) => {
-              this.data = resp.data.data
+              this.data = resp.data.forms;
+              this.dataCount = this.data.total;
             })
           })
         }
@@ -171,8 +172,8 @@
       created: function () {
         const args = this.$route.query;
         getForms(args).then((resp) => {
-          this.data = resp.data.data;
-          this.dataCount = this.data.length;
+          this.data = resp.data.forms;
+          this.dataCount = this.data.total;
         })
       }
     }

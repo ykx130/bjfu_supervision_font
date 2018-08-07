@@ -5,7 +5,7 @@
     <!--<p>选项:{{this.qsItem.payload}}</p>-->
     <!--<Button type="primary" @click="modal1 = true">单选题</Button>-->
     <Modal
-      value="true"
+      :value="true"
 
       title="增加一道单选题"
       @on-ok="ok"
@@ -59,7 +59,7 @@
 <script>
   //import
   export default {
-    name:'radio_option.vue',
+    name:'radio_option',
     data () {
       return {
         qsItem:{},
@@ -93,7 +93,6 @@
         this.qsInputOptions[index].status = 0;
       },
       ok () {
-        this.qsItem.item_id = '';
         this.qsItem.item_name = this.qsInputName;
         this.qsItem.item_type = 'radio_options';
         this.qsItem.extra=this.qsInputExtra;

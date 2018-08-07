@@ -1,7 +1,7 @@
 <template>
   <div>
-  <h1>问卷结构管理</h1>
-  <Table border stripe :columns="columns" :data="data"></Table>
+    <h1>问卷结构管理</h1>
+    <Table border stripe :columns="columns" :data="data"></Table>
   </div>
 </template>
 <script>
@@ -14,9 +14,9 @@
           {
             title: '问卷名',
             render: function (h, params) {
-            return (
+              return (
                 <span>{ params.row.meta.table_name }</span>
-              )
+            )
             }
           },
           {
@@ -24,7 +24,7 @@
             render: function (h, params) {
               return (
                 <span>{ params.row.meta.version }</span>
-              )
+            )
             }
           },
           {
@@ -32,7 +32,7 @@
             render: function (h, params) {
               return (
                 <span>{ params.row.meta.created_at }</span>
-              )
+            )
             }
           },
           {
@@ -40,7 +40,7 @@
             render: function (h, params) {
               return (
                 <span>{ params.row.meta.created_by }</span>
-              )
+            )
             }
           },
           {
@@ -48,7 +48,7 @@
             render: function (h, params) {
               return (
                 <span>{ params.row.meta.updated_at }</span>
-              )
+            )
             }
           },
           {
@@ -66,7 +66,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path:`/form_show/${params.row.id}`})
+                      this.$router.push({path:`/form_show/${params.row._id}`})
                     }
                   }
                 }, '查看'),
@@ -80,8 +80,8 @@
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path:`/meta_editor/`})
-                   }
+                      this.$router.push({path:`/meta_editor/${params.row._id}`})
+                    }
                   }
                 }, '编辑'),
                 h('Button', {

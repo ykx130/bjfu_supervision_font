@@ -9,7 +9,7 @@ export const getFormMeta = params =>{
 };
 
 export const postForm= params =>{
-  return axios.post('/api/forms/',  params)
+  return axios.post('/api/forms',  params)
 }
 
 export const handleDeleteFormMetas =(params)=>{
@@ -26,4 +26,9 @@ export const handleDeleteForms =(params)=>{
 
 export const postFormMeta = (params) => {
   return axios.post('/api/form_metas', params)
+}
+
+/* 获得一个lesson的form_meta */
+export const getLessons =(params)=> {
+  return axios.get('/api/lessons', {params: params})
 }
