@@ -24,43 +24,46 @@
     <ul>
       <li>
         <label>content: </label>
-        <select v-model="lesson_val">
-          <option v-for="lesson in lessons">{{ lesson.content }}</option>
-        </select>
+        <input disabled v-model="form.meta.content">
       </li>
       <li>
         <label>lesson: </label>
-        <input disabled v-model="lesson">
+        <input disabled v-model="form.meta.lesson">
       </li>
       <li>
         <label>lesson_attr: </label>
-        <input disabled v-model="lesson_attr">
+        <input disabled v-model="form.meta.lesson_attr">
       </li>
       <li>
         <label>teacher: </label>
-        <input disabled v-model="teacher">
+        <input disabled v-model="form.meta.teacher">
       </li>
       <li>
         <label>class: </label>
-        <input disabled v-model="lesson_class">
+        <input disabled v-model="form.meta.class">
       </li>
       <li>
         <label>place: </label>
-        <input disabled v-model="place">
+        <input disabled v-model="form.meta.place">
       </li>
       <li>
         <label>guider: </label>
-        <input disabled v-model="guider">
+        <input disabled v-model="form.meta.guider">
       </li>
     </ul>
   </div>
 
 </template>
 <script>
-  import { getLessons } from '../../../service/api/dqs'
+  import { getLessons,getForm } from '../../../service/api/dqs'
   export default {
     data () {
       return {
+        form:{
+          meta_table_id:"",
+          meta:{},
+          values:[]
+        },
         lessons: [],
         lesson: '',
         lesson_attr: '',
@@ -74,6 +77,10 @@
     mounted () {
       getLessons().then((resp)=>{
         this.lessons = resp.data.data
+      });
+      let id=this.$route.params.id;
+      getForm(id).then((resp)=>{
+        this.form=resp.data.form
       })
     },
     watch: {
