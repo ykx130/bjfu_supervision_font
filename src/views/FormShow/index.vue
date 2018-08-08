@@ -10,7 +10,7 @@
       </div>
       <br/>
       <div>
-        <Lesson></Lesson>
+        <Lesson v-model="form.meta"></Lesson>
       </div>
       <br/>
       <div v-for="it in form_meta.items" >
@@ -66,7 +66,11 @@
           meta: {},
           items: []
         },
-        form:{}
+        form:{
+          meta_table_id:"",
+          meta:{},
+          values:[]
+        }
       }
     },
     mounted() {

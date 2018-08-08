@@ -24,46 +24,41 @@
     <ul>
       <li>
         <label>content: </label>
-        <input disabled v-model="form.meta.content">
+        <input disabled :value="value.content">
       </li>
       <li>
         <label>lesson: </label>
-        <input disabled v-model="form.meta.lesson">
+        <input disabled :value="value.lesson">
       </li>
       <li>
         <label>lesson_attr: </label>
-        <input disabled v-model="form.meta.lesson_attr">
+        <input disabled :value="value.lesson_attr">
       </li>
       <li>
         <label>teacher: </label>
-        <input disabled v-model="form.meta.teacher">
+        <input disabled :value="value.teacher">
       </li>
       <li>
         <label>class: </label>
-        <input disabled v-model="form.meta.class">
+        <input disabled :value="value.class">
       </li>
       <li>
         <label>place: </label>
-        <input disabled v-model="form.meta.place">
+        <input disabled :value="value.place">
       </li>
       <li>
         <label>guider: </label>
-        <input disabled v-model="form.meta.guider">
+        <input disabled :value="value.guider">
       </li>
     </ul>
   </div>
 
 </template>
 <script>
-  import { getLessons,getForm } from '../../../service/api/dqs'
+  import { getLessons } from '../../../service/api/dqs'
   export default {
     data () {
       return {
-        form:{
-          meta_table_id:"",
-          meta:{},
-          values:[]
-        },
         lessons: [],
         lesson: '',
         lesson_attr: '',
@@ -74,13 +69,10 @@
         lesson_val: ''
       }
     },
+    props:["value"],
     mounted () {
       getLessons().then((resp)=>{
         this.lessons = resp.data.data
-      });
-      let id=this.$route.params.id;
-      getForm(id).then((resp)=>{
-        this.form=resp.data.form
       })
     },
     watch: {
