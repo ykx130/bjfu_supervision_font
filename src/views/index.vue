@@ -4,7 +4,6 @@
     background: #f5f7f9;
     position: relative;
     border-radius: 4px;
-    overflow: hidden;
     width: 100%;
     height: 100%;
   }
@@ -64,9 +63,7 @@
           <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '20px 20px 0'}" type="navicon-round" size="24"></Icon>
         </Header>
         <Content :style="{margin: '20px', background: '#fff', minHeight: '720px'}">
-          <keep-alive>
             <router-view></router-view>
-          </keep-alive>
         </Content>
       </Layout>
     </Layout>
