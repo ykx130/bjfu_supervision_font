@@ -24,33 +24,31 @@
     <ul>
       <li>
         <label>content: </label>
-        <select v-model="lesson_val">
-          <option v-for="lesson in lessons">{{ lesson.content }}</option>
-        </select>
+        <input disabled :value="value.content">
       </li>
       <li>
         <label>lesson: </label>
-        <input disabled v-model="lesson">
+        <input disabled :value="value.lesson">
       </li>
       <li>
         <label>lesson_attr: </label>
-        <input disabled v-model="lesson_attr">
+        <input disabled :value="value.lesson_attr">
       </li>
       <li>
         <label>teacher: </label>
-        <input disabled v-model="teacher">
+        <input disabled :value="value.teacher">
       </li>
       <li>
         <label>class: </label>
-        <input disabled v-model="lesson_class">
+        <input disabled :value="value.class">
       </li>
       <li>
         <label>place: </label>
-        <input disabled v-model="place">
+        <input disabled :value="value.place">
       </li>
       <li>
         <label>guider: </label>
-        <input disabled v-model="guider">
+        <input disabled :value="value.guider">
       </li>
     </ul>
   </div>
@@ -71,6 +69,7 @@
         lesson_val: ''
       }
     },
+    props:["value"],
     mounted () {
       getLessons().then((resp)=>{
         this.lessons = resp.data.data
