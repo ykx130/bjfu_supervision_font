@@ -10,8 +10,8 @@
 
     <LessonProfileModal
       :show="showUserProfileModal"
-      :onOK="onProfileModalOK"
-      :onCancel="onProfileModalCancel"
+      @onOK="onProfileModalOK"
+      @onCancel="onProfileModalCancel"
       :lesson_id="this.selected_lesson_id"
     ></LessonProfileModal>
 

@@ -45,7 +45,7 @@
       return {
         query: {
           term: "",
-          "role.name": "院级"
+          "roles.name": "院级"
         }, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
