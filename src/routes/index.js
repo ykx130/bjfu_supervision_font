@@ -9,6 +9,12 @@ export default [
     path: "/",
     component: resolve => require(['Views/index'], resolve),
 
+    children: [
+      {
+        path: "DashBordAdmin", // xzl
+        component: resolve => require(['Views/DashBordAdmin/index'], resolve),
+      }
+    ]
   },
   {
     path: "/login", // xzl

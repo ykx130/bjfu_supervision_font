@@ -9,7 +9,7 @@ export const queryUsers = (params) => {
 };
 
 export const putUser = (params) => {
-  return axios.put('/api/users/'+params.id, params)
+  return axios.put('/api/users/'+params.username, params)
 };
 
 export const postUser = () => {
@@ -20,3 +20,8 @@ export const postUser = () => {
 export const queryRoles = (params) => {
   return axios.get('/api/roles', {params:params})
 };
+
+
+export const queryGroups = (params) => {
+  return axios.get('/api/groups', {params:params})
+}

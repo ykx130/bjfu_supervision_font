@@ -3,7 +3,7 @@
     :value="show"
     title="新增"
     @on-ok="handleOK"
-    @on-cancel="onCancel">
+    @on-cancel="handleCancel">
   <Form :model="user">
     <FormItem prop="username">
       <Input type="text" v-model="user.username" placeholder="用户名">
@@ -50,7 +50,10 @@
         methods: {
           handleOK: function () {
             this.$emit('onOK', this.user)
-          }
+          },
+          handleCancel: function () {
+            this.$emit('onCancel')
+          },
         }
     }
 </script>

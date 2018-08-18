@@ -2,7 +2,9 @@
   <Modal
     v-model="show"
     title="Title"
-    @on-ok="handleOK">
+    @on-ok="handleOK"
+    @on-cancel="handleCancel"
+  >
     <Form :model="lesson">
       <FormItem prop="name">
         <Input type="text" v-model="user.name" placeholder="Username">
@@ -36,7 +38,10 @@
         methods: {
           handleOK: function () {
             this.$emit('onOK', this.lesson)
-          }
+          },
+          handleCancel: function () {
+            this.$emit('onCancel')
+          },
         }
     }
 </script>

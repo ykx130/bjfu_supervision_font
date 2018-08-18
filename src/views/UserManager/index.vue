@@ -22,15 +22,15 @@
 
     <UserProfileModal
       :show="showUserProfileModal"
-      :onOK="onProfileModalOK"
-      :onCancel="onProfileModalCancel"
+      @onOK="onProfileModalOK"
+      @onCancel="onProfileModalCancel"
       :username="this.selected_username"
     ></UserProfileModal>
 
     <UserAddModal
       :show="showUserAddModal"
-      :onOK="onAddModalOK"
-      :onCancel="onAddModalCancel"
+      @onOK="onAddModalOK"
+      @onCancel="onAddModalCancel"
     ></UserAddModal>
 
     <Table border stripe :columns="columns" :data="data"></Table>
@@ -83,6 +83,12 @@
                 return h('Tag', item)
               })
               return h('span',tags)
+            }
+          },
+          {
+            title: '小组',
+            render: function (h, params) {
+              return h('span',params.row.group)
             }
           },
           {

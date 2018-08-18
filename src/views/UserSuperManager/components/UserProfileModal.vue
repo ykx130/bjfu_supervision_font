@@ -3,7 +3,7 @@
     :value="show"
     title="Title"
     @on-ok="handleOK"
-    @on-cancel="onCancel"
+    @on-cancel="handleCancel"
     @on-visible-change="onShowChange">
   <Form :model="user">
     <FormItem prop="username">
@@ -52,6 +52,9 @@
         methods: {
           handleOK: function () {
             this.$emit('onOK', this.user)
+          },
+          handleCancel: function () {
+            this.$emit('onCancel')
           },
           onShowChange: function (show) {
             if(show){
