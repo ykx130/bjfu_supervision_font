@@ -43,7 +43,10 @@
     components:{UserProfileModal,UserAddModal},
     data: function() {
       return {
-        query: {}, // 查询用的参数
+        query: {
+          term: "",
+          "role.name": "院级"
+        }, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
         selected_username:"", //选中编辑的用户的name
