@@ -1,10 +1,9 @@
 <template>
   <Modal
     :value="show"
-    title="Title"
+    title="新增"
     @on-ok="handleOK"
-    @on-cancel="onCancel"
-    @on-visible-change="onShowChange">
+    @on-cancel="onCancel">
   <Form :model="user">
     <FormItem prop="username">
       <Input type="text" v-model="user.username" placeholder="用户名">
@@ -29,14 +28,13 @@
 </template>
 
 <script>
-    import {getUserByName, queryRoles} from '../../../service/api/user'
+    import { queryRoles} from '../../../service/api/user'
     export default {
-        name: "UserProfileModal",
+        name: "UserAddModal",
         props: {
           show: Boolean,
           onCancel:Function,
           onOK: Function,
-          username:""
         },
         data: function () {
           return {
@@ -52,14 +50,6 @@
         methods: {
           handleOK: function () {
             this.$emit('onOK', this.user)
-          },
-          onShowChange: function (show) {
-            if(show){
-              // 显示的时候拉数据
-              getUserByName(this.username).then((resp)=>{
-                this.user = resp.data.user
-              })
-            }
           }
         }
     }

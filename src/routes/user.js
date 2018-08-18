@@ -6,12 +6,12 @@ export default[{
   component: resolve => require(['Views/index'], resolve),
   children: [
     {
-      name: "督导管理",
+      name: "用户管理",
       path: "guiders", // xzl
       component: resolve => require(['Views/UserManager/index'], resolve),
     },
     {
-      name: "教师管理",
+      name: "督导管理",
       path: "teachers", // xzl
       component: resolve => require(['Views/UserTeacherManagerList/index'], resolve),
     },

@@ -5,7 +5,17 @@
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>
         <FormItem label="用户名字：" prop="lesson">
-          <Input style="width: 180px" v-model="query.lesson" ></Input>
+         <Input style="width: 180px" v-model="query.lesson" ></Input>
+        </FormItem>
+
+        <FormItem label="学期：" prop="term">
+          <Select v-model="query.term" style="width:200px">
+            <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
+          </Select>
+        </FormItem>
+
+        <FormItem >
+          <Button type="primary" @click="onSearch(query)">查询</Button>
         </FormItem>
       </Form>
     </Form>
@@ -17,27 +27,42 @@
       :username="this.selected_username"
     ></UserProfileModal>
 
+    <UserAddModal
+      :show="showUserAddModal"
+      :onOK="onAddModalOK"
+      :onCancel="onAddModalCancel"
+    ></UserAddModal>
+
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </div>
     </div>
+    <Button type="primary" @click="()=>{this.showUserAddModal=true}" >
+      新增
+    </Button>
   </div>
 </template>
 
 <script>
   import UserProfileModal from './components/UserProfileModal'
-  import {queryUsers, putUser} from '../../service/api/user'
+  import UserAddModal from './components/UserAddModal'
+  import {queryTerms, getCurrentTerms} from '../../service/api/term'
+  import {queryUsers, putUser, postUser} from '../../service/api/user'
   export default {
-    components:{UserProfileModal},
+    components:{UserProfileModal,UserAddModal},
     data: function() {
       return {
-        query: {}, // 查询用的参数
+        query: {
+          term: ""
+        }, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
+        terms:[],
         selected_username:"", //选中编辑的用户的name
         showUserProfileModal: false, // 展示编辑弹窗
+        showUserAddModal: false,
         pages: {
           _page: 1,
           _per_page: 10
@@ -45,18 +70,19 @@
         columns: [
           {
             title: '用户名',
-            render: function (h, params) {
-              return (
-                <span>{ params.row.meta.lesson }</span>
-            )
-            }
+            key: 'username'
+          },
+          {
+            title: '名字',
+            key: 'name'
           },
           {
             title: '身份',
             render: function (h, params) {
-              return (
-                <span>{ params.row.meta.lesson }</span>
-            )
+              let tags = params.row.roles.map((item)=>{
+                return h('Tag', item)
+              })
+              return h('span',tags)
             }
           },
           {
@@ -74,7 +100,8 @@
                   },
                   on: {
                     click: () => {
-                      this.selected_username = params.username
+                      this.selected_username = params.row.username
+
                       this.showUserProfileModal=true
                     }
                   }
@@ -89,16 +116,21 @@
       onTableChange(query, pages) {
         //数据表发生变化请求数据
         let args = {...query, ...pages};
+        queryUsers(args).then((resp)=>{
+          this.data = resp.data.users
+          this.total = resp.data.total
+          this.$router.push({path: '/user/guiders', query: query})
+        })
       },
       onPageChange(page) {
         //分页变化
         this.pages._page = page;
         this.onTableChange(this.query, this.pages)
       },
-      onSearch() {
-        //查询变化
+      onSearch(query) {
+        //查询变化 当点提交查询条件生效
         this.pages._page = 1;
-        this.onTableChange(this.query, this.pages)
+        this.onTableChange(query, this.pages)
       },
       onProfileModalOK(user) {
         // 更新框确定 关闭
@@ -108,12 +140,29 @@
       },
       onProfileModalCancel() {
         this.showUserProfileModal = false
+      },
+      onAddModalOK(user) {
+        // 更新框确定 关闭
+        postUser(user).then((resp)=>{
+          this.showUserAddModal = false
+        })
+      },
+      onAddModalCancel() {
+        this.showUserAddModal = false
       }
     },
     mounted: function () {
-      const args = this.$route.query;
-      queryUsers(args).then((resp)=>{
-        this.data = resp.users
+      let args = this.$route.query;
+      queryTerms().then((resp)=>{
+        this.terms = resp.data.terms
+      })
+      getCurrentTerms().then((termResp)=>{
+        this.query.term = termResp.data.term.name
+        queryUsers({...args, ...this.query}).then((resp)=>{
+          this.data = resp.data.users
+          this.total = resp.data.total
+          this.$router.push({path: '/user/guiders', query: {...args, ...this.query}})
+        })
       })
     }
   }
