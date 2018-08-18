@@ -4,7 +4,14 @@ export default {
       return  item.name
     },
     showChildren (item) {
-      return item.children && item.children.length !== 0
+      if (item.children && item.children.length !== 0){
+        for (let c in item.children) {
+          if (item.children[c].name){
+            return true
+          }
+        }
+        return false
+      }
     }
   }
 }

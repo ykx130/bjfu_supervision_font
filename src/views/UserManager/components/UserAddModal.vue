@@ -1,10 +1,9 @@
 <template>
   <Modal
     :value="show"
-    title="Title"
+    title="新增"
     @on-ok="handleOK"
-    @on-cancel="handleCancel"
-    @on-visible-change="onShowChange">
+    @on-cancel="handleCancel">
   <Form :model="user">
     <FormItem prop="username">
       <Input type="text" v-model="user.username" placeholder="用户名">
@@ -16,6 +15,11 @@
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
+    <FormItem prop="group">
+      <Select v-model="user.group" >
+        <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+      </Select>
+    </FormItem>
     <span>身份:</span>
     <FormItem prop="roles">
       <CheckboxGroup v-model="user.roles">
@@ -29,24 +33,27 @@
 </template>
 
 <script>
-    import {getUserByName, queryRoles} from '../../../service/api/user'
+    import { queryRoles, queryGroups} from '../../../service/api/user'
     export default {
-        name: "UserProfileModal",
+        name: "UserAddModal",
         props: {
           show: Boolean,
           onCancel:Function,
           onOK: Function,
-          username:""
         },
         data: function () {
           return {
             user: {},
-            roles: []
+            roles: [],
+            groups: []
           }
         },
         mounted: function () {
           queryRoles().then((resp)=>{
             this.roles = resp.data.roles
+          })
+          queryGroups().then((resp)=>{
+            this.groups = resp.data.groups
           })
         },
         methods: {
@@ -56,14 +63,6 @@
           handleCancel: function () {
             this.$emit('onCancel')
           },
-          onShowChange: function (show) {
-            if(show){
-              // 显示的时候拉数据
-              getUserByName(this.username).then((resp)=>{
-                this.user = resp.data.user
-              })
-            }
-          }
         }
     }
 </script>
