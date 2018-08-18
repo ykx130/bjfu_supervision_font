@@ -51,7 +51,7 @@
   </Scroll>
 </template>
 <script>
-  import { getFormMeta, getForm } from "../../service/api/dqs"
+  import { getFormMeta } from "../../service/api/dqs"
   import Lesson from "./components/lesson_meta_form"
 
   export default {
@@ -77,9 +77,6 @@
       let id=this.$route.params.id;
       getFormMeta(id).then((newresp)=>{
         this.form_meta=newresp.data.form_meta
-      });
-      getForm(id).then((resp)=>{
-        this.form=resp.data.form
       });
     }
   }

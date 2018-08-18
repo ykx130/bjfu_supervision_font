@@ -78,6 +78,7 @@
     mounted () {
       getLessons().then((resp)=>{
         this.lessons = resp.data.data
+        this.lesson_val = this.value.lesson
       })
     },
     watch: {
@@ -91,6 +92,7 @@
             this.place =item.place ;
             this.guider =item.guider ;
             this.$emit('input', {
+              'lesson_val': this.lesson_val,
               'lesson': this.lesson,
               'lesson_attr': this.lesson_attr,
               'teacher': this.teacher,
