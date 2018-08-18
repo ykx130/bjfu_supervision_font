@@ -71,22 +71,35 @@
         lesson_val: ''
       }
     },
+    props: {
+      value: Object,
+      input: Function
+    },
     mounted () {
       getLessons().then((resp)=>{
         this.lessons = resp.data.data
+        this.lesson_val = this.value.lesson
       })
     },
     watch: {
       lesson_val: function() {
-        var self = this;
-        this.lessons.forEach(function(item){
-          if (item.content == self.lesson_val) {
-            self.lesson =item.lesson ;
-            self.lesson_attr =item.lesson_attr ;
-            self.teacher =item.teacher ;
-            self.lesson_class =item.class ;
-            self.place =item.place ;
-            self.guider =item.guider ;
+        this.lessons.forEach((item)=>{
+          if (item.content === self.lesson_val) {
+            this.lesson =item.lesson ;
+            this.lesson_attr =item.lesson_attr ;
+            this.teacher =item.teacher ;
+            this.lesson_class =item.class ;
+            this.place =item.place ;
+            this.guider =item.guider ;
+            this.$emit('input', {
+              'lesson_val': this.lesson_val,
+              'lesson': this.lesson,
+              'lesson_attr': this.lesson_attr,
+              'teacher': this.teacher,
+              'lesson_class': this.lesson_class,
+              'place': this.place,
+              'guider': this.guider
+            })
           }
         });
       }

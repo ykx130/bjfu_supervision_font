@@ -31,7 +31,7 @@
       data: function() {
         return {
           query: {},
-          dataCount: 0,
+          total: 0,
           pages: {
             _page: 1,
             _per_page: 10
@@ -151,12 +151,12 @@
             this.$router.push({path: 'form_manager', query: query})
           })
         },
-        changePage(page) {
+        onPageChange(page) {
           this.pages._page = page;
           this.onTableChange(this.query, this.pages)
         },
 
-        Search() {
+        onSearch() {
           this.pages._page = 1;
           this.onTableChange(this.query, this.pages)
         },
