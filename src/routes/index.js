@@ -8,6 +8,11 @@ export default [
     name: "首页",
     path: "/",
     component: resolve => require(['Views/index'], resolve),
+
+  },
+  {
+    path: "/login", // xzl
+    component: resolve => require(['Views/LoginPage/index'], resolve),
   },
 	...dsq,
   ...user,
