@@ -1,7 +1,7 @@
 # 督导stage4
 
 ## 教师 教学负责人 用户管理
-@dq
+@suchang
 
 http://101.200.52.233:8000/SupervisorInfo
 http://101.200.52.233:8000/UnitUserManage
