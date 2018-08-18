@@ -13,12 +13,12 @@ export default[{
     {
       name: "教师管理",
       path: "teachers", // xzl
-      component: resolve => require(['Views/UserSuperManager/index'], resolve),
+      component: resolve => require(['Views/UserTeacherManagerList/index'], resolve),
     },
     {
       name: "学院负责人",
       path: "supers", // xzl
-      component: resolve => require(['Views/UserTeacherManagerList/index'], resolve),
+      component: resolve => require(['Views/UserSuperManager/index'], resolve),
     },
   ]
 }]
