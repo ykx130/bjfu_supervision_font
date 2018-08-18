@@ -4,8 +4,7 @@
 export const state = {
     toLoginPath: '',
     toLogin: false,
-    userinfo: null,
-    fruit: null
+    userinfo: {},
 }
 
 //全局mutations
@@ -18,8 +17,5 @@ export const mutations = {
     },
     ['SET_USER_INFO'](state, resData) {
         state.userinfo = resData
-    },
-    ['SET_FRUIT'](state, resData) {
-        state.fruit = resData
     }
 }
