@@ -56,7 +56,7 @@ http://101.200.52.233:8000/activity/modify
 http://101.200.52.233:8000/TheoryStatistics
 
 ## 课程 
-@hmx
+@xzl
 /lesson下路由  
 http://101.200.52.233:8000/NecessaryTask
 
