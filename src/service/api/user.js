@@ -12,7 +12,7 @@ export const putUser = (params) => {
   return axios.put('/api/users/'+params.username, params)
 };
 
-export const postUser = () => {
+export const postUser = (params) => {
   return axios.post('/api/users', params)
 };
 
