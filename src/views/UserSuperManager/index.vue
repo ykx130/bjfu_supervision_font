@@ -45,7 +45,7 @@
       return {
         query: {
           term: "",
-          "role.name": "院级"
+          "roles.name": "院级"
         }, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
@@ -120,6 +120,7 @@
         // 更新框确定 关闭
         putUser(user).then((resp)=>{
           this.showUserProfileModal = false
+          this.onTableChange(this.query, this.pages)
         })
       },
       onProfileModalCancel() {
@@ -129,6 +130,7 @@
         // 更新框确定 关闭
         postUser(user).then((resp)=>{
           this.showUserAddModal = false
+          this.onTableChange(this.query, this.pages)
         })
       },
       onAddModalCancel() {

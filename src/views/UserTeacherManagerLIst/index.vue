@@ -56,7 +56,7 @@
       return {
         query: {
           term: "",
-          "role.name": "教师"
+          "roles.name": "教师"
         }, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据

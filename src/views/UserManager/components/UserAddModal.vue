@@ -21,8 +21,8 @@
       </Select>
     </FormItem>
     <span>身份:</span>
-    <FormItem prop="roles">
-      <CheckboxGroup v-model="user.roles">
+    <FormItem prop="role_names">
+      <CheckboxGroup v-model="user.role_names">
         <Checkbox v-for="role in roles" :label="role.name" :key="'key_'+role.name">
           <span>{{ role.name }}</span>
         </Checkbox>
