@@ -162,7 +162,7 @@
         queryUsers({...args, ...this.query}).then((resp)=>{
           this.data = resp.data.users
           this.total = resp.data.total
-          this.$router.push({path: '/user/guiders', query: {...args, ...this.query}})
+          this.$router.push({path: '/user/teachers', query: {...args, ...this.query}})
         })
       })
     }
