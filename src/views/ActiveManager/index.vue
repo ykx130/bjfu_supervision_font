@@ -37,7 +37,7 @@
         total: 0, // 总数量
         data: [], //数据
         selected_username:"", //选中编辑的用户的name
-        showUserProfileModal: false, // 展示编辑弹窗
+        showLessonProfileModal: false, // 展示编辑弹窗
         pages: {
           _page: 1,
           _per_page: 10

@@ -4,8 +4,8 @@
     <br>
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>
-        <FormItem label="用户名字：" prop="lesson">
-          <Input style="width: 180px" v-model="query.lesson" ></Input>
+        <FormItem label="用户名字：" prop="name">
+          <Input style="width: 180px" v-model="query.name" ></Input>
         </FormItem>
       </Form>
     </Form>

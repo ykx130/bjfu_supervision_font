@@ -51,7 +51,7 @@ http://101.200.52.233:8000/teacherManage
 http://101.200.52.233:8000/activity/modify
 
 ## 统计
-@hmx @xzl @suchnag @yzr
+@hmx @xzl @suchang @yzr
 
 http://101.200.52.233:8000/TheoryStatistics
 
