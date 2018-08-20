@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>用户管理</h1>
+    <h1>督导管理</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>
-        <FormItem label="用户名字：" prop="lesson">
-          <Input style="width: 180px" v-model="query.lesson" ></Input>
+        <FormItem label="用户名字：" prop="name">
+          <Input style="width: 180px" v-model="query.name" ></Input>
         </FormItem>
 
         <FormItem label="学期：" prop="term">
@@ -162,7 +162,7 @@
         queryUsers({...args, ...this.query}).then((resp)=>{
           this.data = resp.data.users
           this.total = resp.data.total
-          this.$router.push({path: '/user/guiders', query: {...args, ...this.query}})
+          this.$router.push({path: '/user/teachers', query: {...args, ...this.query}})
         })
       })
     }
