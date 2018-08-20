@@ -56,7 +56,7 @@
       return {
         query: {
           term: "",
-          "roles.name": "教师"
+          user_roles: {term: ""}
         }, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
@@ -158,7 +158,7 @@
         this.terms = resp.data.terms
       })
       getCurrentTerms().then((termResp)=>{
-        this.query.term = termResp.data.term.name
+        this.query.user_roles.term = termResp.data.term.name
         queryUsers({...args, ...this.query}).then((resp)=>{
           this.data = resp.data.users
           this.total = resp.data.total
