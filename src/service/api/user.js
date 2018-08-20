@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from "Plugins/axios";
 
 export const getUserByName = (name) => {
   return axios.get('/api/users/'+name)

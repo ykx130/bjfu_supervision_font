@@ -1,3 +1,5 @@
+import qs from 'qs'
+
 export function getNumb() {
     var num = new Array();
     for (var i = 0; i < 10; i++) {
@@ -63,4 +65,21 @@ export function updateWithinField(src_obj, des_obf) {
       src_obj[item] = undefined
     }
   }
+}
+
+// stringifyQuery
+
+export function stringifyQuery(args) {
+  return qs.stringify(args, {
+    arrayFormat: 'repeat',
+    allowDots: true
+})
+}
+
+// parseQuery
+export function parseQuery(str) {
+  return qs.parse(str, {
+    arrayFormat: 'repeat',
+    allowDots: true
+  })
 }
