@@ -1,7 +1,7 @@
-# 督导stage4
+# 督导stage4 基础业务重构
 
 ## 教师 教学负责人 用户管理
-@suchang
+@suchang @dq
 
 http://101.200.52.233:8000/SupervisorInfo
 http://101.200.52.233:8000/UnitUserManage
@@ -50,10 +50,7 @@ http://101.200.52.233:8000/teacherManage
 
 http://101.200.52.233:8000/activity/modify
 
-## 统计
-@hmx @xzl @suchang @yzr
 
-http://101.200.52.233:8000/TheoryStatistics
 
 ## 课程 
 @xzl
@@ -86,5 +83,19 @@ props: {
 ```
 
 
-## 问卷相关
+## 问卷相关 (界面优化，状态管理)
 @suchang @yzr
+
+增加问卷打回的功能
+
+## 统计
+@hmx @xzl @suchang @yzr
+
+当问卷实例被创建 或者 修改 离线计算该问卷所有历史版本的所有问题的各个答案的占比，
+显示在界面上
+
+http://101.200.52.233:8000/TheoryStatistics
+
+## 首页dashborad
+
+@hmx

@@ -1,3 +1,4 @@
+import {stringifyQuery, parseQuery} from '../utils/tools'
 // 当前宿主平台
 export const HOST_PLATFORM = 'WEB'
 // 这个就不多说了
@@ -11,7 +12,14 @@ export const MONITOR_ENABLE = true
 export const ROUTER_DEFAULT_CONFIG = {
     waitForData: true,
     transitionOnLoad: true,
+    parseQuery(str) {
+      return parseQuery(str)
+    },
+    stringifyQuery(args) {
+      var result = stringifyQuery(args);
 
+      return result ? ('?' + result) : '';
+    }
 }
 
 // axios 默认配置
@@ -19,7 +27,8 @@ export const AXIOS_DEFAULT_CONFIG = {
     timeout: 20000,
     maxContentLength: 2000,
     headers: {},
-    withCredentials: true // 允许携带cookie
+    withCredentials: true, // 允许携带cookie
+    paramsSerializer: stringifyQuery
 }
 
 // vuex 默认配置
@@ -31,7 +40,7 @@ export const VUEX_DEFAULT_CONFIG = {
 export const API_DEFAULT_CONFIG = {
     mockBaseURL: '',
     mock: false,
-    debug: false,
+    debug: true,
     sep: '/'
 }
 
