@@ -22,5 +22,6 @@ export default [
   },
 	...dsq,
   ...user,
-  ...actives
+  ...actives,
+  ...lesson
 ]
