@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from "Plugins/axios";
 
 export const queryFormMetas =(params)=> {
   return axios.get('/api/form_metas', {params: params})
