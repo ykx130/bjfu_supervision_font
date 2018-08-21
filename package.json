@@ -16,7 +16,7 @@
     "bootstrap-vue": "^2.0.0-rc.11",
     "es6-promise": "^4.0.5",
     "highlight.js": "^9.11.0",
-    "iview": "^2.14.3",
+    "iview": "^3.0.0",
     "loadsh": "^1.0.1",
     "lodash": "^4.17.4",
     "qs": "^6.5.2",
