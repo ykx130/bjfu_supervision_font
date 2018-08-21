@@ -1,33 +1,44 @@
 <template>
   <!--whole form meta editor begin-->
-  <div style="width: 820px;">
+  <div>
     <!--adjust module start-->
     <!--adjust module end-->
 
     <!--form meta start-->
     <div>
       <h1>Form Editor</h1>
-      <Form :model="form_meta" label-position="left">
+      <Form :model="form_meta" :label-width="100" inline label-position="left">
         <FormItem label="Form Name">
-          <Input v-model="form_meta.meta.table_name" placeholder="enter name..."></Input>
+          <Input v-model="form_meta.form.name" placeholder="enter name..."></Input>
         </FormItem>
-        <FormItem label="Form Identifier">
-          <Input v-model="form_meta.identify" placeholder="enter identifier..."></Input>
+        <FormItem label="Form Version">
+          <Input v-model="form_meta.form.version" placeholder="change version..."></Input>
         </FormItem>
       </Form>
     </div>
+
+
     <!--form meta end-->
+
+    <!--meta start-->
+    <div style="background:#eee;padding: 10px; width: 300px;">
+      <Card :bordered="false">
+        <p slot="title">{{ form_meta.form.meta.create_at }}</p>
+        <p>{{ form_meta.form.meta.create_by  }}</p>
+      </Card>
+    </div>
+    <br>
+    <br>
+    <!--meta end-->
+
 
     <!--form blocks start-->
     <div>
       <!--items begin-->
       <div>
         <!--single item begin-->
-        <Scroll height=0>
 
-        </Scroll>
-
-        <Form v-for="(item, index) in form_meta.items" :key="item.item_id" label-position="left" label-width="150">
+        <Form v-for="(item, index) in form_meta.items" :key="item.name" label-position="left" label-width="150">
 
           <!--information begin-->
 
@@ -44,7 +55,8 @@
           <div v-if="item.item_type === 'raw_text' ">
             <FormItem label="TextItem">
               <Input v-model="item.item_name" placeholder="enter name..."></Input>
-              <br><br>
+              <br>
+              <br>
               <Input v-model="item.extra" placeholder="enter extra..."></Input>
             </FormItem>
           </div>
@@ -54,9 +66,11 @@
           <div v-if="item.item_type === 'radio_options' ">
             <FormItem label="OptionItem">
               <Input v-model="item.item_name" placeholder="enter name..."></Input>
-              <br><br>
+              <br>
+              <br>
               <Input v-model="item.extra" placeholder="enter extra..."></Input>
-              <br><br>
+              <br>
+              <br>
               <RadioGroup>
                 <Radio v-for="option in item.payload.options" :label="option.label" :key="option.value">
                   <span>{{ option.label }}</span>
@@ -70,9 +84,11 @@
           <div v-if="item.item_type === 'checkbox_options' ">
             <FormItem label="CheckboxItem">
               <Input v-model="item.item_name" placeholder="enter name..."></Input>
-              <br><br>
+              <br>
+              <br>
               <Input v-model="item.extra" placeholder="enter extra..."></Input>
-              <br><br>
+              <br>
+              <br>
               <CheckboxGroup>
                 <Checkbox v-for="option in item.payload.options" :label="option.label" :key="option.value">
                   <span>{{ option.label }}</span>
@@ -165,14 +181,53 @@
       return {
         nowIndex: 0,
         form_meta: {
-          identify: "",
-          meta: {},
-          items:[]
+          "code": 200,
+          "form": {
+            "name": "理论课表",
+            "version": 1,
+            "meta": {
+              "create_at": "2018-07-01 12:12:12",
+              "create_by": "suchang"
+            },
+            "items": [
+              {
+                "item_name": "教师满意度",
+                "type": "form_item",
+                "item_type": "radio_option",
+                "pyload": {
+                  "options": [
+                    {
+                      "label": "满意",
+                      "value": "满意",
+                      "score": 1
+                    },
+                    {
+                      "label": "一般",
+                      "value": "一般",
+                      "score": 0.75
+                    },
+                    {
+                      "label": "不满意",
+                      "value": "不满意",
+                      "score": 0.5
+                    }
+                  ],
+                  "weight": 0.3
+                }
+              },
+              {
+                "item_name": "教师评价",
+                "type": "form_item",
+                "item_type": "raw_text",
+                "pyload": {}
+              }
+            ]
+          }
         }
       }
     },
-    mounted: function() {
-      const args = this.$route.params
+    mounted: function () {
+      const args = this.$route.params;
       if (args.id) {
         getFormMeta(args.id).then((response) => {
           this.form_meta = response.data.form_meta;
@@ -186,29 +241,29 @@
       cancel() {
         this.$Message.info('Clicked cancel');
       },
-      appendNewBlock: function(index, value) {
+      appendNewBlock: function (index, value) {
         this.form_meta.items.push(value);
         this.$Message.info('Items appended!');
       },
-      prependNewBlock: function(index, value) {
+      prependNewBlock: function (index, value) {
         this.form_meta.items.splice(index, 0, value);
         this.$Message.info('Items prepended!');
       },
-      editBlock: function(index, value) {
+      editBlock: function (index, value) {
         this.form_meta.items.splice(index, 1);
         this.form_meta.items.splice(index, 0, value);
         this.$Message.info('Items edited!');
       },
-      deleteNewBlock: function(item) {
+      deleteNewBlock: function (item) {
         let index = this.form_meta.items.indexOf(item);
         this.form_meta.items.splice(index, 1);
         this.$Message.info('Items deleted!');
       },
-      submitForm: function() {
-        postFormMeta(this.form_meta).then(function(response) {
+      submitForm: function () {
+        postFormMeta(this.form_meta).then(function (response) {
           console.log(response);
         })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
         this.$Message.info('Items submitted!');
