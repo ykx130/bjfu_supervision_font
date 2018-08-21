@@ -24,4 +24,20 @@ export const queryRoles = (params) => {
 
 export const queryGroups = (params) => {
   return axios.get('/api/groups', {params:params})
-}
+};
+
+// ** 登陆
+
+export const loginUser = (params) => {
+  return axios.post('/api/login', params)
+};
+
+// 登出
+export const logoutUser = (params) => {
+  return axios.get('/api/logout')
+};
+
+//当前用户
+export const currentUser = (params) => {
+  return axios.get('/api/current_user')
+};
