@@ -1,3 +1,5 @@
+import qs from 'qs'
+
 export function getNumb() {
     var num = new Array();
     for (var i = 0; i < 10; i++) {
@@ -50,4 +52,34 @@ export function scrollTop(el, from = 0, to, duration = 500) {
 
 export function assert(condition, msg) {
     if (!condition) throw new Error(`[Apior] ${msg}`)
+}
+
+export function updateWithinField(src_obj, des_obf) {
+  /* 用于更新src_obj的字典用另一个*/
+  for (let item in src_obj) {
+    if (des_obf.hasOwnProperty(item)){
+      // 存在更新src
+      src_obj[item] = des_obf[item]
+    } else {
+      // 不存在至空
+      src_obj[item] = undefined
+    }
+  }
+}
+
+// stringifyQuery
+
+export function stringifyQuery(args) {
+  return qs.stringify(args, {
+    arrayFormat: 'repeat',
+    allowDots: true
+})
+}
+
+// parseQuery
+export function parseQuery(str) {
+  return qs.parse(str, {
+    arrayFormat: 'repeat',
+    allowDots: true
+  })
 }

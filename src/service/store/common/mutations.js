@@ -2,20 +2,12 @@
 // 把state放入mutations是为了方便开发，观察状态 ，和状态对应的相关方法
 
 export const state = {
-    toLoginPath: '',
-    toLogin: false,
-    userinfo: {},
-}
+    userInfo: {}
+};
 
 //全局mutations
 export const mutations = {
-    ['SET_TO_LOGIN'](state, boolean) {
-        state.toLogin = boolean
-    },
-    ['SET_TO_LOGIN_PATH'](state, path) {
-        state.toLoginPath = path
-    },
     ['SET_USER_INFO'](state, resData) {
-        state.userinfo = resData
+        state.userInfo = resData
     }
 }

@@ -9,9 +9,9 @@
     </Form>
 
     <LessonProfileModal
-      :show="showUserProfileModal"
-      :onOK="onProfileModalOK"
-      :onCancel="onProfileModalCancel"
+      :show="showLessonProfileModal"
+      @onOK="onProfileModalOK"
+      @onCancel="onProfileModalCancel"
       :lesson_id="this.selected_lesson_id"
     ></LessonProfileModal>
 
@@ -35,7 +35,7 @@
         total: 0, // 总数量
         data: [], //数据
         selected_lesson_id:"", //选中编辑的课程ids
-        showUserProfileModal: false, // 展示编辑弹窗
+        showLessonProfileModal: false, // 展示编辑弹窗
         pages: {
           _page: 1,
           _per_page: 10
@@ -45,7 +45,7 @@
             title: '课程名字',
             render: function (h, params) {
               return (
-                <span>{ params.row.meta.lesson }</span>
+                <span>{ params.row.lesson_name }</span>
             )
             }
           },
@@ -65,7 +65,7 @@
                   on: {
                     click: () => {
                       this.selected_username = params.username
-                      this.showUserProfileModal=true
+                      this.showLessonProfileModal=true
                     }
                   }
                 }, '查看')
@@ -93,11 +93,11 @@
       onProfileModalOK(lesson) {
         // 更新框确定 关闭
         putLesson(lesson).then((resp)=>{
-          this.showUserProfileModal = false
+          this.showLessonProfileModal = false
         })
       },
       onProfileModalCancel() {
-        this.showUserProfileModal = false
+        this.showLessonProfileModal = false
       }
     },
     mounted: function () {

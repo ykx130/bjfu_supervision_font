@@ -1,4 +1,4 @@
-import axios from "axios/index";
+import axios from "Plugins/axios";
 
 export const queryTerms =(params)=> {
   return axios.get('/api/terms', {params: params})

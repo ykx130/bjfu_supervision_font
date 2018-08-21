@@ -11,14 +11,14 @@
       </FormItem>
       <FormItem label="听课督导：" prop="guider">
         <Input  style="width: 180px" v-model="query.guider"></Input>
-        <Button type="primary" style="margin-left: 20px;width: 80px" @click="Search">查询</Button>
+        <Button type="primary" style="margin-left: 20px;width: 80px" @click="onSearch">查询</Button>
       </FormItem>
     </Form>
 
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
-            <Page :total="dataCount" show-total :page-size="pages._per_page" :current="pages._page" @on-change="changePage"></Page>
+            <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
         </div>
     </div>
   </div>
@@ -146,7 +146,7 @@
           let args = {...query, ...pages};
           getForms(args).then((resp) => {
             this.data = resp.data.forms;
-            this.dataCount = this.data.total;
+            this.total = this.data.total;
             Object.assign(query,pages);
             this.$router.push({path: 'form_manager', query: query})
           })
@@ -164,7 +164,7 @@
           handleDeleteForms(params.meta_table_id).then(() => {
             getForms().then((resp) => {
               this.data = resp.data.forms;
-              this.dataCount = this.data.total;
+              this.total = this.data.total;
             })
           })
         }
@@ -173,7 +173,7 @@
         const args = this.$route.query;
         getForms(args).then((resp) => {
           this.data = resp.data.forms;
-          this.dataCount = this.data.total;
+          this.total = this.data.total;
         })
       }
     }

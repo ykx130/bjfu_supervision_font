@@ -17,23 +17,29 @@
 
 <script>
   import LoginForm from './components/LoginForm'
-  import { mapActions } from 'vuex'
+  import {loginUser} from '../../service/api/user'
   export default {
     components: {
       LoginForm
     },
+
+    computed: {
+      userInfo () {
+        return this.$store.state.userInfo
+      }
+    },
     methods: {
-      ...mapActions([
-        'handleLogin',
-        'getUserInfo'
-      ]),
       handleSubmit ({ userName, password }) {
-        this.handleLogin({ userName, password }).then(res => {
-          this.getUserInfo().then(res => {
-            this.$router.push({
-              name: 'home'
-            })
-          })
+        loginUser({
+          "username": userName,
+          "password": password
+        }).then((resp)=>{
+          if(resp.data.code === 500){
+            this.$Message.error('用户名错误密码错误');
+          } else {
+            this.$Message.success('登陆成功');
+            this.$router.push({path: '/'})
+          }
         })
       }
     }

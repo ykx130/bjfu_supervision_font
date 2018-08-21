@@ -1,5 +1,5 @@
 /* 获得一个lesson的form_meta */
-import axios from "axios/index";
+import axios from "Plugins/axios";
 
 export const queryActives =(params)=> {
   return axios.get('/api/actives', {params: params})
