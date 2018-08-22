@@ -9,10 +9,10 @@
       <h1>Form Editor</h1>
       <Form :model="form_meta" :label-width="100" inline label-position="left">
         <FormItem label="Form Name">
-          <Input v-model="form_meta.form.name" placeholder="enter name..."></Input>
+          <Input v-model="form_meta.forms.bind_meta_name" placeholder="enter name..."></Input>
         </FormItem>
         <FormItem label="Form Version">
-          <Input v-model="form_meta.form.version" placeholder="change version..."></Input>
+          <Input v-model="form_meta.forms.bind_meta_version" placeholder="change version..."></Input>
         </FormItem>
       </Form>
     </div>
@@ -23,8 +23,8 @@
     <!--meta start-->
     <div style="background:#eee;padding: 10px; width: 300px;">
       <Card :bordered="false">
-        <p slot="title">{{ form_meta.form.meta.create_at }}</p>
-        <p>{{ form_meta.form.meta.create_by  }}</p>
+        <p slot="title">{{ form_meta.forms.meta.create_at }}</p>
+        <p>{{ form_meta.forms.meta.create_by  }}</p>
       </Card>
     </div>
     <br>
@@ -38,7 +38,7 @@
       <div>
         <!--single item begin-->
 
-        <Form v-for="(item, index) in form_meta.items" :key="item.name" label-position="left" label-width="150">
+        <Form v-for="(item, index) in form_meta.forms.values" :key="item.item_name" label-position="left" label-width="150">
 
           <!--information begin-->
 
@@ -182,47 +182,79 @@
         nowIndex: 0,
         form_meta: {
           "code": 200,
-          "form": {
-            "name": "理论课表",
-            "version": 1,
-            "meta": {
-              "create_at": "2018-07-01 12:12:12",
-              "create_by": "suchang"
-            },
-            "items": [
-              {
-                "item_name": "教师满意度",
-                "type": "form_item",
-                "item_type": "radio_option",
-                "pyload": {
-                  "options": [
-                    {
-                      "label": "满意",
-                      "value": "满意",
-                      "score": 1
-                    },
-                    {
-                      "label": "一般",
-                      "value": "一般",
-                      "score": 0.75
-                    },
-                    {
-                      "label": "不满意",
-                      "value": "不满意",
-                      "score": 0.5
-                    }
-                  ],
-                  "weight": 0.3
+          "forms":
+            {
+              "_id": "5b630a3014d67025407e8004",
+              "bind_meta_id": "5b630ee114d67025a48c3b50",
+              "bind_meta_name": "test",
+              "bind_meta_version": "1.0",
+              "status": "待提交",
+              "meta": {
+                "create_at": "2017-12-12 00:00:00",
+                "updated_at": "2017-12-12 00:00:00",
+                "create_by": "suchang",
+                "term": "2017-2018-1",
+                "lesson": {
+                  "lesson_id": "a02b0216e1",
+                  "id": 2628008,
+                  "lesson_attribute": "实验课",
+                  "lesson_state": "未完成",
+                  "lesson_level": "自主听课",
+                  "lesson_name": "Auto－CAD实验",
+                  "lesson_teacher_id": "19761004",
+                  "lesson_teacher_name": "饶良懿",
+                  "lesson_teacher_unit": "水土保持学院",
+                  "lesson_unit": "水土保持学院",
+                  "lesson_year": "2016-2017",
+                  "lesson_semester": "1",
+                  "lesson_cases": {
+                    "lesson_room": "计算中心-5",
+                    "lesson_week": "3,7,9-14",
+                    "lesson_time": "0708"
+                  },
+                  "lesson_class": "水保14-1-3",
+                  "lesson_weekday": "5",
+                  "assign_group": "",
+                  "lesson_attention_reason": ""
                 }
               },
-              {
-                "item_name": "教师评价",
-                "type": "form_item",
-                "item_type": "raw_text",
-                "pyload": {}
-              }
-            ]
-          }
+              "values": [
+                {
+                  "item_name": "教师满意度",
+                  "type": "form_item",
+                  "item_type": "radio_option",
+                  "pyload": {
+                    "options": [
+                      {
+                        "label": "满意",
+                        "value": "满意",
+                        "score": 1
+                      },
+                      {
+                        "label": "一般",
+                        "value": "一般",
+                        "score": 0.75
+                      },
+                      {
+                        "label": "不满意",
+                        "value": "不满意",
+                        "score": 0.5
+                      }
+                    ],
+                    "weight": 0.3
+                  },
+                  "value": "教师满意度"
+                },
+                {
+                  "item_name": "教师评价",
+                  "type": "form_item",
+                  "item_type": "raw_text",
+                  "pyload": {},
+                  "value": "不咋满意"
+                }
+              ]
+            }
+
         }
       }
     },
