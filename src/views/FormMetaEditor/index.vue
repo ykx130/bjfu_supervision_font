@@ -21,14 +21,13 @@
     <!--form meta end-->
 
     <!--meta start-->
-    <div style="background:#eee;padding: 10px; width: 300px;">
+    <div style="background:#eee;padding: 8px; width: 300px;">
       <Card :bordered="false">
         <p slot="title">{{ form_meta.forms.meta.create_at }}</p>
         <p>{{ form_meta.forms.meta.create_by  }}</p>
       </Card>
     </div>
-    <br>
-    <br>
+
     <!--meta end-->
 
 
@@ -45,25 +44,36 @@
           <!--if sub_title_block_start begin-->
 
           <div v-if="item.item_type === 'sub_title_block_start' ">
-            <h3> {{ item.payload.title }} </h3>
+            <h3> {{  }} </h3>
           </div>
 
           <!--if sub_title_block_start end-->
 
           <!--if raw_text begin-->
 
-          <div v-if="item.item_type === 'raw_text' ">
-            <FormItem label="TextItem">
-              <Input v-model="item.item_name" placeholder="enter name..."></Input>
-              <br>
-              <br>
-              <Input v-model="item.extra" placeholder="enter extra..."></Input>
-            </FormItem>
+          <div v-if="item.item_type === 'raw_text' " style="border:#eee solid 5px; padding:10px; width: 600px;">
+            <h3>RawText</h3>
+            <Form :model="item" :label-width="120" inline>
+              <FormItem label="name">
+                <Input v-model="item.item_name" placeholder="enter name..."></Input>
+              </FormItem>
+              <FormItem label="value">
+                <Input v-model="item.value" placeholder="enter content..."></Input>
+              </FormItem>
+            </Form>
+
+
+
           </div>
           <!--if raw_text end-->
 
           <!--if radio_option start-->
-          <div v-if="item.item_type === 'radio_options' ">
+          <div v-if="item.item_type === 'radio_options' " style="border:#eee solid 5px; padding:10px; width: 600px;">
+            <h3>RadioOptions</h3>
+            <Form :model="item" :label-width="120" inline>
+              <FormItem></FormItem>
+              <FormItem></FormItem>
+            </Form>
             <FormItem label="OptionItem">
               <Input v-model="item.item_name" placeholder="enter name..."></Input>
               <br>
@@ -110,7 +120,7 @@
 
           <div v-if="item.item_type === 'raw_text' || item.item_type === 'radio_options' || item.item_type === 'checkbox_options' ">
             <Poptip placement="right" width="400">
-              <Button type="ghost" style="width: 300px">
+              <Button type="ghost" style="width: 220px;">
                 Prepend New Block
               </Button>
               <div class="api" slot="content">
@@ -119,7 +129,7 @@
             </Poptip>
 
             <Poptip placement="right" width="400">
-              <Button type="info" style="width: 300px" @click="editItemShow = true; nowIndex = index;">
+              <Button type="info" style="width: 220px" @click="editItemShow = true; nowIndex = index;">
                 Edit this Block
               </Button>
               <div class="api" slot="content">
@@ -127,10 +137,9 @@
               </div>
             </Poptip>
 
-            <Button type="error" style="width: 200px" v-on:click="deleteNewBlock(item)">
+            <Button type="error" style="width: 120px" v-on:click="deleteNewBlock(item)">
               Delete this Block
             </Button>
-
           </div>
           <br>
           <br>
@@ -259,12 +268,12 @@
       }
     },
     mounted: function () {
-      const args = this.$route.params;
-      if (args.id) {
-        getFormMeta(args.id).then((response) => {
-          this.form_meta = response.data.form_meta;
-        })
-      }
+      // const args = this.$route.params;
+      // if (args.id) {
+      //   getFormMeta(args.id).then((response) => {
+      //     this.form_meta = response.data.form_meta;
+      //   })
+      // }
     },
     methods: {
       ok() {
