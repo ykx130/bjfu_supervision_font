@@ -6,8 +6,32 @@
     @on-cancel="handleCancel"
     @on-visible-change="onShowChange">
     <Form :model="lesson">
-      <FormItem prop="name">
-        <Input type="text" v-model="lesson.name" placeholder="名字">
+      <span>课程名字:</span>
+      <FormItem prop="lesson_name">
+        <Input type="text" v-model="lesson.lesson_name" placeholder="名字">
+        <Icon type="ios-person-outline" slot="prepend"></Icon>
+        </Input>
+      </FormItem>
+      <span>课程属性:</span>
+      <FormItem prop="lesson_attribute">
+        <Input type="text" v-model="lesson.lesson_attribute" placeholder="课程属性">
+        <Icon type="ios-person-outline" slot="prepend"></Icon>
+        </Input>
+      </FormItem>
+      <span>课程状态:</span>
+      <FormItem prop="lesson_state">
+        <Input type="text" v-model="lesson.lesson_state" placeholder="课程状态">
+        <Icon type="ios-person-outline" slot="prepend"></Icon>
+        </Input>
+      </FormItem>
+      <span>课程级别:</span>
+      <FormItem prop="lesson_level">
+        <Select v-model="lesson.lesson_level" >
+          <Option v-for="item in lessonLevel" :value="item" :key="item">{{ item }}</Option>
+        </Select>
+      </FormItem>
+      <FormItem prop="lesson_state">
+        <Input type="text" v-model="lesson.lesson_attention_reason" placeholder="关注理由">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
@@ -18,8 +42,9 @@
 <script>
   import {getLesson} from '../../../service/api/lesson'
   import {updateWithinField} from '../../../utils/tools'
+  import {lessonLevel} from '../marcos'
   export default {
-    name: "UserProfileModal",
+    name: "LessonProfileModal",
     props: {
       show: Boolean,
       onCancel:Function,
@@ -30,22 +55,16 @@
       return {
         lesson: {
           id:"",
-          name:"",
+          lesson_name: "",
+          lesson_attribute: "",
           lesson_id: "",
-          group:"",
-          role_names: []
+          lesson_state: "",
+          lesson_teacher_name: "",
+          lesson_level: "",
+          lesson_attention_reason: ""
         },
-        roles: [],
-        groups:[]
+        lessonLevel: lessonLevel
       }
-    },
-    mounted: function () {
-      queryRoles().then((resp)=>{
-        this.roles = resp.data.roles
-      })
-      queryGroups().then((resp)=>{
-        this.groups = resp.data.groups
-      })
     },
     methods: {
       handleOK: function () {
