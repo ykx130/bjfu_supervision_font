@@ -17,7 +17,7 @@ import App from './App'
 
 Vue.use(inject)
 Vue.use(iView);
-
+GLOBAL.vbus = new Vue()
 // render
 new Vue({
     el: '#app',
