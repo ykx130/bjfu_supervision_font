@@ -1,55 +1,62 @@
 <style>
 </style>
 <template>
-  <div>
-  </div>
-
+    <Form :model="meta" :label-width="80">
+      <FormItem label="听课督导">
+        <Input v-model="meta.create_by" disabled></Input>
+      </FormItem>
+      <!--<FormItem label="课程属性">-->
+        <!--<Input v-model="meta.attr" disabled></Input>-->
+      <!--</FormItem>-->
+      <FormItem label="课程名字">
+        <Select v-model="meta.lesson.lesson_name" style="width:200px" @on-change="onSelectedLessonChange">
+          <Option v-for="(item,index) in lessons" :value="meta.lessons.name" :key="item.lesson_name + index">{{ item.lesson_name+'___' + lesson_teacher_name+ '___'+item.lesson_class+'___'}}</Option>
+        </Select>
+      </FormItem>
+      <FormItem label="任课教师	">
+        <Input v-model="meta.lesson.lesson_teacher_name" disabled></Input>
+      </FormItem>
+      <FormItem label="听课时间">
+        <DatePicker type="date" v-model="meta.create_at"></DatePicker>
+      </FormItem>
+      <FormItem label="上课班级">
+      <Select v-model="meta.lesson.selected_lesson" style="width:200px">
+        <Option v-for="item in selected_lesson.lesson_cases" :value="item" :key="item.lesson_room">{{ item.lesson_room }}</Option>
+      </Select>
+      </FormItem>
+    </Form>
 </template>
 <script>
-  import { getLessons } from '../../../service/api/lesson'
+  import { queryLessons } from '../../../service/api/lesson'
   export default {
     data () {
       return {
         lessons: [],
-        lesson: '',
-        lesson_attr: '',
-        teacher: '',
-        lesson_class: '',
-        place: '',
-        guider: '',
-        lesson_val: ''
+        meta: this.value
+      }
+    },
+    computed () {
+      lesson_name: function () {
+          return
       }
     },
     props: {
-      value: Object,
+      value: {
+        type: Object,
+        default: {lesson:{}}
+        },
       input: Function
     },
     mounted () {
-      getLessons().then((resp)=>{
-        this.lessons = resp.data.lesson
+      queryLessons().then((resp)=>{
+        this.lessons = resp.data.lessons
       })
     },
-    watch: {
-      lesson_val: function() {
-        this.lessons.forEach((item)=>{
-          if (item.content === self.lesson_val) {
-            this.lesson =item.lesson ;
-            this.lesson_attr =item.lesson_attr ;
-            this.teacher =item.teacher ;
-            this.lesson_class =item.class ;
-            this.place =item.place ;
-            this.guider =item.guider ;
-            this.$emit('input', {
-              'lesson_val': this.lesson_val,
-              'lesson': this.lesson,
-              'lesson_attr': this.lesson_attr,
-              'teacher': this.teacher,
-              'lesson_class': this.lesson_class,
-              'place': this.place,
-              'guider': this.guider
-            })
-          }
-        });
+    methods: {
+      onSelectedLessonChange: function (value) {
+        this.selected_lesson = value
+        this.meta.lesson.lesson_name = value.lesson_name
+        this.meta.lesson.lesson_teacher_name = value.lesson_teacher_name
       }
     }
   }
