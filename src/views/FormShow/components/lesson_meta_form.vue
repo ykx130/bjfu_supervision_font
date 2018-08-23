@@ -1,24 +1,24 @@
-<style>
-  ul {
-    text-align: center;
-  }
-  ul li {
-    list-style: none;
-    font-size: 16px;
-  }
-  ul li label {
-    width: 80px;
-    display: inline-block;
-  }
-  ul li select,
-  ul li input {
-    width: 150px;
-    height: 32px;
-  }
-  ul li {
-    margin-top: 20px;
-  }
-</style>
+<!--<style>-->
+  <!--ul {-->
+    <!--text-align: center;-->
+  <!--}-->
+  <!--ul li {-->
+    <!--list-style: none;-->
+    <!--font-size: 16px;-->
+  <!--}-->
+  <!--ul li label {-->
+    <!--width: 80px;-->
+    <!--display: inline-block;-->
+  <!--}-->
+  <!--ul li select,-->
+  <!--ul li input {-->
+    <!--width: 150px;-->
+    <!--height: 32px;-->
+  <!--}-->
+  <!--ul li {-->
+    <!--margin-top: 20px;-->
+  <!--}-->
+<!--</style>-->
 <template>
   <div id="lesson">
     <ul>
