@@ -6,6 +6,17 @@
       <FormItem label="课程名字：" prop="lesson">
         <Input style="width: 180px" v-model="query.lesson" ></Input>
       </FormItem>
+      <FormItem label="学期：" :prop="'lesson.term'">
+        <Select v-model="query['lesson.term']" style="width:200px">
+          <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
+        </Select>
+      </FormItem>
+      <FormItem label="教师：" prop="teacher">
+        <Input style="width: 180px" v-model="query.teacher" ></Input>
+      </FormItem>
+      <FormItem >
+        <Button type="primary" @click="onSearch(query)">查询</Button>
+        </FormItem>
     </Form>
 
     <LessonProfileModal
@@ -27,13 +38,17 @@
 <script>
   import LessonProfileModal from './components/LessonProfileModal'
   import {queryLessons, putLesson} from '../../service/api/lesson'
+  import {queryTerms, getCurrentTerms} from '../../service/api/term'
   export default {
     components:{LessonProfileModal},
     data: function() {
       return {
-        query: {}, // 查询用的参数
+        query: {
+          "lesson.term": ""
+        }, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
+        terms: [],
         selected_lesson_id:"", //选中编辑的课程ids
         showLessonProfileModal: false, // 展示编辑弹窗
         pages: {
@@ -46,6 +61,30 @@
             render: function (h, params) {
               return (
                 <span>{ params.row.lesson_name }</span>
+            )
+            }
+          },
+          {
+            title: '课程属性',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.lesson_attribute }</span>
+            )
+            }
+          },
+          {
+            title: '课程状态',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.lesson_state }</span>
+            )
+            }
+          },
+          {
+            title: '课程级别',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.lesson_level }</span>
             )
             }
           },
@@ -64,7 +103,7 @@
                   },
                   on: {
                     click: () => {
-                      this.selected_username = params.username
+                      this.selected_lesson_id = params.row.lesson_id;
                       this.showLessonProfileModal=true
                     }
                   }
@@ -102,8 +141,15 @@
     },
     mounted: function () {
       const args = this.$route.query;
-      queryLessons(args).then((resp)=>{
-        this.data = resp.lessons
+      queryTerms().then((resp)=>{
+        this.terms = resp.data.terms
+      });
+      getCurrentTerms().then((termResp)=>{
+        this.query['lesson.term'] = termResp.data.term.name;
+        queryLessons(args).then((resp)=>{
+          this.data = resp.data.lessons;
+          this.total = resp.data.total;
+        })
       })
     }
   }
