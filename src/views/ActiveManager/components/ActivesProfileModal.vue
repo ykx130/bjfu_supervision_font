@@ -1,4 +1,5 @@
 <template>
+  <div>
   <Modal
     v-model="show"
     title="Title"
@@ -11,6 +12,7 @@
       </FormItem>
     </Form>
   </Modal>
+  </div>
 </template>
 
 <script>
