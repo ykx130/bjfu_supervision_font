@@ -8,8 +8,8 @@
          <Input style="width: 180px" v-model="query.name" ></Input>
         </FormItem>
 
-        <FormItem label="学期：" :prop="'user_roles.term'">
-          <Select v-model="query['user_roles.term']" style="width:200px">
+        <FormItem label="学期：">
+          <Select v-model="query.user_roles.term" style="width:200px">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
@@ -55,7 +55,7 @@
     data: function() {
       return {
         query: {
-          "user_roles.term": ""
+          user_roles: {term: ""}
         }, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
@@ -213,7 +213,7 @@
         this.terms = resp.data.terms
       })
       getCurrentTerms().then((termResp)=>{
-        this.query['user_roles.term'] = termResp.data.term.name
+        this.query.user_roles.term = termResp.data.term.name
         queryUsers({...args, ...this.query}).then((resp)=>{
           this.data = resp.data.users
           this.total = resp.data.total
