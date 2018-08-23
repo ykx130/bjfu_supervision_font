@@ -30,7 +30,7 @@
 </template>
 
 <script>
-    import { getForms,putForm } from '../../service/api/dqs'
+    import { queryForms,putForm } from '../../service/api/dqs'
     import {getCurrentTerms, queryTerms} from '../../service/api/term'
     export default {
       data: function() {
@@ -162,7 +162,7 @@
         onTableChange(query, pages) {
           //数据表发生变化请求数据
           let args = {...query, ...pages};
-          getForms(args).then((resp)=>{
+          queryForms(args).then((resp)=>{
             this.data = resp.data.forms;
             this.total = resp.data.total;
             this.$router.push({path: '/dqs/form_manager', query: query})
@@ -185,7 +185,7 @@
           this.terms = resp.data.terms
         })
         getCurrentTerms().then((termResp)=>{
-          getForms({...args, ...this.query}).then((resp)=>{
+          queryForms({...args, ...this.query}).then((resp)=>{
             this.data = resp.data.forms
             this.total = resp.data.total
             this.$router.push({path: '/dqs/form_manager', query: {...args, ...this.query}})
