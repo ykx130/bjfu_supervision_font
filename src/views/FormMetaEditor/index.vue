@@ -7,7 +7,7 @@
     <!--form meta start-->
     <div>
       <h1>Form Editor</h1>
-      <Form :model="form_meta" :label-width="80" inline label-position="left">
+      <Form :model="form_meta" :label-width="100" inline label-position="left">
         <FormItem label="Form Name">
           <Input v-model="form_meta.forms.bind_meta_name" placeholder="enter name..." style="width: 180px"></Input>
         </FormItem>
@@ -39,149 +39,108 @@
 
         <Form v-for="(item, index) in form_meta.forms.values" :key="item.item_name" label-position="left" label-width="150">
 
-          <!--information begin-->
+          <div  style="border:#eee solid 5px; padding:10px; width: 600px;">
+            <!--information begin-->
 
-          <!--if sub_title_block_start begin-->
-          <div v-if="item.item_type === 'sub_title_block_start' ">
-            <h3> {{  }} </h3>
-          </div>
-          <!--if sub_title_block_start end-->
+            <!--if sub_title_block_start begin-->
+            <div v-if="item.item_type === 'sub_title_block_start' ">
+              <h3> {{  }} </h3>
+            </div>
+            <!--if sub_title_block_start end-->
 
-          <!--if raw_text begin-->
-          <div v-if="item.item_type === 'raw_text' " style="border:#eee solid 5px; padding:10px; width: 600px;">
-            <h3>RawText</h3>
-            <Form :model="item" :label-width="80" inline>
-              <FormItem label="name">
-                <Input v-model="item.item_name" placeholder="enter name..." style="width: 180px"></Input>
-              </FormItem>
-              <FormItem label="value">
-                <Input v-model="item.value" placeholder="enter content..." style="width: 180px"></Input>
-              </FormItem>
-            </Form>
-            <Poptip placement="right" width="400">
-              <Button type="ghost" style="width: 220px;">
-                Prepend New Block
+            <!--if raw_text begin-->
+            <div v-if="item.item_type === 'raw_text' " >
+              <h3>RawText</h3>
+              <Form :model="item" :label-width="80" inline>
+                <FormItem label="name">
+                  <Input v-model="item.item_name" placeholder="enter name..." style="width: 180px"></Input>
+                </FormItem>
+                <FormItem label="value">
+                  <Input v-model="item.value" placeholder="enter content..." style="width: 180px"></Input>
+                </FormItem>
+              </Form>
+            </div>
+            <!--if raw_text end-->
+
+            <!--if radio_option start-->
+            <div v-if="item.item_type === 'radio_option' ">
+              <h3>RadioOptions</h3>
+              <Form :model="item" :label-width="80" inline>
+                <FormItem label="name">
+                  <Input v-model="item.item_name" placeholder="enter name..." style="width: 180px"></Input>
+                </FormItem>
+                <FormItem label="OptionItem">
+                  <RadioGroup>
+                    <Radio v-for="option in item.pyload.options" :label="option.label" :key="option.value">
+                      <span v-model="option.value">{{ option.value }}</span>
+                    </Radio>
+                  </RadioGroup>
+                </FormItem>
+                <FormItem v-if="item.pyload.weight" label="weight">
+                  <Input v-model="item.pyload.weight" placeholder="enter weight..." style="width: 180px"></Input>
+                </FormItem>
+              </Form>
+            </div>
+            <!--if radio_option end-->
+
+            <!--if checkbox_option start-->
+            <div v-if="item.item_type === 'checkbox_option' ">
+              <h3>CheckboxOptions</h3>
+              <Form :model="item" :label-width="80" inline>
+                <FormItem label="name">
+                  <Input v-model="item.item_name" placeholder="enter name..." style="width: 180px"></Input>
+                </FormItem>
+                <FormItem label="CheckboxItem">
+                  <CheckboxGroup>
+                    <Checkbox v-for="option in item.pyload.options" :label="option.label" :key="option.value">
+                      <span v-model="option.value">{{ option.value }}</span>
+                    </Checkbox>
+                  </CheckboxGroup>
+                </FormItem>
+                <FormItem v-if="item.pyload.weight" label="weight">
+                  <Input v-model="item.pyload.weight" placeholder="enter weight..." style="width: 180px"></Input>
+                </FormItem>
+              </Form>
+            </div>
+            <!--if checkbox_option end-->
+
+            <!--sub_title_block_end begin-->
+            <div v-if="item.item_type === 'sub_title_block_end' ">
+              <h3> end </h3>
+            </div>
+            <!--sub_title_block_end end-->
+
+            <!--information end-->
+
+            <!--button begin-->
+
+            <div v-if="item.item_type === 'raw_text' || item.item_type === 'radio_option' || item.item_type === 'checkbox_option' ">
+              <Poptip placement="right" width="400">
+                <Button type="ghost" style="width: 220px;">
+                  Prepend New Block
+                </Button>
+                <div class="api" slot="content">
+                  <AddItem @onOk="prependNewBlock(nowIndex, $event)"></AddItem>
+                </div>
+              </Poptip>
+
+              <Poptip placement="right" width="400">
+                <Button type="info" style="width: 220px" @click="editItemShow = true; nowIndex = index;">
+                  Edit this Block
+                </Button>
+                <div class="api" slot="content">
+                  <AddItem @onOk="editBlock(nowIndex, $event)"></AddItem>
+                </div>
+              </Poptip>
+
+              <Button type="error" style="width: 120px" v-on:click="deleteNewBlock(item)">
+                Delete this Block
               </Button>
-              <div class="api" slot="content">
-                <AddItem @onOk="prependNewBlock(nowIndex, $event)"></AddItem>
-              </div>
-            </Poptip>
-
-            <Poptip placement="right" width="400">
-              <Button type="info" style="width: 220px" @click="editItemShow = true; nowIndex = index;">
-                Edit this Block
-              </Button>
-              <div class="api" slot="content">
-                <AddItem @onOk="editBlock(nowIndex, $event)"></AddItem>
-              </div>
-            </Poptip>
-
-            <Button type="error" style="width: 120px" v-on:click="deleteNewBlock(item)">
-              Delete this Block
-            </Button>
+            </div>
+            <br>
+            <br>
+            <!--button end-->
           </div>
-          <!--if raw_text end-->
-
-          <!--if radio_option start-->
-          <div v-if="item.item_type === 'radio_option' " style="border:#eee solid 5px; padding:10px; width: 600px;">
-            <h3>RadioOptions</h3>
-            <Form :model="item" :label-width="80" inline>
-              <FormItem label="name">
-                <Input v-model="item.item_name" placeholder="enter name..." style="width: 180px"></Input>
-              </FormItem>
-              <FormItem label="OptionItem">
-                <RadioGroup>
-                  <Radio v-for="option in item.pyload.options" :label="option.label" :key="option.value">
-                    <span v-model="option.value">{{ option.value }}</span>
-                  </Radio>
-                </RadioGroup>
-              </FormItem>
-              <FormItem v-if="item.pyload.weight" label="weight">
-                <Input v-model="item.pyload.weight" placeholder="enter weight..." style="width: 180px"></Input>
-              </FormItem>
-            </Form>
-            <Poptip placement="right" width="400">
-              <Button type="ghost" style="width: 220px;">
-                Prepend New Block
-              </Button>
-              <div class="api" slot="content">
-                <AddItem @onOk="prependNewBlock(nowIndex, $event)"></AddItem>
-              </div>
-            </Poptip>
-
-            <Poptip placement="right" width="400">
-              <Button type="info" style="width: 220px" @click="editItemShow = true; nowIndex = index;">
-                Edit this Block
-              </Button>
-              <div class="api" slot="content">
-                <AddItem @onOk="editBlock(nowIndex, $event)"></AddItem>
-              </div>
-            </Poptip>
-
-            <Button type="error" style="width: 120px" v-on:click="deleteNewBlock(item)">
-              Delete this Block
-            </Button>
-          </div>
-          <!--if radio_option end-->
-
-          <!--if checkbox_option start-->
-          <div v-if="item.item_type === 'checkbox_option' " style="border:#eee solid 5px; padding:10px; width: 600px;">
-            <h3>CheckboxOptions</h3>
-            <Form :model="item" :label-width="80" inline>
-              <FormItem label="name">
-                <Input v-model="item.item_name" placeholder="enter name..." style="width: 180px"></Input>
-              </FormItem>
-              <FormItem label="CheckboxItem">
-                <CheckboxGroup>
-                  <Checkbox v-for="option in item.pyload.options" :label="option.label" :key="option.value">
-                    <span v-model="option.value">{{ option.value }}</span>
-                  </Checkbox>
-                </CheckboxGroup>
-              </FormItem>
-              <FormItem v-if="item.pyload.weight" label="weight">
-                <Input v-model="item.pyload.weight" placeholder="enter weight..." style="width: 180px"></Input>
-              </FormItem>
-            </Form>
-            <Poptip placement="right" width="400">
-              <Button type="ghost" style="width: 220px;">
-                Prepend New Block
-              </Button>
-              <div class="api" slot="content">
-                <AddItem @onOk="prependNewBlock(nowIndex, $event)"></AddItem>
-              </div>
-            </Poptip>
-
-            <Poptip placement="right" width="400">
-              <Button type="info" style="width: 220px" @click="editItemShow = true; nowIndex = index;">
-                Edit this Block
-              </Button>
-              <div class="api" slot="content">
-                <AddItem @onOk="editBlock(nowIndex, $event)"></AddItem>
-              </div>
-            </Poptip>
-
-            <Button type="error" style="width: 120px" v-on:click="deleteNewBlock(item)">
-              Delete this Block
-            </Button>
-          </div>
-          <!--if checkbox_option end-->
-
-          <!--sub_title_block_end begin-->
-          <div v-if="item.item_type === 'sub_title_block_end' ">
-            <h3> end </h3>
-          </div>
-          <!--sub_title_block_end end-->
-
-          <!--information end-->
-
-          <!--button begin-->
-
-          <div v-if="item.item_type === 'raw_text' || item.item_type === 'radio_options' || item.item_type === 'checkbox_options' ">
-
-          </div>
-          <br>
-          <br>
-          <!--button end-->
 
         </Form>
 
@@ -293,7 +252,7 @@
                   "value": "教师满意度"
                 },
                 {
-                  "item_name": "教师满意度",
+                  "item_name": "教师满意度2",
                   "type": "form_item",
                   "item_type": "radio_option",
                   "pyload": {
@@ -360,7 +319,8 @@
         this.$Message.info('Items edited!');
       },
       deleteNewBlock: function (item) {
-        let index = this.form_meta.items.indexOf(item);
+        let index = this.form_meta.forms.values.indexOf(item);
+        console.log(index);
         this.form_meta.items.splice(index, 1);
         this.$Message.info('Items deleted!');
       },
