@@ -38,15 +38,6 @@
 <script type="text/ecmascript-6">
   import countTo from 'vue-count-to'
 
-  let echarts = require('echarts/lib/echarts');
-  require('echarts/lib/chart/bar');
-  require('echarts/lib/chart/pie');
-  require('echarts/lib/chart/line');
-  require('echarts/lib/component/tooltip');
-  require('echarts/lib/component/title');
-  require('echarts/lib/component/legend');
-
-
   export default {
     name: "Dashboard",
     components: {
@@ -217,15 +208,15 @@
     },
     methods: {
       createChartOne() {
-        let chartOne = echarts.init(this.$refs.chartOne);
+        let chartOne = this.$echarts.init(this.$refs.chartOne);
         chartOne.setOption(this.bar)
       },
       createChartTwo() {
-        let chartTwo = echarts.init(this.$refs.chartTwo);
+        let chartTwo = this.$echarts.init(this.$refs.chartTwo);
         chartTwo.setOption(this.line)
       },
       createChartThree() {
-        let chartThree = echarts.init(this.$refs.chartThree);
+        let chartThree = this.$echarts.init(this.$refs.chartThree);
         chartThree.setOption(this.ring)
       }
     }
