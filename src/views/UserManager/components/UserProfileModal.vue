@@ -7,25 +7,38 @@
     @on-visible-change="onShowChange">
     <Form :model="user" >
       <Row :gutter="16">
-        <Col span="9">
+        <Col span="12">
         <FormItem prop="username">
           <Input type="text" v-model="user.username" placeholder="用户名">
           <Icon type="ios-person-outline" slot="prepend"></Icon>
           </Input>
         </FormItem>
         </Col>
-        <Col span="9">
+        <Col span="12">
         <FormItem prop="name">
           <Input type="text" v-model="user.name" placeholder="名字">
           <Icon type="ios-person-outline" slot="prepend"></Icon>
           </Input>
         </FormItem>
         </Col>
-        <Col span="6" >
+      </Row>
+
+      <Row >
+        <Col span="10" >
         <FormItem label="性别:" :label-width="40" prop="sex">
           <Select  v-model="user.sex">
             <Option v-for="item in sexList " :value="item" :key="item ">{{ item }}</Option>
           </Select>
+        </FormItem>
+        </Col>
+        <Col span="13" offset="1">
+        <!--<span >身份:</span>-->
+        <FormItem label="身份:" prop="role_names">
+          <CheckboxGroup v-model="user.role_names">
+            <Checkbox v-for="role in roles" :label="role.name" :key="'key_'+role.name">
+              <span>{{ role.name }}</span>
+            </Checkbox>
+          </CheckboxGroup>
         </FormItem>
         </Col>
       </Row>
@@ -84,24 +97,14 @@
       </Row>
 
       <Row :gutter="16">
-        <Col span="9">
-        <!--<span >身份:</span>-->
-        <FormItem label="身份:" prop="role_names">
-          <CheckboxGroup v-model="user.role_names">
-            <Checkbox v-for="role in roles" :label="role.name" :key="'key_'+role.name">
-              <span>{{ role.name }}</span>
-            </Checkbox>
-          </CheckboxGroup>
-        </FormItem>
-        </Col>
-        <Col span="8">
+        <Col span="12">
         <FormItem label="小组:" :label-width="40" prop="group">
           <Select v-model="user.group" >
             <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
         </Col>
-        <Col span="7">
+        <Col span="12">
         <FormItem label="状态:" :label-width="40" prop="status">
           <Select v-model="user.status" >
             <Option v-for="item in statusList " :value="item" :key="item ">{{ item }}</Option>
@@ -129,6 +132,7 @@
     </Form>
   </Modal>
 </template>
+
 
 <script>
   import {getUserByName, queryRoles,queryGroups} from '../../../service/api/user'
