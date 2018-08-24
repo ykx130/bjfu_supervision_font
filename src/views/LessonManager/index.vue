@@ -26,12 +26,12 @@
       :lesson_id="this.selected_lesson_id"
     ></LessonProfileModal>
 
-    <Table border stripe :columns="columns" :data="data"></Table>
-    <div style="margin: 10px;overflow: hidden">
+    <Table  @on-selection-change="selectLessons" border stripe :columns="columns" :data="data"></Table>
       <div style="float: right;">
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </div>
-    </div>
+    <FloatBar><Button type="primary" @click="onBatchWatchClick">批量关注课程</Button>
+    </FloatBar>
   </div>
 </template>
 
@@ -39,14 +39,16 @@
   import LessonProfileModal from './components/LessonProfileModal'
   import {queryLessons, putLesson} from '../../service/api/lesson'
   import {queryTerms, getCurrentTerms} from '../../service/api/term'
+  import  FloatBar from '../../components/float_bar/float_bar'
   export default {
-    components:{LessonProfileModal},
+    components:{LessonProfileModal, FloatBar},
     data: function() {
       return {
         query: {}, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
         terms: [],
+        selected_lesson_ids: [],
         selected_lesson_id:"", //选中编辑的课程ids
         showLessonProfileModal: false, // 展示编辑弹窗
         pages: {
@@ -54,6 +56,11 @@
           _per_page: 10
         }, //分页
         columns: [
+          {
+            type: 'selection',
+            width: 60,
+            align: 'center'
+          },
           {
             title: '课程名字',
             render: function (h, params) {
@@ -117,6 +124,7 @@
         //数据表发生变化请求数据
         let args = {...query, ...pages};
         queryLessons(args).then((resp)=>{
+          this.selected_lesson_ids = []
           this.data = resp.data.lessons;
           this.total = resp.data.total;
           this.$router.push({path: '/lesson/manager', query: {...args, ...this.query}});
@@ -140,6 +148,16 @@
       },
       onProfileModalCancel() {
         this.showLessonProfileModal = false
+      },
+      selectLessons: function (selection) {
+        // 批量选择触发
+        this.selected_lesson_ids = selection.map((item)=>{
+          return item.id
+        })
+      },
+      onBatchWatchClick: function () {
+        // 批量关注触发
+        console.log("selected lessons id : ", this.selected_lesson_ids)
       }
     },
     mounted: function () {
@@ -154,7 +172,8 @@
           this.total = resp.data.total;
           this.$router.push({path: '/lesson/manager', query: {...args, ...this.query}});
         })
-      })
+      });
+
     }
   }
 </script>
