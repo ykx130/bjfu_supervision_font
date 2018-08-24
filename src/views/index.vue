@@ -106,19 +106,19 @@
       },
       bindEvents() {
         GLOBAL.vbus.$on('global.message.info', (msg) => {
-          if(msg) return
+          if(!msg) return
           this.$Message.info(msg);
         })
         GLOBAL.vbus.$on('global.message.success', (msg) => {
-          if(msg) return
+          if(!msg) return
           this.$Message.success(msg);
         })
         GLOBAL.vbus.$on('global.message.error', (msg) => {
-          if(msg) return
+          if(!msg) return
           this.$Message.error(msg);
         })
         GLOBAL.vbus.$on('global.message.warning', (msg) => {
-          if(msg) return
+          if(!msg) return
           this.$Message.warning(msg);
         })
       }
