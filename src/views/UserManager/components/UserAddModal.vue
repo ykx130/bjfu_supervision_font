@@ -10,16 +10,62 @@
       <Icon type="ios-person-outline" slot="prepend"></Icon>
       </Input>
     </FormItem>
-      <FormItem prop="name">
-        <Input type="text" v-model="user.name" placeholder="名字">
-        <Icon type="ios-person-outline" slot="prepend"></Icon>
-        </Input>
-      </FormItem>
-    <FormItem prop="group">
-      <Select v-model="user.group" >
-        <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+    <FormItem prop="name">
+      <Input type="text" v-model="user.name" placeholder="名字">
+      <Icon type="ios-person-outline" slot="prepend"></Icon>
+      </Input>
+    </FormItem>
+
+    <FormItem label="性别:" prop="sex">
+      <Select v-model="user.sex"  style="width:448px">
+        <Option v-for="item in sexList " :value="item" :key="item ">{{ item }}</Option>
       </Select>
     </FormItem>
+
+    <FormItem label="学院:" prop="unit">
+      <Select v-model="user.unit"  style="width:448px">
+        <Option v-for="item in unitList " :value="item" :key="item ">{{ item }}</Option>
+      </Select>
+    </FormItem>
+
+    <FormItem prop="技能">
+      <Input type="text" v-model="user.skill" placeholder="专业">
+      <Icon type="ios-person-outline" slot="prepend"></Icon>
+      </Input>
+    </FormItem>
+
+    <FormItem label="职称:" prop="prorank">
+      <Select v-model="user.prorank"  style="width:448px">
+        <Option v-for="item in prorankList " :value="item" :key="item ">{{ item }}</Option>
+      </Select>
+    </FormItem>
+
+    <FormItem label="在职状态:" prop="state">
+      <Select v-model="user.state"  style="width:423px">
+        <Option v-for="item in stateList " :value="item" :key="item ">{{ item }}</Option>
+      </Select>
+    </FormItem>
+
+    <FormItem label="工作状态:" prop="work_state">
+      <Select v-model="user.work_state"  style="width:423px">
+        <Option v-for="item in workStateList " :value="item" :key="item ">{{ item }}</Option>
+      </Select>
+    </FormItem>
+
+    <FormItem label="任期开始:" prop="start_time">
+    <DatePicker type="date" format="yyyy-MM-dd" v-model="user.start_time" placeholder="请选择" style="width: 423px"></DatePicker>
+    </FormItem>
+
+    <FormItem label="任期结束:" prop="end_time">
+      <DatePicker type="date" format="yyyy-MM-dd" v-model="user.end_time" placeholder="请选择" style="width: 423px"></DatePicker>
+    </FormItem>
+
+    <FormItem label="状态:" prop="status">
+      <Select v-model="user.status"  style="width:448px">
+        <Option v-for="item in statusList " :value="item" :key="item ">{{ item }}</Option>
+      </Select>
+    </FormItem>
+
     <span>身份:</span>
     <FormItem prop="role_names">
       <CheckboxGroup v-model="user.role_names">
@@ -28,12 +74,32 @@
         </Checkbox>
       </CheckboxGroup>
     </FormItem>
+
+    <FormItem label="小组:" prop="group">
+      <Select v-model="user.group" style="width:448px">
+        <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+      </Select>
+    </FormItem>
+
+    <FormItem prop="email">
+      <Input type="text" v-model="user.email" placeholder="电子邮箱">
+      <Icon type="ios-person-outline" slot="prepend"></Icon>
+      </Input>
+    </FormItem>
+
+    <FormItem prop="phone">
+      <Input type="text" v-model="user.phone" placeholder="电话">
+      <Icon type="ios-person-outline" slot="prepend"></Icon>
+      </Input>
+    </FormItem>
     </Form>
   </Modal>
 </template>
 
 <script>
     import { queryRoles, queryGroups} from '../../../service/api/user'
+    import {dateToString} from '../../../utils/tools'
+    import { sexList,  unitlist, prorankList, stateList, workStatelist, statusList } from '../marcos'
     export default {
         name: "UserAddModal",
         props: {
@@ -43,9 +109,22 @@
         },
         data: function () {
           return {
-            user: {},
+            user: {
+              name: "",
+              email: "",
+              phone: "",
+              skill: "",
+              start_time: "",
+              end_time: ""
+            },
             roles: [],
-            groups: []
+            groups: [],
+            sexList: sexList,
+            unitList: unitlist,
+            prorankList: prorankList,
+            stateList: stateList,
+            workStateList: workStatelist,
+            statusList: statusList
           }
         },
         mounted: function () {
@@ -58,7 +137,9 @@
         },
         methods: {
           handleOK: function () {
-            this.$emit('onOK', this.user)
+            this.$emit('onOK', {...this.user,
+              start_time: dateToString(this.user.start_time, 'yyyy-MM-dd hh:mm:ss'),
+              end_time: dateToString(this.user.end_time, 'yyyy-MM-dd hh:mm:ss') })
           },
           handleCancel: function () {
             this.$emit('onCancel')

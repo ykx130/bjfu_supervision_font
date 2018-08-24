@@ -68,7 +68,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path:`/dqs/form_show/${params.row._id}`})
+                      this.$router.push({path:`/dqs/form_fill/${params.row._id}`})
                     }
                   }
                 }, '查看'),

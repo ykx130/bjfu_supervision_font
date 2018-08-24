@@ -3,16 +3,16 @@
     <h1>课程管理</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
-      <FormItem label="课程名字：" prop="lesson">
-        <Input style="width: 180px" v-model="query.lesson" ></Input>
+      <FormItem label="课程名字：" prop="lesson_name">
+        <Input style="width: 180px" v-model="query.lesson_name" ></Input>
       </FormItem>
-      <FormItem label="学期：" :prop="'lesson.term'">
-        <Select v-model="query['lesson.term']" style="width:200px">
+      <FormItem label="学期：" prop="term">
+        <Select v-model="query.term" style="width:200px">
           <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
-      <FormItem label="教师：" prop="teacher">
-        <Input style="width: 180px" v-model="query.teacher" ></Input>
+      <FormItem label="教师：" prop="lesson_teacher_name">
+        <Input style="width: 180px" v-model="query.lesson_teacher_name" ></Input>
       </FormItem>
       <FormItem >
         <Button type="primary" @click="onSearch(query)">查询</Button>
@@ -43,9 +43,7 @@
     components:{LessonProfileModal},
     data: function() {
       return {
-        query: {
-          "lesson.term": ""
-        }, // 查询用的参数
+        query: {}, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
         terms: [],
@@ -103,7 +101,7 @@
                   },
                   on: {
                     click: () => {
-                      this.selected_lesson_id = params.row.lesson_id;
+                      this.selected_lesson_id = params.row.id;
                       this.showLessonProfileModal=true
                     }
                   }
@@ -118,6 +116,11 @@
       onTableChange(query, pages) {
         //数据表发生变化请求数据
         let args = {...query, ...pages};
+        queryLessons(args).then((resp)=>{
+          this.data = resp.data.lessons;
+          this.total = resp.data.total;
+          this.$router.push({path: '/lesson/manager', query: {...args, ...this.query}});
+        })
       },
       onPageChange(page) {
         //分页变化
@@ -145,10 +148,11 @@
         this.terms = resp.data.terms
       });
       getCurrentTerms().then((termResp)=>{
-        this.query['lesson.term'] = termResp.data.term.name;
+        this.query.term = termResp.data.term.name;
         queryLessons(args).then((resp)=>{
           this.data = resp.data.lessons;
           this.total = resp.data.total;
+          this.$router.push({path: '/lesson/manager', query: {...args, ...this.query}});
         })
       })
     }
