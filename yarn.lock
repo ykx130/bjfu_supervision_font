@@ -1980,6 +1980,12 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
+echarts@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/echarts/-/echarts-4.1.0.tgz#d588c95f73c1a9928b9c73d5b769751c3185bcdc"
+  dependencies:
+    zrender "4.0.4"
+
 editorconfig@^0.13.2:
   version "0.13.3"
   resolved "http://registry.npm.taobao.org/editorconfig/download/editorconfig-0.13.3.tgz#e5219e587951d60958fd94ea9a9a008cdeff1b34"
@@ -5124,6 +5130,10 @@ requires-port@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/requires-port/download/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
 
+resize-detector@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/resize-detector/-/resize-detector-0.1.7.tgz#48375f9d462afbcd9077d59580985020a84443f8"
+
 resolve-url@^0.2.1:
   version "0.2.1"
   resolved "http://registry.npm.taobao.org/resolve-url/download/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
@@ -5220,10 +5230,6 @@ sass-loader@^6.0.6:
 sax@^1.2.4, sax@~1.2.1:
   version "1.2.4"
   resolved "http://registry.npm.taobao.org/sax/download/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
-
-schart.js@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/schart.js/-/schart.js-2.0.1.tgz#ec9a589e93ddabf9708c0f8ed237dc86248ab5da"
 
 schema-utils@^0.3.0:
   version "0.3.0"
@@ -6008,6 +6014,14 @@ vue-count-to@latest:
   version "1.0.13"
   resolved "https://registry.yarnpkg.com/vue-count-to/-/vue-count-to-1.0.13.tgz#3e7573ea6e64c2b2972f64e0a2ab2e23c7590ff3"
 
+vue-echarts@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/vue-echarts/-/vue-echarts-3.1.0.tgz#f347a904123bcd99cbd877908f133c1f3d981bbc"
+  dependencies:
+    echarts "^4.1.0"
+    lodash "^4.17.10"
+    resize-detector "^0.1.7"
+
 vue-functional-data-merge@^2.0.5:
   version "2.0.6"
   resolved "http://registry.npm.taobao.org/vue-functional-data-merge/download/vue-functional-data-merge-2.0.6.tgz#f08055adfb92458debcf2ad10c3aa712277f7fc2"
@@ -6043,12 +6057,6 @@ vue-onsenui@^2.4.2:
 vue-router@^3.0.1:
   version "3.0.1"
   resolved "http://registry.npm.taobao.org/vue-router/download/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
-
-vue-schart@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/vue-schart/-/vue-schart-1.0.0.tgz#b0c8b0206bfa487f16006f14e2c9ef22fc72ed8a"
-  dependencies:
-    schart.js "^2.0.0"
 
 vue-style-loader@^3.0.0, vue-style-loader@^3.0.1:
   version "3.1.2"
@@ -6333,3 +6341,7 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
+
+zrender@4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/zrender/-/zrender-4.0.4.tgz#910e60d888f00c9599073f23758dd23345fe48fd"
