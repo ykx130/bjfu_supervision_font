@@ -11,19 +11,19 @@
       <Row :gutter="10" style="margin-top: 20px;">
         <Col span="12">
           <Card shadow>
-            <div class="chart" ref="chartOne" :style="{width: '500px', height: '300px'}"></div>
+            <chart :options="bar" :style="{width: '500px', height: '300px'}"></chart>
           </Card>
         </Col>
         <Col span="12">
           <Card shadow>
-            <div class="chart" ref="chartTwo" :style="{width: '500px', height: '300px'}"></div>
+            <chart :options="line" :style="{width: '500px', height: '300px'}"></chart>
           </Card>
         </Col>
       </Row>
       <Row :gutter="10" style="margin-top: 20px;">
         <Col span="12">
           <Card shadow>
-            <div class="chart" ref="chartThree" :style="{width: '500px', height: '300px'}"></div>
+            <chart :options="ring" :style="{width: '500px', height: '300px'}"></chart>
           </Card>
         </Col>
         <Col span="12">
@@ -199,25 +199,6 @@
             }
           }]
         }
-      }
-    },
-    mounted() {
-      this.createChartOne();
-      this.createChartTwo();
-      this.createChartThree()
-    },
-    methods: {
-      createChartOne() {
-        let chartOne = this.$echarts.init(this.$refs.chartOne);
-        chartOne.setOption(this.bar)
-      },
-      createChartTwo() {
-        let chartTwo = this.$echarts.init(this.$refs.chartTwo);
-        chartTwo.setOption(this.line)
-      },
-      createChartThree() {
-        let chartThree = this.$echarts.init(this.$refs.chartThree);
-        chartThree.setOption(this.ring)
       }
     }
   }
