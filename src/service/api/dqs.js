@@ -20,9 +20,11 @@ export const postForm= params =>{
   return axios.post('/api/forms',  params)
 }
 
+export const getForm = params =>{
+  return axios.get('/api/forms/'+ params)
+};
 
-
-export const getForms =(params)=> {
+export const queryForms =(params)=> {
   return axios.get('/api/forms', {params: params})
 };
 

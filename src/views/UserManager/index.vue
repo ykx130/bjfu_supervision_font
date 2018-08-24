@@ -69,12 +69,52 @@
         }, //分页
         columns: [
           {
+            title: '序号',
+            key: 'id'
+          },
+          {
             title: '用户名',
             key: 'username'
           },
           {
             title: '名字',
             key: 'name'
+          },
+          {
+            title: '性别',
+            key: 'sex'
+          },
+          {
+            title: '学院',
+            key: 'unit'
+          },
+          {
+            title: '专业',
+            key: 'skill'
+          },
+          {
+            title: '职称',
+            key: 'prorank'
+          },
+          {
+            title: '在职状态',
+            key: 'state'
+          },
+          {
+            title: '工作状态',
+            key: 'work_state'
+          },
+          {
+            title: '任期开始',
+            key: 'start_time'
+          },
+          {
+            title: '任期结束',
+            key: 'end_time'
+          },
+          {
+            title: '状态',
+            key: 'status'
           },
           {
             title: '身份',
@@ -90,6 +130,14 @@
             render: function (h, params) {
               return h('span',params.row.group)
             }
+          },
+          {
+            title: '电子邮箱',
+            key: 'email'
+          },
+          {
+            title: '电话',
+            key: 'phone'
           },
           {
             title: '操作',
