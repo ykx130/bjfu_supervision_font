@@ -21,7 +21,7 @@ export default[{
       component: resolve => require(['Views/UserSuperManager/index'], resolve),
     },
     {
-      path: "events", // xzl
+      path: "events/:username", // xzl
       component: resolve => require(['Views/UserEvents/index'], resolve),
     },
   ]
