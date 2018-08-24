@@ -2,6 +2,10 @@
   <div>
     <h1>课程管理</h1>
     <br>
+    <Tabs @on-click="onTypeTabClick">
+      <TabPane label="全部" name="全部"></TabPane>
+      <TabPane label="关注课程" name="关注课程"></TabPane>
+    </Tabs>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="课程名字：" prop="lesson_name">
         <Input style="width: 180px" v-model="query.lesson_name" ></Input>
@@ -44,6 +48,7 @@
     components:{LessonProfileModal, FloatBar},
     data: function() {
       return {
+
         query: {}, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
@@ -158,6 +163,16 @@
       onBatchWatchClick: function () {
         // 批量关注触发
         console.log("selected lessons id : ", this.selected_lesson_ids)
+      },
+      onTypeTabClick: function (name) {
+        // 切换标签触发
+        if (name === "全部") {
+          this.query.lesson_level = undefined
+        } else if (name === "关注课程") {
+          this.query.lesson_level = "关注课程"
+        }
+        this.pages._page = 1;
+        this.onTableChange(this.query, this.pages)
       }
     },
     mounted: function () {
@@ -167,7 +182,7 @@
       });
       getCurrentTerms().then((termResp)=>{
         this.query.term = termResp.data.term.name;
-        queryLessons(args).then((resp)=>{
+        queryLessons( {...args, ...this.pages}).then((resp)=>{
           this.data = resp.data.lessons;
           this.total = resp.data.total;
           this.$router.push({path: '/lesson/manager', query: {...args, ...this.query}});
