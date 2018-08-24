@@ -5,6 +5,7 @@
     <Tabs @on-click="onTypeTabClick">
       <TabPane label="全部" name="全部"></TabPane>
       <TabPane label="关注课程" name="关注课程"></TabPane>
+      <TabPane label="自主听课" name="自主听课"></TabPane>
     </Tabs>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="课程名字：" prop="lesson_name">
@@ -30,6 +31,12 @@
       :lesson_id="this.selected_lesson_id"
     ></LessonProfileModal>
 
+    <BatchLessonWatchModal
+      :show="showBatchLessonWatchModal"
+      @onOK="onBatchWatchModalOK"
+      @onCancel="onBatchWatchModalCancel"
+    ></BatchLessonWatchModal>
+
     <Table  @on-selection-change="selectLessons" border stripe :columns="columns" :data="data"></Table>
       <div style="float: right;">
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
@@ -41,11 +48,12 @@
 
 <script>
   import LessonProfileModal from './components/LessonProfileModal'
+  import BatchLessonWatchModal from './components/BatchLessonWatchModal'
   import {queryLessons, putLesson} from '../../service/api/lesson'
   import {queryTerms, getCurrentTerms} from '../../service/api/term'
   import  FloatBar from '../../components/float_bar/float_bar'
   export default {
-    components:{LessonProfileModal, FloatBar},
+    components:{LessonProfileModal, FloatBar ,BatchLessonWatchModal},
     data: function() {
       return {
 
@@ -56,6 +64,7 @@
         selected_lesson_ids: [],
         selected_lesson_id:"", //选中编辑的课程ids
         showLessonProfileModal: false, // 展示编辑弹窗
+        showBatchLessonWatchModal: false,
         pages: {
           _page: 1,
           _per_page: 10
@@ -154,6 +163,12 @@
       onProfileModalCancel() {
         this.showLessonProfileModal = false
       },
+      onBatchWatchModalOK(lesson) {
+        this.showBatchLessonWatchModal = false
+      },
+      onBatchWatchModalCancel() {
+        this.showBatchLessonWatchModal = false
+      },
       selectLessons: function (selection) {
         // 批量选择触发
         this.selected_lesson_ids = selection.map((item)=>{
@@ -162,18 +177,20 @@
       },
       onBatchWatchClick: function () {
         // 批量关注触发
+        this.showBatchLessonWatchModal  = true
         console.log("selected lessons id : ", this.selected_lesson_ids)
       },
+
       onTypeTabClick: function (name) {
         // 切换标签触发
         if (name === "全部") {
           this.query.lesson_level = undefined
-        } else if (name === "关注课程") {
-          this.query.lesson_level = "关注课程"
+        } else  {
+          this.query.lesson_level = name
         }
         this.pages._page = 1;
         this.onTableChange(this.query, this.pages)
-      }
+      },
     },
     mounted: function () {
       const args = this.$route.query;
