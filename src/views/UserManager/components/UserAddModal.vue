@@ -28,7 +28,7 @@
       </Select>
     </FormItem>
 
-    <FormItem prop="skill">
+    <FormItem prop="技能">
       <Input type="text" v-model="user.skill" placeholder="专业">
       <Icon type="ios-person-outline" slot="prepend"></Icon>
       </Input>
@@ -53,11 +53,11 @@
     </FormItem>
 
     <FormItem label="任期开始:" prop="start_time">
-    <DatePicker type="datetime" v-model="user.start_time" placeholder="请选择" style="width: 423px"></DatePicker>
+    <DatePicker type="date" format="yyyy-MM-dd" v-model="user.start_time" placeholder="请选择" style="width: 423px"></DatePicker>
     </FormItem>
 
     <FormItem label="任期结束:" prop="end_time">
-      <DatePicker type="datetime" v-model="user.end_time" placeholder="请选择" style="width: 423px"></DatePicker>
+      <DatePicker type="date" format="yyyy-MM-dd" v-model="user.end_time" placeholder="请选择" style="width: 423px"></DatePicker>
     </FormItem>
 
     <FormItem label="状态:" prop="status">
@@ -98,6 +98,7 @@
 
 <script>
     import { queryRoles, queryGroups} from '../../../service/api/user'
+    import {dateToString} from '../../../utils/tools'
     import { sexList,  unitlist, prorankList, stateList, workStatelist, statusList } from '../marcos'
     export default {
         name: "UserAddModal",
@@ -136,7 +137,9 @@
         },
         methods: {
           handleOK: function () {
-            this.$emit('onOK', this.user)
+            this.$emit('onOK', {...this.user,
+              start_time: dateToString(this.user.start_time, 'yyyy-MM-dd hh:mm:ss'),
+              end_time: dateToString(this.user.end_time, 'yyyy-MM-dd hh:mm:ss') })
           },
           handleCancel: function () {
             this.$emit('onCancel')
