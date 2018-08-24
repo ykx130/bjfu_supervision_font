@@ -2,41 +2,59 @@
 </style>
 <template>
   <Form :model="meta" :label-width="80">
-    <FormItem label="听课督导">
-      <Input v-model="meta.create_by" disabled></Input>
+    <Row :gutter="16">
+      <Col span="6">
+      <FormItem label="听课督导">
+      <Select v-model="meta.create_by" style="width:200px">
+        <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index">{{item.name}}</Option>
+      </Select>
     </FormItem>
+      </Col>
     <!--<FormItem label="课程属性">-->
     <!--<Input v-model="meta.attr" disabled></Input>-->
     <!--</FormItem>-->
-    <FormItem label="课程名字">
+      <Col span="6">
+      <FormItem label="课程名字">
       <Select v-model="meta.lesson.id" style="width:200px" @on-change="onSelectedLessonChange">
         <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_name + index">{{
           item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
         </Option>
       </Select>
     </FormItem>
+      </Col>
+    </Row>
+    <Row :gutter="16">
+      <Col span="6">
     <FormItem label="任课教师	">
       <Input v-model="meta.lesson.lesson_teacher_name" disabled></Input>
     </FormItem>
-    <FormItem label="听课时间">
+      </Col>
+      <Col span="6">
+      <FormItem label="听课时间">
       <DatePicker type="date" v-model="meta.create_at"></DatePicker>
     </FormItem>
-    <FormItem label="上课班级">
+      </Col>
+      <Col span="6">
+      <FormItem label="上课班级">
       <Select v-model="meta.lesson.selected_lesson" style="width:200px">
         <Option v-for="item in selected_lesson.lesson_cases" :value="item.lesson_room" :key="item.lesson_room">{{ item.lesson_room }}
         </Option>
       </Select>
     </FormItem>
+      </Col>
+    </Row>
   </Form>
 </template>
 <script>
   import {queryLessons} from '../../../service/api/lesson'
+  import {queryUsers} from '../../../service/api/user'
 
   export default {
     data() {
       return {
         lessons: [],
-        meta: this.value
+        meta: this.value,
+        users: []
       }
     },
     computed: {
@@ -62,6 +80,9 @@
     mounted() {
       queryLessons().then((resp) => {
         this.lessons = resp.data.lessons
+      })
+      queryUsers().then((resp) => {
+        this.users = resp.data.users
       })
     },
     methods: {

@@ -30,11 +30,19 @@
           <Option v-for="item in lessonLevel" :value="item" :key="item">{{ item }}</Option>
         </Select>
       </FormItem>
-      <FormItem prop="lesson_state">
-        <Input type="text" v-model="lesson.lesson_attention_reason" placeholder="关注理由">
-        <Icon type="ios-person-outline" slot="prepend"></Icon>
-        </Input>
+      <FormItem prop="assign_group">
+        <span>分配督导小组:</span>
+        <Select v-model="lesson.assign_group" >
+          <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+        </Select>
       </FormItem>
+      <FormItem prop="lesson_attention_reason" v-if="lesson.lesson_level === '关注课程'">
+        <span>关注原因:</span>
+        <Select v-model="lesson.lesson_attention_reason" >
+          <Option v-for="item in lessonWatchReason" :value="item" :key="item">{{ item }}</Option>
+        </Select>
+      </FormItem>
+
     </Form>
   </Modal>
 </template>
@@ -42,7 +50,8 @@
 <script>
   import {getLesson} from '../../../service/api/lesson'
   import {updateWithinField} from '../../../utils/tools'
-  import {lessonLevel} from '../marcos'
+  import {queryGroups} from  '../../../service/api/user'
+  import {lessonLevel, lessonWatchReason} from '../marcos'
   export default {
     name: "LessonProfileModal",
     props: {
@@ -63,7 +72,9 @@
           lesson_level: "",
           lesson_attention_reason: ""
         },
-        lessonLevel: lessonLevel
+        lessonLevel: lessonLevel,
+        lessonWatchReason: lessonWatchReason , // 课程关注原因,
+        groups: [], // 所有的小组
       }
     },
     methods: {
@@ -81,6 +92,11 @@
           })
         }
       }
+    },
+    mounted: function () {
+      queryGroups().then((resp)=>{
+        this.groups = resp.data.groups
+      })
     }
   }
 </script>
