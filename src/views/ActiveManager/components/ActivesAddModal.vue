@@ -32,7 +32,7 @@
         <form-item label="place:">
           <Row>
             <Col span="">
-              <Input v-model="inputtplace" placeholder="Enter something..."></Input>
+              <Input v-model="inputplace" placeholder="Enter something..."></Input>
             </Col>
           </Row>
         </form-item>
@@ -57,13 +57,19 @@
         </FormItem>
       </Form>
     </Modal>
+    <!--{{this.inputtime}}-->
+    <!--{{this.activity.start_time}}-->
+    <!--{{this.activity.end_time}}-->
   </div>
 </template>
 
 <script>
   import {queryTerms, getCurrentTerms} from '../../../service/api/term'
-    export default {
-      name: "add_activity",
+  // import FloatBar from '../../components/float_bar/float_bar'
+  import {dateToString} from "../../../utils/tools";
+
+  export default {
+      name: "ActivesAddModal",
       data () {
         return {
           query: {
@@ -73,28 +79,6 @@
           data: [], //数据
           terms:[],
           flag:false,
-          InputUsr:[{
-            index:1,
-            status:1,
-            id:'',
-            user_id:'',
-            name:'',
-            starttime:'null',
-            endtime:'null',
-            sex:'',
-            email:'',
-            phone:'',
-            state:'',
-            unit:'',
-            u_status:'',
-            group:'',
-            workstate:'',
-            prorank:'',
-            skill:'',
-            created_at:'null',
-            updated_at:'',
-            alias:'null'
-          }],
           activity:{},
           inputname:'',
           inputteacher:'',
@@ -111,15 +95,6 @@
         onCancel: Function
       },
       methods:{
-        handleAdd () {
-          this.index++;
-          this.qsInputOptions.push({
-            label:'',
-            value: '',
-            index: this.index,
-            status: 1
-          });
-        },
         ok(){
           this.activity.id='';
           this.activity.name=this.inputname;
@@ -128,11 +103,12 @@
           this.activity.state=this.inputstate;
           this.activity.place=this.inputplace;
           this.activity.information=this.inputinfo;
-
+          this.activity.start_time=dateToString(this.inputtime[0],"yyyy-MM-dd hh:mm:ss");
+          this.activity.end_time=dateToString(this.inputtime[1],"yyyy-MM-dd hh:mm:ss");
           this.$emit('onOk',this.activity);
           this.inputname='';
           this.inputteacher='';
-          this.inputtime='';
+          // this.inputtime='';
           this.inputstate='';
           this.inputplace='';
           this.inputinfo='';
