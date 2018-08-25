@@ -7,7 +7,7 @@ export default[{
   children: [
     {
       name: "课程管理",
-      path: "star", // xzl
+      path: "manager", // xzl
       component: resolve => require(['Views/LessonManager/index'], resolve),
     },
   ]

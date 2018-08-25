@@ -49,6 +49,15 @@ export function responseSuccessFunc (responseObj) {
 export function responseFailFunc (responseError) {
     // 响应失败，可根据 responseError.message 和 responseError.response.status 来做监控处理
     // ...
+  let stauts = responseError.response.status
 
-    return Promise.reject(responseError);
+  switch (stauts) {
+    case 401:
+      GLOBAL.vbus.$emit('global.message.warning', "未登陆");
+    default:
+      GLOBAL.vbus.$emit('global.message.error', "系统异常");
+
+  }
+
+  return Promise.reject(responseError);
 }

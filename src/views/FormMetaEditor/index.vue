@@ -6,12 +6,13 @@
 
     <!--form meta start-->
     <div>
-      <h1>Form Editor</h1>
+      <h1>问卷编辑</h1>
+      <br>
       <Form :model="form_meta" :label-width="100" inline label-position="left">
-        <FormItem label="Form Name">
+        <FormItem label="问卷名称：">
           <Input v-model="form_meta.forms.bind_meta_name" placeholder="enter name..." style="width: 180px"></Input>
         </FormItem>
-        <FormItem label="Form Version">
+        <FormItem label="问卷版本：">
           <Input v-model="form_meta.forms.bind_meta_version" placeholder="change version..." style="width: 180px"></Input>
         </FormItem>
       </Form>
@@ -152,7 +153,7 @@
 
         <!--single item end-->
 
-        <Poptip placement="right" width="400">
+        <Poptip placement="right" width="300">
           <Button type="ghost" style="width: 300px">
             Append New Block
           </Button>
@@ -160,7 +161,7 @@
             <AddItem @onOk="appendNewBlock(nowIndex, $event)"></AddItem>
           </div>
         </Poptip>
-        <Button type="primary" @click="submitForm" style="width: 400px">Click to Submit</Button>
+        <Button type="primary" @click="submitForm" style="width: 300px">Click to Submit</Button>
 
       </div>
       <!--items end-->
@@ -306,22 +307,21 @@
         this.$Message.info('Clicked cancel');
       },
       appendNewBlock: function (index, value) {
-        this.form_meta.items.push(value);
+        this.form_meta.forms.values.push(value);
         this.$Message.info('Items appended!');
       },
       prependNewBlock: function (index, value) {
-        this.form_meta.items.splice(index, 0, value);
+        this.form_meta.forms.values.splice(index, 0, value);
         this.$Message.info('Items prepended!');
       },
       editBlock: function (index, value) {
-        this.form_meta.items.splice(index, 1);
-        this.form_meta.items.splice(index, 0, value);
+        this.form_meta.forms.values.splice(index, 1);
+        this.form_meta.forms.values.splice(index, 0, value);
         this.$Message.info('Items edited!');
       },
       deleteNewBlock: function (item) {
         let index = this.form_meta.forms.values.indexOf(item);
-        console.log(index);
-        this.form_meta.items.splice(index, 1);
+        this.form_meta.forms.values.splice(index, 1);
         this.$Message.info('Items deleted!');
       },
       submitForm: function () {

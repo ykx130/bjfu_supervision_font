@@ -1,10 +1,10 @@
 <template>
   <div class="user-avator-dropdown">
     <Dropdown @on-click="handleClick">
-      <Avatar :src="userAvator"/>
+      欢迎 {{ this.currentUser.username }}
+      <Avatar icon="ios-person"/>
       <Icon :size="18" type="md-arrow-dropdown"></Icon>
       <DropdownMenu slot="list">
-        <DropdownItem name="profile">详情</DropdownItem>
         <DropdownItem name="logout">退出登录</DropdownItem>
       </DropdownMenu>
     </Dropdown>
@@ -12,27 +12,18 @@
 </template>
 
 <script>
-  import './user.less'
-  import { mapActions } from 'vuex'
+  import {logoutUser} from '../../service/api/user'
   export default {
     name: 'User',
     props: {
-      userAvator: {
-        type: String,
-        default: ''
-      }
+      currentUser: Object
     },
     methods: {
-      ...mapActions([
-        'handleLogOut'
-      ]),
       handleClick (name) {
         switch (name) {
           case 'logout':
-            this.handleLogOut().then(() => {
-              this.$router.push({
-                name: 'login'
-              })
+            logoutUser().then(()=>{
+              this.$router.push({path:'/'})
             })
             break
         }

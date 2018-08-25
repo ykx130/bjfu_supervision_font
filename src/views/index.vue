@@ -60,8 +60,7 @@
       </Sider>
       <Layout>
         <Header :style="{padding: 0}" class="layout-header-bar">
-          <Icon @click.native="collapsedSider" :class="rotateIcon" :style="{margin: '20px 20px 0'}" type="navicon-round" size="24"></Icon>
-
+          <userIcon style="float:right;padding-right: 30px" :current-user="currentUser"></userIcon>
         </Header>
         <Content :style="{margin: '20px', background: '#fff', minHeight: '720px'}">
             <router-view></router-view>
@@ -72,9 +71,15 @@
 </template>
 <script>
   import sideMenu from '../components/side-menu/side-menu'
+  import  userIcon from '../components/user_icon'
+  import store from '../service/store/common'
+  import {currentUser} from "../service/api/user";
   export default {
     name: "base_layout",
-    components: {sideMenu},
+    components: {sideMenu, userIcon},
+    created() {
+      this.bindEvents()
+    },
     data () {
       return {
         isCollapsed: false
@@ -95,11 +100,32 @@
       },
       routes() {
         return this.$router.options.routes
+      },
+      currentUser () {
+        return store.state.userInfo
       }
     },
     methods: {
       collapsedSider () {
         this.$refs.side1.toggleCollapse();
+      },
+      bindEvents() {
+        GLOBAL.vbus.$on('global.message.info', (msg) => {
+          if(!msg) return
+          this.$Message.info(msg);
+        })
+        GLOBAL.vbus.$on('global.message.success', (msg) => {
+          if(!msg) return
+          this.$Message.success(msg);
+        })
+        GLOBAL.vbus.$on('global.message.error', (msg) => {
+          if(!msg) return
+          this.$Message.error(msg);
+        })
+        GLOBAL.vbus.$on('global.message.warning', (msg) => {
+          if(!msg) return
+          this.$Message.warning(msg);
+        })
       }
     }
   }
