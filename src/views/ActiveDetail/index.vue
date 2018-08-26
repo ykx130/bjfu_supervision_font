@@ -184,20 +184,34 @@
     },
     methods: {
       onUpdateActive:function () {
-        putActive(this.activity)
+        putActive(this.activity).then(()=>{
+          getActive(this.activity_id).then((resp)=>{
+            updateWithinField(this.activity, resp.data.activity)
+          });
+        })
       },
       onAddNewActiveUser: function () {
         this.showAddActiveUser = true
       },
       onAddActiveUserModalOK: function (active_user) {
-        postActiveUser(this.activity_id, active_user)
+        postActiveUser(this.activity_id, active_user).then(()=>{
+          queryActiveUsers(this.activity_id).then((usrresp)=>{
+            this.data=usrresp.data.activity_users;
+            this.total = usrresp.data.total;
+          });
+        })
         this.showAddActiveUser = false
       },
       onAddActiveUserModalCancel: function () {
         this.showAddActiveUser = false
       },
       onUpdateActiveUserModalOK: function (active_user) {
-        putActiveUser(this.activity_id, active_user)
+        putActiveUser(this.activity_id, active_user).then(()=>{
+          queryActiveUsers(this.activity_id).then((usrresp)=>{
+            this.data=usrresp.data.activity_users;
+            this.total = usrresp.data.total;
+          });
+        })
         this.showUpdateActiveUser = false
 
       },

@@ -30,5 +30,5 @@ export const postActiveUser =(active_id, params )=>{
 };
 
 export const putActiveUser = (active_id, params )=>{
-  return axios.post('api/activities/'+active_id +'/activity_users/'+params.user.username, params)
+  return axios.put('api/activities/'+active_id +'/activity_users/'+params.user.username, params)
 }

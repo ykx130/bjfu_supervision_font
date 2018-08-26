@@ -3,7 +3,7 @@
     :value="show"
     title="修改一个活动"
     @on-ok="handleOK"
-    @on-cancel="onCanecel"
+    @on-cancel="handleCancel"
     @on-visible-change="onShowChange"
     style="width: 600px;">
     <Form>
@@ -45,7 +45,7 @@
       handleOK(){
         this.$emit('onOK', this.activity_user)
       },
-      onCanecel() {
+      handleCancel() {
         this.$emit('onCancel')
       },
       onShowChange: function (show) {
