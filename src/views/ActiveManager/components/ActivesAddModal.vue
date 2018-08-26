@@ -108,7 +108,6 @@
           this.$emit('onOk',this.activity);
           this.inputname='';
           this.inputteacher='';
-          // this.inputtime='';
           this.inputstate='';
           this.inputplace='';
           this.inputinfo='';
