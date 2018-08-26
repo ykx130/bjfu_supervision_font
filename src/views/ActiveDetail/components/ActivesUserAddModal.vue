@@ -47,7 +47,7 @@
       },
       methods:{
         handleOk(){
-          this.$emit('onOK', this.activity_user)
+          this.$emit('onOK', {state:this.activity_user.state , fin_state: this.activity_user.fin_state})
         },
         handleCancel() {
           this.$emit('onCancel')
