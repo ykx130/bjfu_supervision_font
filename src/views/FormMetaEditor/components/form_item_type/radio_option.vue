@@ -103,7 +103,7 @@
       },
       ok () {
         this.qsItem.item_name = this.qsInputName;
-        this.qsItem.item_type = 'radio_options';
+        this.qsItem.item_type = 'radio_option';
         this.qsItem.extra=this.qsInputExtra;
         this.qsItem.weight=this.qsInputWeight;
         // this.qsItem.discribtion = '单项选择';

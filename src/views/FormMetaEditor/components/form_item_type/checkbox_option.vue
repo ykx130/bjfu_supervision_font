@@ -102,7 +102,7 @@
       },
       ok () {
         this.qsItem.item_name = this.qsInputTitle;
-        this.qsItem.item_type = 'checkbox_options';
+        this.qsItem.item_type = 'checkbox_option';
         this.qsItem.extra=this.qsInputExtra;
         // this.qsItem.discribtion = '多项选择';
         this.qsItem.type="form_item";
