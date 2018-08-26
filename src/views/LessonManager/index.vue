@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Card>
     <h1>课程管理</h1>
     <br>
     <Tabs @on-click="onTypeTabClick">
@@ -43,7 +43,7 @@
       </div>
     <FloatBar><Button type="primary" @click="onBatchWatchClick">批量关注课程</Button>
     </FloatBar>
-  </div>
+  </Card>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Card>
     <h1>学院负责人管理</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
@@ -32,7 +32,7 @@
     <Button  type="primary" @click="(e)=>{this.showUserAddModal=true}" >
       新增
     </Button>
-  </div>
+  </Card>
 </template>
 
 <script>
