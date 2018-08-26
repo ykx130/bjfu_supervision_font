@@ -32,5 +32,10 @@ export default[{
       path: "form_manager", // xzl
       component: resolve => require(['Views/FormManager/index'], resolve),
     },
+    {
+      name: "各组评价情况查看",
+      path: "group_sa", // xzl
+      component: resolve => require(['Views/LessonGoodManager/index'], resolve),
+    },
   ]
 }]

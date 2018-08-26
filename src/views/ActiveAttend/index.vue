@@ -1,7 +1,11 @@
 <template>
   <div>
-    <h1>活动管理</h1>
+    <h1>活动报名</h1>
     <br>
+    <Tabs @on-click="onTypeTabClick">
+      <TabPane label="可报名" name="可报名"></TabPane>
+      <TabPane label="已报名" name="已报名"></TabPane>
+    </Tabs>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="活动名称：" prop="activity">
         <Input style="width: 180px" v-model="query.name" ></Input>
@@ -22,24 +26,22 @@
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </div>
     </div>
-    <ActivesAddModal></ActivesAddModal>
   </div>
 </template>
 
 <script>
-  import ActivesAddModal from'./components/ActivesAddModal'
   import {queryActives, putActive, postActive} from '../../service/api/actives'
   import {queryTerms, getCurrentTerms} from '../../service/api/term'
   export default {
-    components:{ActivesAddModal},
+    components:{},
     data: function() {
       return {
+        select_tag: '可报名',
         query: {}, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
         terms: [],
         selected_activity_id:"", //选中编辑的课程ids
-        showActivityProfileModal: false, // 展示编辑弹窗
         pages: {
           _page: 1,
           _per_page: 10
@@ -101,13 +103,10 @@
                   on: {
                     click: () => {
                       this.selected_activity_id = params.row.id;
-                      // this.showActivityProfileModal=true;
-                      // const route=this.selected_activity_id;
-                      // this.$router.push({path: `:id/${route}`})
-                      this.$router.push({path: `/active/${params.row.id}` });
+
                     }
                   }
-                }, '查看')
+                }, '报名')
               ]);
             }
           }
@@ -134,14 +133,8 @@
         this.pages._page = 1;
         this.onTableChange(this.query, this.pages)
       },
-      onProfileModalOK(activity) {
-        // 更新框确定 关闭
-        postActive(activity).then((resp)=>{
-          this.showActivityProfileModal = false
-        })
-      },
-      onProfileModalCancel() {
-        this.showActivityProfileModal = false
+      onTypeTabClick(value) {
+        this.select_tag = value
       }
     },
     mounted: function () {
@@ -152,9 +145,9 @@
       getCurrentTerms().then((termResp)=>{
         this.query.term = termResp.data.term.name;
         queryActives(args).then((resp)=>{
-            this.data = resp.data.activities;
-            this.total = resp.data.total;
-            this.$router.push({path: '/active/help', query: {...args, ...this.query}});
+          this.data = resp.data.activities;
+          this.total = resp.data.total;
+          this.$router.push({path: '/attend', query: {...args, ...this.query}});
         })
       })
     }

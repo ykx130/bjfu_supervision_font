@@ -10,5 +10,10 @@ export default[{
       path: "manager", // xzl
       component: resolve => require(['Views/LessonManager/index'], resolve),
     },
+    {
+      name: "好评课堂",
+      path: "good_lesson", // xzl
+      component: resolve => require(['Views/FormMetaManager/index'], resolve),
+    },
   ]
 }]

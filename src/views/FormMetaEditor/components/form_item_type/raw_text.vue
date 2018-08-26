@@ -5,7 +5,7 @@
     <!--<p>选项:{{this.qsItem.payload}}</p>-->
     <!--<Button type="primary" @click="modal1 = true">文本题</Button>-->
     <Modal
-      :value="true"
+      value="true"
 
       title="增加一道文本题"
       @on-ok="ok"
@@ -27,6 +27,14 @@
             </Col>
           </Row>
         </FormItem>
+        <FormItem label="权重:"
+        >
+          <Row>
+            <Col span="18">
+              <Input v-model="qsInputWeight" placeholder="Enter something..."></Input>
+            </Col>
+          </Row>
+        </FormItem>
       </Form>
     </Modal>
   </div>
@@ -34,12 +42,14 @@
 <script>
   //import
   export default {
-    name:"raw_text",
+    name:"raw_text.vue",
     data () {
       return {
         qsItem:{},
         qsInputName:'',
         qsInputExtra:'',
+        qsInputWeight:'',
+        modal1: false,
       }
     },
     props:{
@@ -48,9 +58,11 @@
     },
     methods: {
       ok () {
+        this.qsItem.item_id = '';
         this.qsItem.item_name = this.qsInputName;
         this.qsItem.item_type = 'raw_text';
         this.qsItem.extra=this.qsInputExtra;
+        this.qsItem.weight=this.qsInputWeight;
         // this.qsItem.discribtion = '单行文本';
         this.qsItem.type="form_item";
         this.qsItem.payload={};

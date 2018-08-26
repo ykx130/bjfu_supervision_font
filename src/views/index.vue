@@ -62,7 +62,7 @@
         <Header :style="{padding: 0}" class="layout-header-bar">
           <userIcon style="float:right;padding-right: 30px" :current-user="currentUser"></userIcon>
         </Header>
-        <Content :style="{margin: '20px', background: '#fff', minHeight: '720px'}">
+        <Content :style="{margin: '20px', minHeight: '720px'}">
             <router-view></router-view>
         </Content>
       </Layout>

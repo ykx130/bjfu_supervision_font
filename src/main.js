@@ -11,6 +11,9 @@ import inject from 'Plugins/inject'
 import store from 'Plugins/store'
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+//import ECharts from 'vue-echarts/components/ECharts.vue'
+var ECharts = require('vue-echarts')
+
 
 // 引入根组件
 import App from './App'
@@ -26,3 +29,5 @@ new Vue({
     template: '<App/>',
     components: { App }
 })
+
+Vue.component('chart', ECharts)

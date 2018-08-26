@@ -16,6 +16,7 @@
   import Checkbox from './form_item_type/checkbox_option'
   import Raw_text from './form_item_type/raw_text'
   export default {
+    name:'AddItem',
     components:{Radio,Checkbox,Raw_text},
     data () {
       return {
