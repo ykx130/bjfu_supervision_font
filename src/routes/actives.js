@@ -10,16 +10,17 @@ export default[
       name: "教学辅导",
       path: "help", // xzl
       // component: resolve => require(['Views/FormMetaManager/index'], resolve),
-      component: resolve => require(['Views/ActiveManager/indextry'], resolve),
+      component: resolve => require(['Views/ActiveManager/index'], resolve),
     },
     {
       name: "好评课堂",
       path: "good_lesson", // xzl
       component: resolve => require(['Views/FormMetaManager/index'], resolve),
     },
+    {
+      path:'/active/:id',
+      component:resolve => require(['Views/ActiveDetail/index'], resolve),
+    }
   ]},
-  {
-    path:'/active/:id',
-    component:resolve => require(['Views/ActiveManager/components/ActiveDetail'], resolve),
-  }
+
   ]
