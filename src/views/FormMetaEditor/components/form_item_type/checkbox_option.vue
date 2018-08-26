@@ -26,6 +26,14 @@
             </Col>
           </Row>
         </FormItem>
+        <FormItem label="权重:"
+        >
+          <Row>
+            <Col span="18">
+              <Input v-model="qsInputWeight" placeholder="Enter something..."></Input>
+            </Col>
+          </Row>
+        </FormItem>
         <FormItem v-for="(item, index) in qsInputOptions"
                   v-if="item.status"
                   :key="index"
@@ -64,6 +72,7 @@
         qsItem:{},
         qsInputName:'',
         qsInputExtra:'',
+        qsInputWeight:'',
         index:1,
         qsInputOptions:[{
           label:'',
@@ -97,6 +106,7 @@
         this.qsItem.extra=this.qsInputExtra;
         // this.qsItem.discribtion = '多项选择';
         this.qsItem.type="form_item";
+        this.qsItem.weight=this.qsInputWeight;
         this.qsItem.payload={
           options:[]
         };
