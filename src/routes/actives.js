@@ -1,6 +1,7 @@
 // 动态问卷相关的路由配置
 
-export default[{
+export default[
+  {
   name: "活动",
   path: "/active",
   component: resolve => require(['Views/index'], resolve),
@@ -8,12 +9,17 @@ export default[{
     {
       name: "教学辅导",
       path: "help", // xzl
-      component: resolve => require(['Views/FormMetaManager/index'], resolve),
+      // component: resolve => require(['Views/FormMetaManager/index'], resolve),
+      component: resolve => require(['Views/ActiveManager/indextry'], resolve),
     },
     {
       name: "好评课堂",
       path: "good_lesson", // xzl
       component: resolve => require(['Views/FormMetaManager/index'], resolve),
     },
+  ]},
+  {
+    path:'/active/:id',
+    component:resolve => require(['Views/ActiveManager/components/ActiveDetail'], resolve),
+  }
   ]
-}]
