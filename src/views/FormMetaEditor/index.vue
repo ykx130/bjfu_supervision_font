@@ -115,7 +115,7 @@
 
               <div v-if="item.item_type === 'raw_text' || item.item_type === 'radio_option' || item.item_type === 'checkbox_option' ">
                 <Poptip placement="right" width="400">
-                  <Button style="width: 220px;">
+                  <Button style="width: 220px;" @click="nowIndex = index;">
                     插入题目
                   </Button>
                   <div class="api" slot="content">
@@ -124,7 +124,7 @@
                 </Poptip>
 
                 <Poptip placement="right" width="400">
-                  <Button type="info" style="width: 220px" @click="editItemShow = true; nowIndex = index;">
+                  <Button type="info" style="width: 220px" @click="nowIndex = index;">
                     编辑
                   </Button>
                   <div class="api" slot="content">
@@ -144,6 +144,8 @@
             </div>
 
           </Form>
+
+          <br>
         </div>
         <!--whole form end-->
 
@@ -273,7 +275,7 @@
       cancel() {
         this.$Message.info('Clicked cancel');
       },
-      appendNewBlock: function (index, value) {
+      appendNewBlock: function (value) {
         this.form_meta.items.push(value);
         this.$Message.info('Items appended!');
       },
