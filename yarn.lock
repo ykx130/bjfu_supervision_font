@@ -2,14 +2,6 @@
 # yarn lockfile v1
 
 
-"@onsenui/custom-elements@1.0.0":
-  version "1.0.0"
-  resolved "http://registry.npm.taobao.org/@onsenui/custom-elements/download/@onsenui/custom-elements-1.0.0.tgz#8e2b5c8968b8d94da70c6e92ecc56b47f79a0ff3"
-
-"@onsenui/fastclick@1.1.1":
-  version "1.1.1"
-  resolved "http://registry.npm.taobao.org/@onsenui/fastclick/download/@onsenui/fastclick-1.1.1.tgz#0708ec6c7bdca8b87a028deb0dbb66b92001f737"
-
 abbrev@1:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/abbrev/download/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"
@@ -1586,7 +1578,7 @@ copy-webpack-plugin@^4.0.1:
     p-limit "^1.0.0"
     serialize-javascript "^1.4.0"
 
-core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.1:
+core-js@^2.4.0, core-js@^2.5.0:
   version "2.5.7"
   resolved "http://registry.npm.taobao.org/core-js/download/core-js-2.5.7.tgz#f972608ff0cead68b841a16a932d0b183791814e"
 
@@ -4134,14 +4126,6 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
-onsenui@^2.8.2:
-  version "2.10.2"
-  resolved "http://registry.npm.taobao.org/onsenui/download/onsenui-2.10.2.tgz#09bc92a9759cf757adb16a874ef5cefe28b4c521"
-  dependencies:
-    "@onsenui/custom-elements" "1.0.0"
-    "@onsenui/fastclick" "1.1.1"
-    core-js "^2.5.1"
-
 opencollective@^1.0.3:
   version "1.0.3"
   resolved "http://registry.npm.taobao.org/opencollective/download/opencollective-1.0.3.tgz#aee6372bc28144583690c3ca8daecfc120dd0ef1"
@@ -6047,12 +6031,6 @@ vue-loader@^12.1.0:
     vue-hot-reload-api "^2.1.0"
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.2.2"
-
-vue-onsenui@^2.4.2:
-  version "2.6.1"
-  resolved "http://registry.npm.taobao.org/vue-onsenui/download/vue-onsenui-2.6.1.tgz#4af008f989e3e68ffc9cc0870522b09b77d853ce"
-  dependencies:
-    babel-runtime "^6.26.0"
 
 vue-router@^3.0.1:
   version "3.0.1"
