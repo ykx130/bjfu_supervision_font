@@ -5,15 +5,19 @@ export const queryFormMetas =(params)=> {
 };
 
 export const getFormMeta = params =>{
-  return axios.get('/api/form_metas/'+ params)
+  return axios.get('/api/form_metas/${params.name}')
 };
 
 export const postFormMeta = (params) => {
-  return axios.post('/api/form_metas', params)
+  return axios.post('/api/form_metas/${params.name}', params)
 }
 
 export const deleteFormMetas =(params)=>{
-  return axios.delete('/api/form_metas/' + params)
+  return axios.delete('/api/form_metas/${params.name}')
+}
+
+export const putFormMeta = (params) => {
+  return axios.put('/api/form_meta/${params.name}', params)
 }
 
 export const postForm= params =>{
@@ -36,3 +40,5 @@ export const putForm =(id,params)=> {
 export const getLessons =(params)=> {
   return axios.get('/api/lessons', {params: params})
 }
+
+

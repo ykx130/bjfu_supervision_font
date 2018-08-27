@@ -193,8 +193,7 @@
 
 <script>
   import {
-    getFormMeta,
-    postFormMeta
+    putFormMeta
   } from '../../service/api/dqs'
   import AddItem from './components/add_item'
   export default {
@@ -209,16 +208,7 @@
       }
     },
     mounted: function () {
-      const args = this.$route.params;
-      if (args.id) {
-        getFormMeta(args.id).then((response) => {
-          this.form_meta = response.data.form_meta;
-        })
-      } else {
-       getFormMeta(0).then((response) => {
-         this.form_meta = response.data.form_meta
-       })
-      }
+
     },
     methods: {
       ok() {
@@ -247,13 +237,13 @@
         this.$Message.info('Items deleted!');
       },
       submitForm: function () {
-        postFormMeta(this.form_meta).then(function (response) {
+        putFormMeta(this.form_meta).then(function (response) {
           console.log(response);
         })
           .catch(function (error) {
             console.log(error);
           });
-        this.$Message.info('Items submitted!');
+        this.$Message.info('Items created!');
       }
     }
   }
