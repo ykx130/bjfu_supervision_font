@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Card>
     <h1>活动管理</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
@@ -23,7 +23,7 @@
       </div>
     </div>
     <ActivesAddModal></ActivesAddModal>
-  </div>
+  </Card>
 </template>
 
 <script>

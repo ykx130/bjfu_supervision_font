@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <Card>
 
-    </div>
+    </Card>
 </template>
 
 <script>

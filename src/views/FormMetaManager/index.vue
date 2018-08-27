@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Card>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="问卷名字：" prop="name">
         <Input style="width: 180px" v-model="query.name" ></Input>
@@ -12,7 +12,7 @@
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </div>
     </div>
-  </div>
+  </Card>
 </template>
 <script>
   import { queryFormMetas } from '../../service/api/dqs'
