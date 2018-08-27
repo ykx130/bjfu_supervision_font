@@ -205,12 +205,8 @@
       return {
         nowIndex: 0,
         form_meta: {
-          meta : {
-
-          },
-          items: {
-
-          }
+          meta: {},
+          items: {}
         }
       }
     },
