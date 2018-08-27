@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Card>
     <h1>表单管理</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
@@ -26,7 +26,7 @@
             <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
         </div>
     </div>
-  </div>
+  </Card>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 <template>
   <!--whole form meta editor begin-->
-  <div>
+  <Card>
     <!--adjust module start-->
     <!--adjust module end-->
 
@@ -185,7 +185,7 @@
 
     <!--back to top end-->
     <!--form blocks end-->
-  </div>
+  </Card>
 
   <!--whole form meta editor end-->
 </template>

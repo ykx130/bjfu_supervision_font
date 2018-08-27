@@ -18,14 +18,6 @@
             </Col>
           </Row>
         </FormItem>
-        <FormItem label="说明:"
-        >
-          <Row>
-            <Col span="18">
-              <Input v-model="qsInputExtra" placeholder="Enter something..."></Input>
-            </Col>
-          </Row>
-        </FormItem>
         <FormItem label="权重:"
         >
           <Row>
@@ -71,7 +63,6 @@
       return {
         qsItem:{},
         qsInputName:'',
-        qsInputExtra:'',
         qsInputWeight:'',
         index:1,
         qsInputOptions:[{
@@ -103,7 +94,6 @@
       ok () {
         this.qsItem.item_name = this.qsInputTitle;
         this.qsItem.item_type = 'checkbox_option';
-        this.qsItem.extra=this.qsInputExtra;
         // this.qsItem.discribtion = '多项选择';
         this.qsItem.type="form_item";
         this.qsItem.weight=this.qsInputWeight;
@@ -121,7 +111,6 @@
         this.$emit('onOk',this.qsItem);
         this.$Message.info('Clicked ok');
         this.qsInputTitle="";
-        this.qsInputExtra="";
         this.qsInputOptions=[{status:1}];
       },
       cancel () {
