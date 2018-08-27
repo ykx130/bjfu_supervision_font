@@ -193,7 +193,7 @@
 
 <script>
   import {
-    putFormMeta
+    postFormMeta
   } from '../../service/api/dqs'
   import AddItem from './components/add_item'
   export default {
@@ -237,7 +237,7 @@
         this.$Message.info('Items deleted!');
       },
       submitForm: function () {
-        putFormMeta(this.form_meta).then(function (response) {
+        postFormMeta(this.form_meta).then(function (response) {
           console.log(response);
         })
           .catch(function (error) {
