@@ -13,10 +13,10 @@ export default[{
     {
       name: "问卷结构编辑",
       path: "meta_editor", // yzr
-      component: resolve => require(['Views/FormMetaEditor/index'], resolve)
+      component: resolve => require(['Views/FormMetaCreater/index'], resolve)
     },
     {
-      path: "meta_editor/:id", // yzr
+      path: "meta_editor/:name/:version", // yzr
       component: resolve => require(['Views/FormMetaEditor/index'], resolve)
     },
     {

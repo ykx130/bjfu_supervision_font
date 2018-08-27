@@ -204,7 +204,14 @@
     data() {
       return {
         nowIndex: 0,
-        form_meta: {}
+        form_meta: {
+          meta : {
+
+          },
+          items: {
+
+          }
+        }
       }
     },
     mounted: function () {

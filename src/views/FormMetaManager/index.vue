@@ -68,7 +68,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path:`/dqs/form_fill/${params.row._id}`})
+                      this.$router.push({path:`/dqs/form_fill/${params.row.name}/${params.row.version}`})
                     }
                   }
                 }, '查看'),
@@ -82,7 +82,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path:`/dqs/meta_editor/${params.row._id}`})
+                      this.$router.push({path:`/dqs/meta_editor/${params.row.name}/${params.row.version}`})
                     }
                   }
                 }, '编辑')
