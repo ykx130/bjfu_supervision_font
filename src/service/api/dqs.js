@@ -5,11 +5,11 @@ export const queryFormMetas =(params)=> {
 };
 
 export const getFormMeta = params =>{
-  return axios.get(`/api/form_metas/${params.name}`)
+  return axios.get(`/api/form_metas/${params.name}/${params.version}`)
 };
 
 export const postFormMeta = (params) => {
-  return axios.post(`/api/form_metas/${params.name}`, params)
+  return axios.post(`/api/form_metas`, params)
 };
 
 export const deleteFormMetas =(params)=>{

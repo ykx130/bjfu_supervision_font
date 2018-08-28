@@ -20,7 +20,7 @@ export default[{
       component: resolve => require(['Views/FormMetaEditor/index'], resolve)
     },
     {
-      path: "form_fill/:id", // 问卷填写
+      path: "form_fill/:name/:version", // 问卷填写
       component: resolve => require(['Views/FormFill/index'], resolve),
     },
     {

@@ -19,14 +19,6 @@
             </Col>
           </Row>
         </FormItem>
-        <FormItem label="说明:"
-        >
-          <Row>
-            <Col span="18">
-              <Input v-model="qsInputExtra" placeholder="Enter something..."></Input>
-            </Col>
-          </Row>
-        </FormItem>
         <FormItem label="权重:"
         >
           <Row>
@@ -72,7 +64,6 @@
       return {
         qsItem:{},
         qsInputName:'',
-        qsInputExtra:'',
         qsInputWeight:'',
         index:1,
         qsInputOptions:[{
@@ -104,7 +95,6 @@
       ok () {
         this.qsItem.item_name = this.qsInputName;
         this.qsItem.item_type = 'radio_option';
-        this.qsItem.extra=this.qsInputExtra;
         this.qsItem.weight=this.qsInputWeight;
         // this.qsItem.discribtion = '单项选择';
         this.qsItem.type="form_item";
@@ -122,7 +112,6 @@
         this.$emit('onOk',this.qsItem);
         this.$Message.info('Clicked ok');
         this.qsInputName="";
-        this.qsInputExtra="";
         this.qsInputOptions=[{status:1}];
       },
       cancel () {

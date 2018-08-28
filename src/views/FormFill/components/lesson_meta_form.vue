@@ -28,19 +28,30 @@
     <FormItem label="任课教师	">
       <Input v-model="meta.lesson.lesson_teacher_name" disabled></Input>
     </FormItem>
+    <Col span="6">
+        <FormItem label="上课班级">
+          <Input v-model="meta.lesson.lesson_class" disabled style="width:200px"></Input>
+        </FormItem>
+      </Col>
       </Col>
       <Col span="6">
       <FormItem label="听课时间">
-      <DatePicker type="date" v-model="meta.create_at"></DatePicker>
-    </FormItem>
+      <DatePicker type="date" :value="meta.create_at" format="yyyy-MM-dd" @on-change="onSelectedLessonCaseChange" :options="getLessonDatePickerOption()"></DatePicker>
+      </FormItem>
       </Col>
+
       <Col span="6">
-      <FormItem label="上课班级">
-      <Select v-model="meta.lesson.selected_lesson" style="width:200px">
-        <Option v-for="item in selected_lesson.lesson_cases" :value="item.lesson_room" :key="item.lesson_room">{{ item.lesson_room }}
-        </Option>
-      </Select>
-    </FormItem>
+        <FormItem label="上课地点">
+          <Input :value="meta.lesson.lesson_room" disabled></Input>
+        </FormItem>
+      </Col>
+
+      <Col span="6">
+        <FormItem label="上课节次">
+          <Select v-model="meta.lesson.lesson_times"  multiple style="width:200px">
+            <Option v-for="item in lesson_times" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          </Select>
+        </FormItem>
       </Col>
     </Row>
   </Form>
@@ -48,13 +59,17 @@
 <script>
   import {queryLessons} from '../../../service/api/lesson'
   import {queryUsers} from '../../../service/api/user'
-
+  import {transTimeToSelectedData} from '../../../utils/lesson_time'
+  import {dateToString} from '../../../utils/tools'
   export default {
     data() {
       return {
         lessons: [],
+        selected_lesson_case: {}, //选中的lesson的case
         meta: this.value,
-        users: []
+        users: [],
+        lesson_times:[],
+        allow_select_data: [],
       }
     },
     computed: {
@@ -67,7 +82,6 @@
         } else {
           return {lesson_cases: []}
         }
-
       }
     },
     props: {
@@ -87,16 +101,51 @@
     },
     methods: {
       onSelectedLessonChange: function (id) {
+        this.meta.create_at = undefined
         this.meta.lesson = {
-          ...this.value.lesson,
           id: id,
           lesson_name: this.selected_lesson.lesson_name,
-          lesson_teacher_name: this.selected_lesson.lesson_teacher_name
+          lesson_teacher_name: this.selected_lesson.lesson_teacher_name,
+          lesson_class: this.selected_lesson.lesson_class,
+      }
+        this.lesson_times = []
+        this.$emit('input',{
+          ...this.value,
+          ...this.meta,
+          lesson: this.meta.lesson
+        })
+        this.allow_select_data = this.selected_lesson.lesson_cases.map((item)=>{
+          return item.lesson_date
+        })
+      },
+      onSelectedLessonCaseChange: function (value) {
+        this.meta.create_at = value
+        let flag = this.selected_lesson.lesson_cases.findIndex((item) => {
+          return item.lesson_date === this.meta.create_at})
+        if (flag!==-1){
+          this.selected_lesson_case =  this.selected_lesson.lesson_cases[flag];
+          this.lesson_times = transTimeToSelectedData(this.selected_lesson_case.lesson_time);
+        } else {
+          this.selected_lesson_case = {}
+        }
+        this.meta.lesson = {
+          ...this.meta.lesson, lesson_room: this.selected_lesson_case.lesson_room
         }
         this.$emit('input',{
           ...this.value,
           lesson: this.meta.lesson
         })
+      },
+
+      getLessonDatePickerOption: function () {
+        let self = this
+        return {
+          disabledDate (value) {
+            let d = dateToString(value, "yyyy-MM-dd")
+            let flag = self.allow_select_data.findIndex((item)=>{return item === d})
+            return (flag === -1)
+          }
+        }
       }
     }
   }

@@ -64,9 +64,6 @@
       return {
         form_meta: {
           _id: undefined,
-          meta: {
-            lesson: {}
-          },
           items: []
         },
         form_inputs:{},
@@ -74,8 +71,8 @@
       }
     },
     mounted() {
-      let id=this.$route.params.id;
-      getFormMeta(id).then((resp)=>{
+      let args=this.$route.params;
+      getFormMeta(args).then((resp)=>{
         this.form_meta=resp.data.form_meta
         this.form_meta.items.forEach((item) => {
             this.form_inputs[item.item_name] = item

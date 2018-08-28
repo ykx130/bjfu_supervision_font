@@ -13,7 +13,7 @@
           <Input v-model="form_meta.name" placeholder="问卷名称..." style="width: 180px"></Input>
         </FormItem>
         <FormItem label="问卷版本：">
-          <Input v-model="form_meta._id" placeholder="问卷辨识符..." style="width: 180px"></Input>
+          <Input v-model="form_meta.version" placeholder="问卷辨识符..." style="width: 180px"></Input>
         </FormItem>
       </Form>
     </div>
@@ -206,7 +206,7 @@
         nowIndex: 0,
         form_meta: {
           meta: {},
-          items: {}
+          items:[]
         }
       }
     },
