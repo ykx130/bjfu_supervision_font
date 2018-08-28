@@ -3,7 +3,9 @@
   <div>
     <!--adjust module start-->
     <!--adjust module end-->
+    <!--dragging start-->
 
+    <!--dragging end-->
     <!--form meta start-->
     <div>
       <h1>问卷结构</h1>
@@ -38,7 +40,7 @@
       <!--single item begin-->
 
       <!--whole form start-->
-      <div style="padding-bottom: 30px;">
+      <draggable style="padding-bottom: 30px;" @start="drag=true" @end="drag=false">
         <Form v-for="(item, index) in form_meta.items " :key="item.item_name" label-position="left" label-width="150">
 
           <div style="border:#eee solid 5px; padding:10px; width: 600px;">
@@ -146,7 +148,7 @@
         </Form>
 
         <br>
-      </div>
+      </draggable>
       <!--whole form end-->
 
       <!--Modals begin-->
@@ -196,22 +198,67 @@
     postFormMeta
   } from '../../service/api/dqs'
   import AddItem from './components/add_item'
+  import draggable from 'vuedraggable'
   export default {
     name: 'form_meta_editor',
     components: {
-      AddItem
+      AddItem,
+      draggable
     },
     data() {
       return {
         nowIndex: 0,
         form_meta: {
-          meta: {},
-          items:[]
+          "_id": "asdfsdfasdf",
+          "name": "理论课表",
+          "version": 1,
+          "meta": {
+            "create_at": "2018-07-01 12:12:12",
+            "guider": "suchang"
+          },
+          "items": [
+            {
+              "item_name": "教师满意度",
+              "type": "form_item",
+              "item_type": "radio_option",
+              "payload": {
+                "options": [
+                  {
+                    "label": "满意",
+                    "value": "满意",
+                    "score": 1
+                  },
+                  {
+                    "label": "一般",
+                    "value": "一般",
+                    "score": 0.75
+                  },
+                  {
+                    "label": "不满意",
+                    "value": "不满意",
+                    "score": 0.5
+                  }
+                ],
+                "weight": 0.3
+              }
+            },
+            {
+              "item_name": "教师评价",
+              "type": "form_item",
+              "item_type": "raw_text",
+              "payload": {}
+            }
+          ]
         }
       }
     },
     mounted: function () {
-
+      // const args = this.$route.params;
+      // if (args.name) {
+      //   getFormMeta(args).then((response) => {
+      //     this.form_meta = response.data.form_meta;
+      //   })
+      // }
     },
     methods: {
       ok() {
