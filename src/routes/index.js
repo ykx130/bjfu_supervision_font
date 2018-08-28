@@ -2,6 +2,7 @@ import dsq from './dsq'
 import user from './user'
 import actives from './actives'
 import lesson from './lesson'
+import consult from './consult'
 
 export default [
   {
@@ -23,5 +24,6 @@ export default [
 	...dsq,
   ...user,
   ...actives,
-  ...lesson
+  ...lesson,
+  ...consult
 ]

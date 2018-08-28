@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Card>
     <h1>用户管理</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
@@ -42,7 +42,7 @@
     <Button type="primary" @click="()=>{this.showUserAddModal=true}" >
       新增
     </Button>
-  </div>
+  </Card>
 </template>
 
 <script>

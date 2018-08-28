@@ -13,14 +13,14 @@ export default[{
     {
       name: "问卷结构编辑",
       path: "meta_editor", // yzr
+      component: resolve => require(['Views/FormMetaCreater/index'], resolve)
+    },
+    {
+      path: "meta_editor/:name/:version", // yzr
       component: resolve => require(['Views/FormMetaEditor/index'], resolve)
     },
     {
-      path: "meta_editor/:id", // yzr
-      component: resolve => require(['Views/FormMetaEditor/index'], resolve)
-    },
-    {
-      path: "form_fill/:id", // 问卷填写
+      path: "form_fill/:name/:version", // 问卷填写
       component: resolve => require(['Views/FormFill/index'], resolve),
     },
     {
@@ -31,6 +31,11 @@ export default[{
       name: "问卷管理",
       path: "form_manager", // xzl
       component: resolve => require(['Views/FormManager/index'], resolve),
+    },
+    {
+      name: "各组评价情况查看",
+      path: "group_sa", // xzl
+      component: resolve => require(['Views/LessonGoodManager/index'], resolve),
     },
   ]
 }]

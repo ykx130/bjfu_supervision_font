@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <Card>
       <Row :gutter="20">
         <Col span="4" v-for="(infor, i) in inforCardData" :key="`infor-${i}`" style="height: 120px;">
           <Card shadow :color="infor.color" :icon="infor.icon" :icon-size="36">
@@ -16,7 +16,7 @@
         <Col span="12"><chart-three></chart-three></Col>
         <Col span="12"><my-table></my-table></Col>
       </Row>
-    </div>
+    </Card>
 </template>
 
 <script type="text/ecmascript-6">

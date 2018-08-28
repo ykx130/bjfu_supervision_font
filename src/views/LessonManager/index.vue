@@ -1,7 +1,12 @@
 <template>
-  <div>
+  <Card>
     <h1>课程管理</h1>
     <br>
+    <Tabs @on-click="onTypeTabClick">
+      <TabPane label="全部" name="全部"></TabPane>
+      <TabPane label="关注课程" name="关注课程"></TabPane>
+      <TabPane label="自主听课" name="自主听课"></TabPane>
+    </Tabs>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="课程名字：" prop="lesson_name">
         <Input style="width: 180px" v-model="query.lesson_name" ></Input>
@@ -26,34 +31,50 @@
       :lesson_id="this.selected_lesson_id"
     ></LessonProfileModal>
 
-    <Table border stripe :columns="columns" :data="data"></Table>
-    <div style="margin: 10px;overflow: hidden">
+    <BatchLessonWatchModal
+      :show="showBatchLessonWatchModal"
+      @onOK="onBatchWatchModalOK"
+      @onCancel="onBatchWatchModalCancel"
+    ></BatchLessonWatchModal>
+
+    <Table  @on-selection-change="selectLessons" border stripe :columns="columns" :data="data"></Table>
       <div style="float: right;">
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </div>
-    </div>
-  </div>
+    <FloatBar><Button type="primary" @click="onBatchWatchClick">批量关注课程</Button>
+    </FloatBar>
+  </Card>
 </template>
 
 <script>
   import LessonProfileModal from './components/LessonProfileModal'
+  import BatchLessonWatchModal from './components/BatchLessonWatchModal'
   import {queryLessons, putLesson} from '../../service/api/lesson'
   import {queryTerms, getCurrentTerms} from '../../service/api/term'
+  import  FloatBar from '../../components/float_bar/float_bar'
   export default {
-    components:{LessonProfileModal},
+    components:{LessonProfileModal, FloatBar ,BatchLessonWatchModal},
     data: function() {
       return {
+
         query: {}, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
         terms: [],
+        selected_lesson_ids: [],
         selected_lesson_id:"", //选中编辑的课程ids
         showLessonProfileModal: false, // 展示编辑弹窗
+        showBatchLessonWatchModal: false,
         pages: {
           _page: 1,
           _per_page: 10
         }, //分页
         columns: [
+          {
+            type: 'selection',
+            width: 60,
+            align: 'center'
+          },
           {
             title: '课程名字',
             render: function (h, params) {
@@ -117,6 +138,7 @@
         //数据表发生变化请求数据
         let args = {...query, ...pages};
         queryLessons(args).then((resp)=>{
+          this.selected_lesson_ids = []
           this.data = resp.data.lessons;
           this.total = resp.data.total;
           this.$router.push({path: '/lesson/manager', query: {...args, ...this.query}});
@@ -140,7 +162,35 @@
       },
       onProfileModalCancel() {
         this.showLessonProfileModal = false
-      }
+      },
+      onBatchWatchModalOK(lesson) {
+        this.showBatchLessonWatchModal = false
+      },
+      onBatchWatchModalCancel() {
+        this.showBatchLessonWatchModal = false
+      },
+      selectLessons: function (selection) {
+        // 批量选择触发
+        this.selected_lesson_ids = selection.map((item)=>{
+          return item.id
+        })
+      },
+      onBatchWatchClick: function () {
+        // 批量关注触发
+        this.showBatchLessonWatchModal  = true
+        console.log("selected lessons id : ", this.selected_lesson_ids)
+      },
+
+      onTypeTabClick: function (name) {
+        // 切换标签触发
+        if (name === "全部") {
+          this.query.lesson_level = undefined
+        } else  {
+          this.query.lesson_level = name
+        }
+        this.pages._page = 1;
+        this.onTableChange(this.query, this.pages)
+      },
     },
     mounted: function () {
       const args = this.$route.query;
@@ -149,12 +199,13 @@
       });
       getCurrentTerms().then((termResp)=>{
         this.query.term = termResp.data.term.name;
-        queryLessons(args).then((resp)=>{
+        queryLessons( {...args, ...this.pages}).then((resp)=>{
           this.data = resp.data.lessons;
           this.total = resp.data.total;
           this.$router.push({path: '/lesson/manager', query: {...args, ...this.query}});
         })
-      })
+      });
+
     }
   }
 </script>
