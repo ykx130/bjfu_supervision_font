@@ -1,6 +1,6 @@
 <template>
   <!--whole form meta editor begin-->
-  <Card>
+  <div>
     <!--adjust module start-->
     <!--adjust module end-->
 
@@ -39,7 +39,7 @@
 
       <!--whole form start-->
       <div style="padding-bottom: 30px;">
-        <Form v-for="(item, index) in form_meta.items " :key="item.item_name" label-position="left" label-width=150>
+        <Form v-for="(item, index) in form_meta.items " :key="item.item_name" label-position="left" label-width="150">
 
           <div style="border:#eee solid 5px; padding:10px; width: 600px;">
             <!--information begin-->
@@ -53,7 +53,7 @@
             <!--if raw_text begin-->
             <div v-if="item.item_type === 'raw_text' ">
               <h3>文本项</h3>
-              <Form :model="item" :label-width=80 inline>
+              <Form :model="item" :label-width="80" inline>
                 <FormItem label="名称">
                   <Input v-model="item.item_name" placeholder="表头名称..." style="width: 180px"></Input>
                 </FormItem>
@@ -64,7 +64,7 @@
             <!--if radio_option start-->
             <div v-if="item.item_type === 'radio_option' ">
               <h3>单选项</h3>
-              <Form :model="item" :label-width=80 inline>
+              <Form :model="item" :label-width="80" inline>
                 <FormItem label="名称">
                   <Input v-model="item.item_name" placeholder="表头名称..." style="width: 180px"></Input>
                 </FormItem>
@@ -85,7 +85,7 @@
             <!--if checkbox_option start-->
             <div v-if="item.item_type === 'checkbox_option' ">
               <h3>多选项</h3>
-              <Form :model="item" :label-width=80 inline>
+              <Form :model="item" :label-width="80" inline>
                 <FormItem label="名称">
                   <Input v-model="item.item_name" placeholder="表头名称..." style="width: 180px"></Input>
                 </FormItem>
@@ -185,7 +185,7 @@
 
     <!--back to top end-->
     <!--form blocks end-->
-  </Card>
+  </div>
 
   <!--whole form meta editor end-->
 </template>
@@ -193,8 +193,7 @@
 
 <script>
   import {
-    getFormMeta,
-    putFormMeta
+    postFormMeta
   } from '../../service/api/dqs'
   import AddItem from './components/add_item'
   export default {
@@ -205,16 +204,14 @@
     data() {
       return {
         nowIndex: 0,
-        form_meta: {}
+        form_meta: {
+          meta: {},
+          items: {}
+        }
       }
     },
     mounted: function () {
-      const args = this.$route.params;
-      if (args.name) {
-        getFormMeta(args).then((response) => {
-          this.form_meta = response.data.form_meta;
-        })
-      }
+
     },
     methods: {
       ok() {
@@ -243,13 +240,13 @@
         this.$Message.info('Items deleted!');
       },
       submitForm: function () {
-        putFormMeta(this.form_meta).then(function (response) {
+        postFormMeta(this.form_meta).then(function (response) {
           console.log(response);
         })
           .catch(function (error) {
             console.log(error);
           });
-        this.$Message.info('Items submitted!');
+        this.$Message.info('Items created!');
       }
     }
   }
