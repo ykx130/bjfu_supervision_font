@@ -4,40 +4,40 @@
   <Form :model="meta" :label-width="80">
     <Row :gutter="16">
       <Col span="6">
-      <FormItem label="听课督导">
-      <Select v-model="meta.create_by" style="width:200px">
-        <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index">{{item.name}}</Option>
-      </Select>
-    </FormItem>
+        <FormItem label="听课督导">
+          <Select v-model="meta.create_by" style="width:200px">
+            <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index">{{item.name}}</Option>
+          </Select>
+        </FormItem>
       </Col>
-    <!--<FormItem label="课程属性">-->
-    <!--<Input v-model="meta.attr" disabled></Input>-->
-    <!--</FormItem>-->
+      <!--<FormItem label="课程属性">-->
+      <!--<Input v-model="meta.attr" disabled></Input>-->
+      <!--</FormItem>-->
       <Col span="6">
-      <FormItem label="课程名字">
-      <Select v-model="meta.lesson.id" style="width:200px" @on-change="onSelectedLessonChange">
-        <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_name + index">{{
-          item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
-        </Option>
-      </Select>
-    </FormItem>
+        <FormItem label="课程名字">
+          <Select v-model="meta.lesson.id" style="width:200px" @on-change="onSelectedLessonChange">
+            <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_name + index">{{
+              item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
+            </Option>
+          </Select>
+        </FormItem>
       </Col>
     </Row>
     <Row :gutter="16">
       <Col span="6">
-    <FormItem label="任课教师	">
-      <Input v-model="meta.lesson.lesson_teacher_name" disabled></Input>
-    </FormItem>
-    <Col span="6">
-        <FormItem label="上课班级">
-          <Input v-model="meta.lesson.lesson_class" disabled style="width:200px"></Input>
+        <FormItem label="任课教师	">
+          <Input v-model="meta.lesson.lesson_teacher_name" disabled></Input>
         </FormItem>
-      </Col>
+        <Col span="6">
+          <FormItem label="上课班级">
+            <Input v-model="meta.lesson.lesson_class" disabled style="width:200px"></Input>
+          </FormItem>
+        </Col>
       </Col>
       <Col span="6">
-      <FormItem label="听课时间">
-      <DatePicker type="date" :value="meta.create_at" format="yyyy-MM-dd" @on-change="onSelectedLessonCaseChange" :options="getLessonDatePickerOption()"></DatePicker>
-      </FormItem>
+        <FormItem label="听课时间">
+          <DatePicker type="date" :value="meta.create_at" format="yyyy-MM-dd" @on-change="onSelectedLessonCaseChange" :options="getLessonDatePickerOption()"></DatePicker>
+        </FormItem>
       </Col>
 
       <Col span="6">
@@ -65,7 +65,6 @@
     data() {
       return {
         lessons: [],
-        selected_lesson_case: {}, //选中的lesson的case
         meta: this.value,
         users: [],
         lesson_times:[],
@@ -74,6 +73,7 @@
     },
     computed: {
       selected_lesson: function () {
+        /*被选中的课程*/
         if (this.meta.lesson.id) {
           let flag = this.lessons.findIndex((item) => {
             return item.id === this.meta.lesson.id
@@ -81,6 +81,18 @@
           return this.lessons[flag]
         } else {
           return {lesson_cases: []}
+        }
+      },
+      selected_lesson_case: function () {
+        /*选中的课程情况*/
+        let flag = this.selected_lesson.lesson_cases.findIndex((item) => {
+          return item.lesson_date === this.meta.create_at})
+        if (flag!==-1){
+          this.lesson_times = transTimeToSelectedData(this.selected_lesson.lesson_cases[flag].lesson_time);
+          return this.selected_lesson.lesson_cases[flag];
+        } else {
+          this.lesson_times = []
+          return {}
         }
       }
     },
@@ -101,13 +113,14 @@
     },
     methods: {
       onSelectedLessonChange: function (id) {
+        /*选择的课程发生变化*/
         this.meta.create_at = undefined
         this.meta.lesson = {
           id: id,
           lesson_name: this.selected_lesson.lesson_name,
           lesson_teacher_name: this.selected_lesson.lesson_teacher_name,
           lesson_class: this.selected_lesson.lesson_class,
-      }
+        }
         this.lesson_times = []
         this.$emit('input',{
           ...this.value,
@@ -119,15 +132,9 @@
         })
       },
       onSelectedLessonCaseChange: function (value) {
+        /*选择的课程case变化 根据时间*/
         this.meta.create_at = value
-        let flag = this.selected_lesson.lesson_cases.findIndex((item) => {
-          return item.lesson_date === this.meta.create_at})
-        if (flag!==-1){
-          this.selected_lesson_case =  this.selected_lesson.lesson_cases[flag];
-          this.lesson_times = transTimeToSelectedData(this.selected_lesson_case.lesson_time);
-        } else {
-          this.selected_lesson_case = {}
-        }
+
         this.meta.lesson = {
           ...this.meta.lesson, lesson_room: this.selected_lesson_case.lesson_room
         }

@@ -65,7 +65,6 @@
     data() {
       return {
         lessons: [],
-        selected_lesson_case: {}, //选中的lesson的case
         meta: this.value,
         users: [],
         lesson_times:[],
@@ -74,6 +73,7 @@
     },
     computed: {
       selected_lesson: function () {
+        /*被选中的课程*/
         if (this.meta.lesson.id) {
           let flag = this.lessons.findIndex((item) => {
             return item.id === this.meta.lesson.id
@@ -81,6 +81,18 @@
           return this.lessons[flag]
         } else {
           return {lesson_cases: []}
+        }
+      },
+      selected_lesson_case: function () {
+        /*选中的课程情况*/
+        let flag = this.selected_lesson.lesson_cases.findIndex((item) => {
+          return item.lesson_date === this.meta.create_at})
+        if (flag!==-1){
+          this.lesson_times = transTimeToSelectedData(this.selected_lesson.lesson_cases[flag].lesson_time);
+          return this.selected_lesson.lesson_cases[flag];
+        } else {
+          this.lesson_times = []
+          return {}
         }
       }
     },
@@ -101,6 +113,7 @@
     },
     methods: {
       onSelectedLessonChange: function (id) {
+        /*选择的课程发生变化*/
         this.meta.create_at = undefined
         this.meta.lesson = {
           id: id,
@@ -119,15 +132,9 @@
         })
       },
       onSelectedLessonCaseChange: function (value) {
+        /*选择的课程case变化 根据时间*/
         this.meta.create_at = value
-        let flag = this.selected_lesson.lesson_cases.findIndex((item) => {
-          return item.lesson_date === this.meta.create_at})
-        if (flag!==-1){
-          this.selected_lesson_case =  this.selected_lesson.lesson_cases[flag];
-          this.lesson_times = transTimeToSelectedData(this.selected_lesson_case.lesson_time);
-        } else {
-          this.selected_lesson_case = {}
-        }
+
         this.meta.lesson = {
           ...this.meta.lesson, lesson_room: this.selected_lesson_case.lesson_room
         }
