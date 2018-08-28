@@ -209,46 +209,8 @@
       return {
         nowIndex: 0,
         form_meta: {
-          "_id": "asdfsdfasdf",
-          "name": "理论课表",
-          "version": 1,
-          "meta": {
-            "create_at": "2018-07-01 12:12:12",
-            "guider": "suchang"
-          },
-          "items": [
-            {
-              "item_name": "教师满意度",
-              "type": "form_item",
-              "item_type": "radio_option",
-              "payload": {
-                "options": [
-                  {
-                    "label": "满意",
-                    "value": "满意",
-                    "score": 1
-                  },
-                  {
-                    "label": "一般",
-                    "value": "一般",
-                    "score": 0.75
-                  },
-                  {
-                    "label": "不满意",
-                    "value": "不满意",
-                    "score": 0.5
-                  }
-                ],
-                "weight": 0.3
-              }
-            },
-            {
-              "item_name": "教师评价",
-              "type": "form_item",
-              "item_type": "raw_text",
-              "payload": {}
-            }
-          ]
+          meta: {},
+          items: {}
         }
       }
     },
