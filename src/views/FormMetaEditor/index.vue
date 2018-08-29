@@ -38,7 +38,7 @@
       <!--single item begin-->
 
       <!--whole form start-->
-      <div style="padding-bottom: 30px;">
+      <draggable style="padding-bottom: 30px;" @start="drag=true" @end="drag=false">
         <Form v-for="(item, index) in form_meta.items " :key="item.item_name" label-position="left" label-width=150>
 
           <div style="border:#eee solid 5px; padding:10px; width: 600px;">
@@ -146,7 +146,7 @@
         </Form>
 
         <br>
-      </div>
+      </draggable>
       <!--whole form end-->
 
       <!--Modals begin-->
@@ -197,15 +197,20 @@
     putFormMeta
   } from '../../service/api/dqs'
   import AddItem from './components/add_item'
+  import draggable from 'vuedraggable'
   export default {
     name: 'form_meta_editor',
     components: {
-      AddItem
+      AddItem,
+      draggable
     },
     data() {
       return {
         nowIndex: 0,
-        form_meta: {}
+        form_meta: {
+          meta: {},
+          items: {}
+        }
       }
     },
     mounted: function () {
