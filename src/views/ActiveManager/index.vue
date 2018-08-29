@@ -2,6 +2,7 @@
 
   <Card>
 
+    <!--<h>hi{{this.total}}!!!</h>-->
     <h1>活动管理</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
@@ -20,6 +21,7 @@
 
     <ActivesAddModal
       :show="showActiveAddModal"
+
       @onOK="onAddModalOK"
       @onCancel="onAddModalCancel"
     ></ActivesAddModal>
@@ -34,6 +36,8 @@
     <float_bar>
       <Button type="primary" @click="()=>{this.showActiveAddModal=true}">新增</Button>
     </float_bar>
+    <!--{{this.activity}}-->
+    <!--{{this.showActiveAddModal}}-->
   </Card>
 </template>
 
@@ -51,6 +55,7 @@
         total: 0, // 总数量
         data: [], //数据
         terms: [],
+        activity:{},
         selected_activity_id:"", //选中编辑的课程ids
         showActivityProfileModal: false, // 展示编辑弹窗
         showActiveAddModal:false,
@@ -148,6 +153,7 @@
         this.showActivityProfileModal = false
       },
       onAddModalOK(activity){
+        this.activity=activity;
         postActive(activity).then((resp)=>{
           this.showActiveAddModal=false;
           this.onTableChange(this.query,this.pages)
@@ -166,7 +172,7 @@
         this.query.term = termResp.data.term.name;
         queryActives(args).then((resp)=>{
             this.data = resp.data.activities;
-            this.total = resp.data.total;
+            this.total = resp.data.activities.length;
             this.$router.push({path: '/active/help', query: {...args, ...this.query}});
         })
       })

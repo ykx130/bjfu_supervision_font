@@ -1,5 +1,5 @@
 <template>
-
+  <div>
     <!--<button type="primary" @click="modal1 = true">新增活动</button>-->
     <Modal
       :value="show"
@@ -71,13 +71,16 @@
         </form-item>
       </Form>
     </Modal>
-    <!--{{this.activity}}-->
 
+    <!--{{this.total}}-->
+    <!--{{this.activity}}-->
+  </div>
 </template>
 
 <script>
   import {queryTerms, getCurrentTerms} from '../../../service/api/term'
   import {dateToString} from "../../../utils/tools";
+  import {queryActives} from "../../../service/api/actives";
 
   export default {
       name: "ActiveAddModal",
@@ -91,6 +94,8 @@
           date:new Date(),
           query: {}, // 查询用的参数
           terms:[],
+          data:[],
+          total:0,
           activity:{
             id:'',
             name:'',
@@ -114,13 +119,17 @@
       },
       methods:{
         handleOK:function(){
+          this.activity.id=this.total+1;
           this.activity.start_time=dateToString(this.inputtime[0],"yyyy-MM-dd hh:mm:ss");
           this.activity.end_time=dateToString(this.inputtime[1],"yyyy-MM-dd hh:mm:ss");
           this.activity.apply_start_time=dateToString(this.inputapplytime[0],"yyyy-MM-dd hh:mm:ss");
           this.activity.apply_end_time=dateToString(this.inputapplytime[1],"yyyy-MM-dd hh:mm:ss");
           this.activity.created_at=dateToString(this.date,"yyyy-MM-dd hh:mm:ss");
           this.activity.updated_at=dateToString(this.date,"yyyy-MM-dd hh:mm:ss");
-          this.$emit('onOK',this.activity)
+          this.$emit('onOK',this.activity);
+          this.activity={};
+          this.inputtime='';
+          this.inputapplytime='';
         },
         handleCancel:function(){
           this.$emit('onCancel')
@@ -132,7 +141,11 @@
           this.terms = resp.data.terms
         });
         getCurrentTerms().then((termResp) => {
-          this.query.user_roles.term = termResp.data.term.name;
+          this.query.term = termResp.data.term.name;
+        });
+        queryActives(args).then((resp)=>{
+          this.data = resp.data.activities;
+          this.total = resp.data.activities.length;
         })
       }
     }
