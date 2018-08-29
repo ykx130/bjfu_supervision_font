@@ -3,15 +3,13 @@
     <h1>用户大事件</h1>
     <br>
     <div style="float: left" >
-      <Timeline v-model="events">
+      <Timeline v-model="events" style="width: 180px;margin-left: 20px">
           <TimelineItem v-for="event in events">
-              <p style="font-size: 14px; font-weight: bold">{{ event.timestamp}}</p>
-            <Collapse simple accordion style="width: 200px" @click.native="showTable(event)">
-                <Panel>
-                    {{ event.name }}
-                    <p slot="content">{{ event.detail }}</p>
-                </Panel>
-            </Collapse>
+            <p style="font-size: 14px; font-weight: bold" class="changeColor">{{ event.timestamp}}</p>
+            <span @click="showTable(event)">
+              <p style="font-size: 14px">{{ event.name }}</p>
+              <p>{{ event.detail }}</p>
+            </span>
           </TimelineItem>
       </Timeline>
     </div>
@@ -127,13 +125,15 @@
     },
     methods: {
       showTable(event) {
+        this.data = [];
+        document.getElementsByClassName('changeColor')[event.id-1].style.color = 'blue';
         this.query.meta.lesson.lesson_teacher_name = event.username;
         this.query.meta.create_at_gte = event.timestamp;
-        if(event.id < this.events.length) {
+        if (event.id < this.events.length) {
           this.query.meta.create_at_lte = this.events[event.id].timestamp;
         }
         queryForms(this.query).then((resp) => {
-          this.data.push(...resp.data.forms);
+          this.data = resp.data.forms;
         });
       }
     }
