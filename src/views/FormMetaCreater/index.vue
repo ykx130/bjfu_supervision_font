@@ -40,7 +40,7 @@
       <!--single item begin-->
 
       <!--whole form start-->
-      <draggable style="padding-bottom: 30px;" @start="drag=true" @end="drag=false">
+      <draggable v-model="form_meta.items" style="padding-bottom: 30px; width: 650px;" @start="drag=true" @end="drag=false">
         <Form v-for="(item, index) in form_meta.items " :key="item.item_name" label-position="left" label-width="150">
 
           <div style="border:#eee solid 5px; padding:10px; width: 600px;">
@@ -209,8 +209,10 @@
       return {
         nowIndex: 0,
         form_meta: {
-          meta: {},
-          items: {}
+          "meta": {
+          },
+          "items": [
+          ]
         }
       }
     },
