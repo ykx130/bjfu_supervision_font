@@ -4,9 +4,9 @@
     <br>
     <div style="float: left" >
       <Timeline v-model="events" style="width: 180px;margin-left: 20px">
-          <TimelineItem v-for="event in events">
-            <p style="font-size: 14px; font-weight: bold" class="changeColor">{{ event.timestamp}}</p>
-            <span @click="showTable(event)">
+          <TimelineItem v-for="(event,index) in events" :key="'event'+index">
+            <p style="font-size: 14px; font-weight: bold;" :class="event.status">{{ event.timestamp}}</p>
+            <span @click="showTable(event, index)">
               <p style="font-size: 14px">{{ event.name }}</p>
               <p>{{ event.detail }}</p>
             </span>
@@ -121,25 +121,41 @@
       const args = this.$route.params;
       getEvents(args.username).then((resp) => {
         this.events = resp.data.events;
+        this.events = this.events.map((item)=>{return {
+          ...item,
+          status: 'unselect'
+        }})
       });
     },
     methods: {
-      showTable(event) {
+      showTable:function(event, index) {
         this.data = [];
-        document.getElementsByClassName('changeColor')[event.id-1].style.color = 'blue';
         this.query.meta.lesson.lesson_teacher_name = event.username;
         this.query.meta.create_at_gte = event.timestamp;
         if (event.id < this.events.length) {
           this.query.meta.create_at_lte = this.events[event.id].timestamp;
         }
+        this.resetColor()
+        this.events[index].status = 'select'
         queryForms(this.query).then((resp) => {
           this.data = resp.data.forms;
         });
+      },
+      resetColor: function () {
+        this.events = this.events.map((item)=>{return {
+          ...item,
+          status: "unselect"
+        }})
       }
     }
   }
 </script>
 
 <style scoped>
-
+  .select {
+    color: #0984e3;
+  }
+  .unselect {
+    color: #444444;
+  }
 </style>

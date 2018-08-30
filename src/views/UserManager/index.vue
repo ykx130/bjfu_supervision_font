@@ -140,6 +140,18 @@
             key: 'phone'
           },
           {
+            title: '大事件',
+            align: 'center',
+            render: (h, params) => {
+              return h('a', {
+                on: {
+                  click: () => {
+                    this.$router.push({path:`/user/events/${params.row.username}`})
+                  }
+                }}, '查看');
+            }
+          },
+          {
             title: '操作',
             align: 'center',
             render: (h, params) => {
@@ -159,7 +171,7 @@
                       this.showUserProfileModal=true
                     }
                   }
-                }, '查看')
+                }, '修改')
               ]);
             }
           }
