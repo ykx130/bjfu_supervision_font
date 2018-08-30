@@ -40,7 +40,7 @@
   import UserAddModal from './components/UserAddModal'
   import {queryUsers, putUser, postUser} from '../../service/api/user'
   export default {
-    components:{UserProfileModal,UserAddModal},
+    components:{UserProfileModal, UserAddModal},
     data: function() {
       return {
         query: {
