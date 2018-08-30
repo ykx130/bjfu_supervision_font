@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <h1>活动报名</h1>
+    <h1>咨询管理</h1>
     <br>
     <Tabs @on-click="onTypeTabClick">
       <TabPane label="未协调" name="未协调"></TabPane>
@@ -8,6 +8,14 @@
     </Tabs>
 
     <Form :label-width="80" :model="query" inline>
+      <FormItem label="学期：" prop="term">
+        <Select v-model="query.term" style="width:200px">
+          <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
+        </Select>
+        </FormItem>
+      <FormItem >
+        <Button type="primary" @click="onSearch(query)">查询</Button>
+      </FormItem>
     </Form>
 
     <Table border stripe :columns="columns" :data="data"></Table>
@@ -20,11 +28,12 @@
 </template>
 
 <script>
+  import {queryTerms, getCurrentTerms} from '../../service/api/term'
+  import {queryConsults, getConsults} from '../../service/api/consult'
   export default {
-    components:{},
     data: function() {
       return {
-        select_tag: '未协调',
+        select_tag: '已协调',
         query: {}, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
@@ -34,13 +43,103 @@
           _page: 1,
           _per_page: 10
         }, //分页
-        columns: []
+        columns: [
+          {
+            title: '序号',
+            key: 'id'
+          },
+          {
+            title: '咨询类型',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.type_id }</span>
+            )
+            }
+          },
+          {
+            title: '申请人姓名',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.requester_username }</span>
+            )
+            }
+          },
+          {
+            title: '提交时间',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.submit_time }</span>
+            )
+            }
+          },
+          {
+            title: '学期',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.term }</span>
+            )
+            }
+          },
+          {
+            title: '状态',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.state }</span>
+            )
+            }
+          },
+          {
+            title: '信息描述',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.meta_description }</span>
+            )
+            }
+          },
+          {
+            title: '联系方式',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.phone}</span>
+            )
+            }
+          },
+          {
+            title: '回复时间',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.answer_time }</span>
+            )
+            }
+          },
+          {
+            title: '回复人姓名',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.meta_description }</span>
+            )
+            }
+          },
+          {
+            title: '内容',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.content }</span>
+            )
+            }
+          },
+        ]
       }
     },
     methods: {
       onTableChange(query, pages) {
         //数据表发生变化请求数据
         let args = {...query, ...pages};
+        queryConsults(args).then((resp)=>{
+          this.data = resp.data.consults;
+          this.total = resp.data.total;
+          this.$router.push({path: '/consult/manager', query: {...args, ...this.query}});
+        })
       },
       onPageChange(page) {
         //分页变化
@@ -58,6 +157,17 @@
     },
     mounted: function () {
       const args = this.$route.query;
+      queryTerms().then((resp)=>{
+        this.terms = resp.data.terms
+      });
+      getCurrentTerms().then((termResp)=>{
+        this.query.term = termResp.data.term.name;
+        queryConsults({...args, ...this.query}).then((resp)=>{
+          this.data = resp.data.consults;
+          this.total = resp.data.total;
+          this.$router.push({path: '/consult/manager', query: {...args, ...this.query}})
+        })
+      })
     }
   }
 </script>
