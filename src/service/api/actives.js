@@ -2,7 +2,7 @@
 import axios from "Plugins/axios";
 
 export const queryActives =(params)=> {
-  return axios.get('/api/activities', {params: params})
+  return axios.get('/api/current_user/activities', {params: params})
 };
 
 export const getActive =(id)=> {

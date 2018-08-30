@@ -1,4 +1,5 @@
 <template>
+ <card>
   <div>
     <h1>咨询申请</h1>
     <br>
@@ -14,6 +15,7 @@
       </FormItem>
     </Form>
   </div>
+ </card>
 </template>
 
 <script>

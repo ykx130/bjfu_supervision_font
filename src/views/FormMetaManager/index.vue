@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Card>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="问卷名字：" prop="name">
         <Input style="width: 180px" v-model="query.name" ></Input>
@@ -12,7 +12,7 @@
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </div>
     </div>
-  </div>
+  </Card>
 </template>
 <script>
   import { queryFormMetas } from '../../service/api/dqs'
@@ -68,7 +68,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path:`/dqs/form_fill/${params.row._id}`})
+                      this.$router.push({path:`/dqs/form_fill/${params.row.name}/${params.row.version}`})
                     }
                   }
                 }, '查看'),
@@ -82,7 +82,7 @@
                   },
                   on: {
                     click: () => {
-                      this.$router.push({path:`/dqs/meta_editor/${params.row._id}`})
+                      this.$router.push({path:`/dqs/meta_editor/${params.row.name}/${params.row.version}`})
                     }
                   }
                 }, '编辑')

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Card>
     <h1>咨询管理</h1>
     <br>
     <Tabs @on-click="onTypeTabClick">
@@ -24,7 +24,7 @@
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </div>
     </div>
-  </div>
+  </Card>
 </template>
 
 <script>

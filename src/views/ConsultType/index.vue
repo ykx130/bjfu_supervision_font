@@ -1,4 +1,5 @@
 <template>
+ <card>
   <div>
     <h1>咨询类型管理</h1>
     <br>
@@ -14,6 +15,7 @@
       新增
     </Button>
   </div>
+ </Card>
 </template>
 
 <script>

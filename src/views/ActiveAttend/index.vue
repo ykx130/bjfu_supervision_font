@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Card>
     <h1>活动报名</h1>
     <br>
     <Tabs @on-click="onTypeTabClick">
@@ -26,7 +26,7 @@
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </div>
     </div>
-  </div>
+  </Card>
 </template>
 
 <script>
@@ -39,7 +39,10 @@
         select_tag: '可报名',
         query: {}, // 查询用的参数
         total: 0, // 总数量
-        data: [], //数据
+        data: [{
+          activity:{},
+          activity_user:{}
+        }], //数据
         terms: [],
         selected_activity_id:"", //选中编辑的课程ids
         pages: {
@@ -51,7 +54,7 @@
             title: '活动名称',
             render: function (h, params) {
               return (
-                <span>{ params.row.name }</span>
+                <span>{ params.row.activity.name }</span>
             )
             }
           },
@@ -59,7 +62,7 @@
             title: '活动地点',
             render: function (h, params) {
               return (
-                <span>{ params.row.place }</span>
+                <span>{ params.row.activity.place }</span>
             )
             }
           },
@@ -67,7 +70,15 @@
             title: '活动状态',
             render: function (h, params) {
               return (
-                <span>{ params.row.state }</span>
+                <span>{ params.row.activity.state }</span>
+            )
+            }
+          },
+          {
+            title: '参加状态',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.activity_user.fin_state }</span>
             )
             }
           },
@@ -75,7 +86,7 @@
             title: '开始时间',
             render: function (h, params) {
               return (
-                <span>{ params.row.start_time }</span>
+                <span>{ params.row.activity.start_time }</span>
             )
             }
           },
@@ -83,7 +94,7 @@
             title: '结束时间',
             render: function (h, params) {
               return (
-                <span>{ params.row.end_time }</span>
+                <span>{ params.row.activity.end_time }</span>
             )
             }
           },
