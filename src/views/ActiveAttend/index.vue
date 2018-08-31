@@ -20,7 +20,8 @@
       </FormItem>
     </Form>
 
-    <Table border stripe :columns="columns" :data="data"></Table>
+    <already-registered v-if="select_tag==='已报名'"></already-registered>
+    <can-register v-else-if="select_tag==='可报名'"></can-register>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
@@ -30,10 +31,16 @@
 </template>
 
 <script>
-  import {queryActives, putActive, postActive} from '../../service/api/actives'
+  import {queryCurrentuserActives, putActive, postActive} from '../../service/api/actives'
   import {queryTerms, getCurrentTerms} from '../../service/api/term'
+  import alreadyRegistered from './components/alreadyRegistered'
+  import canRegister from './components/canRegister'
+
   export default {
-    components:{},
+    components:{
+      alreadyRegistered,
+      canRegister
+    },
     data: function() {
       return {
         select_tag: '可报名',
@@ -48,87 +55,14 @@
         pages: {
           _page: 1,
           _per_page: 10
-        }, //分页
-        columns: [
-          {
-            title: '活动名称',
-            render: function (h, params) {
-              return (
-                <span>{ params.row.activity.name }</span>
-            )
-            }
-          },
-          {
-            title: '活动地点',
-            render: function (h, params) {
-              return (
-                <span>{ params.row.activity.place }</span>
-            )
-            }
-          },
-          {
-            title: '活动状态',
-            render: function (h, params) {
-              return (
-                <span>{ params.row.activity.state }</span>
-            )
-            }
-          },
-          {
-            title: '参加状态',
-            render: function (h, params) {
-              return (
-                <span>{ params.row.activity_user.fin_state }</span>
-            )
-            }
-          },
-          {
-            title: '开始时间',
-            render: function (h, params) {
-              return (
-                <span>{ params.row.activity.start_time }</span>
-            )
-            }
-          },
-          {
-            title: '结束时间',
-            render: function (h, params) {
-              return (
-                <span>{ params.row.activity.end_time }</span>
-            )
-            }
-          },
-          {
-            title: '操作',
-            align: 'center',
-            render: (h, params) => {
-              return h('div', [
-                h('Button', {
-                  props: {
-                    type: 'primary',
-                    size: 'small'
-                  },
-                  style: {
-                    marginRight: '2px'
-                  },
-                  on: {
-                    click: () => {
-                      this.selected_activity_id = params.row.id;
-
-                    }
-                  }
-                }, '报名')
-              ]);
-            }
-          }
-        ]
+        }//分页
       }
     },
     methods: {
       onTableChange(query, pages) {
         //数据表发生变化请求数据
         let args = {...query, ...pages};
-        queryActives(args).then((resp)=>{
+        queryCurrentuserActives(args).then((resp)=>{
           this.data = resp.data.activities;
           this.total = resp.data.total;
           this.$router.push({path: '/active/help', query: {...args, ...this.query}});
@@ -155,7 +89,7 @@
       });
       getCurrentTerms().then((termResp)=>{
         this.query.term = termResp.data.term.name;
-        queryActives(args).then((resp)=>{
+        queryCurrentuserActives(args).then((resp)=>{
           this.data = resp.data.activities;
           this.total = resp.data.total;
           this.$router.push({path: '/attend', query: {...args, ...this.query}});
