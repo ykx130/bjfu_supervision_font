@@ -16,7 +16,7 @@
             <template  v-else-if="it.item_type === 'radio_option'">
               <FormItem :label="it.item_name">
                 <RadioGroup v-model="it.value">
-                  <Radio  v-for="op in it.payload.options" :label="op.label" :key="op.value" v-bind:style="{ fontSize:'15px',marginLeft:'25px' }" disabled>
+                  <Radio  v-for="op in it.payload.options"  :value="op.value" :label="op.label" :key="op.value" v-bind:style="{ fontSize:'15px',marginLeft:'25px' }" disabled>
                     <span>{{op.label}}</span>
                   </Radio>
                 </RadioGroup>

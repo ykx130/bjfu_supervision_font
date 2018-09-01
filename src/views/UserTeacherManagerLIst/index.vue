@@ -2,6 +2,10 @@
   <Card>
     <h1>督导管理</h1>
     <br>
+    <Tabs @on-click="onTypeTabClick">
+      <TabPane label="全部" name="全部"></TabPane>
+      <TabPane label="可续约" name="可续约"></TabPane>
+    </Tabs>
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>
         <FormItem label="用户名字：" prop="name">
@@ -61,6 +65,7 @@
         total: 0, // 总数量
         data: [], //数据
         terms:[],
+        selected_tab: "全部",
         selected_username:"", //选中编辑的用户的name
         showUserProfileModal: false, // 展示编辑弹窗
         showUserAddModal: false,
@@ -150,6 +155,9 @@
       },
       onAddModalCancel() {
         this.showUserAddModal = false
+      },
+      onTypeTabClick(value){
+        this.selected_tab = value
       }
     },
     mounted: function () {

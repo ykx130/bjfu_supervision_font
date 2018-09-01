@@ -69,10 +69,6 @@
         }, //分页
         columns: [
           {
-            title: '序号',
-            key: 'id'
-          },
-          {
             title: '用户名',
             key: 'username'
           },
