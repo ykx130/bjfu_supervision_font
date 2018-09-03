@@ -1,4 +1,5 @@
 import qs from 'qs'
+import moment from 'moment'
 
 export function getNumb() {
     var num = new Array();
@@ -104,3 +105,9 @@ export function dateToString (date, format) {
   }
   return format;
 };
+
+
+// 转换学期第一的第一天 周数 星期几 到 日期
+export function transLessonWeekToData(term_day , week, weekday) {
+   return moment(term_day).add(week,'weeks').add(weekday, 'days').format("YYYY-MM-DD")
+}

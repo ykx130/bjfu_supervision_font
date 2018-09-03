@@ -1,117 +1,139 @@
 <template>
   <div>
-    <Button type="primary" @click="modal1 = true">Add an activity</Button>
+    <!--<button type="primary" @click="modal1 = true">新增活动</button>-->
     <Modal
-      v-model="modal1"
+      :value="show"
       title="增加一项活动"
-      @on-ok="ok"
-      @on-cancel="cancel"
+      @on-ok="handleOK"
+      @on-cancel="handleCancel"
       style="width: 600px;">
-      <Form :label-width="70" style="width: 400px">
-        <form-item label="name:">
+      <Form :label-width="100" style="width: 400px">
+        <form-item label="活动名称:">
           <Row>
             <Col span="">
-              <Input v-model="inputname" placeholder="Enter something..."></Input>
+              <Input v-model="activity.name" placeholder="Enter something..."></Input>
             </Col>
           </Row>
         </form-item>
-        <form-item label="teacher:">
+        <form-item label="责任老师:">
           <Row>
             <Col span="">
-              <Input v-model="inputteacher" placeholder="Enter something..."></Input>
+              <Input v-model="activity.teacher" placeholder="Enter something..."></Input>
             </Col>
           </Row>
         </form-item>
-        <form-item label="time:">
+        <form-item label="活动时间:">
           <Row>
             <Col span="">
               <DatePicker type="datetimerange" placeholder="Select date" style="width: 330px" v-model="inputtime"></DatePicker>
             </Col>
           </Row>
         </form-item>
-        <form-item label="place:">
+        <form-item label="活动地点:">
           <Row>
             <Col span="">
-              <Input v-model="inputplace" placeholder="Enter something..."></Input>
+              <Input v-model="activity.place" placeholder="Enter something..."></Input>
             </Col>
           </Row>
         </form-item>
-        <form-item label="state:">
+        <form-item label="活动状态:">
           <Row>
             <Col span="">
-              <Input v-model="inputstate" placeholder="Enter something..."></Input>
+              <Input v-model="activity.state" placeholder="Enter something..."></Input>
             </Col>
           </Row>
         </form-item>
-        <form-item label="information:">
+        <form-item label="活动信息:">
           <Row>
             <Col span="">
-              <Input v-model="inputinfo" placeholder="Enter something..."></Input>
+              <Input v-model="activity.information" type="textarea" placeholder="Enter something..."></Input>
             </Col>
           </Row>
         </form-item>
         <FormItem label="学期：">
-          <Select v-model="query.user_roles.term" style="width:200px">
+          <Select v-model="activity.term" style="width:200px">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
+        <form-item label="报名时间:">
+          <Row>
+            <Col span="">
+              <DatePicker type="datetimerange" placeholder="Select date" style="width: 330px" v-model="inputapplytime"></DatePicker>
+            </Col>
+          </Row>
+        </form-item>
+        <form-item label="报名状态:">
+          <Row>
+            <Col span="">
+              <Input v-model="activity.apply_state" placeholder="Enter something..."></Input>
+            </Col>
+          </Row>
+        </form-item>
       </Form>
     </Modal>
-    <!--{{this.inputtime}}-->
-    <!--{{this.activity.start_time}}-->
-    <!--{{this.activity.end_time}}-->
+
+    <!--{{this.total}}-->
+    <!--{{this.activity}}-->
   </div>
 </template>
 
 <script>
   import {queryTerms, getCurrentTerms} from '../../../service/api/term'
-  // import FloatBar from '../../components/float_bar/float_bar'
   import {dateToString} from "../../../utils/tools";
+  import {queryActives} from "../../../service/api/actives";
 
   export default {
-      name: "ActivesAddModal",
-      data () {
+      name: "ActiveAddModal",
+      props:{
+        show:Boolean,
+        onCancel:Function,
+        onOK: Function,
+      },
+    data () {
         return {
-          query: {
-            user_roles: {term: ""}
-          }, // 查询用的参数
-          total: 0, // 总数量
-          data: [], //数据
+          date:new Date(),
+          query: {}, // 查询用的参数
           terms:[],
-          flag:false,
-          activity:{},
-          inputname:'',
-          inputteacher:'',
+          data:[],
+          total:0,
+          activity:{
+            id:'',
+            name:'',
+            teacher:'',
+            start_time:'',
+            end_time:'',
+            place:'',
+            state:'',
+            information:'',
+            term:'',
+            created_at:'',
+            updated_at:'',
+            apply_start_time:'',
+            apply_end_time:'',
+            apply_state:'',
+          },
           inputtime:'',
-          inputplace:'',
-          inputstate:'',
-          inputinfo:'',
-          inputterm:'',
-          modal1: false,
+          inputapplytime:'',
+          // modal1: false,
         }
       },
-      props:{
-        onOk: Function,
-        onCancel: Function
-      },
       methods:{
-        ok(){
-          this.activity.id='';
-          this.activity.name=this.inputname;
-          this.activity.teacher=this.inputteacher;
-          this.activity.time=this.inputtime;
-          this.activity.state=this.inputstate;
-          this.activity.place=this.inputplace;
-          this.activity.information=this.inputinfo;
+        handleOK:function(){
+          this.activity.id=this.total+1;
           this.activity.start_time=dateToString(this.inputtime[0],"yyyy-MM-dd hh:mm:ss");
           this.activity.end_time=dateToString(this.inputtime[1],"yyyy-MM-dd hh:mm:ss");
-          this.$emit('onOk',this.activity);
-          this.inputname='';
-          this.inputteacher='';
-          this.inputstate='';
-          this.inputplace='';
-          this.inputinfo='';
+          this.activity.apply_start_time=dateToString(this.inputapplytime[0],"yyyy-MM-dd hh:mm:ss");
+          this.activity.apply_end_time=dateToString(this.inputapplytime[1],"yyyy-MM-dd hh:mm:ss");
+          this.activity.created_at=dateToString(this.date,"yyyy-MM-dd hh:mm:ss");
+          this.activity.updated_at=dateToString(this.date,"yyyy-MM-dd hh:mm:ss");
+          this.$emit('onOK',this.activity);
+          this.activity={};
+          this.inputtime='';
+          this.inputapplytime='';
         },
+        handleCancel:function(){
+          this.$emit('onCancel')
+        }
       },
       mounted: function () {
         let args = this.$route.query;
@@ -119,7 +141,11 @@
           this.terms = resp.data.terms
         });
         getCurrentTerms().then((termResp) => {
-          this.query.user_roles.term = termResp.data.term.name;
+          this.query.term = termResp.data.term.name;
+        });
+        queryActives(args).then((resp)=>{
+          this.data = resp.data.activities;
+          this.total = resp.data.activities.length;
         })
       }
     }

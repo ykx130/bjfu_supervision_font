@@ -1,15 +1,16 @@
 <template>
-  <Card>
-    <h1>用户管理</h1>
+  <div>
+
+    <h1>督导续约</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>
         <FormItem label="用户名字：" prop="name">
-         <Input style="width: 180px" v-model="query.name" ></Input>
+          <Input style="width: 180px" v-model="query.name" ></Input>
         </FormItem>
 
-        <FormItem label="学期：">
-          <Select v-model="query.user_roles.term" style="width:200px">
+        <FormItem label="学期：" prop="term">
+          <Select v-model="query.term" style="width:200px">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
@@ -33,41 +34,60 @@
       @onCancel="onAddModalCancel"
     ></UserAddModal>
 
-    <Table border stripe :columns="columns" :data="data"></Table>
-    <div style="margin: 10px;overflow: hidden">
-      <div style="float: right;">
-        <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
-      </div>
+    <Modal
+      :value="showDelayGuiderModal"
+      @on-ok="onDelayGuiderModalOK"
+      @on-cancel="()=>{this.showDelayGuiderModal = false}"
+    >
+      选中用户将被续约
+    </Modal>
+
+  <Table border stripe :columns="columns" :data="data"  @on-selection-change="selectGuider"></Table>
+  <div style="margin: 10px;overflow: hidden">
+    <div style="float: right;">
+      <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
     </div>
-    <Button type="primary" @click="()=>{this.showUserAddModal=true}" >
-      新增
-    </Button>
-  </Card>
+  </div>
+
+    <FloatBar><Button type="primary" @click="onShowDelayGuiderClick">批量续约</Button>
+    </FloatBar>
+  </div>
+
 </template>
 
 <script>
-  import UserProfileModal from './components/UserProfileModal'
-  import UserAddModal from './components/UserAddModal'
-  import {queryTerms, getCurrentTerms} from '../../service/api/term'
-  import {queryUsers, putUser, postUser} from '../../service/api/user'
+  import { queryRoles} from '../../../service/api/user'
+  import UserProfileModal from './UserProfileModal'
+  import UserAddModal from './UserAddModal'
+  import  FloatBar from '../../../components/float_bar/float_bar'
+  import {queryTerms, getCurrentTerms} from '../../../service/api/term'
+  import {queryUsers, putUser, postUser} from '../../../service/api/user'
   export default {
-    components:{UserProfileModal,UserAddModal},
+    components:{UserProfileModal,UserAddModal, FloatBar},
     data: function() {
       return {
         query: {
+          term: "",
           user_roles: {term: ""}
         }, // 查询用的参数
         total: 0, // 总数量
         data: [], //数据
         terms:[],
+        selected_guider_ids: [],
         selected_username:"", //选中编辑的用户的name
         showUserProfileModal: false, // 展示编辑弹窗
         showUserAddModal: false,
+        showDelayGuiderModal: false,
         pages: {
           _page: 1,
           _per_page: 10
         }, //分页
         columns: [
+          {
+            type: 'selection',
+            width: 60,
+            align: 'center'
+          },
           {
             title: '用户名',
             key: 'username'
@@ -77,74 +97,12 @@
             key: 'name'
           },
           {
-            title: '性别',
-            key: 'sex'
-          },
-          {
-            title: '学院',
-            key: 'unit'
-          },
-          {
-            title: '专业',
-            key: 'skill'
-          },
-          {
-            title: '职称',
-            key: 'prorank'
-          },
-          {
-            title: '在职状态',
-            key: 'state'
-          },
-          {
-            title: '工作状态',
-            key: 'work_state'
-          },
-          {
-            title: '任期开始',
-            key: 'start_time'
-          },
-          {
-            title: '任期结束',
-            key: 'end_time'
-          },
-          {
-            title: '状态',
-            key: 'status'
-          },
-          {
             title: '身份',
             render: function (h, params) {
-              let tags = params.row.role_names.map((item)=>{
+              let tags = params.row.roles.map((item)=>{
                 return h('Tag', item)
               })
               return h('span',tags)
-            }
-          },
-          {
-            title: '小组',
-            render: function (h, params) {
-              return h('span',params.row.group)
-            }
-          },
-          {
-            title: '电子邮箱',
-            key: 'email'
-          },
-          {
-            title: '电话',
-            key: 'phone'
-          },
-          {
-            title: '大事件',
-            align: 'center',
-            render: (h, params) => {
-              return h('a', {
-                on: {
-                  click: () => {
-                    this.$router.push({path:`/user/events/${params.row.username}`})
-                  }
-                }}, '查看');
             }
           },
           {
@@ -167,7 +125,7 @@
                       this.showUserProfileModal=true
                     }
                   }
-                }, '修改')
+                }, '查看')
               ]);
             }
           }
@@ -198,7 +156,6 @@
         // 更新框确定 关闭
         putUser(user).then((resp)=>{
           this.showUserProfileModal = false
-          this.onTableChange(this.query, this.pages)
         })
       },
       onProfileModalCancel() {
@@ -208,11 +165,22 @@
         // 更新框确定 关闭
         postUser(user).then((resp)=>{
           this.showUserAddModal = false
-          this.onTableChange(this.query, this.pages)
         })
       },
       onAddModalCancel() {
         this.showUserAddModal = false
+      },
+      selectGuider(selection){
+        this.selected_guider_ids = selection.map((item)=>{
+          return item.username
+        })
+      },
+      onDelayGuiderModalOK() {
+        console.log("续约")
+        this.showDelayGuiderModal = false
+      },
+      onShowDelayGuiderClick() {
+        this.showDelayGuiderModal = true
       }
     },
     mounted: function () {
@@ -225,7 +193,7 @@
         queryUsers({...args, ...this.query}).then((resp)=>{
           this.data = resp.data.users
           this.total = resp.data.total
-          this.$router.push({path: '/user/guiders', query: {...args, ...this.query}})
+          this.$router.push({path: '/user/teachers', query: {...args, ...this.query}})
         })
       })
     }
