@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h1>督导续约</h1>
+    <h1>督导管理</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>
@@ -33,24 +33,16 @@
       @onOK="onAddModalOK"
       @onCancel="onAddModalCancel"
     ></UserAddModal>
-
-    <Modal
-      :value="showDelayGuiderModal"
-      @on-ok="onDelayGuiderModalOK"
-      @on-cancel="()=>{this.showDelayGuiderModal = false}"
-    >
-      选中用户将被续约
-    </Modal>
-
-  <Table border stripe :columns="columns" :data="data"  @on-selection-change="selectGuider"></Table>
+  <Table border stripe :columns="columns" :data="data"></Table>
   <div style="margin: 10px;overflow: hidden">
     <div style="float: right;">
       <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
     </div>
   </div>
 
-    <FloatBar><Button type="primary" @click="onShowDelayGuiderClick">批量续约</Button>
-    </FloatBar>
+    <Button type="primary" @click="()=>{this.showUserAddModal=true}" >
+      新增
+    </Button>
   </div>
 
 </template>
@@ -59,11 +51,10 @@
   import { queryRoles} from '../../../service/api/user'
   import UserProfileModal from './UserProfileModal'
   import UserAddModal from './UserAddModal'
-  import  FloatBar from '../../../components/float_bar/float_bar'
   import {queryTerms, getCurrentTerms} from '../../../service/api/term'
   import {queryUsers, putUser, postUser} from '../../../service/api/user'
   export default {
-    components:{UserProfileModal,UserAddModal, FloatBar},
+    components:{UserProfileModal,UserAddModal},
     data: function() {
       return {
         query: {
@@ -73,21 +64,14 @@
         total: 0, // 总数量
         data: [], //数据
         terms:[],
-        selected_guider_ids: [],
         selected_username:"", //选中编辑的用户的name
         showUserProfileModal: false, // 展示编辑弹窗
         showUserAddModal: false,
-        showDelayGuiderModal: false,
         pages: {
           _page: 1,
           _per_page: 10
         }, //分页
         columns: [
-          {
-            type: 'selection',
-            width: 60,
-            align: 'center'
-          },
           {
             title: '用户名',
             key: 'username'
@@ -170,18 +154,6 @@
       onAddModalCancel() {
         this.showUserAddModal = false
       },
-      selectGuider(selection){
-        this.selected_guider_ids = selection.map((item)=>{
-          return item.username
-        })
-      },
-      onDelayGuiderModalOK() {
-        console.log("续约")
-        this.showDelayGuiderModal = false
-      },
-      onShowDelayGuiderClick() {
-        this.showDelayGuiderModal = true
-      }
     },
     mounted: function () {
       let args = this.$route.query;
