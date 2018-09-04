@@ -1,5 +1,29 @@
 <template>
-  <Table border stripe :columns="columns" :data="data"></Table>
+  <div>
+    <h1>活动报名</h1>
+    <br>
+    <Form :label-width="80" :model="query" inline>
+      <FormItem label="活动名称：" prop="activity">
+        <Input style="width: 180px" v-model="query.name" ></Input>
+      </FormItem>
+      <FormItem label="学期：" :prop="'activity.term'">
+        <Select v-model="query.term" style="width:200px">
+          <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
+        </Select>
+      </FormItem>
+      <FormItem >
+        <Button type="primary" @click="onSearch(query)">查询</Button>
+      </FormItem>
+    </Form>
+
+    <Table border stripe :columns="columns" :data="data"></Table>
+    <div style="margin: 10px;overflow: hidden">
+      <div style="float: right;">
+        <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -18,6 +42,10 @@
           }], //数据
           terms: [],
           selected_activity_id:"", //选中编辑的课程ids
+          pages: {
+            _page: 1,
+            _per_page: 10
+          },//分页
           columns: [
             {
               title: '活动名称',
@@ -97,11 +125,21 @@
         onTableChange(query, pages) {
           //数据表发生变化请求数据
           let args = {...query, ...pages};
-          queryCurrentuserActives(args).then((resp) => {
+          queryCurrentuserActives(args).then((resp)=>{
             this.data = resp.data.activities;
             this.total = resp.data.total;
             this.$router.push({path: '/active/help', query: {...args, ...this.query}});
           })
+        },
+        onPageChange(page) {
+          //分页变化
+          this.pages._page = page;
+          this.onTableChange(this.query, this.pages)
+        },
+        onSearch() {
+          //查询变化
+          this.pages._page = 1;
+          this.onTableChange(this.query, this.pages)
         }
       },
       mounted: function () {
