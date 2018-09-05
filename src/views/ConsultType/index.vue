@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import {queryConsult_types, getConsult_types,postConsult_types } from '../../service/api/consult'
+  import {queryConsultTypes, getConsultTypes,postConsultTypes, deleteConsultTypes} from '../../service/api/consult'
   import ConsultTypeAddModal from './components/ConsultTypeAddModal'
   export default {
       components:{ConsultTypeAddModal},
@@ -88,10 +88,14 @@
         onTableChange(query, pages) {
           //数据表发生变化请求数据
           let args = {...query, ...pages};
+          queryConsultTypes(args).then((resp)=>{
+            this.data = resp.data.consult_types;
+            this.total = resp.data.total;
+          })
         },
         onAddModalOK(consult_types) {
           // 更新框确定 关闭
-          postConsult_types(consult_types).then((resp)=>{
+          postConsultTypes(consult_types).then((resp)=>{
             this.showConsultTypeAddModal = false
             this.onTableChange(this.query, this.pages)
           })
@@ -99,10 +103,10 @@
         onAddModalCancel() {
           this.showConsultTypeAddModal = false
         },
-        deleteNewBlock: function (item) {
-          let index = this.form_meta.items.indexOf(item);
-          this.form_meta.items.splice(index, 1);
-          this.$Message.info('Items deleted!');
+        onDeleteClcik: function (item) {
+          deleteConsultTypes(item.row.id).then(()=>{
+            this.onTableChange(this.query, this.pages)
+          })
         },
         selectConsultTypes: function () {
           this.selected_consult_types_ids.push();
@@ -110,7 +114,7 @@
       },
       mounted: function () {
         const args = this.$route.query;
-        queryConsult_types(args).then((resp)=>{
+        queryConsultTypes(args).then((resp)=>{
           this.data = resp.data.consult_types;
           this.total = resp.data.total;
         })

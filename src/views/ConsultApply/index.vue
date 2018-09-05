@@ -5,9 +5,9 @@
     <br>
     <Form :label-width="80" :model="consults">
       <FormItem label="咨询类型:">
-        <RadioGroup>
-          <Radio v-for="type in consult_types" :key="type.id" :label="type.name">
-            <span v-model="type.name">{{ type.name }}</span>
+        <RadioGroup v-model="consults.type">
+          <Radio v-for="type in consult_types" :key="type.name+type.id" :label="type.name" :value="type.name">
+            <span >{{ type.name }}</span>
           </Radio>
         </RadioGroup>
       </FormItem>
@@ -22,7 +22,7 @@
         </Input>
       </FormItem>
       <FormItem>
-        <Button type="primary" @on-click="onApplyClick">提交</Button>
+        <Button type="primary" @click="onApplyClick">提交</Button>
       </FormItem>
 
     </Form>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import {getConsults, queryConsult_types} from '../../service/api/consult'
+  import {postConsults, queryConsultTypes} from '../../service/api/consult'
   export default {
     data: function() {
       return {
@@ -42,7 +42,7 @@
         // selected_consult_id:"", //选中答复的活动
         consults: {
           phone: "",
-          type_id: "",
+          type: "",
           content:"",
           state: "未协调"
         },
@@ -50,15 +50,20 @@
       }
     },
     methods: {
-      onApplyClick() {
-        putConsults(consults).then((resp)=>{
-
+      onApplyClick: function(){
+        postConsults(this.consults).then((resp)=>{
+          this.consults={
+            phone: "",
+              type: "",
+              content:"",
+              state: "未协调"
+          }
         })
       }
     },
     mounted: function () {
       const args = this.$route.query;
-      queryConsult_types(args).then((resp)=>{
+      queryConsultTypes(args).then((resp)=>{
         this.consult_types = resp.data.consult_types;
         })
     }

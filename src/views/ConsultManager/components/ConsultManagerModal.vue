@@ -10,8 +10,8 @@
         <span>{{consult.requester_username}}</span>
       </FormItem>
 
-      <FormItem label="咨询类型:" prop="type_id">
-        <span>{{consult.type_id}}</span>
+      <FormItem label="咨询类型:" prop="type">
+        <span>{{consult.type}}</span>
       </FormItem>
 
       <FormItem label="咨询内容:" prop="meta_description">
@@ -41,7 +41,7 @@
       return {
         consult: {
           id: "",
-          type_id: "",
+          type: "",
           meta_description:"",
           requester_username:"",
           content:""

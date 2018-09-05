@@ -35,7 +35,12 @@ export default[{
     {
       name: "各组评价情况查看",
       path: "group_sa", // xzl
-      component: resolve => require(['Views/LessonGoodManager/index'], resolve),
+      component: resolve => require(['Views/GroupLessonList/index'], resolve),
+    },
+    {
+      name: "问卷数据分析",
+      path: "form_sa", // xzl
+      component: resolve => require(['Views/FormStatic/index'], resolve),
     },
   ]
 }]

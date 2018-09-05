@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>活动报名</h1>
+    <h1>活动查看</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="活动名称：" prop="activity">
@@ -114,7 +114,7 @@
 
                       }
                     }
-                  }, '报名')
+                  }, '详情')
                 ]);
               }
             }
