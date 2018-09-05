@@ -9,11 +9,15 @@
       @onCancel="onAddModalCancel"
     ></ConsultTypeAddModal>
 
-    <Table border stripe :columns="columns" :data="data"></Table>
+    <Table @on-selection-change="selectConsultTypes" border stripe :columns="columns" :data="data"></Table>
 
     <Button type="primary" @click="()=>{this.showConsultTypeAddModal=true}" >
       新增
     </Button>
+    <Button type="error" style="width: 55px" v-on:click="deleteNewBlock(item)">
+      删除
+    </Button>
+
   </div>
  </Card>
 </template>
@@ -94,7 +98,15 @@
         },
         onAddModalCancel() {
           this.showConsultTypeAddModal = false
-        }
+        },
+        deleteNewBlock: function (item) {
+          let index = this.form_meta.items.indexOf(item);
+          this.form_meta.items.splice(index, 1);
+          this.$Message.info('Items deleted!');
+        },
+        selectConsultTypes: function () {
+          this.selected_consult_types_ids.push();
+        },
       },
       mounted: function () {
         const args = this.$route.query;

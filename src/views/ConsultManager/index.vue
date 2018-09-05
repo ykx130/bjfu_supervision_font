@@ -18,6 +18,13 @@
       </FormItem>
     </Form>
 
+    <ConsultManagerModal
+      :show="showConsultManagerModal"
+      @onOK="onReplyModalOK"
+      @onCancel="onReplyModalCancel"
+      :id="this.selected_consult_id"
+    ></ConsultManagerModal>
+
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
@@ -29,8 +36,10 @@
 
 <script>
   import {queryTerms, getCurrentTerms} from '../../service/api/term'
-  import {queryConsults, getConsults} from '../../service/api/consult'
+  import {queryConsults,putConsults,postConsults} from '../../service/api/consult'
+  import ConsultManagerModal from './components/ConsultManagerModal'
   export default {
+    components:{ConsultManagerModal},
     data: function() {
       return {
         select_tag: '已协调',
@@ -39,6 +48,7 @@
         data: [], //数据
         terms: [],
         selected_consult_id:"", //选中答复的活动
+        showConsultManagerModal: false, // 展示编辑弹窗
         pages: {
           _page: 1,
           _per_page: 10
@@ -89,14 +99,6 @@
             }
           },
           {
-            title: '信息描述',
-            render: function (h, params) {
-              return (
-                <span>{ params.row.meta_description }</span>
-            )
-            }
-          },
-          {
             title: '联系方式',
             render: function (h, params) {
               return (
@@ -121,11 +123,24 @@
             }
           },
           {
-            title: '内容',
+            title: '回复内容',
             render: function (h, params) {
               return (
                 <span>{ params.row.content }</span>
             )
+            }
+          },
+          {
+            title: '咨询详情',
+            align: 'center',
+            render: (h, params) => {
+              return h('a', {
+                on: {
+                  click: () => {
+                    this.selected_consult_id = params.row.id;
+                    this.showConsultManagerModal=true
+                  }
+                }}, '详细信息');
             }
           },
         ]
@@ -153,7 +168,17 @@
       },
       onTypeTabClick(value) {
         this.select_tag = value
-      }
+      },
+      onReplyModalOK(consult) {
+        // 更新框确定 关闭
+        putConsults(consult).then((resp)=>{
+          this.showConsultManagerModal = false
+          this.onTableChange(this.query, this.pages)
+        })
+      },
+      onReplyModalCancel() {
+        this.showConsultManagerModal = false
+      },
     },
     mounted: function () {
       const args = this.$route.query;

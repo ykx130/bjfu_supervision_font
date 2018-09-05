@@ -19,7 +19,7 @@ export default[
       },
       {
         name: "咨询申请",
-        path: "type", // xzl
+        path: "apply", // xzl
         component: resolve => require(['Views/ConsultApply/index'], resolve),
       },
     ]},
