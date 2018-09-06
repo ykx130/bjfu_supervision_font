@@ -34,7 +34,7 @@ export default[{
     },
     {
       name: "各组评价情况查看",
-      path: "group_sa", // xzl
+      path: "lesson_records", // xzl
       component: resolve => require(['Views/GroupLessonList/index'], resolve),
     },
     {
