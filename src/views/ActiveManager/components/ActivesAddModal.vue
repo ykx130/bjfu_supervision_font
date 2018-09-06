@@ -18,7 +18,9 @@
         <form-item label="责任老师:">
           <Row>
             <Col span="">
-              <Input v-model="activity.teacher" placeholder="Enter something..."></Input>
+              <Select v-model="activity.teacher" style="width:200px">
+                <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index">{{item.name}}</Option>
+              </Select>
             </Col>
           </Row>
         </form-item>
@@ -33,13 +35,6 @@
           <Row>
             <Col span="">
               <Input v-model="activity.place" placeholder="Enter something..."></Input>
-            </Col>
-          </Row>
-        </form-item>
-        <form-item label="活动状态:">
-          <Row>
-            <Col span="">
-              <Input v-model="activity.state" placeholder="Enter something..."></Input>
             </Col>
           </Row>
         </form-item>
@@ -62,13 +57,6 @@
             </Col>
           </Row>
         </form-item>
-        <form-item label="报名状态:">
-          <Row>
-            <Col span="">
-              <Input v-model="activity.apply_state" placeholder="Enter something..."></Input>
-            </Col>
-          </Row>
-        </form-item>
       </Form>
     </Modal>
 
@@ -78,6 +66,7 @@
 </template>
 
 <script>
+  import {queryUsers} from '../../../service/api/user'
   import {queryTerms, getCurrentTerms} from '../../../service/api/term'
   import {dateToString} from "../../../utils/tools";
   import {queryActives} from "../../../service/api/actives";
@@ -94,23 +83,21 @@
           date:new Date(),
           query: {}, // 查询用的参数
           terms:[],
+          users:[],
           data:[],
           total:0,
           activity:{
-            id:'',
             name:'',
             teacher:'',
             start_time:'',
             end_time:'',
             place:'',
-            state:'',
             information:'',
             term:'',
             created_at:'',
             updated_at:'',
             apply_start_time:'',
             apply_end_time:'',
-            apply_state:'',
           },
           inputtime:'',
           inputapplytime:'',
@@ -119,7 +106,6 @@
       },
       methods:{
         handleOK:function(){
-          this.activity.id=this.total+1;
           this.activity.start_time=dateToString(this.inputtime[0],"yyyy-MM-dd hh:mm:ss");
           this.activity.end_time=dateToString(this.inputtime[1],"yyyy-MM-dd hh:mm:ss");
           this.activity.apply_start_time=dateToString(this.inputapplytime[0],"yyyy-MM-dd hh:mm:ss");
@@ -143,6 +129,9 @@
         getCurrentTerms().then((termResp) => {
           this.query.term = termResp.data.term.name;
         });
+        queryUsers().then((resp) => {
+          this.users = resp.data.users
+        })
         queryActives(args).then((resp)=>{
           this.data = resp.data.activities;
           this.total = resp.data.activities.length;
