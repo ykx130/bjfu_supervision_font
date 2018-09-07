@@ -1,15 +1,18 @@
 <template>
-  <Breadcrumb>
-    <BreadcrumbItem v-for="(item, index) in routes" :key="index" :to="item.path">{item.name}</BreadcrumbItem>
-  </Breadcrumb>
+  <div style="{padding-left: 20px}">
+    <Breadcrumb>
+      <BreadcrumbItem to="/" v-for="">首页</BreadcrumbItem>
+      <BreadcrumbItem v-for="(item, index) in match"  :key="index" :to="item.path">{{item.name}}</BreadcrumbItem>
+    </Breadcrumb>
+  </div>
 </template>
 
 <script>
     export default {
         name: "bread_crumb_nav",
-        data: function () {
-          return {
-            routes: this.$route.matched
+        computed: {
+          match: function () {
+            return this.$route.matched
           }
         }
     }

@@ -8,8 +8,10 @@ export default [
   {
     name: "首页",
     path: "/",
+    meta: {
+      visible: true
+    },
     component: resolve => require(['Views/index'], resolve),
-
     children: [
       {
         path: "DashBordAdmin", // xzl
@@ -21,7 +23,8 @@ export default [
     path: "/login", // xzl
     component: resolve => require(['Views/LoginPage/index'], resolve),
   },
-	...dsq,
+
+  ...dsq,
   ...user,
   ...actives,
   ...lesson,

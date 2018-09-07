@@ -9,17 +9,26 @@ export default[
       {
         name: "咨询管理",
         path: "manager", // xzl
+        meta: {
+          visible: true
+        },
         // component: resolve => require(['Views/FormMetaManager/index'], resolve),
         component: resolve => require(['Views/ConsultManager/index'], resolve),
       },
       {
         name: "咨询类型管理",
         path: "type", // xzl
+        meta: {
+          visible: true
+        },
         component: resolve => require(['Views/ConsultType/index'], resolve),
       },
       {
         name: "咨询申请",
         path: "apply", // xzl
+        meta: {
+          visible: true
+        },
         component: resolve => require(['Views/ConsultApply/index'], resolve),
       },
     ]},

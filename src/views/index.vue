@@ -61,6 +61,7 @@
       <Layout>
         <Header :style="{padding: 0}" class="layout-header-bar">
           <userIcon style="float:right;padding-right: 30px" :current-user="currentUser"></userIcon>
+          <breadCrumbNav ></breadCrumbNav>
         </Header>
         <Content :style="{margin: '20px', minHeight: '720px'}">
             <router-view></router-view>
@@ -73,10 +74,11 @@
   import sideMenu from '../components/side-menu/side-menu'
   import  userIcon from '../components/user_icon'
   import store from '../service/store/common'
+  import breadCrumbNav from '../components/bread_crumb_nav'
   import {currentUser} from "../service/api/user";
   export default {
     name: "base_layout",
-    components: {sideMenu, userIcon},
+    components: {sideMenu, userIcon, breadCrumbNav},
     created() {
       this.bindEvents()
     },
