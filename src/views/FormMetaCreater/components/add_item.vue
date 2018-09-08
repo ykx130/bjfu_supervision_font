@@ -6,6 +6,7 @@
     <div v-for="item in itemList" @click="select(item.value)">
       <Card :value="item.value" :key="item.value" >{{ item.label }}</Card>
     </div>
+
     <Radio v-if="selected ==='radio_option'" @onOk="addItem"></Radio>
     <Checkbox v-if="selected ==='checkbox_option'" @onOk="addItem"></Checkbox>
     <Raw_text v-if="selected ==='raw_text'" @onOk="addItem"></Raw_text>
