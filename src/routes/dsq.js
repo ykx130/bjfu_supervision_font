@@ -15,16 +15,15 @@ export default[{
       component: resolve => require(['Views/FormMetaManager/index'], resolve),
     },
     {
-      name: "问卷结构编辑",
       path: "meta_editor", // yzr
+      name: "问卷结构编辑",
       meta: {
         visible: true
       },
+      component: resolve => require(['Views/FormMetaCreater/index'], resolve),
       children:[{
-        path:"",
-        component: resolve => require(['Views/FormMetaCreater/index'], resolve)
-      }, {
         path: ":name/:version", // yzr
+        name: "问卷结构编辑-show",
         component: resolve => require(['Views/FormMetaEditor/index'], resolve)
       }],
     },
