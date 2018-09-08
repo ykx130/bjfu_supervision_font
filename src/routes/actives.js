@@ -9,13 +9,11 @@ export default[
     {
       name: "教学辅导",
       path: "manager", // xzl
+      component: resolve => require(['Views/ActiveManager/index'], resolve),
       meta: {
         visible: true
       },
       children: [{
-        path:"",
-        component: resolve => require(['Views/ActiveManager/index'], resolve),
-      },{
         path:':id',
         component:resolve => require(['Views/ActiveDetail/index'], resolve),
       }]
