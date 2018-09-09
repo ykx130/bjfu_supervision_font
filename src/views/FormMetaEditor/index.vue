@@ -138,13 +138,9 @@
             <Button type="primary" @click="submitForm()" class="form-buttons">点击提交</Button>
           </div>
           <!--Modal start-->
-          <Modal v-model="visible" title="选择单选、多选、纯文本">
-            <AddItem @onOk="appendNewBlock($event)"></AddItem>
-          </Modal>
+            <AddItem :show="visible" @onOk="appendNewBlock($event)" @onCancel="()=>{this.visible=false}"></AddItem>
 
-          <Modal v-model="visible_e" title="选择单选、多选、纯文本">
-            <AddItem @onOk="editBlock(nowIndex, $event)"></AddItem>
-          </Modal>
+            <AddItem :show="visible_e" @onOk="editBlock(nowIndex, $event)" @onCancel="()=>{this.visible_e=false}"></AddItem>
           <!--Modal end-->
 
         </Card>
@@ -187,8 +183,8 @@
 
 <script>
   import {
-    getFormMeta,
-    putFormMeta
+    putFormMeta,
+    getFormMeta
   } from '../../service/api/dqs'
   import AddItem from './components/add_item'
   import draggable from 'vuedraggable'
@@ -233,11 +229,13 @@
         console.log(value);
         this.form_meta.items.push(value);
         this.$Message.info('Items appended!');
+        this.visible = false
       },
       editBlock: function (index, value) {
         this.form_meta.items.splice(index, 1);
         this.form_meta.items.splice(index, 0, value);
         this.$Message.info('Items edited!');
+        this.visible = false
       },
       deleteNewBlock: function (item) {
         let index = this.form_meta.items.indexOf(item);
