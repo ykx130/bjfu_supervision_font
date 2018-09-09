@@ -65,7 +65,7 @@
           <userNotices style="float:right; padding-right: 20px"></userNotices>
         </Header>
         <Content :style="{margin: '20px', minHeight: '720px'}">
-          <breadCrumbNav ></breadCrumbNav>
+          <breadCrumbNav style="margin-bottom: 20px" ></breadCrumbNav>
           <router-view></router-view>
         </Content>
       </Layout>
