@@ -53,18 +53,20 @@
 <template>
   <div class="layout">
     <Layout>
-      <Sider ref="side1" hide-trigger collapsible :collapsed-width="78" v-model="isCollapsed">
+        <Sider ref="side1"  collapsible :collapsed-width="78" v-model="isCollapsed">
         <sideMenu
           :menuList=routes
         ></sideMenu>
       </Sider>
       <Layout>
         <Header :style="{padding: 0}" class="layout-header-bar">
+          <Icon @click.native="collapsedSider" :class="rotateIcon" type="md-menu" size="24"></Icon>
           <userIcon style="float:right;padding-right: 30px" :current-user="currentUser"></userIcon>
-          <breadCrumbNav ></breadCrumbNav>
+          <userNotices style="float:right; padding-right: 20px"></userNotices>
         </Header>
         <Content :style="{margin: '20px', minHeight: '720px'}">
-            <router-view></router-view>
+          <breadCrumbNav ></breadCrumbNav>
+          <router-view></router-view>
         </Content>
       </Layout>
     </Layout>
@@ -75,10 +77,11 @@
   import  userIcon from '../components/user_icon'
   import store from '../service/store/common'
   import breadCrumbNav from '../components/bread_crumb_nav'
+  import userNotices from '../components/user_notices'
   import {currentUser} from "../service/api/user";
   export default {
     name: "base_layout",
-    components: {sideMenu, userIcon, breadCrumbNav},
+    components: {sideMenu, userIcon, breadCrumbNav, userNotices},
     created() {
       this.bindEvents()
     },
