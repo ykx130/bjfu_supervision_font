@@ -1,24 +1,34 @@
 
 <template>
-  <div>
+  <Modal
+    :value="show"
+    title="编辑选项"
+    @on-ok="handleOK"
+    @on-cancel="handleCancel"
+  >
     <!--<p>choose:{{selected}}</p>-->
     <!--<p>item:{{item}}</p>-->
-    <div v-for="item in itemList" @click="select(item.value)">
+    <div v-for="item in itemList" @click="select(item.value)" v-if="selected === ''">
       <Card :value="item.value" :key="item.value" >{{ item.label }}</Card>
     </div>
 
-    <Radio v-if="selected ==='radio_option'" @onOk="addItem"></Radio>
-    <Checkbox v-if="selected ==='checkbox_option'" @onOk="addItem"></Checkbox>
-    <Raw_text v-if="selected ==='raw_text'" @onOk="addItem"></Raw_text>
-  </div>
+    <RadioItem v-if="selected ==='radio_option'" @onInput="handleChange"></RadioItem>
+    <CheckboxItem v-if="selected ==='checkbox_option'" @onInput="handleChange"></CheckboxItem>
+    <RawtextItem v-if="selected ==='raw_text'" @onInput="handleChange"></RawtextItem>
+  </Modal>
 </template>
 <script>
-  import Radio from './form_item_type/radio_option'
-  import Checkbox from './form_item_type/checkbox_option'
-  import Raw_text from './form_item_type/raw_text'
+  import RadioItem from './form_item_type/radio_option'
+  import CheckboxItem from './form_item_type/checkbox_option'
+  import RawtextItem from './form_item_type/raw_text'
   export default {
     name:'AddItem',
-    components:{Radio,Checkbox,Raw_text},
+    components:{RadioItem,CheckboxItem,RawtextItem},
+    props: {
+      show: Boolean,
+      onCancel:Function,
+      onOK: Function
+    },
     data () {
       return {
         item:{key:123},
@@ -44,15 +54,19 @@
       }
     },
     methods:{
-      addItem:function(value){
-        this.item={};
-        console.log("");
-        this.item=value;
+      handleOK:function(value){
+        this.selected = ''
         this.$emit('onOk',this.item);
-        this.$emit('onCancel','');
+      },
+      handleCancel: function(){
+        this.selected = ''
+        this.$emit('onCancel');
       },
       select: function (value) {
         this.selected = value
+      },
+      handleChange: function (value) {
+        this.item = value
       }
     }
   }

@@ -4,18 +4,12 @@
     <!--<p>题目：{{this.qsItem.item_name}}</p>-->
     <!--<p>选项:{{this.qsItem.payload}}</p>-->
     <!--<Button type="primary" @click="modal1 = true">文本题</Button>-->
-    <Modal
-      value="true"
 
-      title="增加一道文本题"
-      @on-ok="ok"
-      @on-cancel="cancel"
-      :mask-closable="true">
       <Form :label-width="50" style="width: 400px">
         <FormItem label="题目:">
           <Row>
             <Col span="18">
-              <Input v-model="qsInputName" placeholder="Enter something..."></Input>
+              <Input v-model="qsItem.item_name" placeholder="Enter something..."></Input>
             </Col>
           </Row>
         </FormItem>
@@ -23,47 +17,52 @@
         >
           <Row>
             <Col span="18">
-              <Input v-model="qsInputWeight" placeholder="Enter something..."></Input>
+              <Input v-model="qsItem.weight" placeholder="Enter something..."></Input>
             </Col>
           </Row>
         </FormItem>
       </Form>
-    </Modal>
   </div>
 </template>
 <script>
   //import
   export default {
     name:"raw_text.vue",
+    watch: {
+      qsItem: {
+        handler: function (val) {
+          this.ok()
+        },
+        deep: true
+      }
+    },
     data () {
       return {
-        qsItem:{},
-        qsInputName:'',
-        qsInputWeight:'',
-        modal1: false,
+        qsItem:{
+          item_name:'',
+          weight:'',
+          type: "form_item",
+          item_type: "raw_text",
+        },
       }
     },
     props:{
-      onOk: Function,
-      onCancel: Function
+      onInput: Function,
     },
     methods: {
-      ok () {
-        this.qsItem.item_id = '';
-        this.qsItem.item_name = this.qsInputName;
-        this.qsItem.item_type = 'raw_text';
-        this.qsItem.weight=this.qsInputWeight;
-        // this.qsItem.discribtion = '单行文本';
-        this.qsItem.type="form_item";
-        this.qsItem.payload={};
-        this.$emit('onOk',this.qsItem);
-        this.$Message.info('Clicked ok');
-        this.qsInputName="";
+      handleAdd () {
+        this.index++;
+        this.qsInputOptions.push({
+          label:'',
+          value: '',
+        });
       },
-      cancel () {
-        this.$emit('onCancel','');
-        this.$Message.info('Clicked cancel');
-      }
+      handleRemove (index) {
+        this.qsInputOptions.splice(index, 1)
+      },
+      ok () {
+        this.$emit('onInput',{...this.qsItem});
+      },
     }
   }
 </script>
