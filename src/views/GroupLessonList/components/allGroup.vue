@@ -15,7 +15,7 @@
   import  FloatBar from '../../../components/float_bar/float_bar'
 
   export default {
-    name: "firstGroup",
+    name: "allGroup",
     data: function () {
       return {
         query: {}, // 查询用的参数
@@ -126,11 +126,11 @@
       const args = this.$route.query;
       queryGroups().then((resp)=>{
         this.groups = resp.data.groups;
-        this.selected_group_name = this.groups[0].name;
+        //this.selected_group_name = this.groups[0].name;
         queryGroupLesson(args).then((resp)=>{
           this.data = resp.data.lesson_records;
           this.total = resp.data.total;
-          this.$router.push({path:'/dqs/lesson_records',query:{group_name: this.selected_group_name}})
+          //this.$router.push({path:'/dqs/lesson_records',query:{group_name: this.selected_group_name}})
         });
       })
     }

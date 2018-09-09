@@ -5,10 +5,10 @@
     </Tabs>
 
     <template v-if="selected_group_name==='第一组'">
-      <first-group></first-group>
+      <all-group></all-group>
     </template>
     <template v-else-if="selected_group_name==='第二组'">
-      <second-group></second-group>
+      <all-group></all-group>
     </template>
   </Card>
 </template>
@@ -17,14 +17,12 @@
   import {queryGroupLesson, putLesson} from '../../service/api/lesson'
   import {queryGroups} from '../../service/api/user'
   import  FloatBar from '../../components/float_bar/float_bar'
-  import firstGroup from './components/firstGroup'
-  import secondGroup from './components/secondGroup'
+  import allGroup from './components/allGroup'
 
 
   export default {
     components:{
-      firstGroup,
-      secondGroup
+      allGroup
     },
     data: function() {
       return {
@@ -46,13 +44,14 @@
       onTypeTabClick: function (name) {
         // 切换标签触发
         this.selected_group_name = name;
-        this.onTableChange(this.query, this.pages)
+        this.onTableChange(this.query, this.pages);
+        this.$router.push({path:'/dqs/lesson_records',query:{group_name: this.selected_group_name}})
       }
     },
     mounted: function() {
       queryGroups().then((resp)=>{
         this.groups = resp.data.groups;
-        this.selected_group_name = this.groups[0].name;
+        //this.selected_group_name = this.groups[0].name;
       })
     }
   }
