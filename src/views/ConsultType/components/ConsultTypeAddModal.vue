@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import { queryConsult_types } from '../../../service/api/consult'
+  import { queryConsultTypes } from '../../../service/api/consult'
   export default {
     name: "ConsultTypeAddModal",
     props: {
@@ -30,18 +30,14 @@
         },
       }
     },
-    mounted: function () {
-      queryConsult_types().then((resp)=>{
-        this.consult_types = resp.data.consult_types
-      })
-    },
+    mounted: function () {},
     methods: {
       handleOK: function () {
         this.$emit('onOK', this.consult_types)
       },
       handleCancel: function () {
         this.$emit('onCancel')
-      }
+      },
     }
   }
 </script>

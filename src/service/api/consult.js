@@ -4,19 +4,31 @@ export const queryConsults = (params) => {
   return axios.get('/api/consults', {params:params})
 };
 
-export const getConsults =(id)=> {
+export const getConsultById =(id)=> {
   return axios.get('/api/consults/'+ id)
 };
 
-export const queryConsult_types = (params) => {
-  return axios.get('/api/cosult_types', {params:params})
+export const putConsults = (params) => {
+  return axios.put('/api/consults/'+params.id, params)
 };
 
-export const getConsult_types =(id)=> {
-  return axios.get('/api/cosult_types/'+ id)
+export const postConsults = (params) => {
+  return axios.post('/api/consults', params)
 };
 
-export const postConsult_types = (params) => {
-  return axios.post('/api/cosult_types', params)
+export const queryConsultTypes = (params) => {
+  return axios.get('/api/consult_types', {params:params})
+};
+
+export const getConsultTypes =(id)=> {
+  return axios.get('/api/consult_types/'+ id)
+};
+
+export const deleteConsultTypes =(id)=> {
+  return axios.delete('/api/consult_types/'+ id)
+};
+
+export const postConsultTypes = (params) => {
+  return axios.post('/api/consult_types', params)
 };
 

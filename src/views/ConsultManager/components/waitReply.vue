@@ -1,12 +1,9 @@
 <template>
   <div>
-    <h1>活动报名</h1>
+    <h1>咨询管理</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
-      <FormItem label="活动名称：" prop="activity">
-        <Input style="width: 180px" v-model="query.name" ></Input>
-      </FormItem>
-      <FormItem label="学期：" :prop="'activity.term'">
+      <FormItem label="学期：" prop="term">
         <Select v-model="query.term" style="width:200px">
           <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
@@ -16,6 +13,13 @@
       </FormItem>
     </Form>
 
+    <ConsultManagerModal
+      :show="showConsultManagerModal"
+      @onOK="onReplyModalOK"
+      @onCancel="onReplyModalCancel"
+      :id="this.selected_consult_id"
+    ></ConsultManagerModal>
+
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
@@ -23,101 +27,94 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
-  import {queryCurrentuserActives} from '../../../service/api/actives'
   import {queryTerms, getCurrentTerms} from '../../../service/api/term'
-
+  import {queryConsults,putConsults} from '../../../service/api/consult'
+  import ConsultManagerModal from './ConsultManagerModal'
   export default {
-    name: "canRegister",
-    data: function(){
+    components:{ConsultManagerModal},
+    name:'waitReply',
+    data: function() {
       return {
+        select_tag: '已协调',
         query: {}, // 查询用的参数
         total: 0, // 总数量
-        data: [{
-          activity:{},
-          activity_user:{}
-        }], //数据
+        data: [], //数据
         terms: [],
-        selected_activity_id:"", //选中编辑的课程ids
+        selected_consult_id:"", //选中答复的活动
+        showConsultManagerModal: false, // 展示编辑弹窗
         pages: {
           _page: 1,
           _per_page: 10
-        },//分页
+        }, //分页
         columns: [
           {
-            title: '活动名称',
+            title: '序号',
+            key: 'id'
+          },
+          {
+            title: '咨询类型',
             render: function (h, params) {
               return (
-                <span>{ params.row.activity.name }</span>
+                <span>{ params.row.type }</span>
             )
             }
           },
           {
-            title: '活动地点',
+            title: '申请人姓名',
             render: function (h, params) {
               return (
-                <span>{ params.row.activity.place }</span>
+                <span>{ params.row.requester_username }</span>
             )
             }
           },
           {
-            title: '活动状态',
+            title: '提交时间',
             render: function (h, params) {
               return (
-                <span>{ params.row.activity.state }</span>
+                <span>{ params.row.submit_time }</span>
             )
             }
           },
           {
-            title: '参加状态',
+            title: '学期',
             render: function (h, params) {
               return (
-                <span>{ params.row.activity_user.fin_state }</span>
+                <span>{ params.row.term }</span>
             )
             }
           },
           {
-            title: '开始时间',
+            title: '状态',
             render: function (h, params) {
               return (
-                <span>{ params.row.activity.start_time }</span>
+                <span>{ params.row.state }</span>
             )
             }
           },
           {
-            title: '结束时间',
+            title: '联系方式',
             render: function (h, params) {
               return (
-                <span>{ params.row.activity.end_time }</span>
+                <span>{ params.row.phone}</span>
             )
             }
           },
           {
-            title: '操作',
+            title: '咨询详情',
             align: 'center',
             render: (h, params) => {
-              return h('div', [
-                h('Button', {
-                  props: {
-                    type: 'primary',
-                    size: 'small'
-                  },
-                  style: {
-                    marginRight: '2px'
-                  },
-                  on: {
-                    click: () => {
-                      this.selected_activity_id = params.row.activity.id;
-
-                    }
+              return h('a', {
+                on: {
+                  click: () => {
+                    this.selected_consult_id = params.row.id;
+                    this.showConsultManagerModal=true
                   }
-                }, '报名')
-              ]);
+                }}, '协调');
             }
-          }
+          },
         ]
       }
     },
@@ -125,10 +122,10 @@
       onTableChange(query, pages) {
         //数据表发生变化请求数据
         let args = {...query, ...pages};
-        queryCurrentuserActives(args).then((resp)=>{
-          this.data = resp.data.activities;
+        queryConsults(args).then((resp)=>{
+          this.data = resp.data.consults;
           this.total = resp.data.total;
-          this.$router.push({path: '/active/help', query: {...args, ...this.query}});
+          this.$router.push({path: '/consult/manager', query: {...args, ...this.query}});
         })
       },
       onPageChange(page) {
@@ -140,7 +137,17 @@
         //查询变化
         this.pages._page = 1;
         this.onTableChange(this.query, this.pages)
-      }
+      },
+      onReplyModalOK(consult) {
+        // 更新框确定 关闭
+        putConsults({id:consult.id, content: consult.content}).then((resp)=>{
+          this.showConsultManagerModal = false
+          this.onTableChange(this.query, this.pages)
+        })
+      },
+      onReplyModalCancel() {
+        this.showConsultManagerModal = false
+      },
     },
     mounted: function () {
       const args = this.$route.query;
@@ -149,10 +156,10 @@
       });
       getCurrentTerms().then((termResp)=>{
         this.query.term = termResp.data.term.name;
-        queryCurrentuserActives(args).then((resp)=>{
-          this.data = resp.data.activities;
+        queryConsults({...args, ...this.query}).then((resp)=>{
+          this.data = resp.data.consults;
           this.total = resp.data.total;
-          this.$router.push({path: '/attend', query: {...args, ...this.query}});
+          this.$router.push({path: '/consult/manager', query: {...args, ...this.query}})
         })
       })
     }
@@ -162,3 +169,4 @@
 <style scoped>
 
 </style>
+

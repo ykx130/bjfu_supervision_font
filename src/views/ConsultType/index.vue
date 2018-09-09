@@ -9,17 +9,21 @@
       @onCancel="onAddModalCancel"
     ></ConsultTypeAddModal>
 
-    <Table border stripe :columns="columns" :data="data"></Table>
+    <Table @on-selection-change="selectConsultTypes" border stripe :columns="columns" :data="data"></Table>
 
     <Button type="primary" @click="()=>{this.showConsultTypeAddModal=true}" >
       新增
     </Button>
+    <Button type="error" style="width: 55px" v-on:click="deleteNewBlock(item)">
+      删除
+    </Button>
+
   </div>
  </Card>
 </template>
 
 <script>
-  import {queryConsult_types, getConsult_types,postConsult_types } from '../../service/api/consult'
+  import {queryConsultTypes, getConsultTypes,postConsultTypes, deleteConsultTypes} from '../../service/api/consult'
   import ConsultTypeAddModal from './components/ConsultTypeAddModal'
   export default {
       components:{ConsultTypeAddModal},
@@ -84,21 +88,33 @@
         onTableChange(query, pages) {
           //数据表发生变化请求数据
           let args = {...query, ...pages};
+          queryConsultTypes(args).then((resp)=>{
+            this.data = resp.data.consult_types;
+            this.total = resp.data.total;
+          })
         },
         onAddModalOK(consult_types) {
           // 更新框确定 关闭
-          postConsult_types(consult_types).then((resp)=>{
+          postConsultTypes(consult_types).then((resp)=>{
             this.showConsultTypeAddModal = false
             this.onTableChange(this.query, this.pages)
           })
         },
         onAddModalCancel() {
           this.showConsultTypeAddModal = false
-        }
+        },
+        onDeleteClcik: function (item) {
+          deleteConsultTypes(item.row.id).then(()=>{
+            this.onTableChange(this.query, this.pages)
+          })
+        },
+        selectConsultTypes: function () {
+          this.selected_consult_types_ids.push();
+        },
       },
       mounted: function () {
         const args = this.$route.query;
-        queryConsult_types(args).then((resp)=>{
+        queryConsultTypes(args).then((resp)=>{
           this.data = resp.data.consult_types;
           this.total = resp.data.total;
         })
