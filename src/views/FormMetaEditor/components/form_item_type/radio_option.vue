@@ -85,9 +85,11 @@
           label:'',
           value: '',
         });
+        this.ok();
       },
       handleRemove (index) {
-        this.qsInputOptions.splice(index, 1)
+        this.qsInputOptions.splice(index, 1);
+        this.ok();
       },
       ok () {
         this.$emit('onInput',{...this.qsItem,
