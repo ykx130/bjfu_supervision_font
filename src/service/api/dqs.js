@@ -41,4 +41,8 @@ export const getLessons =(params)=> {
   return axios.get('/api/lessons', {params: params})
 };
 
+export const getGraph = params =>{
+  return axios.get('/api/graph/forms/map', params)
+};
+
 
