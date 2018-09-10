@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h1>问卷数据统计</h1>
-      <div id='0' style="float:left;" :style="{width: '360px', height: '300px'}"></div>
-      <div id='1' style="float:left;" :style="{width: '360px', height: '300px'}"></div>
+    <div v-for="option in options" style="float: left">
+      <chart :options="option" :style="{width: '500px', height: '300px'}"></chart>
+    </div>
   </div>
 </template>
 <script>
@@ -13,43 +13,40 @@
     export default {
       data() {
         return {
+          options: [],
+          data: []
         }
       },
       mounted() {
         getGraph().then((resp) => {
           this.data = resp.data.item_map;
-          for (var index in this.data) {
-            this.drawBar(this.data[index], index);
-          }
+          this.options = this.data.map(function (item) {
+            let graphItem = {
+              title: {
+                text: '',
+                x: 'center'
+              },
+              color: '#4cabce',
+              tooltip: {},
+              xAxis: {
+                data: []
+              },
+              yAxis: {},
+              series: [{
+                name: '人数',
+                type: 'bar',
+                data: []
+              }]
+            };
+            graphItem.title.text = item.item_name;
+            for (var index in item.point)
+            {
+              graphItem.xAxis.data.push(item.point[index].option.value);
+              graphItem.series[0].data.push(item.point[index].num);
+            }
+            return graphItem;
+            });
         });
-      },
-      methods: {
-        drawBar(item, divID) {
-          let myChart = echarts.init(document.getElementById(divID));
-          var xdata = [];
-          var ydata = [];
-          for (var index in item.point) {
-            xdata.push(item.point[index].option.value);
-            ydata.push(item.point[index].num);
-          }
-          myChart.setOption({
-            title: {text: item.item_name},
-            color: '#4cabce',
-            tooltip: {},
-            xAxis: {
-              type: 'category',
-              data: xdata
-            },
-            yAxis: {
-              type: 'value',
-            },
-            series: [{
-              name: '人数',
-              type: 'bar',
-              data: ydata
-            }]
-          });
-        }
       }
     }
 </script>
