@@ -113,7 +113,7 @@
                       // this.showActivityProfileModal=true;
                       // const route=this.selected_activity_id;
                       // this.$router.push({path: `:id/${route}`})
-                      this.$router.push({path: `/active/${params.row.id}` });
+                      this.$router.push({path: `/active/manager/${params.row.id}` });
                     }
                   }
                 }, '查看')
@@ -130,7 +130,7 @@
         queryActives(args).then((resp)=>{
           this.data = resp.data.activities;
           this.total = resp.data.total;
-          this.$router.push({path: '/active/help', query: {...args, ...this.query}});
+          this.$router.push({path: '/active/manager', query: {...args, ...this.query}});
         })
       },
       onPageChange(page) {
@@ -173,7 +173,7 @@
         queryActives(args).then((resp)=>{
             this.data = resp.data.activities;
             this.total = resp.data.activities.length;
-            this.$router.push({path: '/active/help', query: {...args, ...this.query}});
+            this.$router.push({path: '/active/manager', query: {...args, ...this.query}});
         })
       })
     }

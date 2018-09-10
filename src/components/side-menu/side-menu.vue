@@ -1,93 +1,58 @@
 <template>
   <div class="side-menu-wrapper">
-    <slot></slot>
-    <Menu ref="menu" v-show="!collapsed" :active-name="activeName" :open-names="openedNames" :accordion="accordion" :theme="theme" width="auto" @on-select="handleSelect">
-      <template v-for="item in menuList">
-        <side-menu-item v-if="showChildren(item)" :key="`menu-${item.name}`" :parent-item="item"></side-menu-item>
-        <menu-item v-else-if="item.name" :name="`${item.name}`" :key="`menu-${item.name}`"><Icon :type="item.icon"/><span>{{ showTitle(item) }}</span></menu-item>
+    <Menu ref="menu" style="width: 100%" :active-name="active_name" mode="vertical" @on-select="onSelectMenuChange" :open-names="opened_names" theme="dark">
+      <template v-for="route in menuList">
+        <sub_menu_item v-if="hasChildren(route)" :sub_route="route"></sub_menu_item>
+        <MenuItem v-else-if="route.name" :name="route.name" :to="route">{{route.name}}</MenuItem>
       </template>
     </Menu>
-    <div class="menu-collapsed" v-show="collapsed" :list="menuList">
-      <collapsed-menu @on-click="handleSelect" hide-title :root-icon-size="rootIconSize" :icon-size="iconSize" :theme="theme" v-for="item in menuList" :parent-item="item" :key="`drop-menu-${item.name}`"></collapsed-menu>
-    </div>
   </div>
 </template>
+
 <script>
-import sideMenuItem from './side-menu-item.vue'
-import collapsedMenu from './collapsed-menu.vue'
-import { getIntersection } from '../../libs/tools'
-import mixin from './mixin'
-export default {
-  name: 'sideMenu',
-  mixins: [ mixin ],
-  components: {
-    sideMenuItem,
-    collapsedMenu
-  },
-  props: {
-    menuList: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
-    collapsed: {
-      type: Boolean
-    },
-    theme: {
-      type: String,
-      default: 'dark'
-    },
-    rootIconSize: {
-      type: Number,
-      default: 20
-    },
-    iconSize: {
-      type: Number,
-      default: 16
-    },
-    accordion: Boolean,
-    activeName: {
-      type: String,
-      default: ''
-    },
-    openNames: {
-      type: Array,
-      default: () => []
+    import sub_menu_item from './sub-menu-item'
+    import mixin from "./mixin";
+
+    export default {
+        name: "side-menu",
+        components:{sub_menu_item},
+        mixins: [mixin],
+        data: function(){
+          return {
+            opened_names:[]
+          }
+        },
+        computed: {
+          active_name: function () {
+            return this.$route.name
+          }
+        },
+        watch: {
+          active_name: function (name) {
+            this.opened_names = this.getOpenedNamesByActiveName(name);
+          },
+          opened_names() {
+            this.$nextTick(() => {
+              this.$refs.menu.updateOpened();
+            });
+         }
+        },
+        props:{
+          menuList:Array
+        },
+        methods: {
+          onSelectMenuChange: function (name) {
+            this.$router.push({name:name})
+          },
+          getOpenedNamesByActiveName(name) {
+            return this.$route.matched
+              .map(item => item.name)
+              .filter(item => item !== name);
+          }
+        }
     }
-  },
-  data () {
-    return {
-      openedNames: []
-    }
-  },
-  methods: {
-    handleSelect (name) {
-      this.$router.push({name:name})
-    },
-    getOpenedNamesByActiveName (name) {
-      return this.$route.matched.map(item => item.name).filter(item => item !== name)
-    }
-  },
-  watch: {
-    activeName (name) {
-      if (this.accordion) this.openedNames = this.getOpenedNamesByActiveName(name)
-      else this.openedNames = getIntersection(this.openedNames, this.getOpenedNamesByActiveName(name))
-    },
-    openNames (newNames) {
-      this.openedNames = newNames
-    },
-    openedNames () {
-      this.$nextTick(() => {
-        this.$refs.menu.updateOpened()
-      })
-    }
-  },
-  mounted () {
-    this.openedNames = getIntersection(this.openedNames, this.getOpenedNamesByActiveName(name))
-  }
-}
 </script>
+
 <style lang="less">
-@import './side-menu.less';
+  @import "./side-menu.less";
 </style>
