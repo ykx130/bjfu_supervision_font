@@ -5,6 +5,10 @@ export const queryLessons =(params)=> {
   return axios.get('/api/lessons', {params: params})
 };
 
+export const queryGroupLesson =(params)=> {
+  return axios.get('/api/lesson_records', {params: params})
+};
+
 export const getLesson =(id)=> {
   return axios.get('/api/lessons/'+ id)
 };
