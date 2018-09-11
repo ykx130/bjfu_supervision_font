@@ -1,9 +1,15 @@
 <template>
-  <div>
-    <div v-for="option in options" style="float: left">
-      <chart :options="option" :style="{width: '500px', height: '300px'}"></chart>
-    </div>
-  </div>
+  <Row>
+    <Col span="8" v-for="option in options">
+      <Card style="float: left" :style="{width: '320px', height: '300px'}">
+        <p slot="title">
+            <Icon type="ios-analytics-outline" />
+            {{ option.title.text }}
+        </p>
+        <chart :options="option" :style="{width: '260px', height: '260px', marginLeft: '20px'}"></chart>
+      </Card>
+    </Col>
+  </Row>
 </template>
 <script>
     import echarts from 'echarts'
@@ -24,7 +30,7 @@
             let graphItem = {
               title: {
                 text: '',
-                x: 'center'
+                show: false
               },
               color: '#4cabce',
               tooltip: {},
