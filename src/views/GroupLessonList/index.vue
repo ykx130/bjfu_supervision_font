@@ -1,17 +1,9 @@
 <template>
   <Card>
-    <h1>各组评价情况查看</h1>
+    <Tabs :value="query.selected_group_name" @on-click="onTypeTabClick">
+      <TabPane v-for="(item, index) in groups" :label="item.name" :name="item.name" :key="item.name + index"></TabPane>
+    </Tabs>
     <br>
-    <Form :label-width="80" :model="query" inline>
-      <FormItem label="组名：">
-        <Select v-model="query.group_name" style="width:200px">
-          <Option v-for="group in groups" :value="group.name" :key="group.name">{{ group.name }}</Option>
-        </Select>
-      </FormItem>
-      <FormItem>
-        <Button type="primary" @click="onSearch(query)">查询</Button>
-      </FormItem>
-    </Form>
 
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
@@ -31,12 +23,13 @@
   export default {
     data: function() {
       return {
-        query: {}, // 查询用的参数
+        query: {
+          selected_group_name: '第一组',
+        }, // 查询用的参数
         total: 0, // 总数量
         terms: [],
         data:[],
         groups:[],
-        selected_group_name: '第一组',
         pages: {
           _page: 1,
           _per_page: 10
@@ -133,6 +126,14 @@
       onSearch() {
         //查询变化
         this.pages._page = 1;
+        this.onTableChange(this.query, this.pages)
+      },
+      onTypeTabClick(value) {
+        this.query.selected_group_name = value
+        this.pages = {
+          _page: 1,
+          _per_page: 10
+        }
         this.onTableChange(this.query, this.pages)
       }
     },

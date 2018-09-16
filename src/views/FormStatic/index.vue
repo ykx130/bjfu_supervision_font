@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div v-for="option in options" style="float: left">
-      <chart :options="option" :style="{width: '500px', height: '300px'}"></chart>
-    </div>
+    <Row v-for="(option,index) in options" style="float: left" span="8" :key="index">
+      <Col  offset="8" >
+        <chart :options="option" :style="{width: '500px', height: '300px'}"></chart>
+      </Col>
+    </Row>
   </div>
 </template>
 <script>
