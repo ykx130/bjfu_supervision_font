@@ -1,35 +1,29 @@
 <template>
-  <Card>
-    <Tabs :value="query.selected_group_name" @on-click="onTypeTabClick">
-      <TabPane v-for="(item, index) in groups" :label="item.name" :name="item.name" :key="item.name + index"></TabPane>
-    </Tabs>
-    <br>
-
+  <div>
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </div>
     </div>
-  </Card>
+  </div>
 </template>
 
 <script>
-  import {queryGroupLesson, putLesson} from '../../service/api/lesson'
-  import {queryGroups} from '../../service/api/user'
-  import  FloatBar from '../../components/float_bar/float_bar'
-
+  import {queryGroupLesson, putLesson} from '../../../service/api/lesson'
+  import {queryGroups} from '../../../service/api/user'
+  import  FloatBar from '../../../components/float_bar/float_bar'
 
   export default {
-    data: function() {
+    name: "allGroup",
+    data: function () {
       return {
-        query: {
-          selected_group_name: '第一组',
-        }, // 查询用的参数
+        query: {}, // 查询用的参数
         total: 0, // 总数量
+        data: [], //数据
         terms: [],
-        data:[],
         groups:[],
+        selected_group_name: '第一组',
         pages: {
           _page: 1,
           _per_page: 10
@@ -115,7 +109,6 @@
         queryGroupLesson(args).then((resp)=>{
           this.data = resp.data.lesson_records;
           this.total = resp.data.total;
-          this.$router.push({path:'/dqs/lesson_records',query:query})
         })
       },
       onPageChange(page) {
@@ -127,14 +120,6 @@
         //查询变化
         this.pages._page = 1;
         this.onTableChange(this.query, this.pages)
-      },
-      onTypeTabClick(value) {
-        this.query.selected_group_name = value
-        this.pages = {
-          _page: 1,
-          _per_page: 10
-        }
-        this.onTableChange(this.query, this.pages)
       }
     },
     mounted: function () {
@@ -145,7 +130,7 @@
         queryGroupLesson(args).then((resp)=>{
           this.data = resp.data.lesson_records;
           this.total = resp.data.total;
-          this.$router.push({path:'/dqs/lesson_records',query:{...args, ...this.query}})
+          //this.$router.push({path:'/dqs/lesson_records',query:{group_name: this.selected_group_name}})
         });
       })
     }
@@ -155,3 +140,4 @@
 <style scoped>
 
 </style>
+
