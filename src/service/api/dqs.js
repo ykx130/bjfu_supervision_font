@@ -36,13 +36,12 @@ export const putForm =(id,params)=> {
   return axios.put('/api/forms/'+ id, params)
 };
 
-/* 获得一个lesson的form_meta */
 export const getLessons =(params)=> {
   return axios.get('/api/lessons', {params: params})
 };
 
 export const getGraph = params =>{
-  return axios.get('/api/graph/forms/map', params)
+  return axios.get('/api/graph/forms/map', {params: params})
 };
 
 
