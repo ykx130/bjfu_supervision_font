@@ -131,11 +131,25 @@
               7: ''
             }
           ];
-          var flag = new Array(7);  //是否已填课程名
-          flag.fill(0);  //未填
-          for (var lesson in this.lessons) {
-            for(var lesson_case in this.lessons[lesson].lesson_cases){
-              var weekday = this.lessons[lesson].lesson_cases[lesson_case].lesson_weekday;
+          let flag = new Array(7);  //是否已填课程名
+          for (let index = 0; index < 7; index++){
+            flag[index] = new Array(7);  //flag[节次][星期]
+            flag[index].fill(0);  //未填
+          }
+          for (let lesson in this.lessons) {
+            let weeks = new Array(7); //用来拼接的周次
+            let allWeek = new Array(7);  //所有周次
+            for (let period = 0; period < 7; period++){
+              weeks[period] = new Array(7);
+              allWeek[period] = new Array(7);
+              for (let day = 0; day < 7; day++){
+                weeks[period][day] = new Array();  //weeks[节次][星期][第几周……]
+                allWeek[period][day] = new Array();  //allWeek[节次][星期][第几周……]
+              }
+            }
+            for (let lesson_case in this.lessons[lesson].lesson_cases){
+              /* 拆分字符串获取节次 */
+              let weekday = this.lessons[lesson].lesson_cases[lesson_case].lesson_weekday;
               let arr = [];  //节次
               let source = this.lessons[lesson].lesson_cases[lesson_case].lesson_time;
               for (let index = 0, len = source.length / 2; index < len; index++) {
@@ -143,52 +157,182 @@
                 arr.push(parseInt(subStr,10));
                 source = source.replace(subStr, "");
               }
-              if (weekday === 2){
-                console.log(weekday);
-                console.log(arr);
+              /* 填写课程信息 */
+              if (arr.indexOf(1) > -1 && arr.indexOf(2) > -1) {
+                if (flag[0][weekday] === 0){
+                  this.data[0][weekday] += this.lessons[lesson].lesson_name;
+                  this.data[0][weekday] += ",";
+                  this.data[0][weekday] += this.lessons[lesson].lesson_class;
+                  this.data[0][weekday] += "班,";
+                  flag[0][weekday] = 1;
+                }
+                /* 获取要拼接的周次 */
+                allWeek[0][weekday].push(this.lessons[lesson].lesson_cases[lesson_case].lesson_week);
+                if (allWeek[0][weekday].length === 1){
+                  weeks[0][weekday].push(allWeek[0][weekday][0]);
+                }
+                if (allWeek[0][weekday].length > 1){
+                  if (allWeek[0][weekday][allWeek[0][weekday].length - 1] - allWeek[0][weekday][allWeek[0][weekday].length - 2] !== 1){
+                    weeks[0][weekday].push(allWeek[0][weekday][allWeek[0][weekday].length - 2]);
+                    weeks[0][weekday].push(allWeek[0][weekday][allWeek[0][weekday].length - 1]);
+                  }
+                }
               }
-
-              if (arr.indexOf(1) > -1 && arr.indexOf(2) > -1 && flag[0] === 0) {
-                this.data[0][weekday] += this.lessons[lesson].lesson_name;
-                this.data[0][weekday] += " ";
-                flag[0] = 1;
+              if (arr.indexOf(3) > -1 && arr.indexOf(4) > -1) {
+                if (flag[1][weekday] === 0){
+                  this.data[1][weekday] += this.lessons[lesson].lesson_name;
+                  this.data[1][weekday] += ",";
+                  this.data[1][weekday] += this.lessons[lesson].lesson_class;
+                  this.data[1][weekday] += "班,";
+                  flag[1][weekday] = 1;
+                }
+                allWeek[1][weekday].push(this.lessons[lesson].lesson_cases[lesson_case].lesson_week);
+                if (allWeek[1][weekday].length === 1){
+                  weeks[1][weekday].push(allWeek[1][weekday][0]);
+                }
+                if (allWeek[1][weekday].length > 1){
+                  if (allWeek[1][weekday][allWeek[1][weekday].length - 1] - allWeek[1][weekday][allWeek[1][weekday].length - 2] !== 1){
+                    weeks[1][weekday].push(allWeek[1][weekday][allWeek[1][weekday].length - 2]);
+                    weeks[1][weekday].push(allWeek[1][weekday][allWeek[1][weekday].length - 1]);
+                  }
+                }
               }
-              if (arr.indexOf(3) > -1 && arr.indexOf(4) > -1 && flag[1] === 0) {
-                this.data[1][weekday] += this.lessons[lesson].lesson_name;
-                this.data[1][weekday] += " ";
-                flag[1] = 1;
+              if (arr.indexOf(5) > -1) {
+                if (flag[2][weekday] === 0){
+                  this.data[2][weekday] += this.lessons[lesson].lesson_name;
+                  this.data[2][weekday] += ",";
+                  this.data[2][weekday] += this.lessons[lesson].lesson_class;
+                  this.data[2][weekday] += "班,";
+                  flag[2][weekday] = 1;
+                }
+                allWeek[2][weekday].push(this.lessons[lesson].lesson_cases[lesson_case].lesson_week);
+                if (allWeek[2][weekday].length === 1){
+                  weeks[2][weekday].push(allWeek[2][weekday][0]);
+                }
+                if (allWeek[2][weekday].length > 1){
+                  if (allWeek[2][weekday][allWeek[2][weekday].length - 1] - allWeek[2][weekday][allWeek[2][weekday].length - 2] !== 1){
+                    weeks[2][weekday].push(allWeek[2][weekday][allWeek[2][weekday].length - 2]);
+                    weeks[2][weekday].push(allWeek[2][weekday][allWeek[2][weekday].length - 1]);
+                  }
+                }
               }
-              if (arr.indexOf(5) > -1 && flag[2] === 0) {
-                this.data[2][weekday] += this.lessons[lesson].lesson_name;
-                this.data[2][weekday] += " ";
-                flag[2] = 1;
+              if (arr.indexOf(6) > -1 && arr.indexOf(7) > -1) {
+                if (flag[3][weekday] === 0){
+                  this.data[3][weekday] += this.lessons[lesson].lesson_name;
+                  this.data[3][weekday] += ",";
+                  this.data[3][weekday] += this.lessons[lesson].lesson_class;
+                  this.data[3][weekday] += "班,";
+                  flag[3][weekday] = 1;
+                }
+                allWeek[3][weekday].push(this.lessons[lesson].lesson_cases[lesson_case].lesson_week);
+                if (allWeek[3][weekday].length === 1){
+                  weeks[3][weekday].push(allWeek[3][weekday][0]);
+                }
+                if (allWeek[3][weekday].length > 1){
+                  if (allWeek[3][weekday][allWeek[3][weekday].length - 1] - allWeek[3][weekday][allWeek[3][weekday].length - 2] !== 1){
+                    weeks[3][weekday].push(allWeek[3][weekday][allWeek[3][weekday].length - 2]);
+                    weeks[3][weekday].push(allWeek[3][weekday][allWeek[3][weekday].length - 1]);
+                  }
+                }
               }
-              if (arr.indexOf(6) > -1 && arr.indexOf(7) > -1 && flag[3] === 0) {
-                this.data[3][weekday] += this.lessons[lesson].lesson_name;
-                this.data[3][weekday] += " ";
-                flag[3] = 1;
+               if (arr.indexOf(8) > -1 && arr.indexOf(9) > -1) {
+                if (flag[4][weekday] === 0){
+                  this.data[4][weekday] += this.lessons[lesson].lesson_name;
+                  this.data[4][weekday] += ",";
+                  this.data[4][weekday] += this.lessons[lesson].lesson_class;
+                  this.data[4][weekday] += "班,";
+                  flag[4][weekday] = 1;
+                }
+                allWeek[4][weekday].push(this.lessons[lesson].lesson_cases[lesson_case].lesson_week);
+                if (allWeek[4][weekday].length === 1){
+                  weeks[4][weekday].push(allWeek[4][weekday][0]);
+                }
+                if (allWeek[4][weekday].length > 1){
+                  if (allWeek[4][weekday][allWeek[4][weekday].length - 1] - allWeek[4][weekday][allWeek[4][weekday].length - 2] !== 1){
+                    weeks[4][weekday].push(allWeek[4][weekday][allWeek[4][weekday].length - 2]);
+                    weeks[4][weekday].push(allWeek[4][weekday][allWeek[4][weekday].length - 1]);
+                  }
+                }
               }
-               if (arr.indexOf(8) > -1 && arr.indexOf(9) > -1 && flag[4] === 0) {
-                this.data[4][weekday] += this.lessons[lesson].lesson_name;
-                this.data[4][weekday] += " ";
-                flag[4] = 1;
+               if (arr.indexOf(10) > -1 && arr.indexOf(11) > -1) {
+                if (flag[5][weekday] === 0){
+                  this.data[5][weekday] += this.lessons[lesson].lesson_name;
+                  this.data[5][weekday] += ",";
+                  this.data[5][weekday] += this.lessons[lesson].lesson_class;
+                  this.data[5][weekday] += "班,";
+                  flag[5][weekday] = 1;
+                }
+                allWeek[5][weekday].push(this.lessons[lesson].lesson_cases[lesson_case].lesson_week);
+                if (allWeek[5][weekday].length === 1){
+                  weeks[5][weekday].push(allWeek[5][weekday][0]);
+                }
+                if (allWeek[5][weekday].length > 1){
+                  if (allWeek[5][weekday][allWeek[5][weekday].length - 1] - allWeek[5][weekday][allWeek[5][weekday].length - 2] !== 1){
+                    weeks[5][weekday].push(allWeek[5][weekday][allWeek[5][weekday].length - 2]);
+                    weeks[5][weekday].push(allWeek[5][weekday][allWeek[5][weekday].length - 1]);
+                  }
+                }
               }
-               if (arr.indexOf(10) > -1 && arr.indexOf(11) > -1 && flag[5] === 0) {
-                this.data[5][weekday] += this.lessons[lesson].lesson_name;
-                this.data[5][weekday] += " ";
-                flag[5] = 1;
-              }
-               if (arr.indexOf(12) > -1 && flag[6] === 0) {
-                this.data[6][weekday] += this.lessons[lesson].lesson_name;
-                this.data[6][weekday] += " ";
-                flag[6] = 1;
+               if (arr.indexOf(12) > -1) {
+                if (flag[6][weekday] === 0){
+                  this.data[6][weekday] += this.lessons[lesson].lesson_name;
+                  this.data[6][weekday] += ",";
+                  this.data[6][weekday] += this.lessons[lesson].lesson_class;
+                  this.data[6][weekday] += "班,";
+                  flag[6][weekday] = 1;
+                }
+                allWeek[6][weekday].push(this.lessons[lesson].lesson_cases[lesson_case].lesson_week);
+                if (allWeek[6][weekday].length === 1){
+                  weeks[6][weekday].push(allWeek[6][weekday][0]);
+                }
+                if (allWeek[6][weekday].length > 1){
+                  if (allWeek[6][weekday][allWeek[6][weekday].length - 1] - allWeek[6][weekday][allWeek[6][weekday].length - 2] !== 1){
+                    weeks[6][weekday].push(allWeek[6][weekday][allWeek[6][weekday].length - 2]);
+                    weeks[6][weekday].push(allWeek[6][weekday][allWeek[6][weekday].length - 1]);
+                  }
+                }
               }
             }
-            flag.fill(0);
+            /* 填周次信息 */
+            for (let period = 0; period < 7; period++){
+              for (let day = 0; day < 7; day++){
+                if (flag[period][day] === 1){  //仅在有课程的时间段填写信息
+                  weeks[period][day].push(allWeek[period][day][allWeek[period][day].length - 1]);
+                  for (let index = 0; index < weeks[period][day].length - 1; index += 2){
+                    if (weeks[period][day][index] === weeks[period][day][index + 1]){
+                      this.data[period][day] += weeks[period][day][index];
+                      if (index === weeks[period][day].length - 2){
+                        this.data[period][day] += "周\n";
+                      }
+                      else{
+                        this.data[period][day] += ",";
+                      }
+                    }
+                    else{
+                      this.data[period][day] += weeks[period][day][index];
+                      this.data[period][day] += "-";
+                      this.data[period][day] += weeks[period][day][index + 1];
+                      if (index === weeks[period][day].length - 2){
+                        this.data[period][day] += "周\n";
+                      }
+                      else{
+                        this.data[period][day] += ",";
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            for (let period = 0; period < 7; period++){
+              for (let day = 0; day < 7; day++) {
+                weeks[period][day] = [];
+                allWeek[period][day] = [];
+              }
+            }
+            for (let index = 0; index < 7; index++){
+              flag[index].fill(0);
+            }
           }
-          console.log(this.lessons);
-          console.log(this.data[3]);
-          console.log(this.data[4]);
         });
       }
     }
@@ -197,3 +341,4 @@
 <style scoped>
 
 </style>
+
