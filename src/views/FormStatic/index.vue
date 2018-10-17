@@ -1,15 +1,19 @@
 <template>
+  <Card>
+
   <Row>
-    <Col span="8" v-for="option in options">
-      <Card style="float: left" :style="{width: '320px', height: '300px'}">
-        <p slot="title">
+    <Col span="24" v-for="option in options">
+        <div align="center">
+          <p slot="title">
             <Icon type="ios-analytics-outline" />
             {{ option.title.text }}
-        </p>
-        <chart :options="option" :style="{width: '260px', height: '260px', marginLeft: '20px'}"></chart>
-      </Card>
+          </p>
+          <chart :options="option" :style="{width: '560px', height: '300px', marginLeft: '20px'}"></chart>
+        </div>
     </Col>
   </Row>
+  </Card>
+
 </template>
 <script>
     import echarts from 'echarts'

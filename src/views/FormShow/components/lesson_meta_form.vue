@@ -140,6 +140,9 @@
         this.allow_select_data = this.selected_lesson.lesson_cases.map((item)=>{
           return item.lesson_date
         })
+        if(this.allow_select_data){
+          this.onSelectedLessonCaseChange(this.allow_select_data[0])
+        }
       },
       onSelectedLessonCaseChange: function (value) {
         /*选择的课程case变化 根据时间*/

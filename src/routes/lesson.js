@@ -22,6 +22,14 @@ export default[{
       component: resolve => require(['Views/FormMetaManager/index'], resolve),
     },
     {
+      name: "关注课程",
+      path: "notice_lesson", // xzl
+      meta: {
+        visible: true
+      },
+      component: resolve => require(['Views/LessonNoticeManager/index'], resolve),
+    },
+    {
       name: "课程表",
       path: "lesson_form", // xzl
       meta: {

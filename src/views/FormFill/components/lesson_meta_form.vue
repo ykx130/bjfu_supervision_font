@@ -141,7 +141,7 @@
           return item.lesson_date
         })
         if(this.allow_select_data){
-          this.value.lesson.lesson_date = this.allow_select_data[0]
+          this.onSelectedLessonCaseChange(this.allow_select_data[0])
         }
       },
       onSelectedLessonCaseChange: function (value) {

@@ -23,7 +23,6 @@ export default [
     path: "/login", // xzl
     component: resolve => require(['Views/LoginPage/index'], resolve),
   },
-
   ...dsq,
   ...user,
   ...actives,
