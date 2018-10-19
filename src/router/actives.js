@@ -8,20 +8,23 @@ export default
   path: '/active',
   component: Main,
   meta: {
-    icon: 'arrow-graph-up-right',
-    title: '活动管理'
+    icon: 'ios-outlet',
+    title: '活动中心'
   },
   children: [
     {
       name: '教学辅导',
       path: 'manager', // xzl
-
       component: resolve => require(['Views/ActiveManager/index'], resolve),
       meta: {
-        icon: 'arrow-graph-up-right',
         title: '教学辅导'
       },
       children: [{
+        name: '教学详情',
+        meta: {
+          hideInMenu: true,
+          notCache: true
+        },
         path: ':id',
         component: resolve => require(['Views/ActiveDetail/index'], resolve)
       }]
@@ -29,7 +32,7 @@ export default
     },
     {
       name: '报名中心',
-      path: '/attend',
+      path: 'attend',
       meta: {
         icon: 'arrow-graph-up-right',
         title: '报名中心'

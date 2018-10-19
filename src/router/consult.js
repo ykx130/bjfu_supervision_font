@@ -7,8 +7,8 @@ export default
   name: '咨询',
   path: '/consult',
   meta: {
-    icon: 'arrow-graph-up-right',
-    title: '咨询'
+    icon: 'md-person',
+    title: '咨询中心'
   },
   component: Main, // 一级目录必须使用Main组件作为component
   children: [

@@ -7,8 +7,8 @@ export default{
   path: '/lesson',
   component: Main,
   meta: {
-    icon: 'arrow-graph-up-right',
-    title: '课程'
+    icon: 'md-chatbubbles',
+    title: '课程中心'
   },
   children: [
     {
@@ -16,7 +16,7 @@ export default{
       path: 'manager', // xzl
       meta: {
         icon: 'arrow-graph-up-right',
-        title: '课程'
+        title: '课程管理'
       },
       component: resolve => require(['Views/LessonManager/index'], resolve)
     },
@@ -25,7 +25,7 @@ export default{
       path: 'good_lesson', // xzl
       meta: {
         icon: 'arrow-graph-up-right',
-        title: '课程'
+        title: '好评课堂'
       },
       component: resolve => require(['Views/FormMetaManager/index'], resolve)
     },
@@ -34,7 +34,7 @@ export default{
       path: 'notice_lesson', // xzl
       meta: {
         icon: 'arrow-graph-up-right',
-        title: '课程'
+        title: '关注课程'
       },
       component: resolve => require(['Views/LessonNoticeManager/index'], resolve)
     },
@@ -43,7 +43,7 @@ export default{
       path: 'lesson_form', // xzl
       meta: {
         icon: 'arrow-graph-up-right',
-        title: '课程'
+        title: '课程表'
       },
       component: resolve => require(['Views/LessonForm/index'], resolve)
     }

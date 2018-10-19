@@ -1,14 +1,9 @@
 <template>
   <Card>
-
   <Row>
     <Col span="24" v-for="option in options">
         <div align="center">
-          <p slot="title">
-            <Icon type="ios-analytics-outline" />
-            {{ option.title.text }}
-          </p>
-          <chart :options="option" :style="{width: '560px', height: '300px', marginLeft: '20px'}"></chart>
+          <ChartBar style="height: 260px;" :value="option.data" :text="option.title"></ChartBar>
         </div>
     </Col>
   </Row>
@@ -16,11 +11,10 @@
 
 </template>
 <script>
-import echarts from 'echarts'
-import 'echarts/lib/chart/bar'
-import 'echarts/lib/component/tooltip'
 import { getGraph } from '../../service/api/dqs'
+import { ChartBar } from '_c/charts'
 export default {
+  components: {ChartBar},
   data () {
     return {
       options: [],
@@ -32,27 +26,12 @@ export default {
       this.data = resp.data.item_map
       this.options = this.data.map(function (item) {
         let graphItem = {
-          title: {
-            text: '',
-            show: false
-          },
-          color: '#4cabce',
-          tooltip: {},
-          xAxis: {
-            data: []
-          },
-          yAxis: {},
-          series: [{
-            name: '人数',
-            type: 'bar',
-            data: []
-          }]
+          data: {}
         }
-        graphItem.title.text = item.item_name
-        for (var index in item.point) {
-          graphItem.xAxis.data.push(item.point[index].option.value)
-          graphItem.series[0].data.push(item.point[index].num)
+        for (let index in item.point) {
+          graphItem.data[item.point[index].option.value] = item.point[index].num
         }
+        graphItem.title = item.item_name
         return graphItem
       })
     })

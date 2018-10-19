@@ -6,8 +6,8 @@ export default{
   name: '问卷',
   path: '/dqs',
   meta: {
-    icon: 'arrow-graph-up-right',
-    title: '问卷'
+    icon: 'ios-book',
+    title: '问卷中心'
   },
   component: Main, // 一级目录必须使用Main组件作为component
   children: [

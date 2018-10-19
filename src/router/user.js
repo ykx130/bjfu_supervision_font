@@ -6,6 +6,10 @@ export default{
   name: '用户',
   path: '/user',
   component: Main,
+  meta: {
+    icon: 'md-people',
+    title: '用户中心'
+  },
   children: [
     {
       name: '用户管理',
