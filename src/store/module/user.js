@@ -7,7 +7,7 @@ export default {
     userId: '',
     avatorImgPath: '',
     token: getToken(),
-    access: '',
+    access: [],
     hasGetInfo: false,
     userInfo: {}
   },

@@ -5,6 +5,7 @@ import user from './user'
 import actives from './actives'
 import lesson from './lesson'
 import consult from './consult'
+import guider from './guider'
 
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
@@ -54,6 +55,7 @@ export default [
   actives,
   lesson,
   consult,
+  guider,
   {
     path: '/error_logger',
     name: 'error_logger',

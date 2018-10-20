@@ -9,7 +9,7 @@ export default{
     icon: 'ios-book',
     title: '问卷中心'
   },
-  component: Main, // 一级目录必须使用Main组件作为component
+  component: Main,
   children: [
     {
       name: '问卷结构管理',
@@ -37,16 +37,20 @@ export default{
       component: resolve => require(['Views/FormMetaEditor/index'], resolve)
     },
     {
+      name: "问卷填写",
       path: 'form_fill/:name/:version', // 问卷填写
       meta: {
-        hideInMenu: true
+        hideInMenu: true,
+        title: "问卷填写",
       },
       component: resolve => require(['Views/FormFill/index'], resolve)
     },
     {
+      name: "问卷展示",
       path: 'form_show/:id', // hmx问卷查看
       meta: {
-        hideInMenu: true
+        hideInMenu: true,
+        title: "问卷展示",
       },
       component: resolve => require(['Views/FormShow/index'], resolve)
     },
@@ -70,6 +74,15 @@ export default{
       meta: {
       },
       component: resolve => require(['Views/FormStatic/index'], resolve)
+    },
+    {
+      path: 'form_choose', // 问卷选择
+      name:'问卷选择',
+      meta: {
+        hideInMenu: true,
+        title: "问卷选择"
+      },
+      component: resolve => require(['Views/FormChoose/index'], resolve)
     }
   ]
 }

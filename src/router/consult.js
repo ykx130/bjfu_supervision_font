@@ -10,7 +10,7 @@ export default
     icon: 'md-person',
     title: '咨询中心'
   },
-  component: Main, // 一级目录必须使用Main组件作为component
+  component: Main,
   children: [
     {
       name: '咨询管理',

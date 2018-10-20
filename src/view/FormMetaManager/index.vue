@@ -68,7 +68,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$router.push({path: `/dqs/form_fill/${params.row.name}/${params.row.version}`})
+                    this.$router.push({path: `/dqs/form_fill/${params.row.id}/${params.row.version}`})
                   }
                 }
               }, '查看'),

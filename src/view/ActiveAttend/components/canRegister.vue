@@ -151,7 +151,7 @@ export default {
       queryCurrentuserActives(args).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
-        this.$router.push({path: '/attend', query: {...args, ...this.query}})
+        this.$router.push({name: '报名中心', query: {...args, ...this.query}})
       })
     })
   }

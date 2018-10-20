@@ -113,7 +113,7 @@ export default {
                     // this.showActivityProfileModal=true;
                     // const route=this.selected_activity_id;
                     // this.$router.push({path: `:id/${route}`})
-                    this.$router.push({path: `/active/manager/${params.row.id}` })
+                    this.$router.push({path: `/active/detail/${params.row.id}` })
                   }
                 }
               }, '查看')

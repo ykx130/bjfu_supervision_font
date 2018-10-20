@@ -19,16 +19,18 @@ export default
       meta: {
         title: '教学辅导'
       },
-      children: [{
-        name: '教学详情',
-        meta: {
-          hideInMenu: true,
-          notCache: true
-        },
-        path: ':id',
-        component: resolve => require(['Views/ActiveDetail/index'], resolve)
-      }]
+      children: []
       // component: resolve => require(['Views/FormMetaManager/index'], resolve),
+    },
+    {
+      name: '教学详情',
+      meta: {
+        hideInMenu: true,
+        notCache: true,
+        title: '教学详情'
+      },
+      path: 'detail/:id',
+      component: resolve => require(['Views/ActiveDetail/index'], resolve)
     },
     {
       name: '报名中心',
