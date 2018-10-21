@@ -1,7 +1,6 @@
 <template>
   <div>
 
-    <h1>督导管理</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>

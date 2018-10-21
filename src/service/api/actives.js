@@ -22,17 +22,17 @@ export const postActive = (params) => {
 }
 
 export const queryActiveUsers = (id) => {
-  return axios.get('api/activities/' + id + '/activity_users')
+  return axios.get('/api/activities/' + id + '/activity_users')
 }
 
 export const getActiveUser = (active_id, username) => {
-  return axios.get('api/activities/' + active_id + '/activity_users/' + username)
+  return axios.get('/api/activities/' + active_id + '/activity_users/' + username)
 }
 
 export const postActiveUser = (active_id, params) => {
-  return axios.post('api/activities/' + active_id + '/activity_users', params)
+  return axios.post('/api/activities/' + active_id + '/activity_users', params)
 }
 
 export const putActiveUser = (active_id, params) => {
-  return axios.put('api/activities/' + active_id + '/activity_users/' + params.user.username, params)
+  return axios.put('/api/activities/' + active_id + '/activity_users/' + params.user.username, params)
 }

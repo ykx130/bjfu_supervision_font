@@ -27,7 +27,7 @@ export default{
         icon: 'arrow-graph-up-right',
         title: '好评课堂'
       },
-      component: resolve => require(['Views/FormMetaManager/index'], resolve)
+      component: resolve => require(['Views/LessonModelManager/index'], resolve)
     },
     {
       name: '关注课程',

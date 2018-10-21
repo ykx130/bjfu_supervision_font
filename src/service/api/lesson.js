@@ -20,3 +20,11 @@ export const putLesson = (params) => {
 export const postLesson = (params) => {
   return axios.post('/api/lessons', params)
 }
+
+export const queryNoticeLessons = (params) => {
+  return axios.get('/api/notice_lessons', params)
+}
+
+export const queryModelLessons = (params) => {
+  return axios.get('/api/model_lessons', params)
+}

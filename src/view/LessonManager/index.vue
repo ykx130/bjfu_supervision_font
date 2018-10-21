@@ -89,8 +89,12 @@ export default {
         },
         {
           title: '课程状态',
-          render: function (h, params) {
-            return h('span', params.row.lesson_state)
+          render: (h, params) => {
+            if (params.row.lesson_state === '未完成'){
+              return h('Tag', { props: {color:"red"}}, params.row.lesson_state)
+            } else {
+              return h('Tag', { props: {color:"blue"}}, params.row.lesson_state)
+            }
           }
         },
         {
