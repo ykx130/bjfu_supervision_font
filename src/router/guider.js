@@ -13,7 +13,7 @@ export default {
   children: [{
     name: '报名中心',
     path: 'attend',
-    component: resolve => require(['Views/ActiveAttend/index'], resolve)
+    component: resolve => require(['Views/GuiderActiveAttend/index'], resolve)
   },
     {
       name: '咨询申请',
@@ -23,7 +23,7 @@ export default {
     {
       name: '问卷填写',
       path: 'judge',
-      component: resolve => require(['Views/ConsultApply/index'], resolve)
+      component: resolve => require(['Views/GuiderFormChoose/index'], resolve)
     },
   ]
 }
