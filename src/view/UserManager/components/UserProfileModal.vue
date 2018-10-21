@@ -135,8 +135,8 @@
 
 <script>
 import {getUserByName, queryRoles, queryGroups} from '../../../service/api/user'
-import {updateWithinField} from 'Libs/tools'
-import {dateToString} from 'Libs/tools'
+import {updateWithinField} from '@/libs/tools'
+import {dateToString} from '@/libs/tools'
 import { sexList, unitlist, prorankList, stateList, workStatelist, statusList} from '../marcos'
 export default {
   name: 'UserProfileModal',

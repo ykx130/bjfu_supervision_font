@@ -55,7 +55,7 @@ export default {
           areaStyle: {normal: {
             color: '#2d8cf0'
           }},
-          data: [120, 132, 101, 134, 90, 230, 210]
+          data: [12, 13, 11, 13, 9, 23, 20]
         },
         {
           name: '信息学院',
@@ -64,7 +64,7 @@ export default {
           areaStyle: {normal: {
             color: '#10A6FF'
           }},
-          data: [257, 358, 278, 234, 290, 330, 310]
+          data: [27, 38, 28, 24, 90, 30, 30]
         },
         {
           name: '材料学院',
@@ -73,7 +73,7 @@ export default {
           areaStyle: {normal: {
             color: '#0C17A6'
           }},
-          data: [379, 268, 354, 269, 310, 478, 358]
+          data: [39, 28, 34, 29, 30, 48, 38]
         },
         {
           name: '外语学院',
@@ -82,7 +82,7 @@ export default {
           areaStyle: {normal: {
             color: '#4608A6'
           }},
-          data: [320, 332, 301, 334, 390, 330, 320]
+          data: [30, 32, 31, 34, 30, 30, 30]
         },
         {
           name: '林学院',
@@ -97,7 +97,7 @@ export default {
           areaStyle: {normal: {
             color: '#398DBF'
           }},
-          data: [820, 645, 546, 745, 872, 624, 258]
+          data: [80, 65, 56, 75, 82, 24, 58]
         }
       ]
     }

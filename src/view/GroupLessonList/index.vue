@@ -1,22 +1,40 @@
 <template>
-  <Card>
-    <Tabs :value="query.selected_group_name" @on-click="onTypeTabClick">
-      <TabPane v-for="(item, index) in groups" :label="item.name" :name="item.name" :key="item.name + index"></TabPane>
-    </Tabs>
-    <br>
+  <div>
+    <Card>
+      <Row>
+        <Col span="6">
+        <span>
+          问卷名字:
+              <Select v-model="query.term" style="width:200px">
+                <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
+            </Select>
+        </span>
+        </Col>
+      </Row>
+    </Card>
 
-    <Table border stripe :columns="columns" :data="data"></Table>
-    <div style="margin: 10px;overflow: hidden">
-      <div style="float: right;">
-        <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
+    <div style="padding-top: 15px"></div>
+    <Card>
+      <Tabs :value="query.selected_group_name" @on-click="onTypeTabClick">
+        <TabPane v-for="(item, index) in groups" :label="item.name" :name="item.name" :key="item.name + index"></TabPane>
+      </Tabs>
+      <br>
+
+      <Table border stripe :columns="columns" :data="data"></Table>
+      <div style="margin: 10px;overflow: hidden">
+        <div style="float: right;">
+          <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
+        </div>
       </div>
-    </div>
-  </Card>
+    </Card>
+  </div>
+
 </template>
 
 <script>
 import {queryGroupLesson, putLesson} from '../../service/api/lesson'
 import {queryGroups} from '../../service/api/user'
+import {getCurrentTerms, queryTerms} from '@/service/api/term'
 
 export default {
   data: function () {
@@ -137,14 +155,22 @@ export default {
   },
   mounted: function () {
     const args = this.$route.query
-    queryGroups().then((resp) => {
-      this.groups = resp.data.groups
-      // this.selected_group_name = this.groups[0].name;
-      queryGroupLesson(args).then((resp) => {
-        this.data = resp.data.lesson_records
-        this.total = resp.data.total
-        this.$router.push({path: '/dqs/lesson_records', query: {...args, ...this.query}})
-      })
+
+    queryTerms().then((resp) => {
+      this.terms = resp.data.terms
+    })
+
+    getCurrentTerms().then((resp) =>{
+      this.query.term = resp.data.term.name
+      queryGroups().then((resp) => {
+        this.groups = resp.data.groups
+        // this.selected_group_name = this.groups[0].name;
+        queryGroupLesson(args).then((resp) => {
+          this.data = resp.data.lesson_records
+          this.total = resp.data.total
+          this.$router.push({path: '/dqs/lesson_records', query: {...args, ...this.query}})
+        })
+    })
     })
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>用户大事件</h1>
-    <br>
+    <Button type="primary" @click="onSearch(query)">增加事件</Button>
     <div style="float: left" >
       <Timeline v-model="events" style="width: 180px;margin-left: 20px">
           <TimelineItem v-for="(event,index) in events" :key="'event'+index">
@@ -20,8 +20,9 @@
 </template>
 
 <script>
-import { getEvents } from '../../service/api/user'
-import { queryForms, getForm } from '../../service/api/dqs'
+  import { postEvents } from '@/service/api/events'
+  import { getEvents } from '@/service/api/user'
+import { queryForms, getForm } from '@/service/api/dqs'
 export default {
   data: function () {
     return {
@@ -118,8 +119,7 @@ export default {
     }
   },
   mounted: function () {
-    const args = this.$route.params
-    getEvents(args.username).then((resp) => {
+    getEvents(this.$route.params).then((resp) => {
       this.events = resp.data.events
       this.events = this.events.map((item) => {
         return {
@@ -142,6 +142,9 @@ export default {
       queryForms(this.query).then((resp) => {
         this.data = resp.data.forms
       })
+    },
+    addEvents(){
+
     },
     resetColor: function () {
       this.events = this.events.map((item) => {
