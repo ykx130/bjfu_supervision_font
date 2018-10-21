@@ -45,23 +45,23 @@ export default {
   data () {
     return {
       inforCardData: [
-        { title: '在职督导', icon: 'md-person-add', count: 803, color: '#2d8cf0' },
-        { title: '提交问卷', icon: 'md-locate', count: 232, color: '#19be6b' },
-        { title: '待提交问卷', icon: 'md-help-circle', count: 142, color: '#ff9900' },
-        { title: '关注课程总数', icon: 'md-share', count: 657, color: '#ed3f14' },
+        { title: '在职督导', icon: 'md-person-add', count: 32, color: '#2d8cf0' },
+        { title: '提交问卷', icon: 'md-locate', count: 12, color: '#19be6b' },
+        { title: '待提交问卷', icon: 'md-help-circle', count: 32, color: '#ff9900' },
+        { title: '关注课程总数', icon: 'md-share', count: 43, color: '#ed3f14' },
       ],
       pieData: [
-        {value: 335, name: '总体好评'},
-        {value: 310, name: '总体一般'},
+        {value: 12, name: '总体好评'},
+        {value: 32, name: '总体一般'},
       ],
       barData: {
-        Mon: 13253,
-        Tue: 34235,
-        Wed: 26321,
-        Thu: 12340,
-        Fri: 24643,
-        Sat: 1322,
-        Sun: 1324
+        Mon: 1,
+        Tue: 4,
+        Wed: 4,
+        Thu: 3,
+        Fri: 6,
+        Sat: 1,
+        Sun: 4
       }
     }
   },

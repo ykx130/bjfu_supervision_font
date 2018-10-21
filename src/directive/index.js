@@ -1,4 +1,5 @@
 import directive from './directives'
+import permission from './permission'
 
 const importDirective = Vue => {
   /**
@@ -10,6 +11,7 @@ const importDirective = Vue => {
    * }
    */
   Vue.directive('draggable', directive.draggable)
+  Vue.directive('permission', permission)
 }
 
 export default importDirective

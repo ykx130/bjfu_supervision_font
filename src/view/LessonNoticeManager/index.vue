@@ -1,4 +1,4 @@
-<template>
+  <template>
   <Card>
     <h1>关注课程</h1>
     <br>
@@ -10,9 +10,6 @@
         <Select v-model="query.term" style="width:200px">
           <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
-      </FormItem>
-      <FormItem label="教师：" prop="lesson_teacher_name">
-        <Input style="width: 180px" v-model="query.lesson_teacher_name" ></Input>
       </FormItem>
       <FormItem >
         <Button type="primary" @click="onSearch(query)">查询</Button>
@@ -47,7 +44,7 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-import {queryLessons, putLesson} from '../../service/api/lesson'
+import {queryNoticeLessons, putLesson} from '../../service/api/lesson'
 import {queryTerms, getCurrentTerms} from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 export default {
@@ -89,20 +86,31 @@ export default {
             )
           }
         },
+
         {
-          title: '课程状态',
+          title: '分配组别',
           render: function (h, params) {
             return (
-              <span>{ params.row.lesson_state }</span>
-            )
+              <span>{ params.row.assign_group }</span>
+          )
           }
         },
         {
-          title: '课程级别',
+          title: '关注原因',
           render: function (h, params) {
             return (
-              <span>{ params.row.lesson_level }</span>
-            )
+              <span>{ params.row.reason }</span>
+          )
+          }
+        },
+        {
+          title: '课程状态',
+          render: (h, params) => {
+            if (params.row.lesson_state === '未完成'){
+              return h('Tag', { props: {color:"red"}}, params.row.lesson_state)
+            } else {
+              return h('Tag', { props: {color:"blue"}}, params.row.lesson_state)
+            }
           }
         },
         {
@@ -135,9 +143,9 @@ export default {
     onTableChange (query, pages) {
       // 数据表发生变化请求数据
       let args = {...query, ...pages}
-      queryLessons(args).then((resp) => {
+      queryNoticeLessons(args).then((resp) => {
         this.selected_lesson_ids = []
-        this.data = resp.data.lessons
+        this.data = resp.data.notice_lessons
         this.total = resp.data.total
         this.$router.push({path: '/lesson/notice_lesson', query: {...args, ...this.query}})
       })
@@ -186,8 +194,8 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryLessons({...args, ...this.pages}).then((resp) => {
-        this.data = resp.data.lessons
+      queryNoticeLessons  ({...args, ...this.pages}).then((resp) => {
+        this.data = resp.data.notice_lessons
         this.total = resp.data.total
         this.$router.push({path: '/lesson/notice_lesson', query: {...args, ...this.query}})
       })

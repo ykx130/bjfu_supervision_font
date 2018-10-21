@@ -33,6 +33,9 @@ export default {
     },
     setUserInfo (state, resData) {
       state.userInfo = resData
+      state.access = resData.role_names
+      state.userId = resData.id
+      state.userName = resData.username
     }
   },
   actions: {
@@ -87,6 +90,11 @@ export default {
           reject(error)
         }
       })
+    }
+  },
+  getters: {
+    access: state => {
+      return state.access
     }
   }
 }

@@ -185,6 +185,7 @@ export default {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
+      this.query.meta.term = termResp.data.term.name
       queryForms({...args, ...this.query}).then((resp) => {
         this.data = resp.data.forms
         this.total = resp.data.total

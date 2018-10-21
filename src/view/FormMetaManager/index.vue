@@ -16,7 +16,7 @@
 </template>
 <script>
 import { queryFormMetas } from '../../service/api/dqs'
-import {getCurrentTerms, queryTerms} from '../../service/api/term'
+import {getCurrentTerms, queryTerms} from '@/service/api/term'
 export default {
   data: function () {
     return {
@@ -93,7 +93,9 @@ export default {
       data: [],
       total: 0,
       terms: [],
-      query: {},
+      query: {
+        meta:{}
+      },
       pages: {
         _page: 1,
         _per_page: 10
@@ -127,6 +129,7 @@ export default {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
+      this.query.meta.term = termResp.data.term.name
       queryFormMetas({...args, ...this.query}).then((resp) => {
         this.data = resp.data.form_metas
         this.total = resp.data.total

@@ -69,7 +69,7 @@
 import {queryUsers} from '../../../service/api/user'
 import {queryTerms, getCurrentTerms} from '../../../service/api/term'
 import {queryActives} from '../../../service/api/actives'
-
+import { dateToString } from '@/libs/tools'
 export default {
   name: 'ActiveAddModal',
   props: {
