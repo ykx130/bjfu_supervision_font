@@ -165,100 +165,73 @@
         }
       },
       methods:{
-        /* 获取要拼接的周次 */
-        getWeek: function (lesson, weekday, period){
-          let allWeeks = new Array();  //所有周次
-          let week = new Array(); //用来拼接的周次
-          for (let eachCase in this.lessons[lesson].lesson_cases){
-            if (this.lessons[lesson].lesson_cases[eachCase].lesson_weekday === weekday
-              && this.lessons[lesson].lesson_cases[eachCase].lesson_time.indexOf(period) > -1)
-            {
-              allWeeks.push(this.lessons[lesson].lesson_cases[eachCase].lesson_week);
-            }
-          }
-          if (allWeeks.length === 1) {
-            week.push(allWeeks[0]);
-            week.push(allWeeks[0]);  //推两个进去
-          }
-          if (allWeeks.length > 1) {
-            week.push(allWeeks[0]);
-            for (let index = 1; index < allWeeks.length; index++){
-              if (allWeeks[index] - allWeeks[index - 1] !== 1) {
-                week.push(allWeeks[index - 1]);
-                week.push(allWeeks[index]);
+        preProcess: function (lessons) {
+          let res = [];
+          lessons.forEach((lesson) => {
+            lesson.lesson_cases.forEach((lesson_case) => {
+              let same_case = res.findIndex((ele) =>{
+                return ele.id === lesson.id
+                  && ele.lesson_weekday === lesson_case.lesson_weekday
+                  && ele.lesson_time === lesson_case.lesson_time;
+              });
+              if (same_case > -1){
+                res[same_case].lesson_week.push(lesson_case.lesson_week);
               }
-            }
-            week.push(allWeeks[allWeeks.length - 1]);
-          }
-          return week;
+              else{
+                res.push({
+                  "id": lesson.id,
+                  "lesson_attribute": lesson.lesson_attribute,
+                  "lesson_class": lesson.lesson_class,
+                  "lesson_grade": lesson.lesson_grade,
+                  "lesson_id": lesson.lesson_id,
+                  "lesson_level": lesson.lesson_level,
+                  "lesson_name": lesson.lesson_name,
+                  "lesson_semester": lesson.lesson_semester,
+                  "lesson_state": lesson.lesson_state,
+                  "lesson_teacher_id": lesson.lesson_teacher_id,
+                  "lesson_teacher_name": lesson.lesson_teacher_name,
+                  "lesson_teacher_unit": lesson.lesson_teacher_unit,
+                  "lesson_type": lesson.lesson_type,
+                  "lesson_unit": lesson.lesson_unit,
+                  "lesson_year": lesson.lesson_year,
+                  "lesson_weekday": lesson_case.lesson_weekday,
+                  "lesson_time": lesson_case.lesson_time,
+                  "lesson_week": [lesson_case.lesson_week]
+                })
+              }
+            })
+          });
+          return res;
         }
       },
       mounted: function () {
         getLessons().then((resp) => {
           this.lessons = resp.data.lessons;
-          let flag = new Array(7);  //是否已填课程名
-          for (let index = 0; index < 7; index++){
-            flag[index] = new Array(7);  //flag[节次][星期]
-            flag[index].fill(0);  //未填
-          }
-          for (let lesson in this.lessons) {
-            for (let lesson_case in this.lessons[lesson].lesson_cases) {
-              let weekday = this.lessons[lesson].lesson_cases[lesson_case].lesson_weekday;
-              let time = this.lessons[lesson].lesson_cases[lesson_case].lesson_time;
-              if (time.indexOf("0102") > -1) {
-                if (flag[0][weekday] === 0) {
-                  this.data[0][weekday].push(JSON.parse(JSON.stringify(this.lessons[lesson])));
-                  this.data[0][weekday][this.data[0][weekday].length - 1].week = this.getWeek(lesson, weekday, '0102');
-                  flag[0][weekday] = 1;
-                }
-              }
-              if (time.indexOf("0304") > -1) {
-                if (flag[1][weekday] === 0) {
-                  this.data[1][weekday].push(JSON.parse(JSON.stringify(this.lessons[lesson])));
-                  this.data[1][weekday][this.data[1][weekday].length - 1].week = this.getWeek(lesson, weekday, '0304');
-                  flag[1][weekday] = 1;
-                }
-              }
-              if (time.indexOf("05") > -1) {
-                if (flag[2][weekday] === 0) {
-                  this.data[2][weekday].push(JSON.parse(JSON.stringify(this.lessons[lesson])));
-                  this.data[2][weekday][this.data[2][weekday].length - 1].week = this.getWeek(lesson, weekday, '05');
-                  flag[2][weekday] = 1;
-                }
-              }
-              if (time.indexOf("0607") > -1) {
-                if (flag[3][weekday] === 0) {
-                  this.data[3][weekday].push(JSON.parse(JSON.stringify(this.lessons[lesson])));
-                  this.data[3][weekday][this.data[3][weekday].length - 1].week = this.getWeek(lesson, weekday, '0607');
-                  flag[3][weekday] = 1;
-                }
-              }
-              if (time.indexOf("0809") > -1) {
-                if (flag[4][weekday] === 0) {
-                  this.data[4][weekday].push(JSON.parse(JSON.stringify(this.lessons[lesson])));
-                  this.data[4][weekday][this.data[4][weekday].length - 1].week = this.getWeek(lesson, weekday, '0809');
-                  flag[4][weekday] = 1;
-                }
-              }
-              if (time.indexOf("1011") > -1) {
-                if (flag[5][weekday] === 0) {
-                  this.data[5][weekday].push(JSON.parse(JSON.stringify(this.lessons[lesson])));
-                  this.data[5][weekday][this.data[5][weekday].length - 1].week = this.getWeek(lesson, weekday, '1011');
-                  flag[5][weekday] = 1;
-                }
-              }
-              if (time.indexOf("12") > -1) {
-                if (flag[6][weekday] === 0) {
-                  this.data[6][weekday].push(JSON.parse(JSON.stringify(this.lessons[lesson])));
-                  this.data[6][weekday][this.data[6][weekday].length - 1].week = this.getWeek(lesson, weekday, '12');
-                  flag[6][weekday] = 1;
-                }
-              }
+          let allLessons = this.preProcess(this.lessons);
+          allLessons.forEach((lesson) => {
+            if (lesson.lesson_time.indexOf("0102") > -1) {
+              this.data[0][lesson.lesson_weekday].push(lesson);
             }
-            for (let index = 0; index < 7; index++) {
-              flag[index].fill(0);
+            if (lesson.lesson_time.indexOf("0304") > -1) {
+              this.data[1][lesson.lesson_weekday].push(lesson);
             }
-          }
+            if (lesson.lesson_time.indexOf("05") > -1) {
+              this.data[2][lesson.lesson_weekday].push(lesson);
+            }
+            if (lesson.lesson_time.indexOf("0607") > -1) {
+              this.data[3][lesson.lesson_weekday].push(lesson);
+            }
+            if (lesson.lesson_time.indexOf("0809") > -1) {
+              this.data[4][lesson.lesson_weekday].push(lesson);
+            }
+            if (lesson.lesson_time.indexOf("1011") > -1) {
+              this.data[5][lesson.lesson_weekday].push(lesson);
+            }
+            if (lesson.lesson_time.indexOf("12") > -1) {
+              this.data[6][lesson.lesson_weekday].push(lesson);
+            }
+          });
+
         });
       }
     }
