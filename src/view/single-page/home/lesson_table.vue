@@ -1,12 +1,12 @@
 <template>
   <div>
-    <p style="color: #647797; font-size: 18px;font-weight: bold;text-align: center">关注课程列表</p>
+    <p style="color: #647797; font-size: 18px;font-weight: bold;text-align: center">最新评价课程</p>
     <div style="padding-top: 10px"></div>
     <Table   stripe :columns="columns" :data="data"></Table>
   </div>
 </template>
 <script>
-  import {queryNoticeLessons} from '@/service/api/lesson'
+  import {queryForms} from '@/service/api/dqs'
   import {getCurrentTerms} from '@/service/api/term'
 
   export default {
@@ -24,42 +24,42 @@
                 title: '课程名字',
                 render: function (h, params) {
                   return (
-                    <span>{ params.row.lesson_name }</span>
+                    <span>{ params.row.meta.lesson.lesson_name }</span>
                 )
                 }
               },
               {
-                title: '课程属性',
+                title: '教师名字',
                 render: function (h, params) {
                   return (
-                    <span>{ params.row.lesson_attribute }</span>
+                    <span>{ params.row.meta.lesson.lesson_teacher_name }</span>
                 )
                 }
               },
 
               {
-                title: '分配组别',
+                title: '评价督导',
                 render: function (h, params) {
                   return (
-                    <span>{ params.row.assign_group }</span>
+                    <span>{ params.row.meta.create_by }</span>
                 )
                 }
               },
               {
-                title: '关注原因',
+                title: '学院',
                 render: function (h, params) {
                   return (
-                    <span>{ params.row.reason }</span>
+                      <span>{ params.row.meta.lesson.lesson_unit }</span>
                 )
                 }
               },
               {
-                title: '课程状态',
+                title: '问卷状态',
                 render: (h, params) => {
-                  if (params.row.lesson_state === '未完成'){
-                    return h('Tag', { props: {color:"red"}}, params.row.lesson_state)
+                  if (params.row.status === '待提交'){
+                    return h('Tag', { props: {color:"red"}}, params.row.status)
                   } else {
-                    return h('Tag', { props: {color:"blue"}}, params.row.lesson_state)
+                    return h('Tag', { props: {color:"blue"}}, params.row.status)
                   }
                 }
               }
@@ -69,8 +69,8 @@
     mounted: function () {
       getCurrentTerms().then((termResp) => {
         this.query.term = termResp.data.term.name
-        queryNoticeLessons  (this.pages).then((resp) => {
-          this.data = resp.data.notice_lessons
+        queryForms(this.pages).then((resp) => {
+          this.data = resp.data.forms
           this.total = resp.data.total
         })
       })
