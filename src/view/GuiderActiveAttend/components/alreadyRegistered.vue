@@ -143,17 +143,17 @@ export default {
   },
   mounted: function () {
     // const args = this.$route.query
-    // queryTerms().then((resp) => {
-    //   this.terms = resp.data.terms
-    // })
-    // getCurrentTerms().then((termResp) => {
-    //   this.query.term = termResp.data.term.name
-    //   queryCurrentuserActives(args).then((resp) => {
-    //     this.data = resp.data.activities
-    //     this.total = resp.data.total
-    //     this.$router.push({name: '报名中心', query: {...args, ...this.query}})
-    //   })
-    // })
+    queryTerms().then((resp) => {
+      this.terms = resp.data.terms
+    })
+    getCurrentTerms().then((termResp) => {
+      this.query.term = termResp.data.term.name
+      queryCurrentuserActives(args).then((resp) => {
+        this.data = resp.data.activities
+        this.total = resp.data.total
+        this.$router.push({path: '/_guider/attend', query: {...args, ...this.query}})
+      })
+    })
   }
 }
 </script>

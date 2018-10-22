@@ -188,16 +188,16 @@
       // }
     },
     watch: {
-      '$route' (newRoute) {
-        const { name, query, params, meta } = newRoute
-        this.addTag({
-          route: { name, query, params, meta },
-          type: 'push'
-        })
-        this.setBreadCrumb(newRoute)
-        this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
-        this.$refs.sideMenu.updateOpenName(newRoute.name)
-      }
+      // '$route' (newRoute) {
+      //   const { name, query, params, meta } = newRoute
+      //   this.addTag({
+      //     route: { name, query, params, meta },
+      //     type: 'push'
+      //   })
+      //   this.setBreadCrumb(newRoute)
+      //   this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
+      //   this.$refs.sideMenu.updateOpenName(newRoute.name)
+      // }
     },
     mounted () {
         if (this.$route.path === "/_guider") {

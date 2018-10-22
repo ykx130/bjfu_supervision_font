@@ -56,7 +56,7 @@ export default {
     let args = this.$route.query
     queryFormMetas({...query, args}).then((resp) => {
       this.data = resp.data.form_metas
-      this.$router.push({name: '问卷选择'})
+      this.$router.push({path: '/_guider/judge'})
     })
   }
 }
