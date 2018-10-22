@@ -97,13 +97,6 @@
 
     <Row :gutter="16">
       <Col span="12">
-        <FormItem label="小组:" :label-width="40" prop="group">
-          <Select v-model="user.group" >
-            <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
-          </Select>
-        </FormItem>
-      </Col>
-      <Col span="12">
       <FormItem label="状态:" :label-width="40" prop="status">
         <Select v-model="user.status" >
           <Option v-for="item in statusList " :value="item" :key="item ">{{ item }}</Option>

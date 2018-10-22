@@ -7,6 +7,9 @@
         <FormItem label="用户名字：" prop="name">
           <Input style="width: 180px" v-model="query.name" ></Input>
         </FormItem>
+        <FormItem >
+          <Button type="primary" @click="onSearch(query)">查询</Button>
+        </FormItem>
       </Form>
     </Form>
 
@@ -64,14 +67,26 @@ export default {
           title: '名字',
           key: 'name'
         },
+
         {
-          title: '身份',
-          render: function (h, params) {
-            let tags = params.row.roles.map((item) => {
-              return h('Tag', item)
-            })
-            return h('span', tags)
-          }
+          title: '性别',
+          key: 'sex'
+        },
+        {
+          title: '学院',
+          key: 'unit'
+        },
+        {
+          title: '专业',
+          key: 'skill'
+        },
+        {
+          title: '职称',
+          key: 'prorank'
+        },
+        {
+          title: '在职状态',
+          key: 'state'
         },
         {
           title: '操作',
@@ -104,6 +119,11 @@ export default {
     onTableChange (query, pages) {
       // 数据表发生变化请求数据
       let args = {...query, ...pages}
+      queryUsers(args).then((resp) => {
+        this.data = resp.data.users
+        this.total = resp.data.total
+        this.$router.push({path: '/user/supers', query: query})
+      })
     },
     onPageChange (page) {
       // 分页变化
@@ -141,6 +161,7 @@ export default {
     queryUsers(args).then((resp) => {
       this.data = resp.data.users
       this.total = resp.data.total
+      this.$router.push({path: '/user/supers', query: query})
     })
   }
 }

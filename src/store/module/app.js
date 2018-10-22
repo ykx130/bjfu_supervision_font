@@ -104,9 +104,10 @@ export default {
         userId,
         userName
       }
-      saveErrorLogger(info).then(() => {
-        commit('addError', data)
-      })
+       commit('addError', data)
+      // saveErrorLogger(info).then(() => {
+      //   commit('addError', data)
+      // })
     }
   }
 }

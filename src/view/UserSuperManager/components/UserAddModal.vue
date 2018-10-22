@@ -10,20 +10,7 @@
       <Icon type="ios-person-outline" slot="prepend"></Icon>
       </Input>
     </FormItem>
-      <FormItem prop="name">
-        <Input type="text" v-model="user.name" placeholder="名字">
-        <Icon type="ios-person-outline" slot="prepend"></Icon>
-        </Input>
-      </FormItem>
-    <span>身份:</span>
-    <FormItem prop="roles">
-      <CheckboxGroup v-model="user.roles">
-        <Checkbox v-for="role in roles" :label="role.name" :key="'key_'+role.name">
-          <span>{{ role.name }}</span>
-        </Checkbox>
-      </CheckboxGroup>
-    </FormItem>
-    </Form>
+  </Form>
   </Modal>
 </template>
 

@@ -5,30 +5,23 @@
     @on-ok="handleOK"
     @on-cancel="handleCancel">
   <Form :model="user">
-    <FormItem prop="username">
-      <Input type="text" v-model="user.username" placeholder="用户名">
+
+    <FormItem prop="name" label="名字:" :label-width="40">
+      <Input type="text" v-model="user.name" placeholder="名字">
       <Icon type="ios-person-outline" slot="prepend"></Icon>
       </Input>
     </FormItem>
-      <FormItem prop="name">
-        <Input type="text" v-model="user.name" placeholder="名字">
-        <Icon type="ios-person-outline" slot="prepend"></Icon>
-        </Input>
-      </FormItem>
-    <span>身份:</span>
-    <FormItem prop="roles">
-      <CheckboxGroup v-model="user.roles">
-        <Checkbox v-for="role in roles" :label="role.name" :key="'key_'+role.name">
-          <span>{{ role.name }}</span>
-        </Checkbox>
-      </CheckboxGroup>
+    <FormItem label="小组:" :label-width="40" prop="group">
+      <Select v-model="user.group" >
+        <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+      </Select>
     </FormItem>
     </Form>
   </Modal>
 </template>
 
 <script>
-import { queryRoles} from '../../../service/api/user'
+  import { queryRoles, queryGroups} from '@/service/api/user'
 export default {
   name: 'UserAddModal',
   props: {
@@ -39,12 +32,16 @@ export default {
   data: function () {
     return {
       user: {},
-      roles: []
+      roles: [],
+      groups: []
     }
   },
   mounted: function () {
     queryRoles().then((resp) => {
       this.roles = resp.data.roles
+    })
+    queryGroups().then((resp) => {
+      this.groups = resp.data.groups
     })
   },
   methods: {

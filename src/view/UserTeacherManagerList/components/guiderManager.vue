@@ -80,12 +80,37 @@ export default {
           key: 'name'
         },
         {
-          title: '身份',
+          title: '学院',
+          key: 'unit'
+        },
+        {
+          title: '专业',
+          key: 'skill'
+        },
+        {
+          title: '职称',
+          key: 'prorank'
+        },
+        {
+          title: '在职状态',
+          key: 'state'
+        },
+        {
+          title: '工作状态',
+          key: 'work_state'
+        },
+        {
+          title: '任期开始',
+          key: 'start_time'
+        },
+        {
+          title: '任期结束',
+          key: 'end_time'
+        },
+        {
+          title: '小组',
           render: function (h, params) {
-            let tags = params.row.roles.map((item) => {
-              return h('Tag', item)
-            })
-            return h('span', tags)
+            return h('span', params.row.group)
           }
         },
         {
