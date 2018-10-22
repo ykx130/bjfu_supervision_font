@@ -9,6 +9,9 @@ import config from '@/config'
 import importDirective from '@/directive'
 import installPlugin from '@/plugin'
 import ECharts from 'vue-echarts'
+import VueBus from 'vue-bus'
+Vue.use(VueBus)
+
 
 import 'iview/dist/styles/iview.css'
 import './index.less'

@@ -6,7 +6,20 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  methods:{
+    registEvent: function () {
+      this.$bus.$on('global.message.warning', function(arg) {
+        this.$Message.warning(arg)
+      })
+      this.$bus.$on('global.message.error', function(arg) {
+        this.$Message.error(arg)
+      })
+    }
+  },
+  mounted:function () {
+    this.registEvent()
+  }
 }
 </script>
 

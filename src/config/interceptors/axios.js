@@ -1,3 +1,4 @@
+import Vue from 'vue'
 
 export function requestSuccessFunc (requestObj) {
   console.info('requestInterceptorFunc', `url: ${requestObj.url}`, requestObj)
@@ -51,9 +52,9 @@ export function responseFailFunc (responseError) {
 
   switch (stauts) {
     case 401:
-      GLOBAL.vbus.$emit('global.message.warning', '未登陆')
+      Vue.$bus.$emit('global.message.warning', '未登陆')
     default:
-      GLOBAL.vbus.$emit('global.message.error', '系统异常')
+      Vue.$bus.$emit('global.message.error', '系统异常')
   }
 
   return Promise.reject(responseError)
