@@ -154,6 +154,8 @@ export default {
       // 更新框确定 关闭
       putLesson(lesson).then((resp) => {
         this.showLessonProfileModal = false
+        this.pages._page = 1
+        this.onTableChange(this.query, this.pages)
       })
     },
     onProfileModalCancel () {

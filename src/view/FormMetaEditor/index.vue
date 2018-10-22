@@ -174,7 +174,8 @@
 <script>
 import {
   putFormMeta,
-  getFormMeta
+  getFormMeta,
+  postFormMeta
 } from '../../service/api/dqs'
 import AddItem from './components/add_item'
 import draggable from 'vuedraggable'
@@ -198,12 +199,12 @@ export default {
     }
   },
   mounted: function () {
-    // const args = this.$route.params;
-    // if (args.name) {
-    //   getFormMeta(args).then((response) => {
-    //     this.form_meta = response.data.form_meta;
-    //   })
-    // }
+    const args = this.$route.params;
+    if (args.name) {
+      getFormMeta(args).then((response) => {
+        this.form_meta = response.data.form_meta;
+      })
+    }
   },
   methods: {
     close () {

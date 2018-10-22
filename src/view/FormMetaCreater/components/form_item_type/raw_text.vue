@@ -13,14 +13,6 @@
             </Col>
           </Row>
         </FormItem>
-        <FormItem label="权重:"
-        >
-          <Row>
-            <Col span="18">
-              <Input v-model="qsItem.weight" placeholder="Enter something..."></Input>
-            </Col>
-          </Row>
-        </FormItem>
       </Form>
   </div>
 </template>

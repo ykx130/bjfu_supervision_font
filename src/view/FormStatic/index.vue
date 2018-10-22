@@ -5,7 +5,7 @@
         <Col span="6">
         <span>
           问卷名字:
-              <Select v-model="query.meta" style="width:200px">
+              <Select v-model="query.meta" style="width:200px" @on-change="onMetaChange">
                 <Option v-for="item in metas" :value="item.name" :key="item.name">{{ item.name }}</Option>
             </Select>
         </span>
@@ -42,23 +42,23 @@ export default {
     }
   },
   mounted () {
-    getGraph().then((resp) => {
-      this.data = resp.data.item_map
-      this.options = this.data.map(function (item) {
-        let graphItem = {
-          data: {}
-        }
-        for (let index in item.point) {
-          graphItem.data[item.point[index].option.value] = item.point[index].num
-        }
-        graphItem.title = item.item_name
-        return graphItem
-      })
-    })
 
     queryFormMetas().then((resp) => {
       this.metas = resp.data.form_metas
       this.query.meta = this.metas[0].name
+      getGraph(this.query).then((resp) => {
+        this.data = resp.data.item_map
+        this.options = this.data.map(function (item) {
+          let graphItem = {
+            data: {}
+          }
+          for (let index in item.point) {
+            graphItem.data[item.point[index].option.value] = item.point[index].num
+          }
+          graphItem.title = item.item_name
+          return graphItem
+        })
+      })
     })
 
     // queryTerms().then((resp) => {
@@ -68,7 +68,23 @@ export default {
     // getCurrentTerms().then((resp) =>{
     //   this.query.term = resp.data.term.name
     // })
-
+  },
+  methods:{
+    onMetaChange: function () {
+      getGraph(this.query).then((resp) => {
+        this.data = resp.data.item_map
+        this.options = this.data.map(function (item) {
+          let graphItem = {
+            data: {}
+          }
+          for (let index in item.point) {
+            graphItem.data[item.point[index].option.value] = item.point[index].num
+          }
+          graphItem.title = item.item_name
+          return graphItem
+        })
+      })
+    }
   }
 }
 </script>
