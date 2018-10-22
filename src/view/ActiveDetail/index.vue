@@ -21,7 +21,7 @@
         <Row type="flex" justify="start" align="middle" class="code-row-bg">
           <FormItem label="活动地点">
           <Col span="16">
-            <Input style="width: 370px" type="text" v-model="activity.space" placeholder="活动地点" >
+            <Input style="width: 370px" type="text" v-model="activity.place" placeholder="活动地点" >
             </Input>
           </Col>
           </FormItem>
@@ -29,9 +29,9 @@
         <Row align="middle" class="code-row-bg" >
           <FormItem label="活动时间">
           <Col span="24">
-              <DatePicker type="date" placeholder="开时时间" style="width: 200px"></DatePicker>
+              <DatePicker type="date" v-model="activity.start_time" placeholder="开时时间" style="width: 200px"></DatePicker>
             -
-              <DatePicker type="date" placeholder="结束时间" style="width: 200px"></DatePicker>
+              <DatePicker type="date" v-model="activity.end_time" placeholder="结束时间" style="width: 200px"></DatePicker>
           </Col>
           </FormItem>
         </Row>

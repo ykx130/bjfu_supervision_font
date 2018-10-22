@@ -31,6 +31,13 @@
             </Col>
           </Row>
         </form-item>
+        <form-item label="参与人数:">
+          <Row>
+            <Col span="">
+              <InputNumber v-model="activity.all_num" number ></InputNumber>
+            </Col>
+          </Row>
+        </form-item>
         <form-item label="活动地点:">
           <Row>
             <Col span="">
