@@ -43,3 +43,15 @@ export const logoutUser = (params) => {
 export const currentUser = (params) => {
   return axios.get('/api/current_user')
 }
+
+export const querySupervisors = (params) => {
+  return axios.get('/api/supervisors', {params:params})
+}
+
+export const postSupervisors = (params) => {
+  return axios.get('/api/supervisors', {params:params})
+}
+
+export const supervisorsRenew =(params)=>{
+  return axios.post('/api/supervisors/batch_renewal', params)
+}

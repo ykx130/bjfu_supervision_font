@@ -9,7 +9,7 @@
         </FormItem>
 
         <FormItem label="学期：" prop="term">
-          <Select v-model="query.term" style="width:200px">
+          <Select v-model="query.user_roles.term" style="width:200px">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
@@ -51,13 +51,12 @@ import { queryRoles} from '../../../service/api/user'
 import UserProfileModal from './UserProfileModal'
 import UserAddModal from './UserAddModal'
 import {queryTerms, getCurrentTerms} from '../../../service/api/term'
-import {queryUsers, putUser, postUser} from '../../../service/api/user'
+import {querySupervisors, putUser, postUser} from '../../../service/api/user'
 export default {
   components: {UserProfileModal, UserAddModal},
   data: function () {
     return {
       query: {
-        term: '',
         user_roles: {term: ''}
       }, // 查询用的参数
       total: 0, // 总数量
@@ -144,7 +143,7 @@ export default {
     onTableChange (query, pages) {
       // 数据表发生变化请求数据
       let args = {...query, ...pages}
-      queryUsers(args).then((resp) => {
+      querySupervisors(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
         this.$router.push({path: '/user/guiders', query: query})
@@ -186,7 +185,7 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.user_roles.term = termResp.data.term.name
-      queryUsers({...args, ...this.query}).then((resp) => {
+      querySupervisors({...args, ...this.query}).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
         this.$router.push({path: '/user/teachers', query: {...args, ...this.query}})

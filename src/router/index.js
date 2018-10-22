@@ -6,12 +6,14 @@ import iView from 'iview'
 import {currentUser} from '../service/api/user'
 import { setToken, getToken, canTurnTo } from '@/libs/util'
 import config from '@/config'
+import {ROUTER_DEFAULT_CONFIG} from '@/config/config'
 const { homeName } = config
 
 Vue.use(Router)
 const router = new Router({
   routes,
-  mode: 'history'
+  mode: 'history',
+  ...ROUTER_DEFAULT_CONFIG
 })
 const LOGIN_PAGE_NAME = 'login'
 

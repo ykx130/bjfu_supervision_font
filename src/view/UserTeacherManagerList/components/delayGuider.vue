@@ -9,7 +9,7 @@
         </FormItem>
 
         <FormItem label="学期：" prop="term">
-          <Select v-model="query.term" style="width:200px">
+          <Select v-model="query.user_roles.term" style="width:200px">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
@@ -60,13 +60,12 @@ import UserProfileModal from './UserProfileModal'
 import UserAddModal from './UserAddModal'
 import FloatBar from '_c/float_bar/float_bar'
 import {queryTerms, getCurrentTerms} from '../../../service/api/term'
-import {queryUsers, putUser, postUser} from '../../../service/api/user'
+import {querySupervisors, putUser, postUser, supervisorsRenew} from '../../../service/api/user'
 export default {
   components: {UserProfileModal, UserAddModal, FloatBar},
   data: function () {
     return {
       query: {
-        term: '',
         user_roles: {term: ''}
       }, // 查询用的参数
       total: 0, // 总数量
@@ -160,7 +159,7 @@ export default {
     onTableChange (query, pages) {
       // 数据表发生变化请求数据
       let args = {...query, ...pages}
-      queryUsers(args).then((resp) => {
+      querySupervisors(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
         this.$router.push({path: '/user/guiders', query: query})
@@ -204,7 +203,9 @@ export default {
       this.showDelayGuiderModal = false
     },
     onShowDelayGuiderClick () {
-      this.showDelayGuiderModal = true
+      supervisorsRenew({usernames: this.selected_guider_ids}).then((resp)=>{
+        this.showDelayGuiderModal = true
+      })
     }
   },
   mounted: function () {
@@ -214,7 +215,7 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.user_roles.term = termResp.data.term.name
-      queryUsers({...args, ...this.query}).then((resp) => {
+      querySupervisors({...args, ...this.query}).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
         this.$router.push({path: '/user/teachers', query: {...args, ...this.query}})

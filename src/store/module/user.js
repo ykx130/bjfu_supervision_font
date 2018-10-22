@@ -1,4 +1,4 @@
-import { login, logout, getUserInfo } from '@/api/user'
+import { loginUser,logoutUser,currentUser } from '@/service/api/user'
 import { setToken, getToken } from '@/libs/util'
 
 export default {
@@ -43,12 +43,10 @@ export default {
     handleLogin ({ commit }, {userName, password}) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
-        login({
-          userName,
-          password
+        loginUser({
+          username: userName,
+          password: password
         }).then(res => {
-          const data = res.data
-          commit('setToken', data.token)
           resolve()
         }).catch(err => {
           reject(err)
@@ -58,9 +56,9 @@ export default {
     // 退出登录
     handleLogOut ({ state, commit }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('setToken', '')
+        logoutUser(state.token).then(() => {
           commit('setAccess', [])
+          commit('setUserInfo', {role_names:[] ,id:0, userName:''})
           resolve()
         }).catch(err => {
           reject(err)
@@ -75,13 +73,9 @@ export default {
     getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
         try {
-          getUserInfo(state.token).then(res => {
+          currentUser().then(res => {
             const data = res.data
-            commit('setAvator', data.avator)
-            commit('setUserName', data.name)
-            commit('setUserId', data.user_id)
-            commit('setAccess', data.access)
-            commit('setHasGetInfo', true)
+            commit('setUserInfo', data)
             resolve(data)
           }).catch(err => {
             reject(err)

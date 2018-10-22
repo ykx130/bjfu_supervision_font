@@ -15,10 +15,11 @@
         </Card>
       </i-col>
       <i-col :md="24" :lg="16" style="margin-bottom: 20px;">
-        <Card shadow>
-          <chart-bar style="height: 300px;" :value="barData" text="每日提交情况"/>
+        <Card shadow >
+         <LessonTable style="height: 300px;"/>
         </Card>
       </i-col>
+
     </Row>
     <Row>
       <Card shadow>
@@ -31,6 +32,7 @@
 <script>
 import InforCard from '_c/info-card'
 import CountTo from '_c/count-to'
+import LessonTable from './lesson_table'
 import { ChartPie, ChartBar } from '_c/charts'
 import Example from './example.vue'
 export default {
@@ -40,7 +42,8 @@ export default {
     CountTo,
     ChartPie,
     ChartBar,
-    Example
+    Example,
+    LessonTable
   },
   data () {
     return {
