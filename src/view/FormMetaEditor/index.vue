@@ -234,7 +234,7 @@ export default {
       this.$Message.info('Items deleted!')
     },
     submitForm: function () {
-      postFormMeta(this.form_meta).then(function (response) {
+      putFormMeta(this.form_meta).then(function (response) {
         console.log(response)
       })
         .catch(function (error) {

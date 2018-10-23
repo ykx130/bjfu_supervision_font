@@ -17,7 +17,7 @@ export const deleteFormMetas = (params) => {
 }
 
 export const putFormMeta = (params) => {
-  return axios.put(`/api/form_meta/${params.name}`, params)
+  return axios.put(`/api/form_metas/${params.name}`, params)
 }
 
 export const postForm = params => {
