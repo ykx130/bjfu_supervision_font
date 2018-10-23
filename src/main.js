@@ -12,7 +12,6 @@ import ECharts from 'vue-echarts'
 import VueBus from 'vue-bus'
 Vue.use(VueBus)
 
-
 import 'iview/dist/styles/iview.css'
 import './index.less'
 import '@/assets/icons/iconfont.css'

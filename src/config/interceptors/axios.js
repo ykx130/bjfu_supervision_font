@@ -1,5 +1,5 @@
 import Vue from 'vue'
-
+var bus = new Vue()
 export function requestSuccessFunc (requestObj) {
   console.info('requestInterceptorFunc', `url: ${requestObj.url}`, requestObj)
   // 自定义请求拦截逻辑，可以处理权限，请求发送监控等
@@ -52,9 +52,9 @@ export function responseFailFunc (responseError) {
 
   switch (stauts) {
     case 401:
-      Vue.$bus.$emit('global.message.warning', '未登陆')
+      bus.$bus.$emit('global.message.warning', '未登陆')
     default:
-      Vue.$bus.$emit('global.message.error', '系统异常')
+      bus.$bus.$emit('global.message.error', '系统异常')
   }
 
   return Promise.reject(responseError)
