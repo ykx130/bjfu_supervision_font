@@ -162,7 +162,7 @@ export default {
     queryUsers(args).then((resp) => {
       this.data = resp.data.users
       this.total = resp.data.total
-      this.$router.push({path: '/user/supers', query: query})
+      this.$router.push({path: '/user/supers', query: args})
     })
   }
 }
