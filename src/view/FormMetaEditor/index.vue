@@ -28,8 +28,8 @@
       <!--meta start-->
       <div id="form-detail">
         <Card :bordered="false">
-          <p slot="title">{{ form_meta.meta.create_at }}</p>
-          <p>{{ form_meta.meta.guider }}</p>
+          <p slot="title">{{ form_meta.meta.created_at }}</p>
+          <p>{{ form_meta.meta.created_by }}</p>
         </Card>
       </div>
 
