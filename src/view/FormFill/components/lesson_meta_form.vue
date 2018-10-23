@@ -64,6 +64,7 @@
 import {queryLessons} from '../../../service/api/lesson'
 import {queryUsers} from '../../../service/api/user'
 import {dateToString} from 'Libs/tools'
+import {transTimeToSelectedData} from 'Libs/tools'
 export default {
   props: {
     value: {
