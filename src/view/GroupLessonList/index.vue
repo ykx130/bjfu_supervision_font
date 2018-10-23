@@ -4,7 +4,7 @@
       <Row>
         <Col span="6">
         <span>
-          问卷名字:
+          学期:
               <Select v-model="query.term" style="width:200px">
                 <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
             </Select>
@@ -15,7 +15,7 @@
 
     <div style="padding-top: 15px"></div>
     <Card>
-      <Tabs :value="query.selected_group_name" @on-click="onTypeTabClick">
+      <Tabs :value="query.group_name" @on-click="onTypeTabClick">
         <TabPane v-for="(item, index) in groups" :label="item.name" :name="item.name" :key="item.name + index"></TabPane>
       </Tabs>
       <br>
@@ -40,7 +40,7 @@ export default {
   data: function () {
     return {
       query: {
-        selected_group_name: '第一组'
+        group_name: '第一组'
       }, // 查询用的参数
       total: 0, // 总数量
       terms: [],
@@ -114,7 +114,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.selected_group_name = params.row.group_name
+                    this.group_name = params.row.group_name
                   }
                 }
               }, '查看')
@@ -145,7 +145,7 @@ export default {
       this.onTableChange(this.query, this.pages)
     },
     onTypeTabClick (value) {
-      this.query.selected_group_name = value
+      this.query.group_name = value
       this.pages = {
         _page: 1,
         _per_page: 10
@@ -164,8 +164,9 @@ export default {
       this.query.term = resp.data.term.name
       queryGroups().then((resp) => {
         this.groups = resp.data.groups
-        // this.selected_group_name = this.groups[0].name;
-        queryGroupLesson(args).then((resp) => {
+        this.query.group_name = this.groups[0].name
+        // this.group_name = this.groups[0].name;
+        queryGroupLesson(this.query).then((resp) => {
           this.data = resp.data.lesson_records
           this.total = resp.data.total
           this.$router.push({path: '/dqs/lesson_records', query: {...args, ...this.query}})
