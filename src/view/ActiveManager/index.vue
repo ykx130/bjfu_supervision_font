@@ -46,12 +46,16 @@ import ActivesAddModal from './components/ActivesAddModal'
 import {queryActives, putActive, postActive} from '../../service/api/actives'
 import {queryTerms, getCurrentTerms} from '../../service/api/term'
 import Float_bar from '_c/float_bar/float_bar'
+import {updateWithinField} from 'Libs/tools'
+
 
 export default {
   components: {Float_bar, ActivesAddModal},
   data: function () {
     return {
-      query: {}, // 查询用的参数
+      query: {
+        name:undefined
+      }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
       terms: [],
@@ -165,15 +169,17 @@ export default {
   },
   mounted: function () {
     const args = this.$route.query
+    updateWithinField(this.query, args)
+    updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryActives(args).then((resp) => {
+      queryActives({ ...this.query, ...this.pages}).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.activities.length
-        this.$router.push({path: '/active/manager', query: {...args, ...this.query}})
+        this.$router.push({path: '/active/manager', query:{ ...this.query, ...this.pages}})
       })
     })
   }

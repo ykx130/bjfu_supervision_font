@@ -33,13 +33,17 @@
 import {queryTerms, getCurrentTerms} from '../../../service/api/term'
 import {queryConsults, putConsults} from '../../../service/api/consult'
 import ConsultManagerModal from './ConsultManagerModal'
+import {updateWithinField} from 'Libs/tools'
+
 export default {
   components: {ConsultManagerModal},
   name: 'waitReply',
   data: function () {
     return {
       select_tag: '已协调',
-      query: {}, // 查询用的参数
+      query: {
+        term:undefined
+      }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
       terms: [],
@@ -151,6 +155,8 @@ export default {
   },
   mounted: function () {
     const args = this.$route.query
+    updateWithinField(this.query, args)
+    updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })

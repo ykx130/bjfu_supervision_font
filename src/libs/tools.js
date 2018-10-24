@@ -225,9 +225,6 @@ export function updateWithinField (src_obj, des_obf) {
     if (des_obf.hasOwnProperty(item)) {
       // 存在更新src
       src_obj[item] = des_obf[item]
-    } else {
-      // 不存在至空
-      src_obj[item] = undefined
     }
   }
 }

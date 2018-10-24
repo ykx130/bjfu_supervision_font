@@ -2,11 +2,18 @@
 </style>
 <template>
   <Form :model="value" :label-width="80">
-    <Row :gutter="16">
-      <Col span="24">
+    <Row :gutter="8">
+      <Col span="6">
         <FormItem label="听课督导">
           <Select v-model="value.guider" style="width:200px">
             <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index">{{item.name}}</Option>
+          </Select>
+        </FormItem>
+      </Col>
+      <Col span="6">
+        <FormItem label="学期：" prop="term">
+          <Select v-model="value.term" style="width:200px" @on-change="onTermSelectChange">
+            <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
       </Col>
@@ -61,9 +68,10 @@
   </Form>
 </template>
 <script>
-import {queryLessons} from '../../../service/api/lesson'
-import {queryUsers} from '../../../service/api/user'
+import {queryLessons} from '@/service/api/lesson'
+import {queryUsers} from '@/service/api/user'
 import {dateToString} from 'Libs/tools'
+import {queryTerms, getCurrentTerms} from '@/service/api/term'
 import {transTimeToSelectedData} from 'Libs/tools'
 export default {
   props: {
@@ -109,14 +117,36 @@ export default {
   },
 
   mounted () {
-    queryLessons().then((resp) => {
-      this.lessons = resp.data.lessons
+    queryTerms().then((resp) => {
+      this.terms = resp.data.terms
     })
-    queryUsers().then((resp) => {
-      this.users = resp.data.users
+    getCurrentTerms().then((termResp) => {
+      this.value.term = termResp.data.term.name
+      queryLessons({term:this.value.term}).then((resp) => {
+        this.lessons = resp.data.lessons
+      })
+      queryUsers({user_roles:{term:this.value.term}}).then((resp) => {
+        this.users = resp.data.users
+      })
     })
   },
   methods: {
+    restValue: function(){
+      this.value.guider = ''
+      this.value.lesson = {}
+    },
+    onTermSelectChange: function(value){
+      getCurrentTerms().then((termResp) => {
+        this.value.term = termResp.data.term.name
+        queryLessons({term:this.value.term}).then((resp) => {
+          this.lessons = resp.data.lessons
+        })
+        queryUsers({user_roles:{term:this.value.term}}).then((resp) => {
+          this.users = resp.data.users
+        })
+      })
+      this.restValue()
+    },
     onSelectedLessonChange: function (id) {
       /* 选择的课程发生变化 */
       this.value.lesson.lesson_date = undefined

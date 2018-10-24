@@ -31,7 +31,8 @@
 </template>
 
 <script>
-import {queryTerms, getCurrentTerms} from '../../../service/api/term'
+  import {updateWithinField} from 'Libs/tools'
+  import {queryTerms, getCurrentTerms} from '../../../service/api/term'
 import {queryConsults, putConsults} from '../../../service/api/consult'
 import ConsultProfile from './ConsultProfile'
 export default {
@@ -39,7 +40,9 @@ export default {
   name: 'alreadyReplay',
   data: function () {
     return {
-      query: {}, // 查询用的参数
+      query: {
+        term:undefined
+      }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
       terms: [],
@@ -172,15 +175,17 @@ export default {
   },
   mounted: function () {
     const args = this.$route.query
+    updateWithinField(this.query, args)
+    updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryConsults({...args, ...this.query}).then((resp) => {
+      queryConsults({ ...this.query, ...this.pages}).then((resp) => {
         this.data = resp.data.consults
         this.total = resp.data.total
-        this.$router.push({path: '/consult/manager', query: {...args, ...this.query}})
+        this.$router.push({path: '/consult/manager', query: { ...this.query, ...this.pages}})
       })
     })
   }

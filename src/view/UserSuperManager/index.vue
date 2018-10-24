@@ -41,13 +41,15 @@
 <script>
 import UserProfileModal from './components/UserProfileModal'
 import UserAddModal from './components/UserAddModal'
+import {updateWithinField} from 'Libs/tools'
 import {queryUsers, putUser, postUser} from '../../service/api/user'
 export default {
   components: {UserProfileModal, UserAddModal},
   data: function () {
     return {
       query: {
-        user_roles: {term: ''}
+        user_roles: {term: undefined},
+        name:undefined
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
@@ -159,10 +161,12 @@ export default {
   },
   mounted: function () {
     const args = this.$route.query
-    queryUsers(args).then((resp) => {
+    updateWithinField(this.query, args)
+    updateWithinField(this.pages, args)
+    queryUsers({ ...this.query, ...this.pages}).then((resp) => {
       this.data = resp.data.users
       this.total = resp.data.total
-      this.$router.push({path: '/user/supers', query: args})
+      this.$router.push({path: '/user/supers', query: { ...this.query, ...this.pages}})
     })
   }
 }
