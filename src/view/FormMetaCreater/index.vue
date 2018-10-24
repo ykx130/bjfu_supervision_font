@@ -192,14 +192,12 @@ export default {
     return {
       item_visible: false,
       item_edit_visible: false,
-      block_visible:false,
+      block_visible: false,
       block_edit_visible: false,
       nowIndex: 0,
       form_meta: {
-        'meta': {
-        },
-        'items': [
-        ]
+        'meta': {},
+        'items': []
       }
     }
   },
@@ -212,59 +210,60 @@ export default {
     // }
   },
   methods: {
-    validateItem: function(){
+    validateItem: function () {
       let stack = []
-      for (let i in this.form_meta.items){
-        if (this.form_meta.items[i].type === 'block_item'){
-            if(stack.length === 0){
-              // 空栈直接push
-              stack.push(this.form_meta.items[i])
-            } else {
-              // 非空栈查看第一个元素看是否可以归约
-              if (stack[stack.length -1].item_type === this.form_meta.items[i].item_type) {
-                // 相同类型
-                if(stack[stack.length -1].item_name.substr())
+      for (let i in this.form_meta.items) {
+        if (this.form_meta.items[i].type === 'block_item') {
+          if (stack.length === 0) {
+            // 空栈直接push
+            stack.push(this.form_meta.items[i])
+          } else {
+            // 非空栈查看第一个元素看是否可以归约
+            if (stack[stack.length - 1].item_type === this.form_meta.items[i].item_type) {
+              // 相同类型
+              if (stack[stack.length - 1].item_name.substr()) {
               }
             }
+          }
         }
       }
-
-    },
-    appendNewItemBlock: function (value) {
-      console.log(value)
-      this.form_meta.items.push(value)
-      this.$Message.info('Items appended!')
-      this.item_visible = false
-    },
-    editItemBlock: function (index, value) {
-      this.form_meta.items.splice(index, 1)
-      this.form_meta.items.splice(index, 0, value)
-      this.$Message.info('Items edited!')
-      this.item_visible = false
-    },
-    deleteNewBlock: function (item) {
-      let index = this.form_meta.items.indexOf(item)
-      this.form_meta.items.splice(index, 1)
-      this.$Message.info('Items deleted!')
-    },
-    appendNewBlockBlock: function(items){
-      this.form_meta.items.push(items[0])
-      this.form_meta.items.push(items[1])
-      this.$Message.info('Items appended!')
-      this.block_visible = false
-    },
-    editBlockBlock: function(index, value) {
-
-    },
-    submitForm: function () {
-      postFormMeta(this.form_meta).then(function (response) {
-        console.log(response)
-      })
-        .catch(function (error) {
-          console.log(error)
-        })
-      this.$Message.info('Items created!')
     }
+
+  },
+  appendNewItemBlock: function (value) {
+    console.log(value)
+    this.form_meta.items.push(value)
+    this.$Message.info('Items appended!')
+    this.item_visible = false
+  },
+  editItemBlock: function (index, value) {
+    this.form_meta.items.splice(index, 1)
+    this.form_meta.items.splice(index, 0, value)
+    this.$Message.info('Items edited!')
+    this.item_visible = false
+  },
+  deleteNewBlock: function (item) {
+    let index = this.form_meta.items.indexOf(item)
+    this.form_meta.items.splice(index, 1)
+    this.$Message.info('Items deleted!')
+  },
+  appendNewBlockBlock: function (items) {
+    this.form_meta.items.push(items[0])
+    this.form_meta.items.push(items[1])
+    this.$Message.info('Items appended!')
+    this.block_visible = false
+  },
+  editBlockBlock: function (index, value) {
+
+  },
+  submitForm: function () {
+    postFormMeta(this.form_meta).then(function (response) {
+      console.log(response)
+    })
+      .catch(function (error) {
+        console.log(error)
+      })
+    this.$Message.info('Items created!')
   }
 }
 
