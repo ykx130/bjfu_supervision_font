@@ -162,10 +162,10 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryConsults({...args, ...this.query}).then((resp) => {
+      queryConsults({ ...this.query, ...this.pages}).then((resp) => {
         this.data = resp.data.consults
         this.total = resp.data.total
-        this.$router.push({path: '/consult/manager', query: {...args, ...this.query}})
+        this.$router.push({path: '/consult/manager', query: { ...this.query, ...this.pages}})
       })
     })
   }
