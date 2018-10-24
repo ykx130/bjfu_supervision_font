@@ -159,9 +159,12 @@
       onProfileModalCancel () {
         this.showLessonProfileModal = false
       },
-      onBatchWatchClick: function () {
+      onBatchRemoveModalCancel(){
+        this.showBatchLessonWatchModal = false
+      },
+      onBatchRemoveModalOK: function () {
         // 批量关注触发
-        this.showBatchLessonWatchModal = true
+        this.showBatchLessonWatchModal = false
         console.log('selected lessons id : ', this.selected_lesson_ids)
       }
     },

@@ -89,6 +89,14 @@ export default {
       allow_select_data: []
     }
   },
+  watch : {
+    value: {
+      deep:true,
+      handler:function (val, oldVal) {
+        this.$emit('value')
+      }
+    }
+  },
   computed: {
     selected_lesson: function () {
       /* 被选中的课程 */
@@ -136,15 +144,12 @@ export default {
       this.value.lesson = {}
     },
     onTermSelectChange: function(value){
-      getCurrentTerms().then((termResp) => {
-        this.value.term = termResp.data.term.name
         queryLessons({term:this.value.term}).then((resp) => {
           this.lessons = resp.data.lessons
         })
         queryUsers({user_roles:{term:this.value.term}}).then((resp) => {
           this.users = resp.data.users
         })
-      })
       this.restValue()
     },
     onSelectedLessonChange: function (id) {
@@ -163,10 +168,6 @@ export default {
         lesson_attention_reason: this.selected_lesson.lesson_attention_reason
       }
       this.lesson_times = []
-      this.$emit('input', {
-        ...this.value,
-        lesson: this.value.lesson
-      })
       this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
         return item.lesson_date
       })
@@ -181,10 +182,6 @@ export default {
       this.value.lesson = {
         ...this.value.lesson, lesson_room: this.selected_lesson_case.lesson_room
       }
-      this.$emit('input', {
-        ...this.value,
-        lesson: this.value.lesson
-      })
     },
 
     getLessonDatePickerOption: function () {
