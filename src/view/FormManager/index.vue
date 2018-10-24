@@ -8,7 +8,7 @@
           <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
-      <FormItem label="课程名字：" prop="bind_meta_name">
+      <FormItem label="问卷名字：" prop="bind_meta_name">
         <Input style="width: 180px" v-model="query.bind_meta_name" ></Input>
       </FormItem>
       <FormItem label="上课教师：" prop="meta.lesson.lesson_teacher_name">
@@ -31,6 +31,7 @@
 
 <script>
 import { queryForms, putForm } from '../../service/api/dqs'
+import {updateWithinField} from 'Libs/tools'
 import {getCurrentTerms, queryTerms} from '../../service/api/term'
 export default {
   data: function () {
@@ -93,7 +94,7 @@ export default {
           title: '听课督导',
           render: function (h, params) {
             return (
-              <span>{ params.row.meta.create_by }</span>
+              <span>{ params.row.meta.guider }</span>
             )
           }
         },
@@ -180,16 +181,18 @@ export default {
     }
   },
   mounted: function () {
-    let args = this.$route.query
+    const args = this.$route.query
+    updateWithinField(this.query, args)
+    updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
       this.query.meta.term = termResp.data.term.name
-      queryForms({...args, ...this.query}).then((resp) => {
+      queryForms({...this.pages, ...this.query}).then((resp) => {
         this.data = resp.data.forms
         this.total = resp.data.total
-        this.$router.push({path: '/dqs/form_manager', query: {...args, ...this.query}})
+        this.$router.push({path: '/dqs/form_manager', query: {...this.pages, ...this.query}})
       })
     })
   }

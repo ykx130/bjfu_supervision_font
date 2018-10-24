@@ -1,57 +1,63 @@
+
 <template>
-<div>
-  <Modal
-    :value="true"
-    title="增加一个子标题"
-    @on-ok="ok"
-    @on-cancel="cancel"
-    :mask-closable="true">
+  <div>
+    <!--<p>题目：{{this.qsItem.item_name}}</p>-->
+    <!--<p>选项:{{this.qsItem.payload}}</p>-->
+    <!--<Button type="primary" @click="modal1 = true">文本题</Button>-->
+
     <Form :label-width="50" style="width: 400px">
-      <FormItem label="标题:">
+      <FormItem label="子标题:">
         <Row>
           <Col span="18">
-            <Input v-model="InputTitle" placeholder="Enter something..."></Input>
+            <Input v-model="item_start.payload.title" placeholder="输入子标题名字"></Input>
           </Col>
         </Row>
       </FormItem>
     </Form>
-  </Modal>
-</div>
+  </div>
 </template>
-
 <script>
-export default {
-  name: 'sub_title_block',
-  data () {
-    return {
-      blockhead: {},
-      InputTitle: '',
-      blocktail: {}
-    }
-  },
-  methods: {
-    ok () {
-      this.blockhead.item_id = ''// ?????
-      this.blockhead.item_name = ''
-      this.blockhead.item_type = 'sub_title_block_start'
-      this.blockhead.extra = ''// ?????
-      this.blockhead.type = 'block_item'
-      this.blockhead.payload = {}
-      this.blockhead.payload.push({
-        title: this.InputTitle
-      })
-      this.blocktail.item_id = ''// ?????
-      this.blocktail.item_name = ''
-      this.blocktail.item_type = 'sub_title_block_end'
-      this.blocktail.extra = ''// ?????
-      this.blocktail.type = 'block_item'
-      this.blocktail.payload = {}
-      this.$emit('onOk', this.blockhead, this.blocktail)
+  // import
+  export default {
+    name: 'sub_title_block',
+    watch: {
+      item_start: {
+        handler: function (val) {
+          this.ok()
+        },
+        deep: true
+      },
+      item_end: {
+        handler: function (val) {
+          this.ok()
+        },
+        deep: true
+      },
     },
-    cancel () {
-      this.$emit('onCancel', '')
-      this.$Message.info('Clicked cancel')
+    data () {
+      return {
+        item_start: {
+          item_name: 'sub_title_block_start',
+          type: 'block_item',
+          item_type: 'sub_title_block',
+          payload: {
+            title: ''
+          }
+        },
+        item_end: {
+          item_name:'sub_title_block_end',
+          type: 'block_item',
+          item_type: 'sub_title_block'
+        }
+      }
+    },
+    props: {
+      onInput: Function
+    },
+    methods: {
+      ok () {
+        this.$emit('onInput',[this.item_start, this.item_end])
+      }
     }
   }
-}
 </script>

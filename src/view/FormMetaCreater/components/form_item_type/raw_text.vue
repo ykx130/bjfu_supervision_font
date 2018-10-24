@@ -32,7 +32,6 @@ export default {
     return {
       qsItem: {
         item_name: '',
-        weight: '',
         type: 'form_item',
         item_type: 'raw_text'
       }
@@ -42,16 +41,6 @@ export default {
     onInput: Function
   },
   methods: {
-    handleAdd () {
-      this.index++
-      this.qsInputOptions.push({
-        label: '',
-        value: ''
-      })
-    },
-    handleRemove (index) {
-      this.qsInputOptions.splice(index, 1)
-    },
     ok () {
       this.$emit('onInput', {...this.qsItem})
     }

@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    handleOK: function (value) {
+    handleOK: function () {
       this.selected = ''
       this.$emit('onOk', this.item)
     },

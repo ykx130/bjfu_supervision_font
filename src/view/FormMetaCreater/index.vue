@@ -45,19 +45,19 @@
 
         <!--card begin-->
         <Card id="form-card">
-          <draggable v-model="form_meta.items" style="padding-bottom: 30px; width: 100%;" @start="drag=true" @end="drag=false">
+          <draggable v-model="form_meta.items" style="padding-bottom: 30px; width: 100%;">
             <Form class="form-card-form" v-for="(item, index) in form_meta.items " :key="item.item_name" label-position="left" label-width="150">
               <div class="form-card-form-option">
                 <!--information begin-->
                 <!--if sub_title_block_start begin-->
                 <div v-if="item.item_type === 'sub_title_block_start' ">
-                  <h3> {{ }} </h3>
+                  <h3> {{ item.payload.title }} </h3>
                 </div>
                 <!--if sub_title_block_start end-->
 
                 <!--if raw_text begin-->
                 <div v-if="item.item_type === 'raw_text' ">
-                  <h3 class="option-title">文本项</h3>
+                  <h3 class=  "option-title">文本项</h3>
                   <Form :model="item" :label-width="80" inline class="option-form">
                     <FormItem label="名称">
                       <Input v-model="item.item_name" placeholder="表头名称..." style="width: 180px"></Input>
@@ -110,7 +110,6 @@
 
                 <!--sub_title_block_end begin-->
                 <div v-if="item.item_type === 'sub_title_block_end' ">
-                  <h3> end </h3>
                 </div>
                 <!--sub_title_block_end end-->
 
@@ -119,7 +118,7 @@
                 <!--button begin-->
 
                 <div v-if="item.item_type === 'raw_text' || item.item_type === 'radio_option' || item.item_type === 'checkbox_option' ">
-                  <Button @click="nowIndex = index; visible_e = true" class="option-button-edit">编辑</Button>
+                  <Button @click="nowIndex = index; item_edit_visible = true" class="option-button-edit">编辑</Button>
                   <Button icon="md-trash" type="warning" v-on:click="deleteNewBlock(item)" class="option-button-del" shape="circle"></Button>
                 </div>
                 <!--button end-->
@@ -131,15 +130,18 @@
             </Form>
           </draggable>
           <div>
-            <Button class="form-buttons" @click="visible = true">追加题目</Button>
+            <Button class="form-buttons" @click="block_visible = true">追加样式</Button>
+            <Button class="form-buttons" @click="item_visible = true">追加题目</Button>
             <Button type="primary" @click="submitForm()" class="form-buttons">点击提交</Button>
           </div>
           <!--Modal start-->
-            <AddItem :show="visible" @onOk="appendNewBlock($event)" @onCancel="()=>{this.visible=false}"></AddItem>
+            <AddItem :show="item_visible" @onOk="appendNewItemBlock" @onCancel="()=>{this.item_visible=false}"></AddItem>
 
-            <AddItem :show="visible_e" @onOk="editBlock(nowIndex, $event)" @onCancel="()=>{this.visible_e=false}"></AddItem>
+            <AddItem :show="item_edit_visible" @onOk="editItemBlock(nowIndex)" @onCancel="()=>{this.item_edit_visible=false}"></AddItem>
           <!--Modal end-->
 
+            <AddBlock :show="block_visible" @onOk="appendNewBlockBlock" @onCancel="()=>{this.block_visible=false}" ></AddBlock>
+            <AddBlock :show="block_edit_visible" @onOk="editBlockBlock(nowIndex, $event)" @onCancel="()=>{this.block_edit_visible=false}" ></AddBlock>
         </Card>
 
         <!--card end-->
@@ -176,17 +178,22 @@ import {
   postFormMeta
 } from '../../service/api/dqs'
 import AddItem from './components/add_item'
+import AddBlock from './components/add_block'
+
 import draggable from 'vuedraggable'
 export default {
   name: 'form_meta_editor',
   components: {
     AddItem,
-    draggable
+    draggable,
+    AddBlock
   },
   data () {
     return {
-      visible: false,
-      visible_e: false,
+      item_visible: false,
+      item_edit_visible: false,
+      block_visible:false,
+      block_edit_visible: false,
       nowIndex: 0,
       form_meta: {
         'meta': {
@@ -205,31 +212,49 @@ export default {
     // }
   },
   methods: {
-    close () {
-      this.visible = false
+    validateItem: function(){
+      let stack = []
+      for (let i in this.form_meta.items){
+        if (this.form_meta.items[i].type === 'block_item'){
+            if(stack.length === 0){
+              // 空栈直接push
+              stack.push(this.form_meta.items[i])
+            } else {
+              // 非空栈查看第一个元素看是否可以归约
+              if (stack[stack.length -1].item_type === this.form_meta.items[i].item_type) {
+                // 相同类型
+                if(stack[stack.length -1].item_name.substr())
+              }
+            }
+        }
+      }
+
     },
-    ok () {
-      this.$Message.info('Clicked ok')
-    },
-    cancel () {
-      this.$Message.info('Clicked cancel')
-    },
-    appendNewBlock: function (value) {
+    appendNewItemBlock: function (value) {
       console.log(value)
       this.form_meta.items.push(value)
       this.$Message.info('Items appended!')
-      this.visible = false
+      this.item_visible = false
     },
-    editBlock: function (index, value) {
+    editItemBlock: function (index, value) {
       this.form_meta.items.splice(index, 1)
       this.form_meta.items.splice(index, 0, value)
       this.$Message.info('Items edited!')
-      this.visible = false
+      this.item_visible = false
     },
     deleteNewBlock: function (item) {
       let index = this.form_meta.items.indexOf(item)
       this.form_meta.items.splice(index, 1)
       this.$Message.info('Items deleted!')
+    },
+    appendNewBlockBlock: function(items){
+      this.form_meta.items.push(items[0])
+      this.form_meta.items.push(items[1])
+      this.$Message.info('Items appended!')
+      this.block_visible = false
+    },
+    editBlockBlock: function(index, value) {
+
     },
     submitForm: function () {
       postFormMeta(this.form_meta).then(function (response) {

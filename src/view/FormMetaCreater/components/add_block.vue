@@ -1,44 +1,59 @@
-<template>
-<div>
-  <div v-for="item in BlockList" @click="select(item.value)">
-    <Card :value="item.value" :key="item.value" >{{ item.label }}</Card>
-  </div>
-  <Subtitle v-if="selected ==='sub_title_block'" @onOk="addBlock"></Subtitle>
-</div>
-</template>
 
+<template>
+  <Modal
+    :value="show"
+    title="编辑选项"
+    @on-ok="handleOK"
+    @on-cancel="handleCancel"
+  >
+    <div v-for="block in blockList" @click="select(block.value)"  v-if="selected === ''">
+      <Card :value="block.value" :key="block.value" >{{ block.label }}</Card>
+    </div>
+
+    <SubTitle v-if="selected ==='sub_title_block'" @onInput="handleChange"></SubTitle>
+  </Modal>
+</template>
 <script>
-import Subtitle from './block_type/sub_title_block'
-export default {
-  components: {Subtitle},
-  name: 'add_block',
-  data () {
-    return {
-      block: {key: 123},
-      BlockList: [
-        {
-          value: 'sub_title_block',
-          label: '子标题'
+  import  SubTitle from './block_type/sub_title_block'
+  export default {
+    name: 'AddBlocm',
+    components: {SubTitle},
+    props: {
+      show: Boolean,
+      onCancel: Function,
+      onOK: Function
+    },
+    data () {
+      return {
+        items: [],
+        blockList: [
+          {
+            value: 'sub_title_block',
+            label: '子标题项'
+          }
+        ],
+        selected: '',
+        props: {
+          onOk: Function,
+          onCancel: Function
         }
-      ],
-      selected: '',
-      props: {
-        onOk: Function,
-        onCancel: Function
+      }
+    },
+    methods: {
+      handleOK: function () {
+        this.selected = ''
+        this.$emit('onOk', this.items)
+      },
+      handleCancel: function () {
+        this.selected = ''
+        this.$emit('onCancel')
+      },
+      select: function (value) {
+        this.selected = value
+      },
+      handleChange: function (value) {
+        this.items = value
       }
     }
-  },
-  methods: {
-    addBlock: function (value) {
-      this.block = {}
-      console.log('')
-      this.block = value
-      this.$emit('onOk', this.block)
-      this.$emit('onCancel', '')
-    },
-    select: function (value) {
-      this.selected = value
-    }
   }
-}
 </script>
