@@ -76,7 +76,6 @@ import {transTimeToSelectedData} from 'Libs/tools'
 export default {
   props: {
     value: {
-      type: Object,
       default: {lesson: {}}
     },
     input: Function
@@ -86,7 +85,8 @@ export default {
       lessons: [],
       users: [],
       lesson_times: [],
-      allow_select_data: []
+      allow_select_data: [],
+      terms: []
     }
   },
   watch : {
@@ -140,7 +140,6 @@ export default {
   },
   methods: {
     restValue: function(){
-      this.value.guider = ''
       this.value.lesson = {}
     },
     onTermSelectChange: function(value){

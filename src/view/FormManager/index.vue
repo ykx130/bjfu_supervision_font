@@ -1,7 +1,12 @@
 <template>
   <Card>
     <h1>表单管理</h1>
-    <br>
+    <Tabs v-model="query.status" type="line" size="small" @on-click="onTabClick">
+      <TabPane name="全部" label="全部"></TabPane>
+      <TabPane  name="已完成" label="已完成"></TabPane>
+      <TabPane name="待提交" label="待提交"></TabPane>
+      <TabPane  name="草稿" label="草稿"></TabPane>
+    </Tabs>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="学期：" prop="meta.term">
         <Select v-model="query.meta.term" style="width:200px">
@@ -41,7 +46,8 @@ export default {
         meta: {
           create_by: undefined,
           lesson: {}
-        }
+        },
+        status:undefined
       },
       total: 0,
       terms: [],
@@ -102,7 +108,7 @@ export default {
           title: '创建时间',
           render: function (h, params) {
             return (
-              <span>{ params.row.meta.create_at }</span>
+              <span>{ params.row.meta.created_at }</span>
             )
           }
         },
@@ -112,6 +118,18 @@ export default {
             return (
               <span>{ params.row.meta.updated_at }</span>
             )
+          }
+        },
+        {
+          title: '状态',
+          render: (h, params) => {
+            if (params.row.status === '待提交'){
+              return h('Tag', { props: {color:"red"}}, params.row.status)
+            } else if (params.row.status === '已完成') {
+              return h('Tag', { props: {color:"blue"}}, params.row.status)
+            }  else {
+              return h('Tag',{}, params.row.status)
+            }
           }
         },
         {
@@ -159,6 +177,15 @@ export default {
       putForm(from_id, {
         status: '代提交'
       })
+    },
+    onTabClick:function(name){
+      if(name === '全部') {
+        this.query.status = undefined
+      } else {
+        this.query.status = name
+      }
+      this.pages._page = 1
+      this.onTableChange(this.query, this.pages)
     },
     onTableChange (query, pages) {
       // 数据表发生变化请求数据
