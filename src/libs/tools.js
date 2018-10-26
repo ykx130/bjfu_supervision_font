@@ -224,7 +224,13 @@ export function updateWithinField (src_obj, des_obf) {
   for (let item in src_obj) {
     if (des_obf.hasOwnProperty(item)) {
       // 存在更新src
-      src_obj[item] = des_obf[item]
+      if(typeof src_obj[item] === 'number'){
+        src_obj[item] = Number(des_obf[item])
+      } else if (typeof src_obj[item] === 'string') {
+        src_obj[item] = toString(des_obf[item])
+      } else {
+        src_obj[item] = des_obf[item]
+      }
     }
   }
 }
