@@ -23,23 +23,23 @@
 </template>
 
 <script>
-  import { queryFormMetas } from '../../service/api/dqs'
-  import {getCurrentTerms, queryTerms} from '../../service/api/term'
-  import form_meta_card from 'Views/components/form_meta_card/form_meta_card'
-  export default {
-  components: {form_meta_card},
+import { queryFormMetas } from '../../service/api/dqs'
+import { getCurrentTerms, queryTerms } from '../../service/api/term'
+import form_meta_card from 'Views/components/form_meta_card/form_meta_card'
+export default {
+  components: { form_meta_card },
   name: 'index.vue',
   data: function () {
     return {
       data: [],
       terms: [],
-      query: {},
+      query: {}
     }
   },
-  methods:{
-    onCardClick: function(name, version) {
-      this.$router.push({path: `/dqs/form_fill/${name}/${version}`})
-    },
+  methods: {
+    onCardClick: function (name, version) {
+      this.$router.push({ path: `/dqs/form_fill/${name}/${version}` })
+    }
   },
   mounted: function () {
     let args = this.$route.query
@@ -48,18 +48,18 @@
     })
     queryFormMetas(args).then((resp) => {
       this.data = resp.data.form_metas
-      this.$router.push({name: '问卷选择'})
+      this.$router.push({ path: '/dqs/form_choose' })
     })
-    },
-    onSearch (query) {
-      // 查询变化 当点提交查询条件生效
-      let args = this.$route.query
-      queryFormMetas({...query,args}).then((resp) => {
-        this.data = resp.data.form_metas
-        this.$router.push({name: '问卷选择'})
-      })
-    }
+  },
+  onSearch (query) {
+    // 查询变化 当点提交查询条件生效
+    let args = this.$route.query
+    queryFormMetas({ ...query, args }).then((resp) => {
+      this.data = resp.data.form_metas
+      this.$router.push({ path: '/dqs/form_choose' })
+    })
   }
+}
 </script>
 
 <style scoped>

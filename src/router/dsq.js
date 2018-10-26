@@ -37,20 +37,20 @@ export default{
       component: resolve => require(['Views/FormMetaEditor/index'], resolve)
     },
     {
-      name: "问卷填写",
+      name: '问卷填写',
       path: 'form_fill/:name/:version', // 问卷填写
       meta: {
-        hideInMenu: true,
-        title: "问卷填写",
+        hideInMenu: trur,
+        title: '问卷填写'
       },
       component: resolve => require(['Views/FormFill/index'], resolve)
     },
     {
-      name: "问卷展示",
+      name: '问卷展示',
       path: 'form_show/:id', // hmx问卷查看
       meta: {
         hideInMenu: true,
-        title: "问卷展示",
+        title: '问卷展示'
       },
       component: resolve => require(['Views/FormShow/index'], resolve)
     },
@@ -77,10 +77,10 @@ export default{
     },
     {
       path: 'form_choose', // 问卷选择
-      name:'问卷选择',
+      name: '问卷选择',
       meta: {
         hideInMenu: true,
-        title: "问卷选择"
+        title: '问卷选择'
       },
       component: resolve => require(['Views/FormChoose/index'], resolve)
     }

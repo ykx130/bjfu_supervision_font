@@ -1,7 +1,11 @@
 import axios from 'Plugins/axios'
 
+export const queryMyForms = (params) => {
+  return axios.get('/api/forms/my', { params: params })
+}
+
 export const queryFormMetas = (params) => {
-  return axios.get('/api/form_metas', {params: params})
+  return axios.get('/api/form_metas', { params: params })
 }
 
 export const getFormMeta = params => {
@@ -29,7 +33,7 @@ export const getForm = params => {
 }
 
 export const queryForms = (params) => {
-  return axios.get('/api/forms', {params: params})
+  return axios.get('/api/forms', { params: params })
 }
 
 export const putForm = (id, params) => {
@@ -38,9 +42,9 @@ export const putForm = (id, params) => {
 
 /* 获得一个lesson的form_meta */
 export const getLessons = (params) => {
-  return axios.get('/api/lessons', {params: params})
+  return axios.get('/api/lessons', { params: params })
 }
 
 export const getGraph = params => {
-  return axios.get('/api/graph/forms/map', {params: params})
+  return axios.get('/api/graph/forms/map', { params: params })
 }
