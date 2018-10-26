@@ -100,8 +100,16 @@ export default {
           title: '听课督导',
           render: function (h, params) {
             return (
-              <span>{ params.row.meta.guider }</span>
+              <span>{ params.row.meta.guider_name }</span>
             )
+          }
+        },
+        {
+          title: '督导所在小组',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.meta.guider_group }</span>
+          )
           }
         },
         {
@@ -175,7 +183,7 @@ export default {
   methods: {
     putBack (from_id) {
       putForm(from_id, {
-        status: '代提交'
+        status: '待提交'
       })
     },
     onTabClick:function(name){
