@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     onCardClick: function (name, version) {
-      this.$router.push({path: `/dqs/form_fill/${name}/${version}`})
+      this.$router.push({path: `/_guider/judge/form_fill/${name}/${version}`})
     }
   },
   mounted: function () {
