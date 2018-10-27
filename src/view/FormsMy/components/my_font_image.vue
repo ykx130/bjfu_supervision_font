@@ -24,6 +24,10 @@ export default {
     width: fit-content;
     color: #fbf4ff;
     border:1px solid;
-    border-radius: 30px;
+    border-radius: 50%;
+    height: 48px;
+    width: 48px;
+    line-height: 48px;
+    text-align: center;
   }
 </style>

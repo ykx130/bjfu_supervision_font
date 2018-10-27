@@ -15,8 +15,8 @@
 
     </Card>
     <Row :gutter="16"  class="form_content">
-      <Col span="8" v-for="meta in data" style="height: 100%">
-      <my_form_meta_card :meta="meta" style="height: 100%" @click.native="onCardClick(meta.name, meta.version)"></my_form_meta_card>
+      <Col span="6" v-for="meta in data" style="margin-bottom: 30px">
+      <my_form_meta_card :meta="meta"></my_form_meta_card>
       </Col>
     </Row>
   </div>
@@ -37,9 +37,9 @@ export default {
     }
   },
   methods: {
-    onCardClick: function (name, version) {
-      this.$router.push({ path: `/dqs/form_fill/${name}/${version}` })
-    }
+    // onCardClick: function (name, version) {
+    //   this.$router.push({ path: `/dqs/form_fill/${name}/${version}` })
+    // }
   },
   mounted: function () {
     let args = this.$route.query
@@ -48,7 +48,7 @@ export default {
     })
     queryMyForms(args).then((resp) => {
       this.data = resp.data.forms
-      this.$router.push({ path: '/dqs/my_form' })
+      this.$router.push({ path: '/_guider/my_form' })
     })
   },
   onSearch (query) {
@@ -56,7 +56,7 @@ export default {
     let args = this.$route.query
     queryMyForms({ ...query, args }).then((resp) => {
       this.data = resp.data.forms
-      this.$router.push({ path: '/dqs/my_form' })
+      this.$router.push({ path: '/_guider/my_form' })
     })
   }
 }
@@ -65,7 +65,6 @@ export default {
 <style scoped>
 
   .form_content{
-    padding-top: 30px ;
-    height: 240px;
+    padding-top: 30px;
   }
 </style>
