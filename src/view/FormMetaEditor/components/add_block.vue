@@ -3,7 +3,7 @@
   <div v-for="item in BlockList" @click="select(item.value)">
     <Card :value="item.value" :key="item.value" >{{ item.label }}</Card>
   </div>
-  <Subtitle v-if="selected ==='sub_title_block'" @onOk="addBlock"></Subtitle>
+  <Subtitle v-if="selected ==='sub_title_block'" @onInput="addBlock"></Subtitle>
 </div>
 </template>
 
@@ -30,10 +30,7 @@ export default {
   },
   methods: {
     addBlock: function (value) {
-      this.block = {}
-      console.log('')
-      this.block = value
-      this.$emit('onOk', this.block)
+      this.$emit('onOk', value)
       this.$emit('onCancel', '')
     },
     select: function (value) {

@@ -47,12 +47,17 @@ import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
 import {queryNoticeLessons, putLesson} from '../../service/api/lesson'
 import {queryTerms, getCurrentTerms} from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
+import {updateWithinField} from 'Libs/tools'
+
 export default {
   components: {LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal},
   data: function () {
     return {
 
-      query: {}, // 查询用的参数
+      query: {
+        lesson_name:undefined,
+        term: undefined,
+      }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
       terms: [],
@@ -189,15 +194,17 @@ export default {
   },
   mounted: function () {
     const args = this.$route.query
+    updateWithinField(this.query, args)
+    updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryNoticeLessons  ({...args, ...this.pages}).then((resp) => {
+      queryNoticeLessons  ({ ...this.pages, ...this.query}).then((resp) => {
         this.data = resp.data.notice_lessons
         this.total = resp.data.total
-        this.$router.push({path: '/lesson/notice_lesson', query: {...args, ...this.query}})
+        this.$router.push({path: '/lesson/notice_lesson', query: {...this.query, ...this.pages}})
       })
     })
   }

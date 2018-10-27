@@ -49,6 +49,7 @@
 <script>
 import { queryRoles} from '../../../service/api/user'
 import UserProfileModal from './UserProfileModal'
+import {updateWithinField} from 'Libs/tools'
 import UserAddModal from './UserAddModal'
 import {queryTerms, getCurrentTerms} from '../../../service/api/term'
 import {querySupervisors, putUser, postUser} from '../../../service/api/user'
@@ -57,7 +58,8 @@ export default {
   data: function () {
     return {
       query: {
-        user_roles: {term: ''}
+        user_roles: {term: ''},
+        name: undefined
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
@@ -179,16 +181,18 @@ export default {
     }
   },
   mounted: function () {
-    let args = this.$route.query
+    const args = this.$route.query
+    updateWithinField(this.query, args)
+    updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
       this.query.user_roles.term = termResp.data.term.name
-      querySupervisors({...args, ...this.query}).then((resp) => {
+      querySupervisors({ ...this.query, ...this.pages}).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
-        this.$router.push({path: '/user/teachers', query: {...args, ...this.query}})
+        this.$router.push({path: '/user/teachers', query: { ...this.query, ...this.pages}})
       })
     })
   }

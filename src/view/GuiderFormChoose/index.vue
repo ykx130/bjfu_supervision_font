@@ -3,10 +3,8 @@
     <Card>
       <Row>
         <Col span="6">
-          学期：
-          <Select v-model="query.term" style="width:200px">
-            <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
-          </Select>
+          问卷名字：
+              <Input style="width: 180px" v-model="query.name" ></Input>
         </Col>
         <Col span="6">
           <Button type="primary" style="margin-left: 20px;width: 80px" @click="onSearch(query)">查询</Button>
@@ -24,7 +22,6 @@
 
 <script>
 import { queryFormMetas } from '../../service/api/dqs'
-import {getCurrentTerms, queryTerms} from '../../service/api/term'
 import form_meta_card from 'Views/components/form_meta_card/form_meta_card'
 export default {
   components: {form_meta_card},
@@ -32,29 +29,23 @@ export default {
   data: function () {
     return {
       data: [],
-      terms: [],
       query: {}
     }
   },
   methods: {
     onCardClick: function (name, version) {
-      this.$router.push({path: `/dqs/form_fill/${name}/${version}`})
+      this.$router.push({path: `/_guider/judge/form_fill/${name}/${version}`})
     }
   },
   mounted: function () {
-    // let args = this.$route.query
-    // queryTerms().then((resp) => {
-    //   this.terms = resp.data.terms
-    // })
-    // queryFormMetas(args).then((resp) => {
-    //   this.data = resp.data.form_metas
-    //   this.$router.push({name: '问卷选择'})
-    // })
+    queryFormMetas().then((resp) => {
+      this.data = resp.data.form_metas
+      this.$router.push({path: '/_guider/judge'})
+    })
   },
   onSearch (query) {
     // 查询变化 当点提交查询条件生效
-    let args = this.$route.query
-    queryFormMetas({...query, args}).then((resp) => {
+    queryFormMetas({...query}).then((resp) => {
       this.data = resp.data.form_metas
       this.$router.push({path: '/_guider/judge'})
     })

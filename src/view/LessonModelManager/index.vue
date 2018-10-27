@@ -45,12 +45,16 @@
   import {queryModelLessons, putLesson} from '../../service/api/lesson'
   import {queryTerms, getCurrentTerms} from '../../service/api/term'
   import FloatBar from '_c/float_bar/float_bar'
+  import {updateWithinField} from 'Libs/tools'
   export default {
     components: {LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal},
     data: function () {
       return {
 
-        query: {}, // 查询用的参数
+        query: {
+          lesson_name:undefined,
+          term: undefined
+        }, // 查询用的参数
         total: 0, // 总数量
         data: [], // 数据
         terms: [],
@@ -155,23 +159,28 @@
       onProfileModalCancel () {
         this.showLessonProfileModal = false
       },
-      onBatchWatchClick: function () {
+      onBatchRemoveModalCancel(){
+        this.showBatchLessonWatchModal = false
+      },
+      onBatchRemoveModalOK: function () {
         // 批量关注触发
-        this.showBatchLessonWatchModal = true
+        this.showBatchLessonWatchModal = false
         console.log('selected lessons id : ', this.selected_lesson_ids)
       }
     },
     mounted: function () {
       const args = this.$route.query
+      updateWithinField(this.query, args)
+      updateWithinField(this.pages, args)
       queryTerms().then((resp) => {
         this.terms = resp.data.terms
       })
       getCurrentTerms().then((termResp) => {
         this.query.term = termResp.data.term.name
-        queryModelLessons  ({...args, ...this.pages}).then((resp) => {
+        queryModelLessons  ({...this.query,...this.pages}).then((resp) => {
           this.data = resp.data.model_lessons
           this.total = resp.data.total
-          this.$router.push({path: '/lesson/good_lesson', query: {...args, ...this.query}})
+          this.$router.push({path: '/lesson/good_lesson', query: {...this.pages,...this.query}})
         })
       })
     }

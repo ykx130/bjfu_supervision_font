@@ -5,7 +5,7 @@
     @on-ok="handleOK"
     @on-cancel="handleCancel"
     @on-visible-change="onShowChange">
-    <Form :model="user" >
+    <Form :model="user" ref="user" :rules="ruleValidate">
       <Row :gutter="16">
         <Col span="12">
         <FormItem prop="username">
@@ -45,7 +45,7 @@
 
       <Row :gutter="16">
         <Col span="12">
-        <FormItem label="学院:" :label-width="40" prop="unit">
+        <FormItem label="学院:" :label-width="50" prop="unit">
           <Select v-model="user.unit" >
             <Option v-for="item in unitList " :value="item" :key="item ">{{ item }}</Option>
           </Select>
@@ -61,21 +61,21 @@
       </Row>
       <Row :gutter="16">
         <Col span="8">
-        <FormItem label="职称:" :label-width="40"prop="prorank">
+        <FormItem label="职称:" :label-width="50" prop="prorank">
           <Select v-model="user.prorank"  >
             <Option v-for="item in prorankList " :value="item" :key="item ">{{ item }}</Option>
           </Select>
         </FormItem>
         </Col>
         <Col span="8">
-        <FormItem label="在职状态:" :label-width="65" prop="state">
+        <FormItem label="在职状态:" :label-width="75" prop="state">
           <Select v-model="user.state"  >
             <Option v-for="item in stateList " :value="item" :key="item ">{{ item }}</Option>
           </Select>
         </FormItem>
         </Col>
         <Col span="8">
-        <FormItem label="工作状态:" :label-width="65" prop="work_state">
+        <FormItem label="工作状态:" :label-width="75" prop="work_state">
           <Select v-model="user.work_state"  >
             <Option v-for="item in workStateList " :value="item" :key="item ">{{ item }}</Option>
           </Select>
@@ -85,12 +85,12 @@
 
       <Row :gutter="16">
         <Col span="12">
-        <FormItem label="任期开始:" :label-width="65" prop="start_time">
+        <FormItem label="任期开始:" :label-width="75" prop="start_time">
           <DatePicker type="date" format="yyyy-MM-dd" v-model="user.start_time" placeholder="请选择" ></DatePicker>
         </FormItem>
         </Col>
         <Col span="12">
-        <FormItem label="任期结束:" :label-width="65" prop="end_time">
+        <FormItem label="任期结束:" :label-width="75" prop="end_time">
           <DatePicker type="date" format="yyyy-MM-dd" v-model="user.end_time" placeholder="请选择" ></DatePicker>
         </FormItem>
         </Col>
@@ -98,14 +98,14 @@
 
       <Row :gutter="16">
         <Col span="12">
-        <FormItem label="小组:" :label-width="40" prop="group">
+        <FormItem label="小组:" :label-width="50" prop="group">
           <Select v-model="user.group" >
             <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
         </Col>
         <Col span="12">
-        <FormItem label="状态:" :label-width="40" prop="status">
+        <FormItem label="状态:" :label-width="50" prop="status">
           <Select v-model="user.status" >
             <Option v-for="item in statusList " :value="item" :key="item ">{{ item }}</Option>
           </Select>
@@ -167,7 +167,25 @@ export default {
       prorankList: prorankList,
       stateList: stateList,
       workStateList: workStatelist,
-      statusList: statusList
+      statusList: statusList,
+      ruleValidate: {
+        username: [{required: true, message: 'the username can not be empty', trigger: 'blur'}],
+        name: [{required: true, message: 'the name can not be empty', trigger: 'blur'}],
+        sex: [{required: true, message: 'the sex can not be empty', trigger: 'blur'}],
+        role_names: [{required: true, message: 'the role name can not be empty', trigger: 'blur'}],
+        unit: [{required: true, message: 'the unit can not be empty', trigger: 'blur'}],
+        skill: [{required: true, message: 'the skill can not be empty', trigger: 'blur'}],
+        prorank: [{required: true, message: 'the prorank can not be empty', trigger: 'blur'}],
+        state: [{required: true, message: 'the state can not be empty', trigger: 'blur'}],
+        work_state: [{required: true, message: 'the work state can not be empty', trigger: 'blur'}],
+        start_time: [{required: true, message: 'the start time can not be empty', trigger: 'blur'}],
+        end_time: [{required: true, message: 'the end time can not be empty', trigger: 'blur'}],
+        status: [{required: true, message: 'the status can not be empty', trigger: 'blur'}],
+        email: [{required: true, message: 'the email can not be empty', trigger: 'blur'},
+          {type: 'email', message: 'Invalid email format', trigger: 'blur'}],
+        phone: [{required: true, message: 'the phone can not be empty', trigger: 'blur'},
+          {type: 'number', message: 'Invalid phone format', trigger: 'blur'}]
+      }
     }
   },
   mounted: function () {

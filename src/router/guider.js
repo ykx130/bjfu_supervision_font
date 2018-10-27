@@ -26,6 +26,11 @@ export default {
       component: resolve => require(['Views/GuiderFormChoose/index'], resolve)
     },
     {
+      name: '问卷填写',
+      path: 'judge/form_fill/:name/:version',
+      component: resolve => require(['Views/FormFill/index'], resolve)
+    },
+    {
       name: '我的提交',
       path: 'my_form',
       component: resolve => require(['Views/FormsMy/index'], resolve)

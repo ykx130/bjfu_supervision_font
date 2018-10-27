@@ -16,7 +16,6 @@
 </template>
 <script>
 import { queryFormMetas } from '../../service/api/dqs'
-import {getCurrentTerms, queryTerms} from '@/service/api/term'
 export default {
   data: function () {
     return {
@@ -41,7 +40,7 @@ export default {
           title: '创建时间',
           render: function (h, params) {
             return (
-              <span>{ params.row.meta.create_at }</span>
+              <span>{ params.row.meta.created_at }</span>
             )
           }
         },
@@ -49,7 +48,7 @@ export default {
           title: '创建人',
           render: function (h, params) {
             return (
-              <span>{ params.row.meta.create_by }</span>
+              <span>{ params.row.meta.created_by }</span>
             )
           }
         },
@@ -68,7 +67,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$router.push({path: `/dqs/form_fill/${params.row.id}/${params.row.version}`})
+                    this.$router.push({path: `/dqs/form_fill/${params.row.name}/${params.row.version}`})
                   }
                 }
               }, '查看'),
@@ -92,7 +91,6 @@ export default {
       ],
       data: [],
       total: 0,
-      terms: [],
       query: {
         meta:{}
       },
@@ -125,17 +123,11 @@ export default {
   },
   mounted: function () {
     let args = this.$route.query
-    queryTerms().then((resp) => {
-      this.terms = resp.data.terms
-    })
-    getCurrentTerms().then((termResp) => {
-      this.query.meta.term = termResp.data.term.name
-      queryFormMetas({...args, ...this.query}).then((resp) => {
-        this.data = resp.data.form_metas
-        this.total = resp.data.total
-        this.$router.push({path: '/dqs/meta_manager', query: {...args, ...this.query}})
-      })
-    })
+    queryFormMetas({...args, ...this.query}).then((resp) => {
+      this.data = resp.data.form_metas
+      this.total = resp.data.total
+      this.$router.push({path: '/dqs/meta_manager', query: {...args, ...this.query}})
+  })
   }
 }
 </script>

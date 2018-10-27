@@ -2,11 +2,18 @@
 </style>
 <template>
   <Form :model="value" :label-width="80">
-    <Row :gutter="16">
-      <Col span="24">
+    <Row :gutter="8">
+      <Col span="6">
         <FormItem label="听课督导">
-          <Select v-model="value.guider" style="width:200px">
-            <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index">{{item.name}}</Option>
+          <Select v-model="value.guider" style="width:200px" @on-change="onGuiderSelectChange">
+            <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index"   >{{item.name}}</Option>
+          </Select>
+        </FormItem>
+      </Col>
+      <Col span="6">
+        <FormItem label="学期：" prop="term">
+          <Select v-model="value.term" style="width:200px" @on-change="onTermSelectChange">
+            <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
       </Col>
@@ -61,13 +68,14 @@
   </Form>
 </template>
 <script>
-import {queryLessons} from '../../../service/api/lesson'
-import {queryUsers} from '../../../service/api/user'
+import {queryLessons} from '@/service/api/lesson'
+import {querySupervisors} from '@/service/api/user'
 import {dateToString} from 'Libs/tools'
+import {queryTerms, getCurrentTerms} from '@/service/api/term'
+import {transTimeToSelectedData} from 'Libs/tools'
 export default {
   props: {
     value: {
-      type: Object,
       default: {lesson: {}}
     },
     input: Function
@@ -77,7 +85,16 @@ export default {
       lessons: [],
       users: [],
       lesson_times: [],
-      allow_select_data: []
+      allow_select_data: [],
+      terms: []
+    }
+  },
+  watch : {
+    value: {
+      deep:true,
+      handler:function (val, oldVal) {
+        this.$emit('value')
+      }
     }
   },
   computed: {
@@ -108,14 +125,41 @@ export default {
   },
 
   mounted () {
-    queryLessons().then((resp) => {
-      this.lessons = resp.data.lessons
+    queryTerms().then((resp) => {
+      this.terms = resp.data.terms
     })
-    queryUsers().then((resp) => {
-      this.users = resp.data.users
+    getCurrentTerms().then((termResp) => {
+      this.value.term = termResp.data.term.name
+      queryLessons({term:this.value.term}).then((resp) => {
+        this.lessons = resp.data.lessons
+      })
+      querySupervisors({user_roles:{term:this.value.term}}).then((resp) => {
+        this.users = resp.data.users
+      })
     })
   },
   methods: {
+    restValue: function(){
+      this.value.lesson = {}
+    },
+    onGuiderSelectChange: function(value){
+      let guider = this.users.find((ele)=>{
+        return ele.username === value
+      })
+      if (guider){
+        this.value.guider_name = guider.name
+        this.value.guider_group = guider.group
+      }
+    },
+    onTermSelectChange: function(value){
+        queryLessons({term:this.value.term}).then((resp) => {
+          this.lessons = resp.data.lessons
+        })
+      querySupervisors({user_roles:{term:this.value.term}}).then((resp) => {
+          this.users = resp.data.users
+        })
+      this.restValue()
+    },
     onSelectedLessonChange: function (id) {
       /* 选择的课程发生变化 */
       this.value.lesson.lesson_date = undefined
@@ -132,10 +176,6 @@ export default {
         lesson_attention_reason: this.selected_lesson.lesson_attention_reason
       }
       this.lesson_times = []
-      this.$emit('input', {
-        ...this.value,
-        lesson: this.value.lesson
-      })
       this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
         return item.lesson_date
       })
@@ -150,10 +190,6 @@ export default {
       this.value.lesson = {
         ...this.value.lesson, lesson_room: this.selected_lesson_case.lesson_room
       }
-      this.$emit('input', {
-        ...this.value,
-        lesson: this.value.lesson
-      })
     },
 
     getLessonDatePickerOption: function () {

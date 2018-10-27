@@ -1,14 +1,19 @@
 <template>
   <Card>
     <h1>表单管理</h1>
-    <br>
+    <Tabs v-model="query.status" type="line" size="small" @on-click="onTabClick">
+      <TabPane name="全部" label="全部"></TabPane>
+      <TabPane  name="已完成" label="已完成"></TabPane>
+      <TabPane name="待提交" label="待提交"></TabPane>
+      <TabPane  name="草稿" label="草稿"></TabPane>
+    </Tabs>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="学期：" prop="meta.term">
         <Select v-model="query.meta.term" style="width:200px">
           <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
-      <FormItem label="课程名字：" prop="bind_meta_name">
+      <FormItem label="问卷名字：" prop="bind_meta_name">
         <Input style="width: 180px" v-model="query.bind_meta_name" ></Input>
       </FormItem>
       <FormItem label="上课教师：" prop="meta.lesson.lesson_teacher_name">
@@ -31,6 +36,7 @@
 
 <script>
 import { queryForms, putForm } from '../../service/api/dqs'
+import {updateWithinField} from 'Libs/tools'
 import {getCurrentTerms, queryTerms} from '../../service/api/term'
 export default {
   data: function () {
@@ -40,7 +46,8 @@ export default {
         meta: {
           create_by: undefined,
           lesson: {}
-        }
+        },
+        status:undefined
       },
       total: 0,
       terms: [],
@@ -93,15 +100,23 @@ export default {
           title: '听课督导',
           render: function (h, params) {
             return (
-              <span>{ params.row.meta.create_by }</span>
+              <span>{ params.row.meta.guider_name }</span>
             )
+          }
+        },
+        {
+          title: '督导所在小组',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.meta.guider_group }</span>
+          )
           }
         },
         {
           title: '创建时间',
           render: function (h, params) {
             return (
-              <span>{ params.row.meta.create_at }</span>
+              <span>{ params.row.meta.created_at }</span>
             )
           }
         },
@@ -111,6 +126,18 @@ export default {
             return (
               <span>{ params.row.meta.updated_at }</span>
             )
+          }
+        },
+        {
+          title: '状态',
+          render: (h, params) => {
+            if (params.row.status === '待提交'){
+              return h('Tag', { props: {color:"red"}}, params.row.status)
+            } else if (params.row.status === '已完成') {
+              return h('Tag', { props: {color:"blue"}}, params.row.status)
+            }  else {
+              return h('Tag',{}, params.row.status)
+            }
           }
         },
         {
@@ -156,8 +183,17 @@ export default {
   methods: {
     putBack (from_id) {
       putForm(from_id, {
-        status: '代提交'
+        status: '待提交'
       })
+    },
+    onTabClick:function(name){
+      if(name === '全部') {
+        this.query.status = undefined
+      } else {
+        this.query.status = name
+      }
+      this.pages._page = 1
+      this.onTableChange(this.query, this.pages)
     },
     onTableChange (query, pages) {
       // 数据表发生变化请求数据
@@ -180,16 +216,18 @@ export default {
     }
   },
   mounted: function () {
-    let args = this.$route.query
+    const args = this.$route.query
+    updateWithinField(this.query, args)
+    updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
       this.query.meta.term = termResp.data.term.name
-      queryForms({...args, ...this.query}).then((resp) => {
+      queryForms({...this.pages, ...this.query}).then((resp) => {
         this.data = resp.data.forms
         this.total = resp.data.total
-        this.$router.push({path: '/dqs/form_manager', query: {...args, ...this.query}})
+        this.$router.push({path: '/dqs/form_manager', query: {...this.pages, ...this.query}})
       })
     })
   }

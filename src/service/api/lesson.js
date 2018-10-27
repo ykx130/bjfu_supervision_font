@@ -22,9 +22,9 @@ export const postLesson = (params) => {
 }
 
 export const queryNoticeLessons = (params) => {
-  return axios.get('/api/notice_lessons', params)
+  return axios.get('/api/notice_lessons',{params:params} )
 }
 
 export const queryModelLessons = (params) => {
-  return axios.get('/api/model_lessons', params)
+  return axios.get('/api/model_lessons', {params:params})
 }
