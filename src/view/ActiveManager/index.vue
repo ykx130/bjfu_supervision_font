@@ -1,13 +1,11 @@
 <template>
-
   <Card>
-
     <!--<h>hi{{this.total}}!!!</h>-->
     <h1>活动管理</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="活动名称：" prop="name">
-        <Input style="width: 180px" v-model="query.name" ></Input>
+        <AutoComplete v-model="query.name" :data="activityName" :filter-method="filterMethod" style="width:180px"></AutoComplete>
       </FormItem>
       <FormItem label="学期：">
         <Select v-model="query.term" style="width:200px">
@@ -20,11 +18,10 @@
     </Form>
 
     <ActivesAddModal
-      :show="showActiveAddModal"
-
+      :modal="showActiveAddModal"
       @onOK="onAddModalOK"
-      @onCancel="onAddModalCancel"
-    ></ActivesAddModal>
+      @onCancel="onAddModalCancel">
+    </ActivesAddModal>
 
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
@@ -48,14 +45,14 @@ import {queryTerms, getCurrentTerms} from '../../service/api/term'
 import Float_bar from '_c/float_bar/float_bar'
 import {updateWithinField} from 'Libs/tools'
 
-
 export default {
   components: {Float_bar, ActivesAddModal},
   data: function () {
     return {
       query: {
-        name:undefined
+        name: undefined
       }, // 查询用的参数
+      activityName: [],
       total: 0, // 总数量
       data: [], // 数据
       terms: [],
@@ -134,8 +131,15 @@ export default {
       queryActives(args).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
+        this.activityName = []
+        this.data.forEach((activity) => {
+          this.activityName.push(activity.name)
+        })
         this.$router.push({path: '/active/manager', query: {...args, ...this.query}})
       })
+    },
+    filterMethod (value, option) {
+      return option.indexOf(value) !== -1
     },
     onPageChange (page) {
       // 分页变化
@@ -152,16 +156,20 @@ export default {
       postActive(activity).then((resp) => {
         this.showActivityProfileModal = false
       })
+      this.onTableChange(this.query, this.pages)
     },
     onProfileModalCancel () {
       this.showActivityProfileModal = false
     },
     onAddModalOK (activity) {
       this.activity = activity
-      postActive(activity).then((resp) => {
-        this.showActiveAddModal = false
+      this.showActiveAddModal = false
+      postActive(activity).then(() => {
+        // this.showActiveAddModal = false;
         this.onTableChange(this.query, this.pages)
       })
+      // this.showActiveAddModal = false;
+      this.onTableChange(this.query, this.pages)
     },
     onAddModalCancel () {
       this.showActiveAddModal = false
@@ -179,7 +187,11 @@ export default {
       queryActives({ ...this.query, ...this.pages}).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.activities.length
-        this.$router.push({path: '/active/manager', query:{ ...this.query, ...this.pages}})
+        this.activityName = []
+        this.data.forEach((activity) => {
+          this.activityName.push(activity.name)
+        })
+        this.$router.push({path: '/active/manager', query: { ...this.query, ...this.pages}})
       })
     })
   }
