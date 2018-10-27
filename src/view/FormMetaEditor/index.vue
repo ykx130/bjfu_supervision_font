@@ -37,7 +37,7 @@
     },
     methods: {
       handleSubmit: function () {
-        postFormMeta(this.form_meta).then(function (response) {
+        putFormMeta(this.form_meta).then(function (response) {
           console.log(response)
         })
           .catch(function (error) {

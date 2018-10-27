@@ -5,8 +5,8 @@
     <Row :gutter="8">
       <Col span="6">
         <FormItem label="听课督导">
-          <Select v-model="value.guider" style="width:200px">
-            <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index">{{item.name}}</Option>
+          <Select v-model="value.guider" style="width:200px" @on-change="onGuiderSelectChange">
+            <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index"   >{{item.name}}</Option>
           </Select>
         </FormItem>
       </Col>
@@ -69,14 +69,13 @@
 </template>
 <script>
 import {queryLessons} from '@/service/api/lesson'
-import {queryUsers} from '@/service/api/user'
+import {querySupervisors} from '@/service/api/user'
 import {dateToString} from 'Libs/tools'
 import {queryTerms, getCurrentTerms} from '@/service/api/term'
 import {transTimeToSelectedData} from 'Libs/tools'
 export default {
   props: {
     value: {
-      type: Object,
       default: {lesson: {}}
     },
     input: Function
@@ -86,7 +85,8 @@ export default {
       lessons: [],
       users: [],
       lesson_times: [],
-      allow_select_data: []
+      allow_select_data: [],
+      terms: []
     }
   },
   watch : {
@@ -133,21 +133,29 @@ export default {
       queryLessons({term:this.value.term}).then((resp) => {
         this.lessons = resp.data.lessons
       })
-      queryUsers({user_roles:{term:this.value.term}}).then((resp) => {
+      querySupervisors({user_roles:{term:this.value.term}}).then((resp) => {
         this.users = resp.data.users
       })
     })
   },
   methods: {
     restValue: function(){
-      this.value.guider = ''
       this.value.lesson = {}
+    },
+    onGuiderSelectChange: function(value){
+      let guider = this.users.find((ele)=>{
+        return ele.username === value
+      })
+      if (guider){
+        this.value.guider_name = guider.name
+        this.value.guider_group = guider.group
+      }
     },
     onTermSelectChange: function(value){
         queryLessons({term:this.value.term}).then((resp) => {
           this.lessons = resp.data.lessons
         })
-        queryUsers({user_roles:{term:this.value.term}}).then((resp) => {
+      querySupervisors({user_roles:{term:this.value.term}}).then((resp) => {
           this.users = resp.data.users
         })
       this.restValue()

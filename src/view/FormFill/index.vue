@@ -1,7 +1,5 @@
 <template>
   <Card>
-    <Scroll height="670">
-      <div :data="form_meta">
         <h1 style="text-align: center">{{ form_meta.name }}</h1>
         <br/>
         <div>
@@ -46,11 +44,11 @@
             </div>
           </template>
         </Form>
-        <Button type="primary" style="margin-left: 20px" @click="handleSubmit">Submit</Button>
-        <Button type="ghost" style="margin-left: 28px">Cancel</Button>
-      </div>
-    </Scroll>
+        <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
+        <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
+        <Button type="warning" style="margin-left: 28px">取消</Button>
   </Card>
+
 </template>
 <script>
 import { getFormMeta, postForm } from '../../service/api/dqs'
@@ -86,6 +84,18 @@ export default {
         bind_meta_name: this.form_meta.name,
         bind_meta_version: this.form_meta.version,
         meta: this.meta,
+        status: '已完成',
+        values: Object.values(this.form_inputs)
+      }
+      postForm(form)
+    },
+    handleSave() {
+      let form = {
+        bind_meta_id: this.form_meta._id,
+        bind_meta_name: this.form_meta.name,
+        bind_meta_version: this.form_meta.version,
+        meta: this.meta,
+        status: '草稿',
         values: Object.values(this.form_inputs)
       }
       postForm(form)
@@ -93,3 +103,7 @@ export default {
   }
 }
 </script>
+
+<style lang="less">
+
+</style>
