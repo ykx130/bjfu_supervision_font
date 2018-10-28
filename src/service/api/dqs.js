@@ -1,7 +1,7 @@
 import axios from 'Plugins/axios'
 
 export const queryMyForms = (params) => {
-  return axios.get('/api/forms/my', { params: params })
+  return axios.get('/api/my/forms', { params: params })
 }
 
 export const queryFormMetas = (params) => {
