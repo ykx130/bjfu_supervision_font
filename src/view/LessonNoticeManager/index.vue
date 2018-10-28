@@ -104,7 +104,7 @@ export default {
           title: '关注原因',
           render: function (h, params) {
             return (
-              <span>{ params.row.reason }</span>
+              <span>{ params.row.notice_reason }</span>
           )
           }
         },
@@ -133,7 +133,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.selected_lesson_id = params.row.id
+                    this.selected_lesson_id = params.row.lesson_id
                     this.showLessonProfileModal = true
                   }
                 }

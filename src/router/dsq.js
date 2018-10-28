@@ -40,7 +40,7 @@ export default{
       name: '问卷填写',
       path: 'form_fill/:name/:version', // 问卷填写
       meta: {
-        hideInMenu: trur,
+        hideInMenu: true,
         title: '问卷填写'
       },
       component: resolve => require(['Views/FormFill/index'], resolve)
