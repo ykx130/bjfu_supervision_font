@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <Card shadow>
@@ -97,6 +96,7 @@ export default {
         id: '',
         name: '',
         teacher: '',
+        place: '',
         state: '',
         start_time: '',
         end_time: '',

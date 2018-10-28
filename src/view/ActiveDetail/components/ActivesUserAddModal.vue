@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     handleOk () {
-      this.$emit('onOK', {state: this.activity_user.state, fin_state: this.activity_user.fin_state})
+      this.$emit('onOK', {username: this.activity_user.user.username, state: this.activity_user.state, fin_state: this.activity_user.fin_state})
     },
     handleCancel () {
       this.$emit('onCancel')
