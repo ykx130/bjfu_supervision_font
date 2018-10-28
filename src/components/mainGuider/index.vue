@@ -13,6 +13,7 @@
   }
   .content-wrapper{
     padding: 19px;
+    min-height: 650px;
     height: ~"calc(100% - 80px)";
     overflow: scroll;
   }
