@@ -7,9 +7,10 @@
   <Form :model="user">
 
     <FormItem prop="name" label="名字:" :label-width="40">
-      <Input type="text" v-model="user.name" placeholder="名字">
-      <Icon type="ios-person-outline" slot="prepend"></Icon>
-      </Input>
+      <Select v-model="user.name" placeholder="名字" filterable>
+        <Option v-for="item in users" :value="item.name" :key="item.name">{{ item.name }}</Option>
+      </Select>
+      <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
     </FormItem>
     <FormItem label="小组:" :label-width="40" prop="group">
       <Select v-model="user.group" >
@@ -21,7 +22,7 @@
 </template>
 
 <script>
-  import { queryRoles, queryGroups} from '@/service/api/user'
+  import { queryUsers, queryRoles, queryGroups} from '@/service/api/user'
 export default {
   name: 'UserAddModal',
   props: {
@@ -32,11 +33,15 @@ export default {
   data: function () {
     return {
       user: {},
+      users:[],
       roles: [],
       groups: []
     }
   },
   mounted: function () {
+    queryUsers().then((resp) => {
+      this.users = resp.data.users
+    })
     queryRoles().then((resp) => {
       this.roles = resp.data.roles
     })

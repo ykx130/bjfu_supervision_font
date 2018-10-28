@@ -5,7 +5,9 @@
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>
         <FormItem label="用户名字：" prop="name">
-          <Input style="width: 180px" v-model="query.name" ></Input>
+          <AutoComplete style="width: 180px" v-model="query.name" placeholder="请输入用户名字">
+            <Option v-for="d in data" :value="d.username" :key="d.username">{{ d.username }}</Option>
+          </AutoComplete>
         </FormItem>
         <FormItem >
           <Button type="primary" @click="onSearch(query)">查询</Button>

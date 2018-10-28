@@ -9,14 +9,14 @@
       <Row :gutter="16">
         <Col span="12">
         <FormItem prop="username">
-          <Input type="text" v-model="user.username" placeholder="用户名">
+          <Input type="text" v-model="user.username" placeholder="用户名" disabled="true">
           <Icon type="ios-person-outline" slot="prepend"></Icon>
           </Input>
         </FormItem>
         </Col>
         <Col span="12">
         <FormItem prop="name">
-          <Input type="text" v-model="user.name" placeholder="名字">
+          <Input type="text" v-model="user.name" placeholder="名字" disabled="true">
           <Icon type="ios-person-outline" slot="prepend"></Icon>
           </Input>
         </FormItem>
