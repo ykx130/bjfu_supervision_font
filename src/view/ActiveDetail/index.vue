@@ -219,7 +219,7 @@ export default {
   },
   mounted: function () {
     getActive(this.activity_id).then((resp) => {
-      updateWithinField(this.activity, resp.data.activity)
+      this.activity= resp.data.activity
     })
     queryActiveUsers(this.activity_id).then((usrresp) => {
       this.data = usrresp.data.activity_users

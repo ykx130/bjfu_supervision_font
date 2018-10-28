@@ -9,7 +9,7 @@ export const queryFormMetas = (params) => {
 }
 
 export const getFormMeta = params => {
-  return axios.get(`/api/form_metas/${params.name}/${params.version}`)
+  return axios.get(`/api/form_metas/${params.name}/version/${params.version}`)
 }
 
 export const postFormMeta = (params) => {
