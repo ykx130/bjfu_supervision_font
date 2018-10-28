@@ -34,7 +34,9 @@ export default {
   name: 'canRegister',
   data: function () {
     return {
-      query: {}, // 查询用的参数
+      query: {
+        state: 'canAttend'
+      }, // 查询用的参数
       total: 0, // 总数量
       data: [{
         activity: {},

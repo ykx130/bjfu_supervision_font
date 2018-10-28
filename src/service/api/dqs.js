@@ -12,6 +12,10 @@ export const getFormMeta = params => {
   return axios.get(`/api/form_metas/${params.name}/version/${params.version}`)
 }
 
+export const getFormMetaHistory = params => {
+  return axios.get(`/api/form_metas/${params.name}/history`)
+}
+
 export const postFormMeta = (params) => {
   return axios.post(`/api/form_metas`, params)
 }

@@ -15,11 +15,24 @@
   </Card>
 </template>
 <script>
-import { queryFormMetas } from '../../service/api/dqs'
+import { queryFormMetas } from '@/service/api/dqs'
+import formMetaHistory from './components/form_meta_history'
 export default {
+  components:{formMetaHistory},
   data: function () {
     return {
       columns: [
+        {
+          type: 'expand',
+          width: 50,
+          render: (h, params) => {
+            return h(formMetaHistory, {
+              props: {
+                meta_name: params.row.name
+              }
+            })
+          }
+        },
         {
           title: '问卷名',
           render: function (h, params) {

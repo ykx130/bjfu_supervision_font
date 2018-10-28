@@ -34,7 +34,9 @@ export default {
   name: 'alreadyRegistered',
   data: function () {
     return {
-      query: {}, // 查询用的参数
+      query: {
+        state: 'hasAttended'
+      }, // 查询用的参数
       total: 0, // 总数量
       data: [{
         activity: {},
