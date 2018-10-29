@@ -1,4 +1,4 @@
-<style scoped>
+<style scoped lang="less">
   .ivu-layout-header{
     padding: 0px;
     background-color: #ffffff;
@@ -8,8 +8,14 @@
     background: #f5f7f9;
     position: relative;
     border-radius: 4px;
-    overflow: hidden;
+    overflow: scroll;
     height: 100%;
+  }
+  .content-wrapper{
+    padding: 19px;
+    min-height: 650px;
+    height: ~"calc(100% - 80px)";
+    overflow: scroll;
   }
   .layout-logo{
     width: 100px;
@@ -60,7 +66,7 @@
           <fullscreen v-model="isFullscreen" style="margin-right: 10px; float: right"/>
         </Menu>
       </Header>
-      <Content :style="{padding: '20px 10px', height: '680px'}">
+      <Content class="content-wrapper">
         <router-view/>
       </Content>
       <Footer class="layout-footer-center">2011-2016 &copy; BJFU-SUPERVIERSION</Footer>
@@ -127,9 +133,9 @@
     methods: {
         onMenuSelect: function(name) {
           if (this.$route.path === '/_guider') {
-            this.$router.push('_guider/' + name);
+            this.$router.push({path:'/_guider/' + name});
           } else {
-            this.$router.push(name);
+            this.$router.push({path:'/_guider/' + name});
           }
         },
         highlightMenu() {

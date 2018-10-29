@@ -51,7 +51,8 @@
 
 </template>
 <script>
-import { getFormMeta, postForm } from '../../service/api/dqs'
+import { getFormMeta, postForm } from '@/service/api/dqs'
+import { getLesson} from '@/service/api/lesson'
 import Lesson from './components/lesson_meta_form'
 
 export default {
@@ -70,6 +71,7 @@ export default {
   },
   mounted () {
     let args = this.$route.params
+
     getFormMeta(args).then((resp) => {
       this.form_meta = resp.data.form_meta
       this.form_meta.items.forEach((item) => {
