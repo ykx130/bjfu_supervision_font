@@ -5,21 +5,21 @@
     <Row :gutter="8">
       <Col span="6">
         <FormItem label="听课督导">
-          <Select v-model="value.guider" style="width:200px" @on-change="onGuiderSelectChange">
+          <Select disabled v-model="value.guider" style="width:200px" @on-change="onGuiderSelectChange">
             <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index"   >{{item.name}}</Option>
           </Select>
         </FormItem>
       </Col>
       <Col span="6">
-        <FormItem label="学期：" prop="term">
-          <Select v-model="value.term" style="width:200px" @on-change="onTermSelectChange">
+        <FormItem  label="学期：" prop="term">
+          <Select disabled v-model="value.term" style="width:200px" @on-change="onTermSelectChange">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
       </Col>
       <Col span="6">
         <FormItem label="课程级别：" prop="term">
-          <Input v-model="value.lesson.lesson_level" disabled=""></Input>
+          <Input v-model="value.lesson.lesson_level" disabled></Input>
         </FormItem>
       </Col>
     </Row>
@@ -29,7 +29,7 @@
       <!--</FormItem>-->
       <Col span="6">
         <FormItem label="课程名字">
-          <Select v-model="value.lesson.id" style="width:200px" @on-change="onSelectedLessonChange">
+          <Select disabled v-model="value.lesson.id" style="width:200px" @on-change="onSelectedLessonChange">
             <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_name + index">{{
               item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
             </Option>
@@ -38,7 +38,7 @@
       </Col>
       <Col span="6">
         <FormItem label="任课教师	">
-          <Input v-model="value.lesson.lesson_teacher_name" disabled></Input>
+          <Input  v-model="value.lesson.lesson_teacher_name" disabled></Input>
         </FormItem>
       </Col>
 
@@ -52,20 +52,20 @@
 
       <Col span="6">
         <FormItem label="听课时间">
-          <DatePicker type="date" :value="value.lesson.lesson_date" format="yyyy-MM-dd" @on-change="onSelectedLessonCaseChange" :options="getLessonDatePickerOption()"></DatePicker>
+          <DatePicker disabled type="date" :value="value.lesson.lesson_date" format="yyyy-MM-dd" @on-change="onSelectedLessonCaseChange" :options="getLessonDatePickerOption()"></DatePicker>
         </FormItem>
       </Col>
 
       <Col span="6">
         <FormItem label="上课地点">
-          <Input :value="value.lesson.lesson_room" disabled></Input>
+          <Input disabled :value="value.lesson.lesson_room" disabled></Input>
         </FormItem>
       </Col>
 
       <Col span="6">
         <FormItem label="上课节次">
-          <Select v-model="value.lesson.lesson_times"  multiple style="width:200px">
-            <Option v-for="item in lesson_times" :value="item.value" :key="item.value">{{ item.label }}</Option>
+          <Select v-model="value.lesson.lesson_times"  disabled multiple style="width:200px">
+            <Option disabled v-for="item in lesson_times" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
         </FormItem>
       </Col>
@@ -102,25 +102,24 @@
         handler:function (val, oldVal) {
           this.$emit('input', this.value)
         }
+      },
+      'value.lesson.id': {
+        dep:true,
+        handler:function (val, oldVal) {
+          getLesson(this.value.lesson.lesson_id).then((resp)=>{
+            this.selected_lesson = resp.data.lesson
+            let flag = this.selected_lesson.lesson_cases.findIndex((item) => {
+              return item.lesson_date === this.value.lesson.lesson_date
+            })
+            this.lesson_times = transTimeToSelectedData(this.selected_lesson.lesson_cases[flag].lesson_time)
+          })
+        }
       }
     },
     mounted () {
       queryTerms().then((resp) => {
         this.terms = resp.data.terms
       })
-      let lesson_id = this.$store.getters.lesson_id
-      if (lesson_id){
-        getLesson(args.lesson_id).then((resp)=>{
-          this.selected_lesson = resp.resp.lesson
-          this.value.term = this.selected_lesson.term
-          queryLessons({term:this.value.term}).then((resp) => {
-            this.lessons = resp.data.lessons
-          })
-          querySupervisors({user_roles:{term:this.value.term}}).then((resp) => {
-            this.users = resp.data.users
-          })
-        })
-      } else {
         getCurrentTerms().then((termResp) => {
           this.value.term = termResp.data.term.name
           queryLessons({term:this.value.term}).then((resp) => {
@@ -130,7 +129,7 @@
             this.users = resp.data.users
           })
         })
-      }
+
     },
     methods: {
       restValue: function(){
