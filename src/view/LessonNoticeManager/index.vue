@@ -4,7 +4,9 @@
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="课程名字：" prop="lesson_name">
-        <Input style="width: 180px" v-model="query.lesson_name" ></Input>
+        <AutoComplete style="width: 180px" v-model="query.lesson_name" placeholder="请输入用户名字">
+          <Option v-for="d in data" :value="d.lesson_name" :key="d.lesson_name">{{ d.lesson_name }}</Option>
+        </AutoComplete>
       </FormItem>
       <FormItem label="学期：" prop="term">
         <Select v-model="query.term" style="width:200px">

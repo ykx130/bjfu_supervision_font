@@ -8,16 +8,18 @@
     <Row :gutter="16">
       <Col span="12">
        <FormItem prop="username">
-           <Input type="text" v-model="user.username" placeholder="用户名">
-           <Icon type="ios-person-outline" slot="prepend"></Icon>
-           </Input>
+           <Select v-model="user.username" placeholder="用户名" filterable>
+             <Option v-for="item in users" :value="item.username" :key="item.username">{{ item.username }}</Option>
+           <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
+           </Select>
        </FormItem>
       </Col>
       <Col span="12">
         <FormItem prop="name">
-            <Input type="text" v-model="user.name" placeholder="名字">
-            <Icon type="ios-person-outline" slot="prepend"></Icon>
-            </Input>
+          <Select v-model="user.name" placeholder="用户名" filterable>
+            <Option v-for="item in users" :value="item.name" :key="item.name">{{ item.name }}</Option>
+          </Select>
+            <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
           </FormItem>
       </Col>
     </Row>
@@ -126,7 +128,7 @@
 </template>
 
 <script>
-import { queryRoles, queryGroups} from '../../../service/api/user'
+import { queryUsers, queryRoles, queryGroups} from '../../../service/api/user'
 import {dateToString} from 'Libs/tools'
 import { sexList, unitlist, prorankList, stateList, workStatelist, statusList } from '../marcos'
 export default {
@@ -146,6 +148,7 @@ export default {
         start_time: '',
         end_time: ''
       },
+      users:[],
       roles: [],
       groups: [],
       sexList: sexList,
@@ -175,6 +178,9 @@ export default {
     }
   },
   mounted: function () {
+    queryUsers().then((resp) => {
+      this.users = resp.data.users
+    })
     queryRoles().then((resp) => {
       this.roles = resp.data.roles
     })

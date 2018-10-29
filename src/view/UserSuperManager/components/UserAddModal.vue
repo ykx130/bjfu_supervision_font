@@ -6,16 +6,17 @@
     @on-cancel="handleCancel">
   <Form :model="user">
     <FormItem prop="username">
-      <Input type="text" v-model="user.username" placeholder="用户名">
-      <Icon type="ios-person-outline" slot="prepend"></Icon>
-      </Input>
+      <Select v-model="user.username" placeholder="名字" filterable>
+        <Option v-for="item in users" :value="item.username" :key="item.username">{{ item.username }}</Option>
+      </Select>
+      <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
     </FormItem>
   </Form>
   </Modal>
 </template>
 
 <script>
-import { queryRoles} from '../../../service/api/user'
+import { queryUsers, queryRoles} from '../../../service/api/user'
 export default {
   name: 'UserAddModal',
   props: {
@@ -26,10 +27,14 @@ export default {
   data: function () {
     return {
       user: {},
+      users:[],
       roles: []
     }
   },
   mounted: function () {
+    queryUsers().then((resp) => {
+      this.users = resp.data.users
+    })
     queryRoles().then((resp) => {
       this.roles = resp.data.roles
     })
