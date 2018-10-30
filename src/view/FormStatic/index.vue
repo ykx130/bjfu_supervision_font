@@ -6,7 +6,7 @@
         <span>
           问卷名字:
               <Select v-model="query.meta" style="width:200px" @on-change="onMetaChange">
-                <Option v-for="item in metas" :value="item.name" :key="item.name">{{ item.name }}</Option>
+                <Option v-for="item in metas" :value="item.name" :key="item.name+item.version">{{ item.name }}</Option>
             </Select>
         </span>
         </Col>

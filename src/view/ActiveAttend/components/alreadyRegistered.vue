@@ -150,7 +150,7 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryCurrentuserActives(args).then((resp) => {
+      queryCurrentuserActives({...this.query}).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
         this.$router.push({name: '报名中心', query: {...args, ...this.query}})

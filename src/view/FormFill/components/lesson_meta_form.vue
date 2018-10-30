@@ -19,7 +19,7 @@
       </Col>
       <Col span="6">
         <FormItem label="课程级别：" prop="term">
-          <Input v-model="value.lesson.lesson_level" disabled=""></Input>
+          <Input  v-model="value.lesson.lesson_level" disabled></Input>
         </FormItem>
       </Col>
     </Row>
@@ -29,7 +29,7 @@
       <!--</FormItem>-->
       <Col span="6">
         <FormItem label="课程名字">
-          <Select v-model="value.lesson.id" style="width:200px" @on-change="onSelectedLessonChange">
+          <Select v-model="value.lesson.id" style="width:200px" @on-change="onSelectedLessonChange" :disabled="lesson_disabled">
             <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_name + index">{{
               item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
             </Option>
@@ -93,7 +93,8 @@
         allow_select_data: [],
         terms: [],
         selected_lesson:  {lesson_cases: []},
-        selected_lesson_case: {}
+        selected_lesson_case: {},
+        lesson_disabled: false //禁用课程的表单
       }
     },
     watch : {
@@ -110,12 +111,24 @@
       })
       let lesson_id = this.$store.getters.lesson_id
       if (lesson_id){
-        getLesson(args.lesson_id).then((resp)=>{
-          this.selected_lesson = resp.resp.lesson
-          this.value.term = this.selected_lesson.term
-          queryLessons({term:this.value.term}).then((resp) => {
-            this.lessons = resp.data.lessons
+        // 从课程表跳转
+        getLesson(lesson_id).then((resp)=>{
+          // 读取课程
+          this.selected_lesson = resp.data.lesson
+          // 处理case
+          this.value.lesson.lesson_date = undefined
+          this.lesson_times = []
+          this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
+            return item.lesson_date
           })
+          // 选择case
+          if (this.allow_select_data) {
+            this.onSelectedLessonCaseChange(this.allow_select_data[0])
+          }
+          // 处理表单的附加值
+          this.value.term = this.selected_lesson.term
+          this.lessons = [this.selected_lesson]
+          this.lesson_disabled = true
           querySupervisors({user_roles:{term:this.value.term}}).then((resp) => {
             this.users = resp.data.users
           })
@@ -191,6 +204,7 @@
 
         this.value.lesson = {
           ...this.value.lesson.lesson_date,
+          id: this.selected_lesson.id,
           lesson_id: this.selected_lesson.lesson_id,
           lesson_name: this.selected_lesson.lesson_name,
           lesson_teacher_name: this.selected_lesson.lesson_teacher_name,
