@@ -2,7 +2,7 @@
   <Modal
     :value="show"
     title="新增"
-    @on-ok="handleOK"
+    @on-ok="handleSubmit('user')"
     @on-cancel="handleCancel">
   <Form :model="user" ref="user" :rules="ruleValidate">
     <Row :gutter="16">
@@ -16,10 +16,8 @@
       </Col>
       <Col span="12">
         <FormItem prop="name">
-          <Select v-model="user.name" placeholder="用户名" filterable>
-            <Option v-for="item in users" :value="item.name" :key="item.name">{{ item.name }}</Option>
-          </Select>
-            <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
+          <Input type="text" v-model="user.name" placeholder="名字"></Input>
+          <Icon type="ios-person-outline" slot="prepend"></Icon>
           </FormItem>
       </Col>
     </Row>
@@ -148,7 +146,7 @@ export default {
         start_time: '',
         end_time: ''
       },
-      users:[],
+      users: [],
       roles: [],
       groups: [],
       sexList: sexList,
@@ -160,20 +158,31 @@ export default {
       ruleValidate: {
         username: [{required: true, message: 'the username can not be empty', trigger: 'blur'}],
         name: [{required: true, message: 'the name can not be empty', trigger: 'blur'}],
-        sex: [{required: true, message: 'the sex can not be empty', trigger: 'blur'}],
-        role_names: [{required: true, message: 'the role name can not be empty', trigger: 'blur'}],
-        unit: [{required: true, message: 'the unit can not be empty', trigger: 'blur'}],
+        sex: [{required: true, message: 'the sex can not be empty', trigger: 'change'}],
+        role_names: [{required: true, type: 'array', min: 1, message: 'choose at least one role name', trigger: 'change'}],
+        unit: [{required: true, message: 'the unit can not be empty', trigger: 'change'}],
         skill: [{required: true, message: 'the skill can not be empty', trigger: 'blur'}],
-        prorank: [{required: true, message: 'the prorank can not be empty', trigger: 'blur'}],
-        state: [{required: true, message: 'the state can not be empty', trigger: 'blur'}],
-        work_state: [{required: true, message: 'the work state can not be empty', trigger: 'blur'}],
-        start_time: [{required: true, message: 'the start time can not be empty', trigger: 'blur'}],
-        end_time: [{required: true, message: 'the end time can not be empty', trigger: 'blur'}],
-        status: [{required: true, message: 'the status can not be empty', trigger: 'blur'}],
+        prorank: [{required: true, message: 'the prorank can not be empty', trigger: 'change'}],
+        state: [{required: true, message: 'the state can not be empty', trigger: 'change'}],
+        work_state: [{required: true, message: 'the work state can not be empty', trigger: 'change'}],
+        start_time: [{required: true, type: 'date', message: 'the start time can not be empty', trigger: 'change'}],
+        end_time: [{required: true, type: 'date', message: 'the end time can not be empty', trigger: 'change'}],
+        status: [{required: true, message: 'the status can not be empty', trigger: 'change'}],
         email: [{required: true, message: 'the email can not be empty', trigger: 'blur'},
           {type: 'email', message: 'Invalid email format', trigger: 'blur'}],
         phone: [{required: true, message: 'the phone can not be empty', trigger: 'blur'},
-          {type: 'number', message: 'Invalid phone format', trigger: 'blur'}]
+          {
+            validator (rule, value, callback) {
+              if (!value) {
+                return callback(new Error('the phone can not be empty'))
+              } else if (!/^[1][34578][0-9]{9}$/.test(value)) {
+                callback('手机号格式不正确')
+              } else {
+                callback()
+              }
+            }
+          }
+        ]
       }
     }
   },
@@ -189,13 +198,27 @@ export default {
     })
   },
   methods: {
-    handleOK: function () {
+    /* handleOK: function () {
       this.$emit('onOK', {...this.user,
         start_time: dateToString(this.user.start_time, 'yyyy-MM-dd hh:mm:ss'),
         end_time: dateToString(this.user.end_time, 'yyyy-MM-dd hh:mm:ss') })
-    },
+    }, */
     handleCancel: function () {
       this.$emit('onCancel')
+    },
+    handleSubmit (name) {
+      this.$emit('onOK', {...this.user,
+        start_time: dateToString(this.user.start_time, 'yyyy-MM-dd hh:mm:ss'),
+        end_time: dateToString(this.user.end_time, 'yyyy-MM-dd hh:mm:ss') }),
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          // alert("Success！");
+          this.$Message.success('Success！')
+        } else {
+          // alert("Fail!");
+          this.$Message.error('Fail!')
+        }
+      })
     }
   }
 }
