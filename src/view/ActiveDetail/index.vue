@@ -2,42 +2,45 @@
   <div>
     <Card shadow>
       <p slot="title">基本信息</p>
-      <Form v-model="activity">
+      <Form v-model="activity" :label-width="80">
         <Row type="flex" justify="start" align="middle" class="code-row-bg">
-          <Col span="8">
-            <FormItem label="活动名称">
-              <Input style="width: 180px" type="text" v-model="activity.name" placeholder="活动名称" >
-              </Input>
+          <Col span="6">
+            <FormItem label="活动名称：">
+              <Input style="width: 170px" type="text" v-model="activity.name" placeholder="活动名称" />
             </FormItem>
           </Col>
-          <Col span="8">
-            <FormItem label="责任教师">
-            <Input style="width: 180px" type="text" v-model="activity.teacher" placeholder="责任老师" >
+          <Col span="6">
+            <FormItem label="责任教师：">
+            <Input style="width: 170px" type="text" v-model="activity.teacher" placeholder="责任老师" >
             </Input>
             </FormItem>
           </Col>
         </Row>
         <Row type="flex" justify="start" align="middle" class="code-row-bg">
-          <FormItem label="活动地点">
-          <Col span="16">
-            <Input style="width: 370px" type="text" v-model="activity.place" placeholder="活动地点" >
-            </Input>
+          <Col span="6">
+            <FormItem label="活动地点：">
+              <Input style="width: 170px" type="text" v-model="activity.place" placeholder="活动地点" />
+            </FormItem>
           </Col>
-          </FormItem>
+          <Col span="6">
+            <FormItem label="参与人数：">
+              <Input style="width: 170px" type="text" v-model="activity.all_num" placeholder="参与人数" />
+            </FormItem>
+          </Col>
         </Row>
         <Row align="middle" class="code-row-bg" >
-          <FormItem label="活动时间">
+          <FormItem label="活动时间：">
           <Col span="24">
               <DatePicker type="date" v-model="activity.start_time" placeholder="开时时间" style="width: 200px"></DatePicker>
-            -
+            &nbsp;—&nbsp;
               <DatePicker type="date" v-model="activity.end_time" placeholder="结束时间" style="width: 200px"></DatePicker>
           </Col>
           </FormItem>
         </Row>
         <Row type="flex" justify="start" align="middle" class="code-row-bg">
-          <FormItem label="活动信息">
+          <FormItem label="活动信息：">
           <Col span="24">
-            <Input style="width: 370px" type="textarea" v-model="activity.information" placeholder="活动信息" >
+            <Input style="width: 425px" type="textarea" v-model="activity.information" placeholder="活动信息" >
             </Input>
           </Col>
           </FormItem>
@@ -51,15 +54,15 @@
     <ActivesUserAddModal
       :show="showAddActiveUser"
       @onCancel="onAddActiveUserModalCancel"
-      @onOK="onAddActiveUserModalOK"
-    ></ActivesUserAddModal>
+      @onOK="onAddActiveUserModalOK">
+    </ActivesUserAddModal>
     <ActivesUserUpdateModal
       :show="showUpdateActiveUser"
       :active_id="activity_id"
       :username="selected_username"
       @onCancel="onUpdateActiveUserModalCancel"
-      @onOK="onUpdateActiveUserModalOK"
-    ></ActivesUserUpdateModal>
+      @onOK="onUpdateActiveUserModalOK">
+    </ActivesUserUpdateModal>
     <Card shadow>
       <p slot="title">参与人员</p>
       <Table border stripe :columns="columns" :data="data"></Table>
@@ -219,7 +222,7 @@ export default {
   },
   mounted: function () {
     getActive(this.activity_id).then((resp) => {
-      this.activity= resp.data.activity
+      this.activity = resp.data.activity
     })
     queryActiveUsers(this.activity_id).then((usrresp) => {
       this.data = usrresp.data.activity_users
