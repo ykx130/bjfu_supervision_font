@@ -40,7 +40,7 @@
   <div>
     <Layout>
       <Header>
-        <Menu  mode="horizontal" theme="light" :active-name="activity_name" @on-select="onMenuSelect">
+        <Menu  mode="horizontal" theme="primary" :active-name="activity_name" @on-select="onMenuSelect">
           <div class="layout-nav">
           <MenuItem name="judge">
             <Icon type="ios-paper" />
