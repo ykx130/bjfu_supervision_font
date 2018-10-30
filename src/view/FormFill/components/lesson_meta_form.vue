@@ -144,6 +144,7 @@
           })
         })
       }
+      this.$store.commit('setLessonId', undefined)
     },
     methods: {
       restValue: function(){

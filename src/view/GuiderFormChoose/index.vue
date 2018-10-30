@@ -35,7 +35,14 @@ export default {
   methods: {
     onCardClick: function (name, version) {
       this.$router.push({path: `/_guider/judge/form_fill/${name}/${version}`})
-    }
+    },
+    onSearch (query) {
+      // 查询变化 当点提交查询条件生效
+      queryFormMetas({...query}).then((resp) => {
+        this.data = resp.data.form_metas
+        this.$router.push({path: '/_guider/judge'})
+      })
+    },
   },
   mounted: function () {
     queryFormMetas().then((resp) => {
@@ -43,13 +50,6 @@ export default {
       this.$router.push({path: '/_guider/judge'})
     })
   },
-  onSearch (query) {
-    // 查询变化 当点提交查询条件生效
-    queryFormMetas({...query}).then((resp) => {
-      this.data = resp.data.form_metas
-      this.$router.push({path: '/_guider/judge'})
-    })
-  }
 }
 </script>
 

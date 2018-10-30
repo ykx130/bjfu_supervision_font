@@ -89,7 +89,9 @@ export default {
         status: '已完成',
         values: Object.values(this.form_inputs)
       }
-      postForm(form)
+      postForm(form).then(()=>{
+        location.reload()
+      })
     },
     handleSave() {
       let form = {
@@ -100,7 +102,9 @@ export default {
         status: '草稿',
         values: Object.values(this.form_inputs)
       }
-      postForm(form)
+      postForm(form).then(()=>{
+        location.reload()
+      })
     }
   }
 }
