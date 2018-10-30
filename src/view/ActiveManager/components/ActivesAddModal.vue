@@ -18,8 +18,10 @@
         <form-item label="责任老师:" prop="teacher">
           <Row>
             <Col>
-              <Select v-model="activity.teacher" style="width:200px">
-                <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index">{{item.name}}</Option>
+              <Select v-model="activity.teacher" style="width:200px" filterable>
+                <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index" @on-query-change="onSelectTeacherChange">
+                  {{item.name}}
+                </Option>
               </Select>
             </Col>
           </Row>
@@ -207,6 +209,11 @@ export default {
     },
     handleCancel: function () {
       this.$emit('onCancel')
+    },
+    onSelectTeacherChange: function (query) {
+      this.queryUsers({name_like: query}).then((resp) => {
+        this.users = resp.data.users // 关键词编号重新加载 xxx_like 对 XXX模糊查
+      })
     }
   },
   mounted: function () {
