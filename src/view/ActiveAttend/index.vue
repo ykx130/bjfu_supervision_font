@@ -33,6 +33,21 @@ export default {
   methods: {
     onTypeTabClick (value) {
       this.select_tag = value
+      if (this.select_tag === '可报名'){
+        this.$router.push({path: '/active/attend', query: {state:'canAttend'}})
+      } else if (this.select_tag === '已报名'){
+        this.$router.push({path: '/active/attend', query: {state:'hasAttended'}})
+      }
+    }
+  },
+  mounted: function () {
+    const args = this.$route.query
+    if (args.state){
+      if (args.state === 'canAttend'){
+       this.select_tag = '可报名'
+      } else if (this.select_tag === 'hasAttended'){
+       this.select_tag = '已报名'
+      }
     }
   }
 }

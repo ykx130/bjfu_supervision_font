@@ -15,27 +15,42 @@
 </template>
 
 <script>
-import {queryCurrentuserActives, putActive, postActive} from '../../service/api/actives'
-import {queryTerms, getCurrentTerms} from '../../service/api/term'
-import alreadyRegistered from './components/alreadyRegistered'
-import canRegister from './components/canRegister'
+  import {queryCurrentuserActives, putActive, postActive} from '../../service/api/actives'
+  import {queryTerms, getCurrentTerms} from '../../service/api/term'
+  import alreadyRegistered from './components/alreadyRegistered'
+  import canRegister from './components/canRegister'
 
-export default {
-  components: {
-    alreadyRegistered,
-    canRegister
-  },
-  data: function () {
-    return {
-      select_tag: '可报名'
-    }
-  },
-  methods: {
-    onTypeTabClick (value) {
-      this.select_tag = value
+  export default {
+    components: {
+      alreadyRegistered,
+      canRegister
+    },
+    data: function () {
+      return {
+        select_tag: '可报名'
+      }
+    },
+    methods: {
+      onTypeTabClick (value) {
+        this.select_tag = value
+        if (this.select_tag === '可报名'){
+          this.$router.push({path: '/_guider/attend', query: {state:'canAttend'}})
+        } else if (this.select_tag === '已报名'){
+          this.$router.push({path: '/_guider/attend', query: {state:'hasAttended'}})
+        }
+      }
+    },
+    mounted: function () {
+      const args = this.$route.query
+      if (args.state){
+        if (args.state === 'canAttend'){
+          this.select_tag = '可报名'
+        } else if (this.select_tag === 'hasAttended'){
+          this.select_tag = '已报名'
+        }
+      }
     }
   }
-}
 </script>
 
 <style scoped>

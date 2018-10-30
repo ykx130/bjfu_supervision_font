@@ -29,13 +29,15 @@
 <script>
 import {queryCurrentuserActives} from '../../../service/api/actives'
 import {queryTerms, getCurrentTerms} from '../../../service/api/term'
+import {updateWithinField} from 'Libs/tools'
 
 export default {
   name: 'canRegister',
   data: function () {
     return {
       query: {
-        state: 'canAttend'
+        state: undefined,
+        term: undefined
       }, // 查询用的参数
       total: 0, // 总数量
       data: [{
@@ -145,15 +147,17 @@ export default {
   },
   mounted: function () {
     const args = this.$route.query
+    updateWithinField(this.query, args)
+    updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryCurrentuserActives({...this.query}).then((resp) => {
+      queryCurrentuserActives(args).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
-        this.$router.push({name: '报名中心', query: {...args, ...this.query}})
+        this.$router.push({name: '报名中心', query: {...this.query, ...this.pages}})
       })
     })
   }
