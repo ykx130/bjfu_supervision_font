@@ -21,6 +21,9 @@ export const postActive = (params) => {
   return axios.post('/api/activities', params)
 }
 
+export const deleteActive = (id) => {
+  return axios.delete('/api/activities/' + id)
+}
 export const queryActiveUsers = (id) => {
   return axios.get('/api/activities/' + id + '/activity_users')
 }
