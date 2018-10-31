@@ -16,50 +16,51 @@
     </Card>
     <Row :gutter="16"  class="form_content">
       <Col span="6" v-for="meta in data" style="margin-bottom: 30px">
-      <my_form_meta_card :meta="meta"></my_form_meta_card>
+        <my_form_meta_card :meta="meta"></my_form_meta_card>
       </Col>
     </Row>
   </div>
 </template>
 
 <script>
-import { queryMyForms } from '../../service/api/dqs'
-import { getCurrentTerms, queryTerms } from '../../service/api/term'
-import my_form_meta_card from './components/my_form_meta_card'
-export default {
-  components: { my_form_meta_card },
-  name: 'index.vue',
-  data: function () {
-    return {
-      data: [],
-      terms: [],
-      query: {}
+  import {queryMyForms} from '../../service/api/dqs'
+  import {getCurrentTerms, queryTerms} from '../../service/api/term'
+  import my_form_meta_card from './components/my_form_meta_card'
+
+  export default {
+    components: {my_form_meta_card},
+    name: 'index.vue',
+    data: function () {
+      return {
+        data: [],
+        terms: [],
+        query: {}
+      }
+    },
+    methods: {
+      // onCardClick: function (name, version) {
+      //   this.$router.push({ path: `/dqs/form_fill/${name}/${version}` })
+      // }
+    },
+    mounted: function () {
+      let args = this.$route.query
+      queryTerms().then((resp) => {
+        this.terms = resp.data.terms
+      })
+      queryMyForms(args).then((resp) => {
+        this.data = resp.data.forms
+        this.$router.push({path: '/_guider/my_form'})
+      })
+    },
+    onSearch(query) {
+      // 查询变化 当点提交查询条件生效
+      let args = this.$route.query
+      queryMyForms({...query, args}).then((resp) => {
+        this.data = resp.data.forms
+        this.$router.push({path: '/_guider/my_form'})
+      })
     }
-  },
-  methods: {
-    // onCardClick: function (name, version) {
-    //   this.$router.push({ path: `/dqs/form_fill/${name}/${version}` })
-    // }
-  },
-  mounted: function () {
-    let args = this.$route.query
-    queryTerms().then((resp) => {
-      this.terms = resp.data.terms
-    })
-    queryMyForms(args).then((resp) => {
-      this.data = resp.data.forms
-      this.$router.push({ path: '/_guider/my_form' })
-    })
-  },
-  onSearch (query) {
-    // 查询变化 当点提交查询条件生效
-    let args = this.$route.query
-    queryMyForms({ ...query, args }).then((resp) => {
-      this.data = resp.data.forms
-      this.$router.push({ path: '/_guider/my_form' })
-    })
   }
-}
 </script>
 
 <style scoped>
