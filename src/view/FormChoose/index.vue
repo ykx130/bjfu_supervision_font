@@ -13,8 +13,8 @@
 
     </Card>
     <Row :gutter="16"  class="form_content">
-      <Col span="8" v-for="meta in data" style="height: 100%">
-        <form_meta_card :meta="meta" style="height: 100%" @click.native="onCardClick(meta.name, meta.version)"></form_meta_card>
+      <Col span="6" v-for="meta in data" style="margin-bottom: 30px">
+        <form_meta_card :meta="meta" @click.native="onCardClick(meta.name, meta.version)"></form_meta_card>
       </Col>
     </Row>
   </div>
@@ -57,7 +57,6 @@
 <style scoped>
 
   .form_content{
-    padding-top: 30px ;
-    height: 240px;
+    padding-top: 30px;
   }
 </style>
