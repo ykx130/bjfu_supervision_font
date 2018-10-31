@@ -16,8 +16,8 @@
         <divider orientation="left">问卷内容</divider>
         <!--{{this.form.form.meta}}-->
         <div>
-          <template v-for="it in form.form.values" >
-            <Form label-position="top" >
+          <Form v-for="it in form.form.values" label-position="top">
+            <template>
               <template v-if="it.item_type === 'sub_title_block_start'">
                 <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.title }}</h1>
               </template>
@@ -61,13 +61,19 @@
               <template v-if="it.item_type === 'sub_title_block_end'">
                 <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.options }}</h1>
               </template>
-            </Form>
-          </template>
+            </template>
+            <FormItem label="是否推荐为好评课" v-show="show_recommend" >
+              <RadioGroup v-model="recommend_model" >
+                <Radio  label="推荐" :value="1" ></Radio>
+                <Radio label="不推荐" :value="0"></Radio>
+              </RadioGroup>
+            </FormItem>
+          </Form>
         </div>
         <div style="text-align:center">
           <Button type="primary" style="margin-left: 20px" @click="handleSave"  :disabled="disabled">保存</Button>
           <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled">提交</Button>
-          <Button type="warning" style="margin-left: 28px" :disabled="disabled">取消</Button>
+          <Button type="warning" style="margin-left: 28px" @click="handleCancel":disabled="disabled">取消</Button>
         </div>
       </div>
     </Scroll>
@@ -82,11 +88,27 @@ export default {
   components: {
     Lesson
   },
+  watch: {
+    'meta.lesson': {
+      deep:true,
+      handler: function () {
+        if (this.meta.lesson.lesson_model !== ""){
+          this.show_recommend = true
+        } else {
+          this.show_recommend = false
+          this.recommend_model = 0
+        }
+      },
+      immediate:true
+    }
+  },
   data () {
     return {
       disabled: false,
       qsNum: 0,
-      form: {}
+      form: {},
+      recommend_model: 0,
+      show_recommend: false
     }
   },
   mounted () {
@@ -101,11 +123,18 @@ export default {
   methods: {
     handleSubmit () {
       this.form.form.status = '已完成'
-      postForm(this.form.form)
+      postForm(this.form.form).then(()=>{
+        location.reload()
+      })
     },
     handleSave () {
       this.form.form.status = '草稿'
-      postForm(this.form.form)
+      postForm(this.form.form).then(()=>{
+        location.reload()
+      })
+    },
+    handleCancel() {
+      location.reload()
     }
   }
 }

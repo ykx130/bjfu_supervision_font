@@ -69,19 +69,17 @@
                 </FormItem>
                 </template>
             </template>
-          </Form>
-          <Form>
-            <FormItem label="是否推荐为好评课" v-show="show_recommend" >
-              <RadioGroup v-model="recommend_model" >
-                <Radio  label="推荐" :value="1" ></Radio>
-                <Radio label="不推荐" :value="0"></Radio>
-              </RadioGroup>
-            </FormItem>
-          </Form>
+              <FormItem label="是否推荐为好评课" v-show="show_recommend" >
+                <RadioGroup v-model="recommend_model" >
+                  <Radio  label="推荐" :value="1" ></Radio>
+                  <Radio label="不推荐" :value="0"></Radio>
+                </RadioGroup>
+              </FormItem>
+            </Form>
             <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
-          <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
-          <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
-        </div>
+            <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
+            <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
+          </div>
       </div>
     </scroll>
   </Card>
