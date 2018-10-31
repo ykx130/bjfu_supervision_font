@@ -8,10 +8,8 @@
     <Row :gutter="16">
       <Col span="12">
        <FormItem prop="username">
-           <Select v-model="user.username" placeholder="用户名" filterable>
-             <Option v-for="item in users" :value="item.username" :key="item.username">{{ item.username }}</Option>
-           <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
-           </Select>
+         <Input type="text" v-model="user.username" placeholder="用户名"></Input>
+         <Icon type="ios-person-outline" slot="prepend"></Icon>
        </FormItem>
       </Col>
       <Col span="12">
