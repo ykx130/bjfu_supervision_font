@@ -22,9 +22,9 @@
         </Col>
       </Row>
       <Row>
-        <Col span="24">
+        <Col span="24" v-for="cloud in word_clouds">
           <div align="center">
-            <ChartWord style="height: 260px;" :text="'词云'"></ChartWord>
+            <ChartWord style="height: 260px;" :text="cloud.item_name" :value="cloud.value"></ChartWord>
           </div>
         </Col>
       </Row>
@@ -46,6 +46,7 @@
         data: [],
         query: {},
         metas: [],
+        word_clouds: [] //词云的配置
       }
     },
     mounted() {
@@ -54,6 +55,7 @@
     this.query.meta = this.metas[0].name
     getGraph(this.query).then((resp) => {
       this.data = resp.data.item_map
+      this.word_clouds = resp.data.word_cloud
       this.options = this.data.map(function (item) {
         let graphItem = {
           data: {}
