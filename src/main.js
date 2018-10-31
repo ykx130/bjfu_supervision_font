@@ -48,4 +48,6 @@ new Vue({
   render: h => h(App)
 })
 
+import 'echarts-wordcloud'
+
 Vue.component('chart', ECharts)

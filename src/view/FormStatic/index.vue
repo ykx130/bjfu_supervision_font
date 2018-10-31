@@ -13,11 +13,18 @@
       </Row>
     </Card>
     <div style="padding-top: 30px"></div>
-    <Card >
-      <Row >
+    <Card>
+      <Row>
         <Col span="24" v-for="option in options">
           <div align="center">
             <ChartBar style="height: 260px;" :value="option.data" :text="option.title"></ChartBar>
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col span="24">
+          <div align="center">
+            <ChartWord style="height: 260px;" :text="'词云'"></ChartWord>
           </div>
         </Col>
       </Row>
@@ -27,49 +34,48 @@
 
 </template>
 <script>
-import { getGraph } from '../../service/api/dqs'
-import { ChartBar } from '_c/charts'
-import { queryFormMetas } from '@/service/api/dqs'
+  import {getGraph} from '../../service/api/dqs'
+  import {ChartBar,ChartWord} from '_c/charts'
+  import {queryFormMetas} from '@/service/api/dqs'
 
-export default {
-  components: {ChartBar},
-  data () {
-    return {
-      options: [],
-      data: [],
-      query:{},
-      metas:[]
-    }
-  },
-  mounted () {
-
+  export default {
+    components: {ChartBar, ChartWord},
+    data: function () {
+      return {
+        options: [],
+        data: [],
+        query: {},
+        metas: [],
+      }
+    },
+    mounted() {
     queryFormMetas().then((resp) => {
-      this.metas = resp.data.form_metas
-      this.query.meta = this.metas[0].name
-      getGraph(this.query).then((resp) => {
-        this.data = resp.data.item_map
-        this.options = this.data.map(function (item) {
-          let graphItem = {
-            data: {}
-          }
-          for (let index in item.point) {
-            graphItem.data[item.point[index].option.value] = item.point[index].num
-          }
-          graphItem.title = item.item_name
-          return graphItem
-        })
+    this.metas = resp.data.form_metas
+    this.query.meta = this.metas[0].name
+    getGraph(this.query).then((resp) => {
+      this.data = resp.data.item_map
+      this.options = this.data.map(function (item) {
+        let graphItem = {
+          data: {}
+        }
+        for (let index in item.point) {
+          graphItem.data[item.point[index].option.value] = item.point[index].num
+        }
+        graphItem.title = item.item_name
+        return graphItem
       })
     })
+  })
 
-    // queryTerms().then((resp) => {
-    //   this.terms = resp.data.terms
-    // })
-    //
-    // getCurrentTerms().then((resp) =>{
-    //   this.query.term = resp.data.term.name
-    // })
+  // queryTerms().then((resp) => {
+  //   this.terms = resp.data.terms
+  // })
+  //
+  // getCurrentTerms().then((resp) =>{
+  //   this.query.term = resp.data.term.name
+  // })
   },
-  methods:{
+  methods: {
     onMetaChange: function () {
       getGraph(this.query).then((resp) => {
         this.data = resp.data.item_map
@@ -86,7 +92,7 @@ export default {
       })
     }
   }
-}
+  }
 </script>
 
 <style scoped>
