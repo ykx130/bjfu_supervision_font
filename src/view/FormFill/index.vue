@@ -45,8 +45,8 @@
           </template>
           <FormItem label="是否推荐为好评课" v-show="show_recommend">
             <RadioGroup v-model="recommend_model" >
-              <Radio  label="推荐" :value="true" ></Radio>
-              <Radio label="不推荐" :value="false"></Radio>
+              <Radio  label="推荐" :value="1" ></Radio>
+              <Radio label="不推荐" :value="0"></Radio>
             </RadioGroup>
           </FormItem>
         </Form>
@@ -74,7 +74,7 @@ export default {
           this.show_recommend = true
         } else {
           this.show_recommend = false
-          this.recommend_model = true
+          this.recommend_model = 0
         }
       },
       immediate:true
@@ -88,7 +88,7 @@ export default {
       },
       form_inputs: {},
       meta: {lesson: {}},
-      recommend_model: false,
+      recommend_model: 0,
       show_recommend: false
     }
   },
