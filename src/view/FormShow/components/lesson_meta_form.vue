@@ -198,6 +198,7 @@
           lesson_attribute: this.selected_lesson.lesson_attribute,
           assign_group: this.selected_lesson.assign_group,
           lesson_year: this.selected_lesson.lesson_year,
+          lesson_model: this.selected_lesson.lesson_model,
           lesson_level: this.selected_lesson.lesson_level,
           lesson_date:value,
           lesson_room: this.selected_lesson_case.lesson_room

@@ -43,10 +43,17 @@
               <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.options }}</h1>
             </div>
           </template>
+          <FormItem label="是否推荐为好评课" v-show="show_recommend">
+            <RadioGroup v-model="recommend_model" >
+              <Radio  label="推荐" :value="true" ></Radio>
+              <Radio label="不推荐" :value="false"></Radio>
+            </RadioGroup>
+          </FormItem>
         </Form>
+
         <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
         <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
-        <Button type="warning" style="margin-left: 28px">取消</Button>
+        <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
   </Card>
 
 </template>
@@ -59,6 +66,20 @@ export default {
   components: {
     Lesson
   },
+  watch: {
+    'meta.lesson': {
+      deep:true,
+      handler: function () {
+        if (this.meta.lesson.lesson_model !== ""){
+          this.show_recommend = true
+        } else {
+          this.show_recommend = false
+          this.recommend_model = true
+        }
+      },
+      immediate:true
+    }
+  },
   data () {
     return {
       form_meta: {
@@ -66,7 +87,9 @@ export default {
         items: []
       },
       form_inputs: {},
-      meta: {lesson: {}}
+      meta: {lesson: {}},
+      recommend_model: false,
+      show_recommend: false
     }
   },
   mounted () {
@@ -92,6 +115,9 @@ export default {
       postForm(form).then(()=>{
         location.reload()
       })
+      if (this.recommend_model){
+        console.log("好评可 提及哦啊")
+      }
     },
     handleSave() {
       let form = {
@@ -105,6 +131,9 @@ export default {
       postForm(form).then(()=>{
         location.reload()
       })
+    },
+    handleCancel() {
+      location.reload()
     }
   }
 }
