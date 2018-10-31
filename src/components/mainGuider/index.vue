@@ -40,12 +40,16 @@
   <div>
     <Layout>
       <Header>
-        <Menu  mode="horizontal" theme="light" :active-name="activity_name" @on-select="onMenuSelect">
+        <Menu  mode="horizontal" theme="primary" :active-name="activity_name" @on-select="onMenuSelect">
           <div class="layout-nav">
           <MenuItem name="judge">
             <Icon type="ios-paper" />
             问卷填写
           </MenuItem>
+            <MenuItem name="lesson_form">
+              <Icon type="ios-construct" />
+              课程表
+            </MenuItem>
             <MenuItem name="my_form">
               <Icon type="ios-construct" />
               我的问卷
@@ -146,6 +150,8 @@
             this.activity_name = 'attend';
           } else if (path === '/_guider/consult_apply') {
             this.activity_name = 'consult_apply';
+          } else if (path === '/_guider/lesson_form'){
+            this.activity_name = 'lesson_form'
           }
         },
       ...mapMutations([

@@ -5,7 +5,7 @@ export default {
   state: {
     userName: '',
     userId: '',
-    avatorImgPath: '',
+    avatorImgPath: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540923904688&di=94081d4d1750f77b411fef5b3288b48c&imgtype=0&src=http%3A%2F%2Fimg.liexue.cn%2Fuploadfile%2F2015%2F0129%2F20150129031441717.jpg',
     token: getToken(),
     access: [],
     hasGetInfo: false,

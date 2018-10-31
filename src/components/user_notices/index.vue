@@ -17,11 +17,14 @@
           }
         },
         mounted: function () {
-          getNoticesNum().then((resp)=>{
-            this.notices_count = resp.data.total
-          })
+          setInterval(this.refreshNotce, 1000);
         },
         methods: {
+          refreshNotce: function(){
+            getNoticesNum().then((resp)=>{
+              this.notices_count = resp.data.total
+            })
+          },
           showNotice: function () {
              getLatestNotices().then((resp)=>{
                if (this.notices_count >0 ){

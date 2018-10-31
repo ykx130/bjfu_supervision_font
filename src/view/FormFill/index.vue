@@ -12,9 +12,9 @@
       <br/>
       <divider orientation="left">问卷内容</divider>
         <div>
+          <Form>
           <template v-for="it in form_meta.items" >
             <!--<h1>{{ it.item_name }}</h1>-->
-            <Form>
               <template v-if="it.item_type === 'sub_title_block_start'">
                 <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.item_name }}</h1>
               </template>
@@ -68,12 +68,18 @@
                 <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.options }}</h1>
               </FormItem>
               </template>
-            </Form>
-          </template>
-        </div>
+          
+          <FormItem label="是否推荐为好评课" v-show="show_recommend">
+            <RadioGroup v-model="recommend_model" >
+              <Radio  label="推荐" :value="1" ></Radio>
+              <Radio label="不推荐" :value="0"></Radio>
+            </RadioGroup>
+          </FormItem>
+            </template>
+        </Form>
         <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
         <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
-        <Button type="warning" style="margin-left: 28px">取消</Button>
+        <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
       </div>
     </scroll>
   </Card>
@@ -88,6 +94,20 @@ export default {
   components: {
     Lesson
   },
+  watch: {
+    'meta.lesson': {
+      deep:true,
+      handler: function () {
+        if (this.meta.lesson.lesson_model !== ""){
+          this.show_recommend = true
+        } else {
+          this.show_recommend = false
+          this.recommend_model = 0
+        }
+      },
+      immediate:true
+    }
+  },
   data () {
     return {
       form_meta: {
@@ -95,7 +115,9 @@ export default {
         items: []
       },
       form_inputs: {},
-      meta: {lesson: {}}
+      meta: {lesson: {}},
+      recommend_model: 0,
+      show_recommend: false
     }
   },
   mounted () {
@@ -118,7 +140,12 @@ export default {
         status: '已完成',
         values: Object.values(this.form_inputs)
       }
-      postForm(form)
+      postForm(form).then(()=>{
+        location.reload()
+      })
+      if (this.recommend_model){
+        console.log("好评可 提及哦啊")
+      }
     },
     handleSave () {
       let form = {
@@ -129,7 +156,12 @@ export default {
         status: '草稿',
         values: Object.values(this.form_inputs)
       }
-      postForm(form)
+      postForm(form).then(()=>{
+        location.reload()
+      })
+    },
+    handleCancel() {
+      location.reload()
     }
   }
 }

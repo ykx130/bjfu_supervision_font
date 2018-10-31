@@ -40,7 +40,7 @@
 
 <script>
 import ActivesAddModal from './components/ActivesAddModal'
-import {queryActives, putActive, postActive} from '../../service/api/actives'
+import {queryActives, putActive, postActive, deleteActive} from '../../service/api/actives'
 import {queryTerms, getCurrentTerms} from '../../service/api/term'
 import Float_bar from '_c/float_bar/float_bar'
 import {updateWithinField} from 'Libs/tools'
@@ -117,7 +117,25 @@ export default {
                     this.$router.push({path: `/active/detail/${params.row.id}` })
                   }
                 }
-              }, '查看')
+              }, '查看'),
+              h('Button', {
+                props: {
+                  type: 'error',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '2px'
+                },
+                on: {
+                  click: () => {
+                    this.selected_activity_id = params.row.id
+                    deleteActive(params.row.id).then(() => {
+                      this.$Message.success('删除成功！')
+                      this.onTableChange(this.query, this.pages)
+                    })
+                  }
+                }
+              }, '删除')
             ])
           }
         }
@@ -162,13 +180,11 @@ export default {
       this.showActivityProfileModal = false
     },
     onAddModalOK (activity) {
-      this.activity = activity
-      this.showActiveAddModal = false
+      this.activity = activity // ???
       postActive(activity).then(() => {
-        // this.showActiveAddModal = false;
         this.onTableChange(this.query, this.pages)
       })
-      // this.showActiveAddModal = false;
+      this.showActiveAddModal = false
       this.onTableChange(this.query, this.pages)
     },
     onAddModalCancel () {
