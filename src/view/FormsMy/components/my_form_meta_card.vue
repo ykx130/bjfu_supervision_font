@@ -11,8 +11,8 @@
       <Col :span="24"  style="text-align: left; padding-left: 32%"><p class="normal_font">版本： {{meta.bind_meta_version}} </p></Col>
     </Row>
     <Row type="flex" align="middle" class="edit form-list-btn">
-      <Col :span="12"><a class="normal_font">修改</a></Col>
-      <Col :span="12"><a class="normal_font">查看</a></Col>
+      <Col :span="12"><a class="normal_font" @click="handleChangeClick">修改</a></Col>
+      <Col :span="12"><a class="normal_font" @click="handleChangeWatch">查看</a></Col>
     </Row>
   </Card>
 </template>
@@ -23,7 +23,8 @@ export default {
   name: 'form_card',
   components: { my_font_image },
   props: {
-    meta: Object
+    meta: Object,
+    id: String
   },
   methods: {
     statusColor: function (status) {
@@ -34,6 +35,12 @@ export default {
       } else if (status == '已完成') {
         return 'rgba(89, 220, 154, 0.7)'
       }
+    },
+    handleChangeClick: function () {
+     this.$router.push({path:`/_guider/judge/form_show/${this.meta._id}`})
+    },
+    handleChangeWatch: function () {
+      this.$router.push({path:`/_guider/judge/form_show/${this.meta._id}`})
     }
   }
 }

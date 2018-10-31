@@ -17,7 +17,7 @@
           }
         },
         mounted: function () {
-          setInterval(this.refreshNotce, 1000);
+          setInterval(this.refreshNotce, 10000);
         },
         methods: {
           refreshNotce: function(){

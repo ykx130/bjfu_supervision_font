@@ -16,7 +16,7 @@
     </Card>
     <Row :gutter="16"  class="form_content">
       <Col span="6" v-for="meta in data" style="margin-bottom: 30px">
-        <my_form_meta_card :meta="meta"></my_form_meta_card>
+        <my_form_meta_card :meta="meta" ></my_form_meta_card>
       </Col>
     </Row>
   </div>

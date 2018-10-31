@@ -41,7 +41,7 @@
                 title: '评价督导',
                 render: function (h, params) {
                   return (
-                    <span>{ params.row.meta.create_by }</span>
+                    <span>{ params.row.meta.guider_name }</span>
                 )
                 }
               },
@@ -49,7 +49,7 @@
                 title: '学院',
                 render: function (h, params) {
                   return (
-                      <span>{ params.row.meta.lesson.lesson_unit }</span>
+                      <span>{ params.row.meta.lesson.lesson_teacher_unit }</span>
                 )
                 }
               },
@@ -58,8 +58,10 @@
                 render: (h, params) => {
                   if (params.row.status === '待提交'){
                     return h('Tag', { props: {color:"red"}}, params.row.status)
-                  } else {
+                  } else if(params.row.status === '已完成'){
                     return h('Tag', { props: {color:"blue"}}, params.row.status)
+                  } else if(params.row.status === '草稿'){
+                    return h('Tag', params.row.status)
                   }
                 }
               }
@@ -70,7 +72,7 @@
       getCurrentTerms().then((termResp) => {
         this.query.term = termResp.data.term.name
         queryForms(this.pages).then((resp) => {
-          this.data = resp.data.forms
+          this.data = resp.data.forms.slice(0, 4)
           this.total = resp.data.total
         })
       })

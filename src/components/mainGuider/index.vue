@@ -64,10 +64,11 @@
           </MenuItem>
           </div>
           <user :user-avator="userAvator" style="float: right; margin-right: 40px"/>
-          <userNotices style="margin-right: 10px; float: right;"></userNotices>
-          <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px; float: right;" :lang="local"/>
-          <error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount" style="float: right; margin-right: 10px"></error-store>
-          <fullscreen v-model="isFullscreen" style="margin-right: 10px; float: right"/>
+          <userNotices style="margin-right: 10px; float: right;color: #E6EFFA"></userNotices>
+          <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px; float: right;color:#E6EFFA" :lang="local"/>
+          <!--<error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount" style="float: right; margin-right: 10px;color:#E6EFFA"></error-store>-->
+          <fullscreen v-model="isFullscreen" style="margin-right: 10px; float: right;color:#E6EFFA"/>
+          <span @click="handleClickToAdmin" style="margin-right: 10px; float: right;color:#E6EFFA"> 切换到管理员端 </span>
         </Menu>
       </Header>
       <Content class="content-wrapper">
@@ -180,6 +181,9 @@
           params,
           query
         })
+      },
+      handleClickToAdmin: function () {
+        this.$router.push({name:"home"})
       }
     },
     watch: {

@@ -1,7 +1,6 @@
 <template>
   <Card>
     <!--{{this.form_meta}}-->
-    <scroll height="670">
       <div>
         <h1 style="text-align: center">{{ form_meta.name }}</h1>
         <br/>
@@ -81,7 +80,6 @@
             <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
           </div>
       </div>
-    </scroll>
   </Card>
 
 </template>

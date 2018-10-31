@@ -16,7 +16,7 @@
       </i-col>
       <i-col :md="24" :lg="16" style="margin-bottom: 20px;">
         <Card shadow >
-         <LessonTable style="height: 300px; overflow: scroll"/>
+         <LessonTable style="height: 300px; overflow: hidden"/>
         </Card>
       </i-col>
 

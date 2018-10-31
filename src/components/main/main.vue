@@ -17,6 +17,7 @@
           <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/>
           <error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount"></error-store>
           <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
+          <span style="margin-right: 10px;float: right" @click="handleClickToGuider"> 切换到督导端 </span>
         </header-bar>
       </Header>
       <Content class="main-content-con">
@@ -25,9 +26,7 @@
             <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
           </div>
           <Content class="content-wrapper">
-            <keep-alive :include="cacheList">
               <router-view/>
-            </keep-alive>
           </Content>
         </Layout>
       </Content>
@@ -138,6 +137,9 @@ export default {
     },
     handleClick (item) {
       this.turnToPage(item)
+    },
+    handleClickToGuider(){
+      this.$router.push({name:"督导端"})
     }
   },
   watch: {

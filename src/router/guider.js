@@ -36,6 +36,11 @@ export default {
       component: resolve => require(['Views/FormFill/index'], resolve)
     },
     {
+      name: '督导问卷查看',
+      path: 'judge/form_show/:id',
+      component: resolve => require(['Views/FormShow/index'], resolve)
+    },
+    {
       name: '督导我的提交',
       path: 'my_form',
       component: resolve => require(['Views/FormsMy/index'], resolve)
