@@ -3,91 +3,93 @@
     <!--{{this.form_meta}}-->
     <scroll height="670">
       <div>
-      <h1 style="text-align: center">{{ form_meta.name }}</h1>
-      <br/>
-      <divider orientation="left">课程信息</divider>
-      <div>
-        <Lesson v-model="meta"></Lesson>
-      </div>
-      <br/>
-      <divider orientation="left">问卷内容</divider>
+        <h1 style="text-align: center">{{ form_meta.name }}</h1>
+        <br/>
+        <divider orientation="left">课程信息</divider>
         <div>
-          <Form>
-          <template v-for="it in form_meta.items" >
-            <!--<h1>{{ it.item_name }}</h1>-->
-              <template v-if="it.item_type === 'sub_title_block_start'">
-                <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.item_name }}</h1>
-              </template>
+          <Lesson v-model="meta"></Lesson>
+        </div>
+        <br/>
+        <divider orientation="left">问卷内容</divider>
+          <div>
+            <Form>
+            <template v-for="it in form_meta.items" >
+              <!--<h1>{{ it.item_name }}</h1>-->
+                <template v-if="it.item_type === 'sub_title_block_start'">
+                  <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.item_name }}</h1>
+                </template>
 
-              <template v-else-if="it.item_type === 'radio_option'">
-              <FormItem>
+                <template v-else-if="it.item_type === 'radio_option'">
                 <FormItem>
-                  <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
-                  <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
+                  <FormItem>
+                    <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
+                    <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
+                  </FormItem>
+                  <FormItem>
+                    <RadioGroup v-model="form_inputs[it.item_name].value">
+                      <Radio v-for="op in it.payload.options" :label="op.label" :key="op.value" v-bind:style="{ fontSize:'15px',marginLeft:'50px' }">
+                        <span>{{op.label}}</span>
+                      </Radio>
+                    </RadioGroup>
+                  </FormItem>
                 </FormItem>
-                <FormItem>
-                  <RadioGroup v-model="form_inputs[it.item_name].value">
-                    <Radio v-for="op in it.payload.options" :label="op.label" :key="op.value" v-bind:style="{ fontSize:'15px',marginLeft:'50px' }">
-                      <span>{{op.label}}</span>
-                    </Radio>
-                  </RadioGroup>
-                </FormItem>
-              </FormItem>
-              </template>
+                </template>
 
-              <template v-else-if="it.item_type === 'checkbox_option'">
-              <FormItem>
+                <template v-else-if="it.item_type === 'checkbox_option'">
                 <FormItem>
-                  <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
-                  <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
+                  <FormItem>
+                    <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
+                    <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
+                  </FormItem>
+                  <FormItem>
+                    <CheckboxGroup v-model="form_inputs[it.item_name].value">
+                      <Checkbox v-for="op in it.payload.options" :label="op.label" :key="op.value" v-bind:style="{ fontSize:'15px',marginLeft:'50px' }">
+                        <span>{{op.label}}</span>
+                      </Checkbox>
+                    </CheckboxGroup>
+                  </FormItem>
                 </FormItem>
-                <FormItem>
-                  <CheckboxGroup v-model="form_inputs[it.item_name].value">
-                    <Checkbox v-for="op in it.payload.options" :label="op.label" :key="op.value" v-bind:style="{ fontSize:'15px',marginLeft:'50px' }">
-                      <span>{{op.label}}</span>
-                    </Checkbox>
-                  </CheckboxGroup>
-                </FormItem>
-              </FormItem>
-              </template>
+                </template>
 
-              <template v-else-if="it.item_type === 'raw_text' "  >
-              <FormItem>
+                <template v-else-if="it.item_type === 'raw_text' "  >
                 <FormItem>
-                  <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
-                  <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
+                  <FormItem>
+                    <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
+                    <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
+                  </FormItem>
+                  <FormItem>
+                    <Input type="textarea" placeholder="Satisfation about teachers..." v-model="form_inputs[it.item_name].value" v-bind:style="{marginLeft:'50px',width:'50%'}"></Input>
+                  </FormItem>
                 </FormItem>
-                <FormItem>
-                  <Input type="textarea" placeholder="Satisfation about teachers..." v-model="form_inputs[it.item_name].value" v-bind:style="{marginLeft:'50px',width:'50%'}"></Input>
-                </FormItem>
-              </FormItem>
-              </template>
+                </template>
 
-              <template v-else-if="it.item_type === 'sub_title_block_end'">
-              <FormItem >
-                <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.options }}</h1>
-              </FormItem>
-              </template>
-          
-          <FormItem label="是否推荐为好评课" v-show="show_recommend">
-            <RadioGroup v-model="recommend_model" >
-              <Radio  label="推荐" :value="1" ></Radio>
-              <Radio label="不推荐" :value="0"></Radio>
-            </RadioGroup>
-          </FormItem>
+                <template v-else-if="it.item_type === 'sub_title_block_end'">
+                <FormItem >
+                  <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.options }}</h1>
+                </FormItem>
+                </template>
             </template>
-        </Form>
-        <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
-        <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
-        <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
+          </Form>
+          <Form>
+            <FormItem label="是否推荐为好评课" v-show="show_recommend" >
+              <RadioGroup v-model="recommend_model" >
+                <Radio  label="推荐" :value="1" ></Radio>
+                <Radio label="不推荐" :value="0"></Radio>
+              </RadioGroup>
+            </FormItem>
+          </Form>
+            <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
+          <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
+          <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
+        </div>
       </div>
     </scroll>
   </Card>
 
 </template>
 <script>
-import { getFormMeta, postForm } from '@/service/api/dqs'
-import { getLesson} from '@/service/api/lesson'
+import { getFormMeta, postForm } from '../../service/api/dqs'
+import { getLesson} from '../../service/api/lesson'
 import Lesson from './components/lesson_meta_form'
 
 export default {
