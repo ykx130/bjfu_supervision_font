@@ -53,20 +53,7 @@
     queryFormMetas().then((resp) => {
     this.metas = resp.data.form_metas
     this.query.meta = this.metas[0].name
-    getGraph(this.query).then((resp) => {
-      this.data = resp.data.item_map
-      this.word_clouds = resp.data.word_cloud
-      this.options = this.data.map(function (item) {
-        let graphItem = {
-          data: {}
-        }
-        for (let index in item.point) {
-          graphItem.data[item.point[index].option.value] = item.point[index].num
-        }
-        graphItem.title = item.item_name
-        return graphItem
-      })
-    })
+    this.onMetaChange()
   })
 
   // queryTerms().then((resp) => {
@@ -81,6 +68,7 @@
     onMetaChange: function () {
       getGraph(this.query).then((resp) => {
         this.data = resp.data.item_map
+        this.word_clouds = resp.data.word_cloud
         this.options = this.data.map(function (item) {
           let graphItem = {
             data: {}

@@ -53,9 +53,9 @@
           week = [];
         });
       },
-      methods:{ 
+      methods:{
         judge: function (lesson_id) {
-          
+
         }
       }
     }

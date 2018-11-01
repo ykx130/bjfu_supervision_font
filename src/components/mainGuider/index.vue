@@ -37,7 +37,7 @@
   }
 </style>
 <template>
-  <div>
+  <div style="height: 100%">
     <Layout>
       <Header>
         <Menu  mode="horizontal" theme="primary" :active-name="activity_name" @on-select="onMenuSelect">
