@@ -24,24 +24,24 @@ export function responseSuccessFunc (responseObj) {
   //     data: null
   // }
 
-  let resData = responseObj
+  let resData = responseObj.data
   let {code} = resData
 
   switch (code) {
     case 200: // 如果业务成功，直接进成功回调
-      return resData
-    case 1111:
+      return responseObj
+    case 500:
       // 如果业务失败，根据不同 code 做不同处理
       // 比如最常见的授权过期跳登录
       // 特定弹窗
       // 跳转特定页面等
-
+      bus.$bus.$emit('global.message.error', '系统异常 原因: ', resData.message)
       // location.href = xxx // 这里的路径也可以放到全局配置里
-      return
+      return Promise.reject(responseObj)
     default:
       // 业务中还会有一些特殊 code 逻辑，我们可以在这里做统一处理，也可以下方它们到业务层
       // !responseObj.config.noShowDefaultError && GLOBAL.vbus.$emit('global.$dialog.show', resData.msg);
-      return resData
+      return responseObj
   }
 }
 
@@ -53,6 +53,7 @@ export function responseFailFunc (responseError) {
   switch (stauts) {
     case 401:
       bus.$bus.$emit('global.message.warning', '未登陆')
+    case 200: break;
     default:
       bus.$bus.$emit('global.message.error', '系统异常')
   }
