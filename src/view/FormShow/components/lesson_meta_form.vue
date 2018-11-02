@@ -11,14 +11,14 @@
         </FormItem>
       </Col>
       <Col span="6">
-        <FormItem  label="学期：" prop="term">
+        <FormItem  label="学期" prop="term">
           <Select disabled v-model="value.term" style="width:200px" @on-change="onTermSelectChange">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
       </Col>
       <Col span="6">
-        <FormItem label="课程级别：" prop="term">
+        <FormItem label="课程级别" prop="term">
           <Input v-model="value.lesson.lesson_level" disabled></Input>
         </FormItem>
       </Col>

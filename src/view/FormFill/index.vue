@@ -68,7 +68,7 @@
                 </FormItem>
                 </template>
             </template>
-              <FormItem label="是否推荐为好评课" v-show="show_recommend" >
+              <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }">
                 <RadioGroup v-model="recommend_model" >
                   <Radio  label="推荐" :value="1" ></Radio>
                   <Radio label="不推荐" :value="0"></Radio>
