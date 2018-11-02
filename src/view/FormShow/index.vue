@@ -14,8 +14,8 @@
         <div>
         <Form label-position="top">
         <template v-for="it in form.values" >
-            <template v-if="it.item_type === 'sub_title_block_start'">
-              <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.title }}</h1>
+            <template v-if="it.item_type === 'sub_title_block'">
+              <span style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.title }}</span>
             </template>
 
             <template  v-else-if="it.item_type === 'radio_option'">

@@ -10,14 +10,14 @@
         </div>
         <br/>
         <divider orientation="left">问卷内容</divider>
-          <div>
             <Form>
+
             <template v-for="it in form_meta.items" >
               <!--<h1>{{ it.item_name }}</h1>-->
-                <template v-if="it.item_type === 'sub_title_block_start'">
-                  <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.item_name }}</h1>
+                <template v-if="it.item_name === 'sub_title_block_start' " >
+                  <h3 style="height: 80px;line-height: 80px;margin-left: 10px">{{ it.payload.title }}</h3>
                 </template>
-
+                <!--<div id="qs_item">-->
                 <template v-else-if="it.item_type === 'radio_option'">
                 <FormItem>
                   <FormItem>
@@ -62,9 +62,10 @@
                 </FormItem>
                 </template>
 
-                <template v-else-if="it.item_type === 'sub_title_block_end'">
+                <template v-else-if="it.item_name === 'sub_title_block_end'" >
                 <FormItem >
-                  <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.options }}</h1>
+                  <!--<h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.options }}</h1>-->
+                  <divider></divider>
                 </FormItem>
                 </template>
             </template>
@@ -79,7 +80,6 @@
             <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
             <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
           </div>
-      </div>
   </Card>
 
 </template>
@@ -99,7 +99,7 @@ export default {
         if (this.meta.lesson.lesson_model !== ""){
           this.show_recommend = true
         } else {
-          this.show_recommend = false
+          this.show_recommend = false;
           this.recommend_model = 0
         }
       },
@@ -115,20 +115,25 @@ export default {
       form_inputs: {},
       meta: {lesson: {}},
       recommend_model: 0,
-      show_recommend: false
+      show_recommend: false,
+      sub_title_block_start:0,
+      sub_title_block_end:0,
+
+      htmldata:"",
     }
   },
   mounted () {
-    let args = this.$route.params
+    let args = this.$route.params;
 
     getFormMeta(args).then((resp) => {
-      this.form_meta = resp.data.form_meta
+      this.form_meta = resp.data.form_meta;
       this.form_meta.items.forEach((item) => {
-        this.form_inputs[item.item_name] = item
+        this.form_inputs[item.item_name] = item;
       })
     })
   },
   methods: {
+
     handleSubmit () {
       let form = {
         bind_meta_id: this.form_meta._id,
