@@ -36,7 +36,7 @@ export default {
   data: function () {
     return {
       query: {
-        state: undefined,
+        state: 'canAttend',
         term: undefined
       }, // 查询用的参数
       total: 0, // 总数量

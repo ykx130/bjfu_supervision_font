@@ -17,7 +17,9 @@
         <Button type="primary" @click="onSearch(query)">查询</Button>
       </FormItem>
       <FormItem >
-        <Button type="primary" @click="onSearch(query)">导入</Button>
+        <Upload :action="uploadModelLessonApi" name="filename">
+          <Button  icon="ios-cloud-upload-outline" type="primary" >导入</Button>
+        </Upload>
       </FormItem>
     </Form>
 
@@ -44,15 +46,15 @@
 <script>
   import LessonProfileModal from './components/LessonProfileModal'
   import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-  import {queryModelLessons, putLesson} from '../../service/api/lesson'
-  import {queryTerms, getCurrentTerms} from '../../service/api/term'
+  import {queryModelLessons, putLesson, uploadModelLessonApi} from '@/service/api/lesson'
+  import {queryTerms, getCurrentTerms} from '@/service/api/term'
   import FloatBar from '_c/float_bar/float_bar'
   import {updateWithinField} from 'Libs/tools'
   export default {
     components: {LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal},
     data: function () {
       return {
-
+        uploadModelLessonApi:uploadModelLessonApi,
         query: {
           lesson_name:undefined,
           term: undefined
@@ -63,6 +65,7 @@
         selected_lesson_ids: [],
         selected_lesson_id: '', // 选中编辑的课程ids
         showLessonProfileModal: false, // 展示编辑弹窗
+        showBatchLessonWatchModal:false,
         pages: {
           _page: 1,
           _per_page: 10

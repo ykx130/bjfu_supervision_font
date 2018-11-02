@@ -17,7 +17,9 @@
         <Button type="primary" @click="onSearch(query)">查询</Button>
         </FormItem>
       <FormItem >
-        <Button type="primary" @click="onSearch(query)">导入</Button>
+        <Upload :action="uploadNoticeLessonApi" :show-upload-list="false" name="filename">
+          <Button  icon="ios-cloud-upload-outline" type="primary" >导入</Button>
+        </Upload>
       </FormItem>
     </Form>
 
@@ -46,7 +48,7 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-import {queryNoticeLessons, putLesson} from '../../service/api/lesson'
+import {queryNoticeLessons, putLesson,uploadNoticeLessonApi} from '@/service/api/lesson'
 import {queryTerms, getCurrentTerms} from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import {updateWithinField} from 'Libs/tools'
@@ -55,7 +57,7 @@ export default {
   components: {LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal},
   data: function () {
     return {
-
+      uploadNoticeLessonApi:uploadNoticeLessonApi,
       query: {
         lesson_name:undefined,
         term: undefined,

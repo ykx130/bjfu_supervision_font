@@ -28,3 +28,7 @@ export const queryNoticeLessons = (params) => {
 export const queryModelLessons = (params) => {
   return axios.get('/api/model_lessons', {params:params})
 }
+
+export const uploadModelLessonApi = '/api/model_lessons/excel/import'
+
+export const uploadNoticeLessonApi = '/api/notice_lessons/excel/import'

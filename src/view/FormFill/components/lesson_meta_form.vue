@@ -5,7 +5,7 @@
     <Row :gutter="8">
       <Col span="6">
         <FormItem label="听课督导">
-          <Select v-model="value.guider" style="width:200px" @on-change="onGuiderSelectChange">
+          <Select v-model="value.guider" style="width:200px" @on-change="onGuiderSelectChange" :disabled="guider_disable">
             <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index"   >{{item.name}}</Option>
           </Select>
         </FormItem>
@@ -89,12 +89,19 @@
       return {
         lessons: [],
         users: [],
+        guider: {},
         lesson_times: [],
         allow_select_data: [],
         terms: [],
         selected_lesson:  {lesson_cases: []},
         selected_lesson_case: {},
-        lesson_disabled: false //禁用课程的表单
+        lesson_disabled: false, //禁用课程的表单,
+        guider_disable: false,
+      }
+    },
+    computed:{
+      currentUser: function () {
+        return this.$store.getters.userInfo
       }
     },
     watch : {
@@ -109,6 +116,8 @@
       queryTerms().then((resp) => {
         this.terms = resp.data.terms
       })
+
+      // 处理课程的逻辑
       let lesson_id = this.$store.getters.lesson_id
       if (lesson_id){
         // 从课程表跳转
@@ -144,6 +153,8 @@
           })
         })
       }
+      // 处理用户
+
       this.$store.commit('setLessonId', undefined)
     },
     methods: {
@@ -151,7 +162,7 @@
         this.value.lesson = {}
       },
       onGuiderSelectChange: function(value){
-        let guider = this.users.find((ele)=>{
+          let guider = this.users.find((ele)=>{
           return ele.username === value
         })
         if (guider){

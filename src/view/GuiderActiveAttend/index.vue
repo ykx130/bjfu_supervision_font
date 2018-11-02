@@ -45,9 +45,11 @@
       if (args.state){
         if (args.state === 'canAttend'){
           this.select_tag = '可报名'
-        } else if (this.select_tag === 'hasAttended'){
+        } else if (args.state === 'hasAttended'){
           this.select_tag = '已报名'
         }
+      } else {
+        this.onTypeTabClick("可报名")
       }
     }
   }

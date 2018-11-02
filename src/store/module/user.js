@@ -9,7 +9,8 @@ export default {
     token: getToken(),
     access: [],
     hasGetInfo: false,
-    userInfo: {}
+    userInfo: {},
+    guiderInfo: {}
   },
   mutations: {
     setAvator (state, avatorPath) {
@@ -89,6 +90,9 @@ export default {
   getters: {
     access: state => {
       return state.access
+    },
+    userInfo: state => {
+      return state.userInfo
     }
   }
 }
