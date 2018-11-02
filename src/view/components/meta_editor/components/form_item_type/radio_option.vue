@@ -46,18 +46,27 @@
         </Row>
       </FormItem>
     </Form>
+    <Rule v-model="rules" :types="['required']"></Rule>
   </div>
 </template>
 <script>
 // import
+import Rule from '../rules'
 export default {
   name: 'radio_option',
+  components:{Rule},
   watch: {
     qsItem: {
       handler: function (val) {
         this.ok()
       },
       deep: true
+    },
+    rules: {
+      deep:true,
+      handler: function () {
+        this.ok()
+      }
     }
   },
   data () {
@@ -72,7 +81,8 @@ export default {
       qsInputOptions: [{
         label: '',
         value: ''
-      }]
+      }],
+      rules:[]
     }
   },
   props: {
@@ -93,7 +103,7 @@ export default {
     },
     ok () {
       this.$emit('onInput', {...this.qsItem,
-        payload: {options: this.qsInputOptions}})
+        payload: {options: this.qsInputOptions, rules:this.rules}})
     }
   }
 }

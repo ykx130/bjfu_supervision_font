@@ -14,18 +14,28 @@
           </Row>
         </FormItem>
       </Form>
+    <Rule v-model="rules" :types="['required', 'length']"></Rule>
   </div>
 </template>
 <script>
 // import
+import Rule from '../rules'
+
 export default {
   name: 'raw_text.vue',
+  components:{Rule},
   watch: {
     qsItem: {
       handler: function (val) {
         this.ok()
       },
       deep: true
+    },
+    rules: {
+      deep:true,
+      handler: function () {
+        this.ok()
+      }
     }
   },
   data () {
@@ -34,7 +44,8 @@ export default {
         item_name: '',
         type: 'form_item',
         item_type: 'raw_text'
-      }
+      },
+      rules:[]
     }
   },
   props: {
@@ -42,7 +53,7 @@ export default {
   },
   methods: {
     ok () {
-      this.$emit('onInput', {...this.qsItem})
+      this.$emit('onInput', {...this.qsItem, payload:{rules:this.rules}})
     }
   }
 }

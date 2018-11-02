@@ -46,18 +46,28 @@
         </Row>
       </FormItem>
       </Form>
+    <Rule v-model="rules" :types="['required', 'length']"></Rule>
+
   </div>
 </template>
 <script>
 // import
+import Rule from '../rules'
 export default {
   name: 'checkbox_option',
+  components:{Rule},
   watch: {
     qsItem: {
       handler: function (val) {
         this.ok()
       },
       deep: true
+    },
+    rules: {
+      deep:true,
+      handler: function () {
+        this.ok()
+      }
     }
   },
   data () {
@@ -72,7 +82,8 @@ export default {
         label: '',
         value: ''
       }],
-      index: 1
+      index: 1,
+      rules:[]
     }
   },
   props: {
@@ -93,7 +104,7 @@ export default {
     },
     ok () {
       this.$emit('onInput', {...this.qsItem,
-        payload: {options: this.qsInputOptions}})
+        payload: {options: this.qsInputOptions, rules:this.rules}})
     }
   }
 }
