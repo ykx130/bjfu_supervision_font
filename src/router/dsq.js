@@ -7,7 +7,7 @@ export default{
   path: '/dqs',
   meta: {
     icon: 'ios-book',
-    title: '问卷中心'
+    title: '评价管理'
   },
   component: Main,
   children: [
@@ -16,7 +16,8 @@ export default{
       path: 'meta_manager', // xzl
       meta: {
         icon: 'arrow-graph-up-right',
-        title: '问卷结构管理'
+        title: '评价体系管理',
+        access: ['管理员']
       },
       component: resolve => require(['Views/FormMetaManager/index'], resolve)
     },
@@ -25,7 +26,9 @@ export default{
       name: '问卷结构编辑',
       meta: {
         icon: 'arrow-graph-up-right',
-        title: '问卷结构编辑'
+        title: '评价体系创建',
+        access: ['管理员']
+
       },
       component: resolve => require(['Views/FormMetaCreater/index'], resolve)
     },
@@ -41,7 +44,7 @@ export default{
       path: 'form_fill/:name/:version', // 问卷填写
       meta: {
         hideInMenu: true,
-        title: '问卷填写'
+        title: '评价填写'
       },
       component: resolve => require(['Views/FormFill/index'], resolve)
     },
@@ -50,7 +53,7 @@ export default{
       path: 'form_show/:id', // hmx问卷查看
       meta: {
         hideInMenu: true,
-        title: '问卷展示'
+        title: '评价展示'
       },
       component: resolve => require(['Views/FormShow/index'], resolve)
     },
@@ -58,6 +61,7 @@ export default{
       name: '问卷管理',
       path: 'form_manager', // xzl
       meta: {
+        title: '评价结果管理'
       },
       component: resolve => require(['Views/FormManager/index'], resolve)
     },
@@ -72,6 +76,7 @@ export default{
       name: '问卷数据分析',
       path: 'form_sa', // xzl
       meta: {
+        title: '评价结果预览'
       },
       component: resolve => require(['Views/FormStatic/index'], resolve)
     },
@@ -80,7 +85,7 @@ export default{
       name: '问卷选择',
       meta: {
         hideInMenu: true,
-        title: '问卷选择'
+        title: '评价体系选择'
       },
       component: resolve => require(['Views/FormChoose/index'], resolve)
     }

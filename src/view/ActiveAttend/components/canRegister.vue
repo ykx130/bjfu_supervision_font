@@ -124,6 +124,11 @@ export default {
       ]
     }
   },
+  computed: {
+    currentPath:function () {
+      return this.$route.path
+    }
+  },
   methods: {
     onTableChange (query, pages) {
       // 数据表发生变化请求数据
@@ -131,7 +136,7 @@ export default {
       queryCurrentuserActives(args).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
-        this.$router.push({path: '/active/help', query: {...args, ...this.query}})
+        this.$router.push({path: this.currentPath, query: {...args, ...this.query}})
       })
     },
     onPageChange (page) {
@@ -157,7 +162,7 @@ export default {
       queryCurrentuserActives(args).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
-        this.$router.push({name: '报名中心', query: {...this.query, ...this.pages}})
+        this.$router.push({path: this.currentPath, query: {...this.query, ...this.pages}})
       })
     })
   }

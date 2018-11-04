@@ -21,13 +21,12 @@
           <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
-      <span>身份:</span>
-      <FormItem prop="role_names">
-        <CheckboxGroup v-model="user.role_names">
-          <Checkbox v-for="role in roles" :label="role.name" :key="'key_'+role.name">
-            <span>{{ role.name }}</span>
-          </Checkbox>
-        </CheckboxGroup>
+      <FormItem label="督导级别:" :label-width="40" prop="group">
+        <RadioGroup v-model="guider_role">
+          <Radio label="普通督导" >普通督导</Radio>
+          <Radio label="小组长">小组长(会替换之前的)</Radio>
+          <Radio label="大组长">大组长(会替换之前的)</Radio>
+        </RadioGroup>
       </FormItem>
     </Form>
   </Modal>
@@ -47,10 +46,10 @@ export default {
   data: function () {
     return {
       user: {
-        id: '',
-        name: '',
-        username: '',
-        group: '',
+        id: undefined,
+        name: undefined,
+        username: undefined,
+        group: undefined,
         role_names: []
       },
       roles: [],

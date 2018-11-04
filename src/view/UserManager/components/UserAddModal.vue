@@ -32,8 +32,8 @@
       <!--<span >身份:</span>-->
       <FormItem label="身份:" prop="role_names">
         <CheckboxGroup v-model="user.role_names">
-          <Checkbox v-for="role in roles" :label="role.name" :key="'key_'+role.name">
-            <span>{{ role.name }}</span>
+          <Checkbox v-for="role in roles" :label="role" :key="'key_'+role">
+            <span>{{ role }}</span>
           </Checkbox>
         </CheckboxGroup>
       </FormItem>
@@ -188,9 +188,8 @@ export default {
     queryUsers().then((resp) => {
       this.users = resp.data.users
     })
-    queryRoles().then((resp) => {
-      this.roles = resp.data.roles
-    })
+    this.roles = ["管理员", "学院领导"]
+
     queryGroups().then((resp) => {
       this.groups = resp.data.groups
     })

@@ -25,7 +25,8 @@ export default{
       path: 'good_lesson', // xzl
       meta: {
         icon: 'arrow-graph-up-right',
-        title: '好评课堂'
+        title: '好评课堂',
+        access: ['管理员']
       },
       component: resolve => require(['Views/LessonModelManager/index'], resolve)
     },
@@ -34,7 +35,8 @@ export default{
       path: 'notice_lesson', // xzl
       meta: {
         icon: 'arrow-graph-up-right',
-        title: '关注课程'
+        title: '关注课程',
+        access: ['管理员']
       },
       component: resolve => require(['Views/LessonNoticeManager/index'], resolve)
     },

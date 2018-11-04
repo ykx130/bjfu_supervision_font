@@ -19,9 +19,23 @@ export default {
       select_tag: '未协调'
     }
   },
+  computed: {
+    currentPath:function () {
+      return this.$route.path
+    }
+  },
   methods: {
     onTypeTabClick (value) {
       this.select_tag = value
+      this.$router.push({path: this.currentPath, query: {state:this.select_tag}})
+    }
+  },
+  created: function () {
+    const args = this.$route.query
+    if (args.state){
+      this.select_tag = args.state
+    } else {
+      this.onTypeTabClick("未协调")
     }
   }
 }

@@ -79,6 +79,7 @@
             )
             }
           },
+
           {
             title: '课程属性',
             render: function (h, params) {
@@ -99,13 +100,19 @@
             }
           },
           {
-            title: '课程状态',
-            render: (h, params) => {
-              if (params.row.lesson_state === '未完成'){
-                return h('Tag', { props: {color:"red"}}, params.row.lesson_state)
-              } else {
-                return h('Tag', { props: {color:"blue"}}, params.row.lesson_state)
-              }
+            title: '推荐次数',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.votes }</span>
+            )
+            }
+          },
+          {
+            title: '评价次数',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.notices }</span>
+            )
             }
           },
           {

@@ -145,6 +145,11 @@ export default {
       ]
     }
   },
+  computed: {
+    currentPath:function () {
+      return this.$route.path
+    }
+  },
   methods: {
     onTableChange (query, pages) {
       // 数据表发生变化请求数据
@@ -152,7 +157,7 @@ export default {
       queryConsults(args).then((resp) => {
         this.data = resp.data.consults
         this.total = resp.data.total
-        this.$router.push({path: '/consult/manager', query: {...args, ...this.query}})
+        this.$router.push({path: this.currentPath, query: {...args, ...this.query}})
       })
     },
     onPageChange (page) {
@@ -185,7 +190,7 @@ export default {
       queryConsults({ ...this.query, ...this.pages}).then((resp) => {
         this.data = resp.data.consults
         this.total = resp.data.total
-        this.$router.push({path: '/consult/manager', query: { ...this.query, ...this.pages}})
+        this.$router.push({path: this.currentPath, query: { ...this.query, ...this.pages}})
       })
     })
   }

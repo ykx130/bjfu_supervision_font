@@ -102,23 +102,12 @@ export default {
           key: 'state'
         },
         {
-          title: '工作状态',
-          key: 'work_state'
-        },
-        {
-          title: '任期开始',
-          key: 'start_time'
-        },
-        {
-          title: '任期结束',
-          key: 'end_time'
-        },
-        {
           title: '状态',
           key: 'status'
         },
         {
           title: '身份',
+          minWidth: 80,
           render: function (h, params) {
             let tags = params.row.role_names.map((item) => {
               return h('Tag', item)

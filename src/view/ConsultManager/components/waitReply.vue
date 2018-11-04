@@ -42,7 +42,8 @@ export default {
     return {
       select_tag: '已协调',
       query: {
-        term:undefined
+        term:undefined,
+        state:undefined
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据

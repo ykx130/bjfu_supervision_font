@@ -59,7 +59,7 @@ export default {
       if (show) {
         // 显示的时候拉数据
         getConsultById(this.id).then((resp) => {
-          updateWithinField(this.consult, resp.data.consult)
+          this.consult = resp.data.consult
         })
       }
     }

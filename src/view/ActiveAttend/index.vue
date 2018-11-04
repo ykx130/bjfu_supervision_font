@@ -30,13 +30,18 @@ export default {
       select_tag: '可报名'
     }
   },
+  computed: {
+    currentPath:function () {
+      return this.$route.path
+    }
+  },
   methods: {
     onTypeTabClick (value) {
       this.select_tag = value
       if (this.select_tag === '可报名'){
-        this.$router.push({path: '/active/attend', query: {state:'canAttend'}})
+        this.$router.push({path: this.currentPath, query: {state:'canAttend'}})
       } else if (this.select_tag === '已报名'){
-        this.$router.push({path: '/active/attend', query: {state:'hasAttended'}})
+        this.$router.push({path: this.currentPath, query: {state:'hasAttended'}})
       }
     }
   },

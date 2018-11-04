@@ -123,6 +123,14 @@ export default {
           }
         },
         {
+          title: '评价次数',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.notices }</span>
+          )
+          }
+        },
+        {
           title: '操作',
           align: 'center',
           render: (h, params) => {

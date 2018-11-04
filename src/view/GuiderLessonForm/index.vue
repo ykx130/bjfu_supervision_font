@@ -235,6 +235,79 @@
           return res;
         },
         pullLessons: function () {
+          this.lessons.length = 0
+          this.data = [
+            {
+              period: '1-2',
+              1: [],
+              2: [],
+              3: [],
+              4: [],
+              5: [],
+              6: [],
+              7: []
+            },
+            {
+              period: '3-4',
+              1: [],
+              2: [],
+              3: [],
+              4: [],
+              5: [],
+              6: [],
+              7: []
+            },
+            {
+              period: '5',
+              1: [],
+              2: [],
+              3: [],
+              4: [],
+              5: [],
+              6: [],
+              7: []
+            },
+            {
+              period: '6-7',
+              1: [],
+              2: [],
+              3: [],
+              4: [],
+              5: [],
+              6: [],
+              7: []
+            },
+            {
+              period: '8-9',
+              1: [],
+              2: [],
+              3: [],
+              4: [],
+              5: [],
+              6: [],
+              7: []
+            },
+            {
+              period: '10-11',
+              1: [],
+              2: [],
+              3: [],
+              4: [],
+              5: [],
+              6: [],
+              7: []
+            },
+            {
+              period: '12',
+              1: [],
+              2: [],
+              3: [],
+              4: [],
+              5: [],
+              6: [],
+              7: []
+            }
+          ]
           getLessons(this.query).then((resp) => {
             this.lessons = resp.data.lessons;
             let allLessons = this.preProcess(this.lessons);

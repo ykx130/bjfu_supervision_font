@@ -13,7 +13,7 @@ export default {
   children: [{
     name: '督导报名中心',
     path: 'attend',
-    component: resolve => require(['Views/GuiderActiveAttend/index'], resolve)
+    component: resolve => require(['Views/ActiveAttend/index'], resolve)
   },
     {
       name: '督导咨询申请',

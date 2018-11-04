@@ -61,13 +61,13 @@
         </template>
           <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }">
             <RadioGroup v-model="recommend_model" >
-              <Radio  label="推荐" :value="1" ></Radio>
-              <Radio label="不推荐" :value="0"></Radio>
+              <Radio  label="推荐" :value="1"  :disabled="disabled"></Radio>
+              <Radio label="不推荐" :value="0" :disabled="disabled"></Radio>
             </RadioGroup>
           </FormItem>
         </Form>
-        <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
-        <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
+        <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="disabled">保存</Button>
+        <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled">提交</Button>
         <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
       </div>
       </div>
@@ -114,7 +114,7 @@
         this.form = newresp.data.form
       });
       if(this.form.status==='已完成'){
-        this.disabled=flase;
+        this.disabled=false ;
       }
     },
     methods: {

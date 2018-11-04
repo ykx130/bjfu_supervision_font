@@ -42,18 +42,21 @@
       <Header>
         <Menu  mode="horizontal" theme="primary" :active-name="activity_name" @on-select="onMenuSelect">
           <div class="layout-nav">
-          <MenuItem name="judge">
-            <Icon type="ios-paper" />
-            问卷填写
-          </MenuItem>
-            <MenuItem name="lesson_form">
-              <Icon type="ios-construct" />
-              课程表
-            </MenuItem>
-            <MenuItem name="my_form">
-              <Icon type="ios-construct" />
-              我的问卷
-            </MenuItem>
+            <template v-permission="['督导','管理员']">
+              <MenuItem name="judge">
+                <Icon type="ios-paper" />
+                问卷填写
+              </MenuItem>
+              <MenuItem name="lesson_form">
+                <Icon type="ios-construct" />
+                课程表
+              </MenuItem>
+              <MenuItem name="my_form">
+                <Icon type="ios-construct" />
+                我的问卷
+              </MenuItem>
+            </template>
+
           <MenuItem name="attend">
             <Icon type="ios-people" />
             活动报名

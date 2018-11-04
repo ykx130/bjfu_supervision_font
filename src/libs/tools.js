@@ -227,7 +227,7 @@ export function updateWithinField (src_obj, des_obf) {
       if(typeof src_obj[item] === 'number'){
         src_obj[item] = Number(des_obf[item])
       } else if (typeof src_obj[item] === 'string') {
-        src_obj[item] = toString(des_obf[item])
+        src_obj[item] = String(des_obf[item])
       } else {
         src_obj[item] = des_obf[item]
       }

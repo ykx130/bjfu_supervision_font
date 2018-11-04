@@ -17,6 +17,14 @@
         <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
       </Select>
     </FormItem>
+
+    <FormItem label="督导级别:" :label-width="40" prop="group">
+      <RadioGroup v-model="guider_role">
+        <Radio label="普通督导" >普通督导</Radio>
+        <Radio label="小组长">小组长(会替换之前的)</Radio>
+        <Radio label="大组长">大组长(会替换之前的)</Radio>
+      </RadioGroup>
+    </FormItem>
     </Form>
   </Modal>
 </template>
@@ -35,15 +43,13 @@ export default {
       user: {},
       users:[],
       roles: [],
-      groups: []
+      groups: [],
+      guider_role: ""
     }
   },
   mounted: function () {
     queryUsers().then((resp) => {
       this.users = resp.data.users
-    })
-    queryRoles().then((resp) => {
-      this.roles = resp.data.roles
     })
     queryGroups().then((resp) => {
       this.groups = resp.data.groups

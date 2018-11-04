@@ -35,8 +35,8 @@
         <!--<span >身份:</span>-->
         <FormItem label="身份:" prop="role_names">
           <CheckboxGroup v-model="user.role_names">
-            <Checkbox v-for="role in roles" :label="role.name" :key="'key_'+role.name">
-              <span>{{ role.name }}</span>
+            <Checkbox v-for="role in roles" :label="role" :key="'key_'+role">
+              <span>{{ role }}</span>
             </Checkbox>
           </CheckboxGroup>
         </FormItem>
@@ -149,15 +149,15 @@ export default {
   data: function () {
     return {
       user: {
-        id: '',
-        name: '',
-        username: '',
-        skill: '',
-        start_time: '',
-        end_time: '',
-        group: '',
-        email: '',
-        phone: '',
+        id: undefined,
+        name: undefined,
+        username: undefined,
+        skill: undefined,
+        start_time: undefined,
+        end_time: undefined,
+        group: undefined,
+        email: undefined,
+        phone: undefined,
         role_names: []
       },
       roles: [],
@@ -206,9 +206,7 @@ export default {
     }
   },
   mounted: function () {
-    queryRoles().then((resp) => {
-      this.roles = resp.data.roles
-    })
+    this.roles = ["管理员", "学院领导"]
     queryGroups().then((resp) => {
       this.groups = resp.data.groups
     })
@@ -225,12 +223,13 @@ export default {
       this.$emit('onCancel')
     },
     handleSubmit (name) {
-      this.$emit('onOK', {...this.user,
-        start_time: dateToString(this.user.start_time, 'yyyy-MM-dd hh:mm:ss'),
-        end_time: dateToString(this.user.end_time, 'yyyy-MM-dd hh:mm:ss') }),
+
       this.$refs[name].validate((valid) => {
         if (valid) {
           // alert("Success！");
+          this.$emit('onOK', {...this.user,
+            start_time: dateToString(this.user.start_time, 'yyyy-MM-dd hh:mm:ss'),
+            end_time: dateToString(this.user.end_time, 'yyyy-MM-dd hh:mm:ss') })
           this.$Message.success('Success！')
         } else {
           // alert("Fail!");

@@ -8,7 +8,8 @@ export default{
   component: Main,
   meta: {
     icon: 'md-people',
-    title: '用户中心'
+    title: '用户中心',
+    access: ['管理员']
   },
   children: [
     {
