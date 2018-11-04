@@ -11,15 +11,15 @@
         </FormItem>
       </Col>
       <Col span="6">
-        <FormItem label="学期：" prop="term">
-          <Select v-model="value.term" style="width:200px" @on-change="onTermSelectChange">
+        <FormItem label="学期" prop="term" >
+          <Select v-model="value.term" style="width:190px" @on-change="onTermSelectChange">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
       </Col>
       <Col span="6">
-        <FormItem label="课程级别：" prop="term">
-          <Input  v-model="value.lesson.lesson_level" disabled></Input>
+        <FormItem label="课程级别" prop="term" >
+          <Input  style="width:200px" v-model="value.lesson.lesson_level" disabled></Input>
         </FormItem>
       </Col>
     </Row>
@@ -52,7 +52,7 @@
 
       <Col span="6">
         <FormItem label="听课时间">
-          <DatePicker type="date" :value="value.lesson.lesson_date" format="yyyy-MM-dd" @on-change="onSelectedLessonCaseChange" :options="getLessonDatePickerOption()"></DatePicker>
+          <DatePicker style="width:200px" type="date" :value="value.lesson.lesson_date" format="yyyy-MM-dd" @on-change="onSelectedLessonCaseChange" :options="getLessonDatePickerOption()"></DatePicker>
         </FormItem>
       </Col>
 
