@@ -71,27 +71,8 @@
           </Select>
         </FormItem>
       </Col>
-      <Col span="8">
-        <FormItem label="工作状态:" :label-width="75" prop="work_state">
-          <Select v-model="user.work_state"  >
-            <Option v-for="item in workStateList " :value="item" :key="item ">{{ item }}</Option>
-          </Select>
-        </FormItem>
-      </Col>
     </Row>
 
-    <Row :gutter="16">
-      <Col span="12">
-        <FormItem label="任期开始:" :label-width="75" prop="start_time">
-        <DatePicker type="date" format="yyyy-MM-dd" v-model="user.start_time" placeholder="请选择" ></DatePicker>
-        </FormItem>
-      </Col>
-      <Col span="12">
-        <FormItem label="任期结束:" :label-width="75" prop="end_time">
-          <DatePicker type="date" format="yyyy-MM-dd" v-model="user.end_time" placeholder="请选择" ></DatePicker>
-        </FormItem>
-      </Col>
-    </Row>
 
     <Row :gutter="16">
       <Col span="12">
@@ -162,9 +143,6 @@ export default {
         skill: [{required: true, message: 'the skill can not be empty', trigger: 'blur'}],
         prorank: [{required: true, message: 'the prorank can not be empty', trigger: 'change'}],
         state: [{required: true, message: 'the state can not be empty', trigger: 'change'}],
-        work_state: [{required: true, message: 'the work state can not be empty', trigger: 'change'}],
-        start_time: [{required: true, type: 'date', message: 'the start time can not be empty', trigger: 'change'}],
-        end_time: [{required: true, type: 'date', message: 'the end time can not be empty', trigger: 'change'}],
         status: [{required: true, message: 'the status can not be empty', trigger: 'change'}],
         email: [{required: true, message: 'the email can not be empty', trigger: 'blur'},
           {type: 'email', message: 'Invalid email format', trigger: 'blur'}],
