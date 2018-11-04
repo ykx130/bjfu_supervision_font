@@ -11,14 +11,14 @@
         </div>
         <br/>
         <divider orientation="left">问卷内容</divider>
-            <Form :rules="ruleValidate" :model="form_inputs" >
+            <Form :model="form_inputs" >
             <template v-for="it in form_meta.items" >
                 <template v-if="it.item_name === 'sub_title_block_start' " >
                   <h3 style="height: 80px;line-height: 80px;margin-left: 10px">{{ it.payload.title }}</h3>
                 </template>
 
                 <template v-else-if="it.item_type === 'radio_option'">
-                  <FormItem :rules="ruleValidate[it.item_name]" >
+                  <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name +'.value'" >
                   <Row>
                     <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
                     <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
@@ -34,7 +34,7 @@
                 </template>
 
                 <template v-else-if="it.item_type === 'checkbox_option'">
-                <FormItem  :rules="ruleValidate[it.item_name]" >
+                <FormItem  :rules="ruleValidate[it.item_name]" :prop="it.item_name +'.value'" >
                   <Row>
                     <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
                     <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
@@ -50,7 +50,7 @@
                 </template>
 
                 <template v-else-if="it.item_type === 'raw_text' "  >
-                <FormItem :required="true" :rules="ruleValidate[it.item_name]" >
+                <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name +'.value'" >
                   <Row>
                     <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
                     <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>

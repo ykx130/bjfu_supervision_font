@@ -92,30 +92,30 @@ export default {
           title: '在职状态',
           key: 'state'
         },
-        {
-          title: '操作',
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '2px'
-                },
-                on: {
-                  click: () => {
-                    this.selected_username = params.row.username
-
-                    this.showUserProfileModal = true
-                  }
-                }
-              }, '查看')
-            ])
-          }
-        }
+        // {
+        //   title: '操作',
+        //   align: 'center',
+        //   render: (h, params) => {
+        //     return h('div', [
+        //       h('Button', {
+        //         props: {
+        //           type: 'primary',
+        //           size: 'small'
+        //         },
+        //         style: {
+        //           marginRight: '2px'
+        //         },
+        //         on: {
+        //           click: () => {
+        //             this.selected_username = params.row.username
+        //
+        //             this.showUserProfileModal = true
+        //           }
+        //         }
+        //       }, '查看')
+        //     ])
+        //   }
+        // }
       ]
     }
   },
