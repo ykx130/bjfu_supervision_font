@@ -9,18 +9,27 @@
     </Tabs>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="学期：" prop="meta.term">
-        <Select v-model="query.meta.term" style="width:200px">
+        <Select v-model="query.meta.term" style="width:200px" clearable	>
           <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
-      <FormItem label="问卷名字：" prop="bind_meta_name">
+
+      <FormItem label="组别：" prop="meta.guider_group">
+        <Select v-model="query.meta.term" style="width:200px" clearable	>
+          <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+        </Select>
+      </FormItem>
+
+      <FormItem label="问卷名字：" prop="bind_meta_name" clearable	>
         <Input style="width: 180px" v-model="query.bind_meta_name" ></Input>
       </FormItem>
-      <FormItem label="上课教师：" prop="meta.lesson.lesson_teacher_name">
+      <FormItem label="上课教师：" prop="meta.lesson.lesson_teacher_name" clearable	>
         <Input style="width: 180px" v-model="query.meta.lesson.lesson_teacher_name" ></Input>
       </FormItem>
-      <FormItem label="听课督导：" prop="meta.create_by">
+      <FormItem label="听课督导：" prop="meta.guider_name" clearable	>
         <Input  style="width: 180px" v-model="query.meta.create_by"></Input>
+      </FormItem>
+      <FormItem>
         <Button type="primary" style="margin-left: 20px;width: 80px" @click="onSearch(query)">查询</Button>
       </FormItem>
     </Form>
@@ -37,7 +46,8 @@
 <script>
 import { queryForms, putForm } from '../../service/api/dqs'
 import {updateWithinField} from 'Libs/tools'
-import {getCurrentTerms, queryTerms} from '../../service/api/term'
+import {getCurrentTerms, queryTerms} from '@/service/api/term'
+import {queryGroups} from '@/service/api/user'
 export default {
   data: function () {
     return {
@@ -51,6 +61,7 @@ export default {
       },
       total: 0,
       terms: [],
+      groups: [],
       pages: {
         _page: 1,
         _per_page: 10
@@ -221,6 +232,9 @@ export default {
     updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
+    })
+    queryGroups().then((resp)=>{
+      this.groups = resp.data.groups
     })
     getCurrentTerms().then((termResp) => {
       this.query.meta.term = termResp.data.term.name

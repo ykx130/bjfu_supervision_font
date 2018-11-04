@@ -95,10 +95,6 @@ export default {
           key: 'prorank'
         },
         {
-          title: '在职状态',
-          key: 'state'
-        },
-        {
           title: '工作状态',
           key: 'work_state'
         },

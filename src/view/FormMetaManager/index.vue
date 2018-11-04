@@ -24,7 +24,8 @@ export default {
       columns: [
         {
           type: 'expand',
-          width: 50,
+          title:"评价",
+          width: 70,
           render: (h, params) => {
             return h(formMetaHistory, {
               props: {

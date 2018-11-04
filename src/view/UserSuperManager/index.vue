@@ -92,6 +92,14 @@ export default {
           title: '在职状态',
           key: 'state'
         },
+        {
+          title: '电话',
+          key: 'phone'
+        },
+        {
+          title: 'email',
+          key: 'email'
+        },
         // {
         //   title: '操作',
         //   align: 'center',

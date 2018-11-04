@@ -37,9 +37,9 @@
     ></BatchLessonWatchModal>
 
     <Table  @on-selection-change="selectLessons" border stripe :columns="columns" :data="data"></Table>
-      <div style="float: right;">
-        <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
-      </div>
+      <Row >
+        <Page style="float: right;" :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
+      </Row>
     <FloatBar><Button type="error" @click="onBatchWatchClick">批量取消关注</Button>
     </FloatBar>
   </Card>
@@ -52,9 +52,11 @@ import {queryNoticeLessons, putLesson,uploadNoticeLessonApi} from '@/service/api
 import {queryTerms, getCurrentTerms} from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import {updateWithinField} from 'Libs/tools'
+import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
+
 
 export default {
-  components: {LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal},
+  components: {LessonJudge,LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal},
   data: function () {
     return {
       uploadNoticeLessonApi:uploadNoticeLessonApi,
@@ -74,10 +76,23 @@ export default {
         _per_page: 10
       }, // 分页
       columns: [
+
         {
           type: 'selection',
           width: 60,
           align: 'center'
+        },
+        {
+          type: 'expand',
+          title:"评价",
+          width: 70,
+          render: (h, params) => {
+            return h(LessonJudge, {
+              props: {
+                lesson_id: params.row.lesson_id
+              }
+            })
+          }
         },
         {
           title: '课程名字',

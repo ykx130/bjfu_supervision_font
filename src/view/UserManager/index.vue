@@ -116,12 +116,6 @@ export default {
           }
         },
         {
-          title: '小组',
-          render: function (h, params) {
-            return h('span', params.row.group)
-          }
-        },
-        {
           title: '电子邮箱',
           key: 'email'
         },

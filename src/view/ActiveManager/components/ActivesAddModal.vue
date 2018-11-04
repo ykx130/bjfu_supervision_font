@@ -29,11 +29,11 @@
         <form-item label="活动时间:" prop="inputtime">
           <Row>
             <Col span="11">
-              <DatePicker type="date" placeholder="开始日期" v-model="activity.inputtime.start_time"></DatePicker>
+              <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="开始日期" v-model="activity.inputtime.start_time"></DatePicker>
             </Col>
             <Col span="2" style="text-align: center">-</Col>
             <Col span="11">
-              <DatePicker type="date" placeholder="结束日期" v-model="activity.inputtime.end_time"></DatePicker>
+              <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="结束日期" v-model="activity.inputtime.end_time"></DatePicker>
             </Col>
           </Row>
         </form-item>

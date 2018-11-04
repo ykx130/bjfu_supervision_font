@@ -10,7 +10,7 @@
     <Form :label-width="80" :model="query" inline>
       <FormItem label="课程名字：" prop="lesson_name">
         <AutoComplete style="width: 180px" v-model="query.lesson_name" placeholder="请输入用户名字">
-          <Option v-for="d in data" :value="d.lesson_name" :key="d.lesson_name">{{ d.lesson_name }}</Option>
+          <Option v-for="(d, index) in data" :value="d.lesson_name" :key="d.lesson_name + d.lesson_id + index">{{ d.lesson_name }}</Option>
         </AutoComplete>
       </FormItem>
       <FormItem label="学期：" prop="term">
@@ -20,7 +20,7 @@
       </FormItem>
       <FormItem label="教师：" prop="lesson_teacher_name">
         <AutoComplete style="width: 180px" v-model="query.lesson_teacher_name" placeholder="请输入用户名字">
-          <Option v-for="d in data" :value="d.lesson_teacher_name" :key="d.lesson_teacher_name">{{ d.lesson_teacher_name }}</Option>
+          <Option v-for="(d,index) in data" :value="d.lesson_teacher_name" :key="d.lesson_teacher_name +  d.lesson_id + index">{{ d.lesson_teacher_name }}</Option>
         </AutoComplete>
       </FormItem>
       <FormItem >
@@ -42,11 +42,12 @@
     ></BatchLessonWatchModal>
 
     <Table  @on-selection-change="selectLessons" border stripe :columns="columns" :data="data"></Table>
-      <div style="float: right;">
-        <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
-      </div>
-    <FloatBar><Button type="primary" @click="onBatchWatchClick">批量关注课程</Button>
-    </FloatBar>
+      <Row>
+        <Page style="float: right" :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
+      </Row>
+    <div style="padding-bottom: 10px"></div>
+    <!--<FloatBar><Button type="primary" @click="onBatchWatchClick">批量关注课程</Button>-->
+    <!--</FloatBar>-->
   </Card>
 </template>
 
@@ -57,9 +58,10 @@ import {queryLessons, putLesson} from '../../service/api/lesson'
 import {queryTerms, getCurrentTerms} from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import {updateWithinField} from 'Libs/tools'
+import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 
 export default {
-  components: {LessonProfileModal, FloatBar, BatchLessonWatchModal},
+  components: {LessonJudge,LessonProfileModal, FloatBar, BatchLessonWatchModal},
   data: function () {
     return {
 
@@ -81,9 +83,16 @@ export default {
       }, // 分页
       columns: [
         {
-          type: 'selection',
-          width: 60,
-          align: 'center'
+          type: 'expand',
+          title:"评价",
+          width: 70,
+          render: (h, params) => {
+            return h(LessonJudge, {
+              props: {
+                lesson_id: params.row.lesson_id
+              }
+            })
+          }
         },
         {
           title: '课程名字',
