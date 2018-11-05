@@ -5,7 +5,7 @@
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>
         <FormItem label="用户名字：" prop="name">
-          <AutoComplete style="width: 180px" v-model="query.name" placeholder="请输入用户名字">
+          <AutoComplete style="width: 180px" v-model="query.name_like" placeholder="请输入用户名字">
             <Option v-for="d in data" :value="d.username" :key="d.username">{{ d.username }}</Option>
           </AutoComplete>
         </FormItem>
@@ -70,7 +70,7 @@ export default {
     return {
       query: {
         user_roles: {term: ''},
-        name:undefined
+        name_like:undefined
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据

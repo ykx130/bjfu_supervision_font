@@ -27,7 +27,7 @@
         <Input style="width: 180px" v-model="query.meta.lesson.lesson_teacher_name" ></Input>
       </FormItem>
       <FormItem label="听课督导：" prop="meta.guider_name" clearable	>
-        <Input  style="width: 180px" v-model="query.meta.create_by"></Input>
+        <Input  style="width: 180px" v-model="query.meta.guider_name"></Input>
       </FormItem>
       <FormItem>
         <Button type="primary" style="margin-left: 20px;width: 80px" @click="onSearch(query)">查询</Button>
