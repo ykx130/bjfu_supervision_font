@@ -29,7 +29,7 @@
       <!--</FormItem>-->
       <Col span="6">
         <FormItem label="课程名字">
-          <Select v-model="value.lesson.id" style="width:200px" @on-change="onSelectedLessonChange" :disabled="lesson_disabled">
+          <Select v-model="value.lesson.id" style="width:200px" @on-query-change="" @on-change="onSelectedLessonChange" :disabled="lesson_disabled" filterable>
             <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_name + index">{{
               item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
             </Option>
@@ -166,6 +166,11 @@
     methods: {
       restValue: function(){
         this.value.lesson = {}
+      },
+      onLessonQueryChange: function (value){
+         queryLessons({lesson_name_like:value}).then((resp)=>{
+           this.lessons = resp.data.lessons
+        })
       },
       onGuiderSelectChange: function(value){
           let guider = this.users.find((ele)=>{
