@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
   // const token = getToken()
   if (to.name !== LOGIN_PAGE_NAME) {
     currentUser().then((resp) => {
-      store.commit('setUserInfo', resp.data.user)
+      store.commit('setUserInfo', resp.data.current_user)
       if (to.path === '/') {
         next({name: '首页'})
       }

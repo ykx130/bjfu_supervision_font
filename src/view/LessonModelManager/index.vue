@@ -163,8 +163,8 @@
           this.selected_lesson_ids = []
           this.data = resp.data.model_lessons
           this.total = resp.data.total
-          this.$router.push({path: '/lesson/good_lesson', query: {...args, ...this.query}})
         })
+        this.$router.push({path: '/lesson/good_lesson', query: {...args, ...this.query}})
       },
       onPageChange (page) {
         // 分页变化
@@ -206,9 +206,9 @@
         queryModelLessons  ({...this.query,...this.pages}).then((resp) => {
           this.data = resp.data.model_lessons
           this.total = resp.data.total
-          this.$router.push({path: '/lesson/good_lesson', query: {...this.pages,...this.query}})
         })
       })
+      this.$router.push({path: '/lesson/good_lesson', query: {...this.pages,...this.query}})
     }
   }
 </script>

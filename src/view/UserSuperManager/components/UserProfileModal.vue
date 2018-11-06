@@ -21,20 +21,12 @@
           <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
-      <span>身份:</span>
-      <FormItem prop="role_names">
-        <CheckboxGroup v-model="user.role_names">
-          <Checkbox v-for="role in roles" :label="role.name" :key="'key_'+role.name">
-            <span>{{ role.name }}</span>
-          </Checkbox>
-        </CheckboxGroup>
-      </FormItem>
     </Form>
   </Modal>
 </template>
 
 <script>
-import {getUserByName, queryRoles, queryGroups} from '../../../service/api/user'
+import {getUserByName, queryGroups} from '../../../service/api/user'
 import {updateWithinField} from 'Libs/tools'
 export default {
   name: 'UserProfileModal',
@@ -53,14 +45,10 @@ export default {
         group: '',
         role_names: []
       },
-      roles: [],
       groups: []
     }
   },
   mounted: function () {
-    queryRoles().then((resp) => {
-      this.roles = resp.data.roles
-    })
     queryGroups().then((resp) => {
       this.groups = resp.data.groups
     })

@@ -49,16 +49,16 @@
       })
       queryMyForms(args).then((resp) => {
         this.data = resp.data.forms
-        this.$router.push({path: '/_guider/my_form'})
       })
+      this.$router.push({path: '/_guider/my_form'})
     },
     onSearch(query) {
       // 查询变化 当点提交查询条件生效
       let args = this.$route.query
       queryMyForms({...query, args}).then((resp) => {
         this.data = resp.data.forms
-        this.$router.push({path: '/_guider/my_form'})
       })
+      this.$router.push({path: '/_guider/my_form'})
     }
   }
 </script>

@@ -212,8 +212,8 @@ export default {
       queryForms(args).then((resp) => {
         this.data = resp.data.forms
         this.total = resp.data.total
-        this.$router.push({path: '/dqs/form_manager', query: query})
       })
+      this.$router.push({path: '/dqs/form_manager', query: query})
     },
     onPageChange (page) {
       // 分页变化
@@ -241,8 +241,8 @@ export default {
       queryForms({...this.pages, ...this.query}).then((resp) => {
         this.data = resp.data.forms
         this.total = resp.data.total
-        this.$router.push({path: '/dqs/form_manager', query: {...this.pages, ...this.query}})
       })
+      this.$router.push({path: '/dqs/form_manager', query: {...this.pages, ...this.query}})
     })
   }
 }

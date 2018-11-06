@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { queryUsers, queryRoles, queryGroups} from '../../../service/api/user'
+import { queryUsers, queryGroups} from '../../../service/api/user'
 import {dateToString} from 'Libs/tools'
 import { sexList, unitlist, prorankList, stateList, workStatelist, statusList } from '../marcos'
 export default {

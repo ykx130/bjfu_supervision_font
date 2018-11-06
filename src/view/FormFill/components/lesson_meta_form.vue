@@ -78,6 +78,7 @@
   import {dateToString} from 'Libs/tools'
   import {queryTerms, getCurrentTerms} from '@/service/api/term'
   import {transTimeToSelectedData} from 'Libs/tools'
+  import {currentUser} from "../../../service/api/user";
   export default {
     props: {
       value: {
@@ -154,6 +155,11 @@
         })
       }
       // 处理用户
+      if (this.currentUser.guider && !this.currentUser.role_names.includes("管理员")) {
+        this.value.guider = this.currentUser.username
+        this.value.guider_name = this.currentUser.name
+        this.value.guider_group = this.currentUser.guider_group
+      }
 
       this.$store.commit('setLessonId', undefined)
     },

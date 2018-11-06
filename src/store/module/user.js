@@ -48,7 +48,6 @@ export default {
           username: userName,
           password: password
         }).then(res => {
-          commit('')
           resolve()
         }).catch(err => {
           reject(err)
@@ -77,7 +76,7 @@ export default {
         try {
           currentUser().then(res => {
             const data = res.data
-            commit('setUserInfo', data.user)
+            commit('setUserInfo', data.current_user)
             resolve(data)
           }).catch(err => {
             reject(err)

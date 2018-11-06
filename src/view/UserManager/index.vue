@@ -10,12 +10,6 @@
          </AutoComplete>
         </FormItem>
 
-        <FormItem label="学期：">
-          <Select v-model="query.user_roles.term" style="width:200px">
-            <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
-          </Select>
-        </FormItem>
-
         <FormItem >
           <Button type="primary" @click="onSearch(query)">查询</Button>
         </FormItem>
@@ -59,7 +53,6 @@ export default {
   data: function () {
     return {
       query: {
-        user_roles: {term: undefined},
         name_like:undefined
       }, // 查询用的参数
       total: 0, // 总数量
@@ -169,8 +162,8 @@ export default {
       queryUsers(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
-        this.$router.push({path: '/user/guiders', query: query})
       })
+      this.$router.push({path: '/user/guiders', query: query})
     },
     onPageChange (page) {
       // 分页变化
@@ -212,14 +205,11 @@ export default {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
-    getCurrentTerms().then((termResp) => {
-      this.query.user_roles.term = termResp.data.term.name
-      queryUsers({...this.pages, ...this.query}).then((resp) => {
-        this.data = resp.data.users
-        this.total = resp.data.total
-        this.$router.push({path: '/user/guiders', query: {...this.pages, ...this.query}})
-      })
+    queryUsers({...this.pages, ...this.query}).then((resp) => {
+      this.data = resp.data.users
+      this.total = resp.data.total
     })
+    this.$router.push({path: '/user/guiders', query: {...this.pages, ...this.query}})
   }
 }
 </script>

@@ -131,8 +131,8 @@ export default {
       queryGroupLesson(args).then((resp) => {
         this.data = resp.data.lesson_records
         this.total = resp.data.total
-        this.$router.push({path: '/dqs/lesson_records', query: query})
       })
+      this.$router.push({path: '/dqs/lesson_records', query: query})
     },
     onPageChange (page) {
       // 分页变化
@@ -169,9 +169,9 @@ export default {
         queryGroupLesson(this.query).then((resp) => {
           this.data = resp.data.lesson_records
           this.total = resp.data.total
-          this.$router.push({path: '/dqs/lesson_records', query: {...args, ...this.query}})
         })
-    })
+        this.$router.push({path: '/dqs/lesson_records', query: {...args, ...this.query}})
+      })
     })
   }
 }

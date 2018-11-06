@@ -16,10 +16,6 @@ export const postUser = (params) => {
   return axios.post('/api/users', params)
 }
 
-export const queryRoles = (params) => {
-  return axios.get('/api/roles', {params: params})
-}
-
 export const queryGroups = (params) => {
   return axios.get('/api/groups', {params: params})
 }

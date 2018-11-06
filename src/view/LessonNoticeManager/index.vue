@@ -179,8 +179,8 @@ export default {
         this.selected_lesson_ids = []
         this.data = resp.data.notice_lessons
         this.total = resp.data.total
-        this.$router.push({path: '/lesson/notice_lesson', query: {...args, ...this.query}})
       })
+      this.$router.push({path: '/lesson/notice_lesson', query: {...args, ...this.query}})
     },
     onPageChange (page) {
       // 分页变化
@@ -231,8 +231,8 @@ export default {
       queryNoticeLessons  ({ ...this.pages, ...this.query}).then((resp) => {
         this.data = resp.data.notice_lessons
         this.total = resp.data.total
-        this.$router.push({path: '/lesson/notice_lesson', query: {...this.query, ...this.pages}})
       })
+      this.$router.push({path: '/lesson/notice_lesson', query: {...this.query, ...this.pages}})
     })
   }
 }

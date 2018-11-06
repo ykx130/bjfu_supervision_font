@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import {getUserByName, queryRoles, queryGroups} from '../../../service/api/user'
+import {getUserByName, queryGroups} from '../../../service/api/user'
 import {updateWithinField} from '@/libs/tools'
 import {dateToString} from '@/libs/tools'
 import { sexList, unitlist, prorankList, stateList, workStatelist, statusList} from '../marcos'

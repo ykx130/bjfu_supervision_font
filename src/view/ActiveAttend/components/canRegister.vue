@@ -136,8 +136,8 @@ export default {
       queryCurrentuserActives(args).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
-        this.$router.push({path: this.currentPath, query: {...args, ...this.query}})
       })
+      this.$router.push({path: this.currentPath, query: {...args, ...this.query}})
     },
     onPageChange (page) {
       // 分页变化
@@ -162,8 +162,8 @@ export default {
       queryCurrentuserActives(args).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
-        this.$router.push({path: this.currentPath, query: {...this.query, ...this.pages}})
       })
+      this.$router.push({path: this.currentPath, query: {...this.query, ...this.pages}})
     })
   }
 }

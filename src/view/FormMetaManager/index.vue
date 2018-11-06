@@ -121,8 +121,8 @@ export default {
       queryFormMetas(args).then((resp) => {
         this.data = resp.data.form_metas
         this.total = resp.data.total
-        this.$router.push({path: '/dqs/meta_manager', query: query})
       })
+      this.$router.push({path: '/dqs/meta_manager', query: query})
     },
     onPageChange (page) {
       // 分页变化
@@ -140,8 +140,8 @@ export default {
     queryFormMetas({...args, ...this.query}).then((resp) => {
       this.data = resp.data.form_metas
       this.total = resp.data.total
-      this.$router.push({path: '/dqs/meta_manager', query: {...args, ...this.query}})
   })
+    this.$router.push({path: '/dqs/meta_manager', query: {...args, ...this.query}})
   }
 }
 </script>

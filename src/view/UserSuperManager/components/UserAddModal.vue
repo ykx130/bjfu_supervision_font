@@ -6,8 +6,8 @@
     @on-cancel="handleCancel">
   <Form :model="user">
     <FormItem prop="username">
-      <Select v-model="user.username" placeholder="名字" filterable>
-        <Option v-for="item in users" :value="item.username" :key="item.username">{{ item.username }}</Option>
+      <Select v-model="user.username" placeholder="名字" filterable on-query-change="onUserSelectQueryChange">
+        <Option v-for="item in users" :value="item.username" :key="item.username" >{{ item.username }}</Option>
       </Select>
       <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
     </FormItem>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { queryUsers, queryRoles} from '../../../service/api/user'
+import { queryUsers} from '../../../service/api/user'
 export default {
   name: 'UserAddModal',
   props: {
@@ -28,20 +28,22 @@ export default {
     return {
       user: {},
       users:[],
-      roles: []
     }
   },
   mounted: function () {
     queryUsers().then((resp) => {
       this.users = resp.data.users
     })
-    queryRoles().then((resp) => {
-      this.roles = resp.data.roles
-    })
   },
   methods: {
+    onUserSelectQueryChange(value){
+      queryUsers({name_like:value}).then((resp) => {
+        this.users = resp.data.users
+      })
+    },
     handleOK: function () {
-      this.$emit('onOK', this.user)
+      this.user.role_names.push("领导")
+      this.$emit('onOK', {role_names: this.users.role_names})
     },
     handleCancel: function () {
       this.$emit('onCancel')

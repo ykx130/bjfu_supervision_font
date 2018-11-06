@@ -50,8 +50,8 @@ export default {
   data: function () {
     return {
       query: {
-        user_roles: {term: undefined},
-        name_like:undefined
+        name_like:undefined,
+        leader:true
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
@@ -134,8 +134,9 @@ export default {
       queryUsers(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
-        this.$router.push({path: '/user/supers', query: query})
       })
+      this.$router.push({path: '/user/supers', query: query})
+
     },
     onPageChange (page) {
       // 分页变化
@@ -176,8 +177,8 @@ export default {
     queryUsers({ ...this.query, ...this.pages}).then((resp) => {
       this.data = resp.data.users
       this.total = resp.data.total
-      this.$router.push({path: '/user/supers', query: { ...this.query, ...this.pages}})
     })
+    this.$router.push({path: '/user/supers', query: { ...this.query, ...this.pages}})
   }
 }
 </script>

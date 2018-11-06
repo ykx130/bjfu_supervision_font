@@ -40,16 +40,16 @@
     mounted: function () {
       queryFormMetas(args).then((resp) => {
         this.data = resp.data.form_metas
-        this.$router.push({path: '/_guider/judge'})
       })
+      this.$router.push({path: '/_guider/judge'})
     },
     onSearch (query) {
       // 查询变化 当点提交查询条件生效
       let args = this.$route.query
       queryFormMetas({...query, args}).then((resp) => {
         this.data = resp.data.form_metas
-        this.$router.push({path: '/_guider/judge'})
       })
+      this.$router.push({path: '/_guider/judge'})
     }
   }
 </script>

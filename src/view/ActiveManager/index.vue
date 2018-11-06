@@ -153,8 +153,8 @@ export default {
         this.data.forEach((activity) => {
           this.activityName.push(activity.name)
         })
-        this.$router.push({path: '/active/manager', query: {...args, ...this.query}})
       })
+      this.$router.push({path: '/active/manager', query: {...args, ...this.query}})
     },
     filterMethod (value, option) {
       return option.indexOf(value) !== -1
@@ -207,8 +207,8 @@ export default {
         this.data.forEach((activity) => {
           this.activityName.push(activity.name)
         })
-        this.$router.push({path: '/active/manager', query: { ...this.query, ...this.pages}})
       })
+      this.$router.push({path: '/active/manager', query: { ...this.query, ...this.pages}})
     })
   }
 }

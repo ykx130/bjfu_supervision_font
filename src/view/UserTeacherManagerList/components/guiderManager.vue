@@ -11,7 +11,7 @@
         </FormItem>
 
         <FormItem label="学期：" prop="term">
-          <Select v-model="query.user_roles.term" style="width:200px">
+          <Select v-model="query.term" style="width:200px">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
@@ -60,7 +60,7 @@ export default {
   data: function () {
     return {
       query: {
-        user_roles: {term: ''},
+        term: '',
         name_like: undefined
       }, // 查询用的参数
       total: 0, // 总数量
@@ -96,20 +96,14 @@ export default {
         },
         {
           title: '工作状态',
-          key: 'work_state'
-        },
-        {
-          title: '任期开始',
-          key: 'start_time'
-        },
-        {
-          title: '任期结束',
-          key: 'end_time'
+          render: function (h, params) {
+            return h('span', params.row.guider.work_state)
+          }
         },
         {
           title: '小组',
           render: function (h, params) {
-            return h('span', params.row.group)
+            return h('span', params.row.guider.group)
           }
         },
         {
@@ -146,8 +140,8 @@ export default {
       querySupervisors(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
-        this.$router.push({path: '/user/guiders', query: query})
       })
+      this.$router.push({path: '/user/guiders', query: query})
     },
     onPageChange (page) {
       // 分页变化
@@ -186,12 +180,12 @@ export default {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
-      this.query.user_roles.term = termResp.data.term.name
+      this.query.term = termResp.data.term.name
       querySupervisors({ ...this.query, ...this.pages}).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
-        this.$router.push({path: '/user/teachers', query: { ...this.query, ...this.pages}})
       })
+      this.$router.push({path: '/user/teachers', query: { ...this.query, ...this.pages}})
     })
   }
 }

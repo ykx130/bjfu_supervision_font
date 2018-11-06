@@ -16,24 +16,22 @@
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
-      <FormItem prop="group">
-        <Select v-model="user.group" >
+      <FormItem prop="guider.group">
+        <Select v-model="user.guider.group" >
           <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
-      <FormItem label="督导级别:" :label-width="40" prop="group">
-        <RadioGroup v-model="guider_role">
-          <Radio label="普通督导" >普通督导</Radio>
-          <Radio label="小组长">小组长(会替换之前的)</Radio>
-          <Radio label="大组长">大组长(会替换之前的)</Radio>
-        </RadioGroup>
+      <FormItem prop="guider.work_state">
+        <Select v-model="user.guider.work_state" >
+          <Option v-for="item in workStateList" :value="item" :key="item">{{ item }}</Option>
+        </Select>
       </FormItem>
     </Form>
   </Modal>
 </template>
 
 <script>
-import {getUserByName, queryRoles, queryGroups} from '../../../service/api/user'
+import {getUserByName, queryGroups} from '../../../service/api/user'
 import {updateWithinField} from 'Libs/tools'
 export default {
   name: 'UserProfileModal',
@@ -49,17 +47,18 @@ export default {
         id: undefined,
         name: undefined,
         username: undefined,
-        group: undefined,
+        guider: {
+          work_state: "",
+          group: undefined,
+        },
         role_names: []
       },
-      roles: [],
+      workStateList: ['兼职', '全职'],
+      roles: ["督导", "小组长", "大组长"],
       groups: []
     }
   },
   mounted: function () {
-    queryRoles().then((resp) => {
-      this.roles = resp.data.roles
-    })
     queryGroups().then((resp) => {
       this.groups = resp.data.groups
     })

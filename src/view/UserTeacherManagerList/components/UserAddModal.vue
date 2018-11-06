@@ -7,8 +7,8 @@
   <Form :model="user">
 
     <FormItem prop="name" label="名字:" :label-width="40">
-      <Select v-model="user.name" placeholder="名字" filterable>
-        <Option v-for="item in users" :value="item.name" :key="item.name">{{ item.name }}</Option>
+      <Select v-model="user.name" placeholder="名字" filterable on-query-change="onUserSelectQueryChange">
+        <Option v-for="item in users" :value="item.username" :key="item.name">{{ item.name }}</Option>
       </Select>
       <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
     </FormItem>
@@ -18,19 +18,19 @@
       </Select>
     </FormItem>
 
-    <FormItem label="督导级别:" :label-width="40" prop="group">
-      <RadioGroup v-model="guider_role">
-        <Radio label="普通督导" >普通督导</Radio>
-        <Radio label="小组长">小组长(会替换之前的)</Radio>
-        <Radio label="大组长">大组长(会替换之前的)</Radio>
-      </RadioGroup>
+    <FormItem label="身份:" prop="role_names">
+      <CheckboxGroup v-model="user.role_names">
+        <Checkbox v-for="role in roles" :label="role" :key="'key_'+role">
+          <span>{{ role }}</span>
+        </Checkbox>
+      </CheckboxGroup>
     </FormItem>
     </Form>
   </Modal>
 </template>
 
 <script>
-  import { queryUsers, queryRoles, queryGroups} from '@/service/api/user'
+  import { queryUsers, queryGroups} from '@/service/api/user'
 export default {
   name: 'UserAddModal',
   props: {
@@ -56,6 +56,11 @@ export default {
     })
   },
   methods: {
+    onUserSelectQueryChange(value){
+      queryUsers({name_like:value}).then((resp) => {
+        this.users = resp.data.users
+      })
+    },
     handleOK: function () {
       this.$emit('onOK', this.user)
     },
