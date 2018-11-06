@@ -152,6 +152,7 @@ export default {
       // 更新框确定 关闭
       putUser(user).then((resp) => {
         this.showUserProfileModal = false
+        this.pages._page = 1
         this.onTableChange(this.query, this.pages)
       })
     },

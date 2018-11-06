@@ -173,14 +173,15 @@ export default {
               h('Button', {
                 props: {
                   type: 'error',
-                  size: 'small'
+                  size: 'small',
+                  disabled: !(params.row.status === '已完成')
                 },
                 style: {
                   marginRight: '2px'
                 },
                 on: {
                   click: () => {
-                    this.putBack(params.row._id)
+                    this.putBack(params.row)
                   }
                 }
               }, '打回')
@@ -192,10 +193,13 @@ export default {
     }
   },
   methods: {
-    putBack (from_id) {
-      putForm(from_id, {
+    putBack (form) {
+      putForm(form._id, {
         status: '待提交'
-      })
+      }).then(()=>{
+        this.pages._page = 1
+        this.onTableChange(this.query, this.pages)
+    })
     },
     onTabClick:function(name){
       if(name === '全部') {

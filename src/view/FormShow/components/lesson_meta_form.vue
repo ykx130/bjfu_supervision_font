@@ -111,7 +111,7 @@
             let flag = this.selected_lesson.lesson_cases.findIndex((item) => {
               return item.lesson_date === this.value.lesson.lesson_date
             })
-            this.lesson_times = transTimeToSelectedData(this.selected_lesson.lesson_cases[flag].lesson_time)
+            // this.lesson_times = transTimeToSelectedData(this.selected_lesson.lesson_cases[flag].lesson_time)
           })
         }
       }
