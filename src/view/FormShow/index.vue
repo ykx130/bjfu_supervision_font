@@ -2,7 +2,7 @@
   <Card>
     <Scroll height="670">
       <div>
-        <!--{{ this.form}}-->
+        {{ this.form}}
         <h1 style="text-align: center">{{ form.bind_meta_name }}</h1>
         <span>问卷状态：{{form.status}}</span>
         <divider orientation="left">课程信息</divider>
@@ -104,18 +104,19 @@
         },
         recommend_model: 0,
         show_recommend: false,
-        disabled:true,
+        disabled:false,
         meta:{lesson:{}},
       }
     },
     mounted () {
-      let id = this.$route.params.id
+      let id = this.$route.params.id;
       getForm(id).then((newresp) => {
         this.form = newresp.data.form
+        if(this.form.status==='已完成'){
+          this.disabled=true ;
+        }
       });
-      if(this.form.status==='已完成'){
-        this.disabled=false ;
-      }
+
     },
     methods: {
       handleSubmit() {
