@@ -44,7 +44,6 @@ export default {
       users:[],
       roles: [],
       groups: [],
-      guider_role: ""
     }
   },
   mounted: function () {

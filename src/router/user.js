@@ -35,10 +35,19 @@ export default{
     },
     {
       path: 'events/:username', // xzl
+      name: '用户大事件',
       meta: {
         hideInMenu: true
       },
       component: resolve => require(['Views/UserEvents/index'], resolve)
+    },
+    {
+      path: 'profile/:username', // xzl
+      name: '用户详情页',
+      meta: {
+        hideInMenu: true
+      },
+      component: resolve => require(['Views/Profile/index'], resolve)
     }
   ]
 }

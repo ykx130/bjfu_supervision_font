@@ -6,25 +6,27 @@
     @on-cancel="handleCancel"
     @on-visible-change="onShowChange">
     <Form :model="user">
-      <FormItem prop="username">
-        <Input type="text" v-model="user.username" placeholder="用户名">
-        <Icon type="ios-person-outline" slot="prepend"></Icon>
-        </Input>
-      </FormItem>
-      <FormItem prop="name">
+      <FormItem label="姓名" prop="name">
         <Input type="text" v-model="user.name" placeholder="名字">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
-      <FormItem prop="guider.group">
+      <FormItem label="组别" prop="guider.group">
         <Select v-model="user.guider.group" >
           <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
-      <FormItem prop="guider.work_state">
+      <FormItem label="工作状态" prop="guider.work_state">
         <Select v-model="user.guider.work_state" >
           <Option v-for="item in workStateList" :value="item" :key="item">{{ item }}</Option>
         </Select>
+      </FormItem>
+      <FormItem label="身份:" prop="role_names">
+        <CheckboxGroup v-model="user.role_names">
+          <Checkbox v-for="role in roles" :label="role" :key="'key_'+role">
+            <span>{{ role }}</span>
+          </Checkbox>
+        </CheckboxGroup>
       </FormItem>
     </Form>
   </Modal>

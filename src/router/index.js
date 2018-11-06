@@ -30,7 +30,7 @@ router.beforeEach((to, from, next) => {
     currentUser().then((resp) => {
       store.commit('setUserInfo', resp.data.current_user)
       if (to.path === '/') {
-        next({name: '首页'})
+        next({name: 'hom_e'})
       }
       next()
     }).catch(() => {
