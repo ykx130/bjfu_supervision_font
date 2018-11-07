@@ -76,7 +76,8 @@ export default {
       if (show) {
         // 显示的时候拉数据
         getUserByName(this.username).then((resp) => {
-          updateWithinField(this.user, {...resp.data.user, ...resp.data.user.guider})
+          updateWithinField(this.user, {...resp.data.user,
+            ...resp.data.user.guider, guider: undefined})
         })
       }
     }
