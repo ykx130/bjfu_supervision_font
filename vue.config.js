@@ -51,6 +51,11 @@ module.exports = {
       .set('Views', resolve('src/view'))
       .set('Libs', resolve('src/libs'))
       .set('Config', resolve('src/config'))
+
+    config.externals({
+      'vue' : 'Vue',
+      'iview': 'iview'
+    })
   },
   // 打包时不生成.map文件
   productionSourceMap: true
