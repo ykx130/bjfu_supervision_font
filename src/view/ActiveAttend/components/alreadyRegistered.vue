@@ -151,15 +151,15 @@ export default {
     }
   },
   mounted: function () {
-    const args = this.$route.query
-    updateWithinField(this.query, args)
-    updateWithinField(this.pages, args)
+    // const args = this.$route.query
+    // updateWithinField(this.query, args)
+    // updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryCurrentuserActives(args).then((resp) => {
+      queryCurrentuserActives({...this.query, ...this.pages}).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
       })
