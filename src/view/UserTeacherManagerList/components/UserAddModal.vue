@@ -18,6 +18,12 @@
       </Select>
     </FormItem>
 
+    <FormItem label="工作状态" prop="work_state">
+      <Select v-model="user.work_state" >
+        <Option v-for="item in workStateList" :value="item" :key="item">{{ item }}</Option>
+      </Select>
+    </FormItem>
+
     <FormItem label="身份:" prop="role_names">
       <CheckboxGroup v-model="user.role_names">
         <Checkbox v-for="role in roles" :label="role" :key="'key_'+role">
@@ -44,6 +50,7 @@ export default {
       users:[],
       roles: [],
       groups: [],
+      workStateList: ['兼职', '全职'],
     }
   },
   mounted: function () {
