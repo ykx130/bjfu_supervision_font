@@ -28,6 +28,9 @@
           </div>
         </Col>
       </Row>
+      <Row v-show="!show_data">
+        暂无数据
+      </Row>
     </Card>
 
   </div>
@@ -46,7 +49,8 @@
         data: [],
         query: {},
         metas: [],
-        word_clouds: [] //词云的配置
+        word_clouds: [], //词云的配置,
+        show_data: false
       }
     },
     mounted() {
@@ -67,6 +71,9 @@
   methods: {
     onMetaChange: function () {
       getGraph(this.query).then((resp) => {
+        if (resp.data.item_map.length|| resp.data.word_cloud.length){
+          this.show_data = true
+        }
         this.data = resp.data.item_map
         this.word_clouds = resp.data.word_cloud
         this.options = this.data.map(function (item) {
