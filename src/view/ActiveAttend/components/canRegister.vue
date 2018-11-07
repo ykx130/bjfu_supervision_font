@@ -151,9 +151,10 @@ export default {
     }
   },
   mounted: function () {
-    // const args = this.$route.query
-    // updateWithinField(this.query, args)
-    // updateWithinField(this.pages, args)
+    const args = this.$route.query
+    updateWithinField(this.query, args)
+    updateWithinField(this.pages, args)
+    this.query.state = 'canAttend'
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
