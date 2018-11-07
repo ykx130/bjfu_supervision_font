@@ -181,7 +181,12 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.putBack(params.row)
+                    this.$Modal.confirm({
+                      title:"确认打回问卷?",
+                      onOk: ()=>{
+                        this.putBack(params.row)
+                      }
+                    })
                   }
                 }
               }, '打回')
