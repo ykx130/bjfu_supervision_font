@@ -27,21 +27,25 @@ router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
   // const token = getToken()
   if (to.name !== LOGIN_PAGE_NAME) {
+
     currentUser().then((resp) => {
       store.commit('setUserInfo', resp.data.current_user)
       if (to.path === '/') {
-        next({name: 'hom_e'})
+        if (resp.data.current_user.is_guider) {
+          next({name: '督导端'})
+        }
+        next({name: 'home'})
       }
       next()
     }).catch(() => {
       next({path: '/login'})
     })
+  } else {
+    if (to.path === '/') {
+      next({path: '/home'})
+    }
+    next()
   }
-
-  if (to.path === '/') {
-    next({path: '/home'})
-  }
-  next()
 })
 
 router.afterEach(to => {
