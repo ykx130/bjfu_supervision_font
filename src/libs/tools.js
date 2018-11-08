@@ -238,9 +238,15 @@ export function updateWithinField (src_obj, des_obf) {
 // stringifyQuery
 
 export function stringifyQuery (args) {
+  for(let key in args){
+    if(args[key]===''){
+      args[key] = null;
+    }
+  }
   return qs.stringify(args, {
     arrayFormat: 'repeat',
-    allowDots: true
+    allowDots: true,
+    skipNulls: true,
   })
 }
 

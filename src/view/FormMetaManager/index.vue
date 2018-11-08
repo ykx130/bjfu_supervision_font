@@ -2,7 +2,7 @@
   <Card>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="问卷名字：" prop="name">
-        <Input style="width: 180px" v-model="query.name" ></Input>
+        <Input style="width: 180px" v-model="query.name" @on-change="onSearch(query)"></Input>
       </FormItem>
     </Form>
 
@@ -106,7 +106,7 @@ export default {
       data: [],
       total: 0,
       query: {
-        meta:{}
+        meta:{},
       },
       pages: {
         _page: 1,
