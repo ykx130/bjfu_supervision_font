@@ -11,14 +11,14 @@
         </div>
         <br/>
         <divider orientation="left">问卷内容</divider>
-            <Form :model="form_inputs" >
+            <Form :model="form_inputs" ref="ruleform">
             <template v-for="it in form_meta.items" >
                 <template v-if="it.item_name === 'sub_title_block_start' " >
                   <h3 style="height: 80px;line-height: 80px;margin-left: 10px">{{ it.payload.title }}</h3>
                 </template>
 
                 <template v-else-if="it.item_type === 'radio_option'">
-                  <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name +'.value'" >
+                  <FormItem  :rules="ruleValidate[it.item_name]" :prop="it.item_name +'.value'" >
                   <Row>
                     <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
                     <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
@@ -34,7 +34,7 @@
                 </template>
 
                 <template v-else-if="it.item_type === 'checkbox_option'">
-                <FormItem  :rules="ruleValidate[it.item_name]" :prop="it.item_name +'.value'" >
+                <FormItem  :required="ruleValidate[it.item_name][0].required" :rules="ruleValidate[it.item_name]" :prop="it.item_name +'.value'" >
                   <Row>
                     <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
                     <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
@@ -146,8 +146,9 @@ export default {
         this.form_inputs[item.item_name] = item;
         if(item.item_type==='radio_option'){
           if(item.payload.rules){
-            this.ruleValidate[item.item_name]=[{ required: item.payload.rules[0].required,
-              message: '请选择选项', trigger: 'blur' }];
+            this.ruleValidate[item.item_name]=[
+              {required: item.payload.rules[0].required, message: '请选择选项', trigger: 'blur'}
+            ];
           }
           else{
             this.ruleValidate[item.item_name]=this.ruleValidate.radio;
@@ -201,20 +202,29 @@ export default {
   methods: {
 
     handleSubmit () {
-      let form = {
-        bind_meta_id: this.form_meta._id,
-        bind_meta_name: this.form_meta.name,
-        bind_meta_version: this.form_meta.version,
-        meta: this.meta,
-        status: '已完成',
-        values: Object.values(this.form_inputs)
-      }
-      postForm(form).then(()=>{
-        location.reload()
-      })
-      if (this.recommend_model){
-        console.log("好评可 提及哦啊")
-      }
+      this.$refs.ruleform.validate((valid)=>{
+        if(valid) {
+          let form = {
+            bind_meta_id: this.form_meta._id,
+            bind_meta_name: this.form_meta.name,
+            bind_meta_version: this.form_meta.version,
+            meta: this.meta,
+            status: '已完成',
+            values: Object.values(this.form_inputs)
+          }
+          postForm(form).then(() => {
+            location.reload()
+          })
+          if (this.recommend_model) {
+            console.log("好评可 提及哦啊")
+          }
+          this.$Message.success('添加成功！')
+        }
+        else{
+          this.$Message.error('请填写完整信息！')
+        }
+      });
+
     },
     handleSave () {
       let form = {
