@@ -1,48 +1,43 @@
 <template>
   <Row>
-    <Col span="11">
+    <Col span="12">
       <Card>
         <h1>用户详情</h1>
         <br>
-        <Form :model="current_user" ref="current_user" :rules="userValidate" style="width: 50%">
+        <Form :model="user" ref="current_user" :rules="userValidate" style="width: 50%">
           <h3>用户名</h3>
           <FormItem prop="username">
-            <Input type="text" style="width: 300px;" v-model="current_user.username"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.username"></Input>
           </FormItem>
           <br>
           <h3>性别</h3>
           <FormItem>
-            <Input type="text" style="width: 300px;" v-model="current_user.sex"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.sex"></Input>
           </FormItem>
           <br>
           <h3>邮箱</h3>
           <FormItem prop="email">
-            <Input type="email" style="width: 300px;" v-model="current_user.email"></Input>
+            <Input type="email" style="width: 300px;" v-model="user.email"></Input>
           </FormItem>
           <br>
           <h3>联系方式</h3>
           <FormItem prop="phone">
-            <Input type="text" style="width: 300px;" v-model="current_user.phone"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.phone"></Input>
           </FormItem>
           <br>
           <h3>学院</h3>
           <FormItem prop="unit">
-            <Input type="text" style="width: 300px;" v-model="current_user.unit"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.unit"></Input>
           </FormItem>
           <br>
           <h3>专业</h3>
           <FormItem prop="skill">
-            <Input type="text" style="width: 300px;" v-model="current_user.skill"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.skill"></Input>
           </FormItem>
           <br>
           <h3>职称</h3>
           <FormItem prop="prorank">
-            <Input type="text" style="width: 300px;" v-model="current_user.prorank"></Input>
-          </FormItem>
-          <br>
-          <h3>个人简介</h3>
-          <FormItem>
-            <Input type="textarea" placeholder="个人简介" style="width: 300px;"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.prorank"></Input>
           </FormItem>
           <br>
           <FormItem>
@@ -51,27 +46,17 @@
         </Form>
       </Card>
     </Col>
-    <Col span="11" offset="1">
-      <Card>
-        <h1>头像</h1>
-        <br>
-        <img src="https://i.loli.net/2017/08/21/599a521472424.jpg" style="width:300px;border-radius:50%" />
-        <Upload action="//jsonplaceholder.typicode.com/posts/">
-          <Button icon="ios-cloud-upload-outline">上传头像</Button>
-        </Upload>
-      </Card>
-    </Col>
   </Row>
 
 </template>
 
 <script>
-  import {currentUser} from '../../service/api/user'
+  import {getUserByName} from '@/service/api/user'
 
   export default {
     data: function () {
       return {
-        current_user: {},
+        user: {},
         userValidate: {
           email: [{type: 'email', message: 'Invalid email format', trigger: 'blur'}],
           phone: [{
@@ -89,8 +74,9 @@
       }
     },
     mounted: function () {
-      currentUser().then((resp) => {
-        this.current_user = resp.data.current_user
+      let username = this.$route.params.username;
+      getUserByName(username).then((resp) => {
+        this.user = resp.data.user
       })
     },
     methods: {
