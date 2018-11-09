@@ -182,6 +182,7 @@ export default {
     const args = this.$route.query
     updateWithinField(this.query, args)
     updateWithinField(this.pages, args)
+    this.query.state = '已协调'
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })

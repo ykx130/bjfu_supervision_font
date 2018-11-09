@@ -27,7 +27,6 @@ export default {
   methods: {
     onTypeTabClick (value) {
       this.select_tag = value
-      this.$router.push({path: this.currentPath, query: {state:this.select_tag}})
     }
   },
   created: function () {
