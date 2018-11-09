@@ -45,5 +45,13 @@ export default {
       path: 'my_form',
       component: resolve => require(['Views/FormsMy/index'], resolve)
     },
+    {
+      path: 'profile/:username', // xzl
+      name: '督导用户详情页',
+      meta: {
+        hideInMenu: true
+      },
+      component: resolve => require(['Views/Profile/index'], resolve)
+    }
   ]
 }
