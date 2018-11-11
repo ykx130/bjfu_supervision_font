@@ -35,6 +35,8 @@ import CountTo from '_c/count-to'
 import LessonTable from './lesson_table'
 import { ChartPie, ChartBar } from '_c/charts'
 import Example from './example.vue'
+import {queryPagedata} from '../../../service/api/page_data'
+
 export default {
   name: 'home',
   components: {
@@ -48,10 +50,10 @@ export default {
   data () {
     return {
       inforCardData: [
-        { title: '在职督导', icon: 'md-person-add', count: 32, color: '#2d8cf0' },
-        { title: '提交问卷', icon: 'md-locate', count: 12, color: '#19be6b' },
-        { title: '待提交问卷', icon: 'md-help-circle', count: 32, color: '#ff9900' },
-        { title: '关注课程总数', icon: 'md-share', count: 43, color: '#ed3f14' },
+        { title: '在职督导', icon: 'md-person-add', count: '', color: '#2d8cf0' },
+        { title: '提交问卷', icon: 'md-locate', count: '', color: '#19be6b' },
+        { title: '待提交问卷', icon: 'md-help-circle', count: '', color: '#ff9900' },
+        { title: '关注课程总数', icon: 'md-share', count: '', color: '#ed3f14' },
       ],
       pieData: [
         {value: 12, name: '总体好评'},
@@ -68,8 +70,13 @@ export default {
       }
     }
   },
-  mounted () {
-    //
+  mounted: function () {
+    queryPagedata().then((resp) => {
+      this.inforCardData[0].count = resp.data.data['sys:guider_num'];
+      this.inforCardData[1].count = resp.data.data['sys:submitted_form'];
+      this.inforCardData[2].count = resp.data.data['sys:wait_submitted_form'];
+      this.inforCardData[3].count = resp.data.data['sys:notice_lesson_num'];
+    })
   }
 }
 </script>
