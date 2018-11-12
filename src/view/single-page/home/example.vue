@@ -5,6 +5,8 @@
 <script>
 import echarts from 'echarts'
 import { on, off } from '@/libs/tools'
+import {queryPagedata} from '../../../service/api/page_data'
+
 export default {
   name: 'serviceRequests',
   data () {
@@ -49,43 +51,142 @@ export default {
       ],
       series: [
         {
-          name: '园林学院',
+          name: '人文社会科学学院',
           type: 'line',
           stack: '总量',
           areaStyle: {normal: {
             color: '#2d8cf0'
           }},
-          data: [12, 13, 11, 13, 9, 23, 20]
+          data: []
+        },
+        {
+          name: '体育教学部',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {normal: {
+            color: '#10A6FF'
+          }},
+          data: []
         },
         {
           name: '信息学院',
           type: 'line',
           stack: '总量',
           areaStyle: {normal: {
-            color: '#10A6FF'
+            color: '#0C17A6'
           }},
-          data: [27, 38, 28, 24, 90, 30, 30]
+          data: []
         },
         {
-          name: '材料学院',
+          name: '园林学院',
           type: 'line',
           stack: '总量',
           areaStyle: {normal: {
-            color: '#0C17A6'
+            color: '#5143A6'
           }},
-          data: [39, 28, 34, 29, 30, 48, 38]
+          data: []
         },
         {
           name: '外语学院',
           type: 'line',
           stack: '总量',
           areaStyle: {normal: {
-            color: '#4608A6'
-          }},
-          data: [30, 32, 31, 34, 30, 30, 30]
+              color: '#799BA6'
+            }},
+          data: []
+        },
+        {
+          name: '工学院',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {normal: {
+              color: '#9B88A6'
+            }},
+          data: []
+        },
+        {
+          name: '材料科学与技术学院',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {normal: {
+              color: '#7D86A6'
+            }},
+          data: []
         },
         {
           name: '林学院',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {normal: {
+              color: '#89A698'
+            }},
+          data: []
+        },
+        {
+          name: '水土保持学院',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {normal: {
+              color: '#A6A488'
+            }},
+          data: []
+        },
+        {
+          name: '环境科学与工程学院',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {normal: {
+              color: '#A68598'
+            }},
+          data: []
+        },
+        {
+          name: '理学院',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {normal: {
+              color: '#A66172'
+            }},
+          data: []
+        },
+        {
+          name: '生物科学与技术学院',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {normal: {
+              color: '#A66597'
+            }},
+          data: []
+        },
+        {
+          name: '经济管理学院',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {normal: {
+              color: '#A69B44'
+            }},
+          data: []
+        },
+        {
+          name: '自然保护区学院',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {normal: {
+              color: '#A66951'
+            }},
+          data: []
+        },
+        {
+          name: '艺术设计学院',
+          type: 'line',
+          stack: '总量',
+          areaStyle: {normal: {
+              color: '#24A67A'
+            }},
+          data: []
+        },
+        {
+          name: '马克思主义学院',
           type: 'line',
           stack: '总量',
           label: {
@@ -97,7 +198,7 @@ export default {
           areaStyle: {normal: {
             color: '#398DBF'
           }},
-          data: [80, 65, 56, 75, 82, 24, 58]
+          data: []
         }
       ]
     }
@@ -105,6 +206,11 @@ export default {
       this.dom = echarts.init(this.$refs.dom)
       this.dom.setOption(option)
       on(window, 'resize', this.resize)
+    })
+    queryPagedata().then((resp) => {
+      for(let i = 0;i<16;i++){
+        option.series[i].data = resp.data.data['sys:form_num'][i];
+      }
     })
   },
   beforeDestroy () {
