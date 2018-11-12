@@ -7,7 +7,7 @@
   <Form :model="user">
 
     <FormItem prop="name" label="名字:" :label-width="40">
-      <Select v-model="user.name" placeholder="名字" filterable on-query-change="onUserSelectQueryChange">
+      <Select v-model="user.username" placeholder="名字" filterable on-query-change="onUserSelectQueryChange">
         <Option v-for="item in users" :value="item.username" :key="item.name">{{ item.name }}</Option>
       </Select>
       <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
@@ -24,12 +24,13 @@
       </Select>
     </FormItem>
 
-    <FormItem label="身份:" prop="role_names">
-      <CheckboxGroup v-model="user.role_names">
-        <Checkbox v-for="role in roles" :label="role" :key="'key_'+role">
-          <span>{{ role }}</span>
+    <FormItem label="身份:">
+        <Checkbox  v-model="user.grouper" label="小组长">
+          <span>小组长</span>
         </Checkbox>
-      </CheckboxGroup>
+        <Checkbox  v-model="user.main_grouper" label="大组长">
+          <span>大组长</span>
+        </Checkbox>
     </FormItem>
     </Form>
   </Modal>
@@ -48,7 +49,7 @@ export default {
     return {
       user: {},
       users:[],
-      roles: [],
+      roles: ["小组长", "大组长"],
       groups: [],
       workStateList: ['兼职', '全职'],
     }

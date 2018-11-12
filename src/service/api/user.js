@@ -45,7 +45,7 @@ export const querySupervisors = (params) => {
 }
 
 export const postSupervisors = (params) => {
-  return axios.get('/api/supervisors', {params:params})
+  return axios.post('/api/supervisors', params)
 }
 
 export const supervisorsRenew =(params)=>{

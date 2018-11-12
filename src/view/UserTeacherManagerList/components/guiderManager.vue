@@ -49,12 +49,11 @@
 </template>
 
 <script>
-import { queryRoles} from '../../../service/api/user'
 import UserProfileModal from './UserProfileModal'
 import {updateWithinField} from 'Libs/tools'
 import UserAddModal from './UserAddModal'
 import {queryTerms, getCurrentTerms} from '../../../service/api/term'
-import {querySupervisors, putUser, postUser} from '../../../service/api/user'
+import {querySupervisors, putUser, postUser,postSupervisors} from '../../../service/api/user'
 export default {
   components: {UserProfileModal, UserAddModal},
   data: function () {
@@ -141,7 +140,7 @@ export default {
         this.data = resp.data.users
         this.total = resp.data.total
       })
-      this.$router.push({path: '/user/guiders', query: query})
+      this.$router.push({path: '/user/teachers', query: query})
     },
     onPageChange (page) {
       // 分页变化
@@ -166,7 +165,8 @@ export default {
     },
     onAddModalOK (user) {
       // 更新框确定 关闭
-      postUser(user).then((resp) => {
+      user.term =this.query.term
+      postSupervisors(user).then((resp) => {
         this.pages._page = 1
         this.onTableChange(this.query, this.pages)
         this.showUserAddModal = false
