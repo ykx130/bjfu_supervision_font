@@ -19,6 +19,34 @@ export default {
       dom: null
     }
   },
+  watch:{
+    value: {
+      deep:true,
+      handler: function () {
+        let xAxisData = Object.keys(this.value)
+        let seriesData = Object.values(this.value)
+        let option = {
+          title: {
+            text: this.text,
+            subtext: this.subtext,
+            x: 'center'
+          },
+          xAxis: {
+            type: 'category',
+            data: xAxisData
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [{
+            data: seriesData,
+            type: 'bar'
+          }]
+        }
+        this.dom.setOption(option)
+      }
+    }
+  },
   methods: {
     resize () {
       this.dom.resize()

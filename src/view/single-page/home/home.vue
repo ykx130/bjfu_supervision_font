@@ -23,7 +23,7 @@
     </Row>
     <Row>
       <Card shadow>
-        <example style="height: 310px;"/>
+        <ChartBar style="height: 360px;" :value="barData" :text="'各学院评价情况'"/>
       </Card>
     </Row>
   </div>
@@ -50,24 +50,16 @@ export default {
   data () {
     return {
       inforCardData: [
-        { title: '在职督导', icon: 'md-person-add', count: '', color: '#2d8cf0' },
-        { title: '提交问卷', icon: 'md-locate', count: '', color: '#19be6b' },
-        { title: '待提交问卷', icon: 'md-help-circle', count: '', color: '#ff9900' },
-        { title: '关注课程总数', icon: 'md-share', count: '', color: '#ed3f14' },
+        { title: '在职督导', icon: 'md-person-add', count: 0, color: '#2d8cf0' },
+        { title: '提交问卷', icon: 'md-locate', count: 0, color: '#19be6b' },
+        { title: '待提交问卷', icon: 'md-help-circle', count: 0, color: '#ff9900' },
+        { title: '关注课程总数', icon: 'md-share', count: 0, color: '#ed3f14' },
       ],
       pieData: [
         {value: 12, name: '总体好评'},
         {value: 32, name: '总体一般'},
       ],
-      barData: {
-        Mon: 1,
-        Tue: 4,
-        Wed: 4,
-        Thu: 3,
-        Fri: 6,
-        Sat: 1,
-        Sun: 4
-      }
+      barData: {}
     }
   },
   mounted: function () {
@@ -76,6 +68,7 @@ export default {
       this.inforCardData[1].count = resp.data.data['sys:submitted_form'];
       this.inforCardData[2].count = resp.data.data['sys:wait_submitted_form'];
       this.inforCardData[3].count = resp.data.data['sys:notice_lesson_num'];
+      this.barData = resp.data.data['sys:form_num']
     })
   }
 }
