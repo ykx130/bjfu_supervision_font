@@ -99,10 +99,43 @@ export default {
             return h('span', params.row.guider.work_state)
           }
         },
+
         {
-          title: '小组',
+          title: '小组长',
+          width: 75,
           render: function (h, params) {
-            return h('span', params.row.guider.group)
+            if (params.row.guider.is_grouper){
+              return h('Icon', {props:{
+                  type:"md-checkmark-circle"
+                },
+                style: {
+                  color: "#19be6b",
+                  fontSize: '30px',
+                  textAlign: 'center'
+                }
+              })
+            } else {
+              return h('span')
+            }
+          }
+        },
+        {
+          title: '大组长',
+          width: 75,
+          render: function (h, params) {
+            if (params.row.guider.is_main_grouper){
+              return h('Icon', {props:{
+                  type:"md-checkmark-circle",
+                },
+                style: {
+                  color: "#19be6b",
+                  fontSize: '30px',
+                  textAlign: 'center'
+                }
+              })
+            } else {
+              return h('span')
+            }
           }
         },
         {
