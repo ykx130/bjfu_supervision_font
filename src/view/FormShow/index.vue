@@ -90,7 +90,7 @@
 <script>
   import { getForm,postForm} from '../../service/api/dqs'
   import Lesson from './components/lesson_meta_form'
-
+  import { getLesson, updateModelLessonsVote,getModelLessonsVote} from '../../service/api/lesson'
   export default {
     components: {
       Lesson
@@ -111,6 +111,10 @@
     },
     data () {
       return {
+        model_lesson:{
+          id:'',
+          vote:'',
+        },
         form: {
           meta: {lesson: {}},
           values: [],
@@ -197,22 +201,34 @@
     },
     methods: {
       handleSubmit() {
-        this.$refs.ruleform.validate((valid)=>{
-          if(valid){
-            let form = {
-              status: '已完成',
-              // values: Object.values(this.form_inputs)
-            };
-            postForm(form).then(() => {
-              location.reload()
-            })
-            this.$Message.success('添加成功！')
-          }
-          else{
-            this.$Message.error('请填写完整信息！')
-          }
-        })
-
+        if(this.meta.guider==='' || this.meta.lesson.lesson_name==='' ||
+          this.meta.lesson.lesson_date===''|| this.meta.lesson.lesson_times==='' ){
+          this.$Message.error('请填写完成课程信息！')
+        }
+        else{
+          this.$refs.ruleform.validate((valid)=>{
+            if(valid){
+              let form = {
+                status: '已完成',
+                // values: Object.values(this.form_inputs)
+              };
+              if (this.recommend_model) {
+                this.model_lesson.id=this.meta.lesson.lesson_id;
+                getModelLessonsVote(this.model_lesson).then((resp)=>{
+                  this.model_lesson.vote=resp.data.vote+1;
+                })
+                updateModelLessonsVote(this.model_lesson);
+              }
+              postForm(form).then(() => {
+                location.reload()
+              })
+              this.$Message.success('添加成功！')
+            }
+            else{
+              this.$Message.error('请填写完整信息！')
+            }
+          })
+        }
       },
       handleSave() {
         let form = {

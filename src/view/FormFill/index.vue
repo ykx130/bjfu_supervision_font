@@ -1,7 +1,5 @@
 <template>
   <Card>
-    <!--{{this.form_meta}}-->
-<!--{{form_inputs}}-->
       <div>
         <h1 style="text-align: center">{{ form_meta.name }}</h1>
         <br/>
@@ -88,7 +86,7 @@
 </template>
 <script>
 import { getFormMeta, postForm } from '../../service/api/dqs'
-import { getLesson} from '../../service/api/lesson'
+import { getLesson, updateModelLessonsVote,getModelLessonsVote} from '../../service/api/lesson'
 import Lesson from './components/lesson_meta_form'
 
 export default {
@@ -111,6 +109,10 @@ export default {
   },
   data () {
     return {
+      model_lesson:{
+        id:'',
+        vote:'',
+      },
       form_meta: {
         _id: undefined,
         items: []
@@ -198,33 +200,47 @@ export default {
         // this.form_inputs[item.item_name].value='[]';
       })
     })
+
+
   },
   methods: {
 
     handleSubmit () {
-      this.$refs.ruleform.validate((valid)=>{
-        if(valid) {
-          let form = {
-            bind_meta_id: this.form_meta._id,
-            bind_meta_name: this.form_meta.name,
-            bind_meta_version: this.form_meta.version,
-            meta: this.meta,
-            status: '已完成',
-            values: Object.values(this.form_inputs)
-          }
-          postForm(form).then(() => {
-            location.reload()
-          })
-          if (this.recommend_model) {
-            console.log("好评可 提及哦啊")
-          }
-          this.$Message.success('添加成功！')
-        }
-        else{
-          this.$Message.error('请填写完整信息！')
-        }
-      });
+      this.meta.lesson.lesson_model=this.recommend_model;
+      if(this.meta.guider==='' || this.meta.lesson.lesson_name==='' ||
+        this.meta.lesson.lesson_date===''|| this.meta.lesson.lesson_times==='' ){
+          this.$Message.error('请填写完整课程信息！')
+      }
+      else {
+        this.$refs.ruleform.validate((valid) => {
+          if (valid) {
+            let form = {
+              bind_meta_id: this.form_meta._id,
+              bind_meta_name: this.form_meta.name,
+              bind_meta_version: this.form_meta.version,
+              meta: this.meta,
+              status: '已完成',
+              values: Object.values(this.form_inputs)
+            }
+            if (this.recommend_model) {
+              console.log("好评可 提及哦啊")
+              this.model_lesson.id=this.meta.lesson.lesson_id;
+              getModelLessonsVote(this.model_lesson).then((resp)=>{
+                this.model_lesson.vote=resp.data.vote+1;
+              })
+              updateModelLessonsVote(this.model_lesson);
+            }
 
+            postForm(form).then(() => {
+              location.reload()
+            })
+            this.$Message.success('添加成功！')
+          }
+          else {
+            this.$Message.error('请填写完整信息！')
+          }
+        });
+      }
     },
     handleSave () {
       let form = {

@@ -4,21 +4,21 @@
   <Form :model="value" :label-width="80">
     <Row :gutter="8">
       <Col span="6">
-        <FormItem label="听课督导">
+        <FormItem label="听课督导" :required="true">
           <Select disabled v-model="value.guider" style="width:200px" @on-change="onGuiderSelectChange">
             <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index"   >{{item.name}}</Option>
           </Select>
         </FormItem>
       </Col>
       <Col span="6">
-        <FormItem  label="学期" prop="term">
+        <FormItem  label="学期" prop="term" :required="true">
           <Select disabled v-model="value.term" style="width:200px" @on-change="onTermSelectChange">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
       </Col>
       <Col span="6">
-        <FormItem label="课程级别" prop="term">
+        <FormItem label="课程级别" prop="term" :required="true">
           <Input v-model="value.lesson.lesson_level" disabled></Input>
         </FormItem>
       </Col>
@@ -28,7 +28,7 @@
       <!--<Input v-model="value.attr" disabled></Input>-->
       <!--</FormItem>-->
       <Col span="6">
-        <FormItem label="课程名字">
+        <FormItem label="课程名字" :required="true">
           <Select disabled v-model="value.lesson.id" style="width:200px" @on-change="onSelectedLessonChange">
             <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_name + index">{{
               item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
@@ -37,13 +37,13 @@
         </FormItem>
       </Col>
       <Col span="6">
-        <FormItem label="任课教师	">
+        <FormItem label="任课教师	" :required="true">
           <Input  v-model="value.lesson.lesson_teacher_name" disabled></Input>
         </FormItem>
       </Col>
 
       <Col span="6">
-        <FormItem label="上课班级">
+        <FormItem label="上课班级" :required="true">
           <Input v-model="value.lesson.lesson_class" disabled style="width:200px"></Input>
         </FormItem>
       </Col>
@@ -51,19 +51,19 @@
     <Row :gutter="16">
 
       <Col span="6">
-        <FormItem label="听课时间">
+        <FormItem label="听课时间" :required="true">
           <DatePicker disabled type="date" :value="value.lesson.lesson_date" format="yyyy-MM-dd" @on-change="onSelectedLessonCaseChange" :options="getLessonDatePickerOption()"></DatePicker>
         </FormItem>
       </Col>
 
       <Col span="6">
-        <FormItem label="上课地点">
+        <FormItem label="上课地点" :required="true">
           <Input disabled :value="value.lesson.lesson_room" disabled></Input>
         </FormItem>
       </Col>
 
       <Col span="6">
-        <FormItem label="上课节次">
+        <FormItem label="上课节次" :required="true">
           <Select v-model="value.lesson.lesson_times"  disabled multiple style="width:200px">
             <Option disabled v-for="item in lesson_times" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>

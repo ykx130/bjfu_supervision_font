@@ -29,6 +29,14 @@ export const queryModelLessons = (params) => {
   return axios.get('/api/model_lessons', {params:params})
 }
 
+export const getModelLessonsVote = (params) => {
+  return axios.get(`/api/model_lessons／${params.id}／vote`)
+}
+
+export const updateModelLessonsVote = (params) => {
+  return axios.put(`/api/model_lessons／${params.id}／vote`,params)
+}
+
 export const uploadModelLessonApi = '/api/model_lessons/excel/import'
 
 export const uploadNoticeLessonApi = '/api/notice_lessons/excel/import'
