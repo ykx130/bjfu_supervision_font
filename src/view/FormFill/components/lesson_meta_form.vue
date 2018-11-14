@@ -69,7 +69,7 @@
           </Select>
         </FormItem>
       </Col>
-    </Row> {{this.selected_lesson}}
+    </Row>
   </Form>
 
 </template>

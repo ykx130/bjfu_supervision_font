@@ -214,10 +214,7 @@
               };
               if (this.recommend_model) {
                 this.model_lesson.id=this.meta.lesson.lesson_id;
-                getModelLessonsVote(this.model_lesson).then((resp)=>{
-                  this.model_lesson.vote=resp.data.vote+1;
-                })
-                updateModelLessonsVote(this.model_lesson);
+                getModelLessonsVote(this.model_lesson)
               }
               postForm(form).then(() => {
                 location.reload()
