@@ -204,7 +204,7 @@ export default {
           this.$Message.success('Success！')
         } else {
           // alert("Fail!");
-          this.$Message.error('Fail!')
+          this.$Message.error('信息错误')
         }
       })
     },

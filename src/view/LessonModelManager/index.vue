@@ -46,7 +46,7 @@
 <script>
   import LessonProfileModal from './components/LessonProfileModal'
   import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-  import {queryModelLessons, putLesson, uploadModelLessonApi} from '@/service/api/lesson'
+  import {queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson} from '@/service/api/lesson'
   import {queryTerms, getCurrentTerms} from '@/service/api/term'
   import FloatBar from '_c/float_bar/float_bar'
   import {updateWithinField} from 'Libs/tools'

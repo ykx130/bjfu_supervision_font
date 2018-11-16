@@ -13,8 +13,24 @@ export const getLesson = (id) => {
   return axios.get('/api/lessons/' + id)
 }
 
+export const getModelLesson = (id) => {
+  return axios.get('/api/model_lessons/' + id)
+}
+
+export const getNoticeLesson = (id) => {
+  return axios.get('/api/notice_lessons/' + id)
+}
+
 export const putLesson = (params) => {
-  return axios.put('/api/lessons/' + id, params)
+  return axios.put('/api/lessons/' + params.lesson_id, params)
+}
+
+export const putModelLesson = (params) => {
+  return axios.put('/api/model_lessons' + params.id, params)
+}
+
+export const putNoticeLesson = (params) => {
+  return axios.put('/api/notice_lessons' + params.id, params)
 }
 
 export const postLesson = (params) => {

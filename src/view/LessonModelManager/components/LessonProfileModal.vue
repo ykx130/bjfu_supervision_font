@@ -8,19 +8,19 @@
     <Form :model="lesson">
       <span>课程名字:</span>
       <FormItem prop="lesson_name">
-        <Input type="text" v-model="lesson.lesson_name" placeholder="名字">
+        <Input type="text" disabled v-model="lesson.lesson_name" placeholder="名字">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
       <span>课程属性:</span>
       <FormItem prop="lesson_attribute">
-        <Input type="text" v-model="lesson.lesson_attribute" placeholder="课程属性">
+        <Input type="text" disabled v-model="lesson.lesson_attribute" placeholder="课程属性">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
       <span>课程状态:</span>
       <FormItem prop="lesson_state">
-        <Input type="text" v-model="lesson.lesson_state" placeholder="课程状态">
+        <Input type="text" disabled v-model="lesson.lesson_state" placeholder="课程状态">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import {getLesson} from '../../../service/api/lesson'
+import {getModelLesson} from '../../../service/api/lesson'
 import {updateWithinField} from 'Libs/tools'
 import {queryGroups} from '../../../service/api/user'
 import {lessonLevel, lessonWatchReason} from '../marcos'
@@ -68,8 +68,8 @@ export default {
     onShowChange: function (show) {
       if (show) {
         // 显示的时候拉数据
-        getLesson(this.lesson_id).then((resp) => {
-          updateWithinField(this.lesson, resp.data.lesson)
+        getModelLesson(this.lesson_id).then((resp) => {
+          updateWithinField(this.lesson, resp.data.model_lesson)
         })
       }
     }

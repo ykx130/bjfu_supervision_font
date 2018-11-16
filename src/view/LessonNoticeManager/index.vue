@@ -48,7 +48,7 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-import {queryNoticeLessons, putLesson,uploadNoticeLessonApi} from '@/service/api/lesson'
+import {queryNoticeLessons, putLesson,uploadNoticeLessonApi, putNoticeLesson} from '@/service/api/lesson'
 import {queryTerms, getCurrentTerms} from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import {updateWithinField} from 'Libs/tools'
@@ -160,7 +160,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.selected_lesson_id = params.row.lesson_id
+                    this.selected_lesson_id = params.row.id
                     this.showLessonProfileModal = true
                   }
                 }
@@ -194,7 +194,7 @@ export default {
     },
     onProfileModalOK (lesson) {
       // 更新框确定 关闭
-      putLesson(lesson).then((resp) => {
+      putNoticeLesson(lesson).then((resp) => {
         this.showLessonProfileModal = false
       })
     },
