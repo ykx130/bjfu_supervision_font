@@ -7,7 +7,7 @@
               <Input style="width: 180px" v-model="query.name" ></Input>
         </Col>
         <Col span="6">
-          <Button type="primary" style="margin-left: 20px;width: 80px" @click="onSearch(query)">查询</Button>
+          <Button type="primary" style="margin-left: 20px;width: 80px" @click=" onSearch">查询</Button>
         </Col>
       </Row>
 

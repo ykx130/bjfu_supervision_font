@@ -17,7 +17,7 @@
         </FormItem>
 
         <FormItem >
-          <Button type="primary" @click="onSearch(query)">查询</Button>
+          <Button type="primary" @click=" onSearch">查询</Button>
         </FormItem>
       </Form>
     </Form>
@@ -166,30 +166,29 @@ export default {
     }
   },
   methods: {
-    onTableChange (query, pages) {
+     fetchData() {
       // 数据表发生变化请求数据
-      let args = {...query, ...pages}
+       let args = {...this.query, ...this.pages}
       querySupervisors(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
       })
-      this.$router.push({path: '/user/teachers', query: query})
     },
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.onTableChange(this.query, this.pages)
+      this.fetchData( )
     },
     onSearch (query) {
       // 查询变化 当点提交查询条件生效
       this.pages._page = 1
-      this.onTableChange(query, this.pages)
+      this.fetchData( )
     },
     onProfileModalOK (user) {
       // 更新框确定 关闭
       putUser(user).then((resp) => {
         this.pages._page = 1
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
         this.showUserProfileModal = false
       })
     },
@@ -201,7 +200,7 @@ export default {
       user.term =this.query.term
       postSupervisors(user).then((resp) => {
         this.pages._page = 1
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
         this.showUserAddModal = false
       })
     },
@@ -210,9 +209,6 @@ export default {
     }
   },
   mounted: function () {
-    const args = this.$route.query
-    updateWithinField(this.query, args)
-    updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
@@ -222,7 +218,6 @@ export default {
         this.data = resp.data.users
         this.total = resp.data.total
       })
-      this.$router.push({path: '/user/teachers', query: { ...this.query, ...this.pages}})
     })
   }
 }

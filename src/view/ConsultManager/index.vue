@@ -28,14 +28,6 @@ export default {
     onTypeTabClick (value) {
       this.select_tag = value
     }
-  },
-  created: function () {
-    const args = this.$route.query
-    if (args.state){
-      this.select_tag = args.state
-    } else {
-      this.onTypeTabClick("未协调")
-    }
   }
 }
 </script>

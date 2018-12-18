@@ -10,7 +10,7 @@
           </AutoComplete>
         </FormItem>
         <FormItem >
-          <Button type="primary" @click="onSearch(query)">查询</Button>
+          <Button type="primary" @click=" onSearch">查询</Button>
         </FormItem>
       </Form>
     </Form>
@@ -128,32 +128,30 @@ export default {
     }
   },
   methods: {
-    onTableChange (query, pages) {
+     fetchData() {
       // 数据表发生变化请求数据
-      let args = {...query, ...pages}
+       let args = {...this.query, ...this.pages}
       queryUsers(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
       })
-      this.$router.push({path: '/user/supers', query: query})
-
     },
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.onTableChange(this.query, this.pages)
+      this.fetchData( )
     },
     onSearch () {
       // 查询变化
       this.pages._page = 1
-      this.onTableChange(this.query, this.pages)
+      this.fetchData( )
     },
     onProfileModalOK (user) {
       // 更新框确定 关闭
       putUser(user).then((resp) => {
         this.showUserProfileModal = false
         this.pages._page = 1
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
       })
     },
     onProfileModalCancel () {
@@ -164,7 +162,7 @@ export default {
       postUser(user).then((resp) => {
         this.showUserAddModal = false
         this.pages._page = 1
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
       })
     },
     onAddModalCancel () {
@@ -172,14 +170,10 @@ export default {
     }
   },
   mounted: function () {
-    const args = this.$route.query
-    updateWithinField(this.query, args)
-    updateWithinField(this.pages, args)
     queryUsers({ ...this.query, ...this.pages}).then((resp) => {
       this.data = resp.data.users
       this.total = resp.data.total
     })
-    this.$router.push({path: '/user/supers', query: { ...this.query, ...this.pages}})
   }
 }
 </script>

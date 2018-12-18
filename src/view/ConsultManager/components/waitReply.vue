@@ -9,7 +9,7 @@
         </Select>
       </FormItem>
       <FormItem >
-        <Button type="primary" @click="onSearch(query)">查询</Button>
+        <Button type="primary" @click=" onSearch">查询</Button>
       </FormItem>
     </Form>
 
@@ -124,30 +124,29 @@ export default {
     }
   },
   methods: {
-    onTableChange (query, pages) {
+     fetchData() {
       // 数据表发生变化请求数据
-      let args = {...query, ...pages}
+       let args = {...this.query, ...this.pages}
       queryConsults(args).then((resp) => {
         this.data = resp.data.consults
         this.total = resp.data.total
       })
-      this.$router.push({path: '/consult/manager', query: {...args, ...this.query}})
     },
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.onTableChange(this.query, this.pages)
+      this.fetchData( )
     },
     onSearch () {
       // 查询变化
       this.pages._page = 1
-      this.onTableChange(this.query, this.pages)
+      this.fetchData( )
     },
     onReplyModalOK (consult) {
       // 更新框确定 关闭
       putConsults({id: consult.id, content: consult.content}).then((resp) => {
         this.showConsultManagerModal = false
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
       })
     },
     onReplyModalCancel () {
@@ -155,9 +154,6 @@ export default {
     }
   },
   mounted: function () {
-    const args = this.$route.query
-    updateWithinField(this.query, args)
-    updateWithinField(this.pages, args)
     this.query.state = '待协调'
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
@@ -168,7 +164,6 @@ export default {
         this.data = resp.data.consults
         this.total = resp.data.total
       })
-      this.$router.push({path: '/consult/manager', query: { ...this.query, ...this.pages}})
     })
   }
 }

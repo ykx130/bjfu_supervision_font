@@ -62,8 +62,7 @@ export default {
     }
   },
   mounted: function () {
-    const args = this.$route.query
-    queryConsultTypes(args).then((resp) => {
+    queryConsultTypes().then((resp) => {
       this.consult_types = resp.data.consult_types
     })
   }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>用户大事件</h1>
-    <Button type="primary" @click="onSearch(query)">增加事件</Button>
+    <Button type="primary" @click=" onSearch">增加事件</Button>
     <div style="float: left" >
       <Timeline v-model="events" style="width: 180px;margin-left: 20px">
           <TimelineItem v-for="(event,index) in events" :key="'event'+index">

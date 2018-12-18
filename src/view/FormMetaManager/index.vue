@@ -2,7 +2,7 @@
   <Card>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="问卷名字：" prop="name">
-        <Input style="width: 180px" v-model="query.name" @on-change="onSearch(query)"></Input>
+        <Input style="width: 180px" v-model="query.name" @on-change=" onSearch"></Input>
       </FormItem>
     </Form>
 
@@ -115,24 +115,23 @@ export default {
     }
   },
   methods: {
-    onTableChange (query, pages) {
+     fetchData() {
       // 数据表发生变化请求数据
-      let args = {...query, ...pages}
+       let args = {...this.query, ...this.pages}
       queryFormMetas(args).then((resp) => {
         this.data = resp.data.form_metas
         this.total = resp.data.total
       })
-      this.$router.push({path: '/dqs/meta_manager', query: query})
     },
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.onTableChange(this.query, this.pages)
+      this.fetchData( )
     },
     onSearch (query) {
       // 查询变化 当点提交查询条件生效
       this.pages._page = 1
-      this.onTableChange(query, this.pages)
+      this.fetchData( )
     }
   },
   mounted: function () {
@@ -141,7 +140,6 @@ export default {
       this.data = resp.data.form_metas
       this.total = resp.data.total
   })
-    this.$router.push({path: '/dqs/meta_manager', query: {...args, ...this.query}})
   }
 }
 </script>

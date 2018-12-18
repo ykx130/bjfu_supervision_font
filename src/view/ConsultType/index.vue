@@ -30,6 +30,9 @@ export default {
   data: function () {
     return {
       query: {}, // 查询用的参数
+      pages: {
+        "_per_page":20,
+      },
       total: 0, // 总数量
       data: [], // 数据
       terms: [],
@@ -85,9 +88,9 @@ export default {
     }
   },
   methods: {
-    onTableChange (query, pages) {
+     fetchData() {
       // 数据表发生变化请求数据
-      let args = {...query, ...pages}
+       let args = {...this.query, ...this.pages}
       queryConsultTypes(args).then((resp) => {
         this.data = resp.data.consult_types
         this.total = resp.data.total
@@ -97,7 +100,7 @@ export default {
       // 更新框确定 关闭
       postConsultTypes(consult_types).then((resp) => {
         this.showConsultTypeAddModal = false
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
       })
     },
     onAddModalCancel () {
@@ -105,7 +108,7 @@ export default {
     },
     onDeleteClcik: function (item) {
       deleteConsultTypes(item.row.id).then(() => {
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
       })
     },
     selectConsultTypes: function () {
@@ -113,8 +116,7 @@ export default {
     }
   },
   mounted: function () {
-    const args = this.$route.query
-    queryConsultTypes(args).then((resp) => {
+    queryConsultTypes({...this.query, ...this.pages}).then((resp) => {
       this.data = resp.data.consult_types
       this.total = resp.data.total
     })

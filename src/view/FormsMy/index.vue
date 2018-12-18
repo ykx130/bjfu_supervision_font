@@ -9,7 +9,7 @@
         </Select>
         </Col>
         <Col span="6">
-        <Button type="primary" style="margin-left: 20px;width: 80px" @click="onSearch(query)">查询</Button>
+        <Button type="primary" style="margin-left: 20px;width: 80px" @click=" onSearch">查询</Button>
         </Col>
       </Row>
 
@@ -43,22 +43,18 @@
       // }
     },
     mounted: function () {
-      let args = this.$route.query
       queryTerms().then((resp) => {
         this.terms = resp.data.terms
       })
-      queryMyForms(args).then((resp) => {
+      queryMyForms({...this.query}).then((resp) => {
         this.data = resp.data.forms
       })
-      this.$router.push({path: '/_guider/my_form'})
     },
-    onSearch(query) {
+     onSearch() {
       // 查询变化 当点提交查询条件生效
-      let args = this.$route.query
-      queryMyForms({...query, args}).then((resp) => {
+      queryMyForms({...this.query}).then((resp) => {
         this.data = resp.data.forms
       })
-      this.$router.push({path: '/_guider/my_form'})
     }
   }
 </script>

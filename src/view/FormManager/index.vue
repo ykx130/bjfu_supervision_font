@@ -30,7 +30,7 @@
         <Input  style="width: 180px" v-model="query.meta.guider_name"></Input>
       </FormItem>
       <FormItem>
-        <Button type="primary" style="margin-left: 20px;width: 80px" @click="onSearch(query)">查询</Button>
+        <Button type="primary" style="margin-left: 20px;width: 80px" @click=" onSearch">查询</Button>
       </FormItem>
     </Form>
 
@@ -203,7 +203,7 @@ export default {
         status: '待提交'
       }).then(()=>{
         this.pages._page = 1
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
     })
     },
     onTabClick:function(name){
@@ -213,32 +213,28 @@ export default {
         this.query.status = name
       }
       this.pages._page = 1
-      this.onTableChange(this.query, this.pages)
+      this.fetchData( )
     },
-    onTableChange (query, pages) {
+     fetchData() {
       // 数据表发生变化请求数据
-      let args = {...query, ...pages}
+       let args = {...this.query, ...this.pages}
       queryForms(args).then((resp) => {
         this.data = resp.data.forms
         this.total = resp.data.total
       })
-      this.$router.push({path: '/dqs/form_manager', query: query})
     },
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.onTableChange(this.query, this.pages)
+      this.fetchData( )
     },
-    onSearch (query) {
+    onSearch () {
       // 查询变化 当点提交查询条件生效
       this.pages._page = 1
-      this.onTableChange(query, this.pages)
+      this.fetchData( )
     }
   },
   mounted: function () {
-    const args = this.$route.query
-    updateWithinField(this.query, args)
-    updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
@@ -251,7 +247,6 @@ export default {
         this.data = resp.data.forms
         this.total = resp.data.total
       })
-      this.$router.push({path: '/dqs/form_manager', query: {...this.pages, ...this.query}})
     })
   }
 }

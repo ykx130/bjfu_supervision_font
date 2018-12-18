@@ -11,7 +11,7 @@
         </FormItem>
 
         <FormItem >
-          <Button type="primary" @click="onSearch(query)">查询</Button>
+          <Button type="primary" @click=" onSearch">查询</Button>
         </FormItem>
       </Form>
     </Form>
@@ -156,31 +156,30 @@ export default {
     }
   },
   methods: {
-    onTableChange (query, pages) {
+     fetchData: function() {
       // 数据表发生变化请求数据
-      let args = {...query, ...pages}
+       let args = {...this.query, ...this.pages}
       queryUsers(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
       })
-      this.$router.push({path: '/user/guiders', query: query})
     },
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.onTableChange(this.query, this.pages)
+      this.fetchData( )
     },
     onSearch (query) {
       // 查询变化 当点提交查询条件生效
       this.pages._page = 1
-      this.onTableChange(query, this.pages)
+      this.fetchData( )
     },
     onProfileModalOK (user) {
       // 更新框确定 关闭
       putUser(user).then((resp) => {
         this.showUserProfileModal = false
         this.pages._page = 1
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
       })
     },
     onProfileModalCancel () {
@@ -191,7 +190,7 @@ export default {
       postUser(user).then((resp) => {
         this.showUserAddModal = false
         this.pages._page = 1
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
       })
     },
     onAddModalCancel () {
@@ -199,9 +198,6 @@ export default {
     }
   },
   mounted: function () {
-    const args = this.$route.query
-    updateWithinField(this.query, args)
-    updateWithinField(this.pages, args)
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
@@ -209,7 +205,6 @@ export default {
       this.data = resp.data.users
       this.total = resp.data.total
     })
-    this.$router.push({path: '/user/guiders', query: {...this.pages, ...this.query}})
   }
 }
 </script>

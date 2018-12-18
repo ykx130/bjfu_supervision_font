@@ -102,9 +102,9 @@ export default {
     }
   },
   methods: {
-    onTableChange (query, pages) {
+     fetchData() {
       // 数据表发生变化请求数据
-      let args = {...query, ...pages}
+       let args = {...this.query, ...this.pages}
       queryGroupLesson(args).then((resp) => {
         this.data = resp.data.lesson_records
         this.total = resp.data.total
@@ -113,12 +113,12 @@ export default {
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.onTableChange(this.query, this.pages)
+      this.fetchData( )
     },
     onSearch () {
       // 查询变化
       this.pages._page = 1
-      this.onTableChange(this.query, this.pages)
+      this.fetchData( )
     }
   },
   mounted: function () {

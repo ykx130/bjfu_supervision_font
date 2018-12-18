@@ -14,7 +14,7 @@
         </Select>
       </FormItem>
       <FormItem >
-        <Button type="primary" @click="onSearch(query)">查询</Button>
+        <Button type="primary" @click=" onSearch">查询</Button>
       </FormItem>
       <FormItem >
         <Upload :action="uploadModelLessonApi" name="filename">
@@ -156,25 +156,24 @@
       }
     },
     methods: {
-      onTableChange (query, pages) {
+       fetchData() {
         // 数据表发生变化请求数据
-        let args = {...query, ...pages}
+         let args = {...this.query, ...this.pages}
         queryModelLessons(args).then((resp) => {
           this.selected_lesson_ids = []
           this.data = resp.data.model_lessons
           this.total = resp.data.total
         })
-        this.$router.push({path: '/lesson/good_lesson', query: {...args, ...this.query}})
       },
       onPageChange (page) {
         // 分页变化
         this.pages._page = page
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
       },
       onSearch () {
         // 查询变化
         this.pages._page = 1
-        this.onTableChange(this.query, this.pages)
+        this.fetchData( )
       },
       onProfileModalOK (lesson) {
         // 更新框确定 关闭
@@ -195,9 +194,6 @@
       }
     },
     mounted: function () {
-      const args = this.$route.query
-      updateWithinField(this.query, args)
-      updateWithinField(this.pages, args)
       queryTerms().then((resp) => {
         this.terms = resp.data.terms
       })
@@ -208,7 +204,6 @@
           this.total = resp.data.total
         })
       })
-      this.$router.push({path: '/lesson/good_lesson', query: {...this.pages,...this.query}})
     }
   }
 </script>
