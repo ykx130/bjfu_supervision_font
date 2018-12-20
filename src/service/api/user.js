@@ -20,8 +20,8 @@ export const queryGroups = (params) => {
   return axios.get('/api/groups', {params: params})
 }
 
-export const getEvents = (params) => {
-  return axios.get('/api/users/' + params.username + '/events')
+export const getEvents = (username) => {
+  return axios.get('/api/users/' + username + '/events')
 }
 
 // ** 登陆

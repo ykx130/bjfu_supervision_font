@@ -62,7 +62,6 @@
     }
   };
 </script>
-<style lang="less" scoped>
-  @import './style.less';
+<style lang="less" >
 
 </style>

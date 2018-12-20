@@ -4,8 +4,8 @@
 
       <Col span="6">
         <div>
-          <EventLine v-model="events" style="float:left;margin-left: 20px" >
-            <EventLineItem v-for="(event,index) in events" :key="'event'+index" >
+          <Timeline v-model="events" style="float:left;margin-left: 20px" >
+            <TimelineItem v-for="(event,index) in events" :key="'event'+index" >
               <div  @click="showTable(event, index)">
                 <p style="font-size: 14px; font-weight: bold;" :class="event.status" >{{ event.timestamp}}</p>
                 <span >
@@ -13,18 +13,26 @@
               <p>{{ event.detail }}</p>
             </span>
               </div>
-            </EventLineItem>
-          </EventLine>
+            </TimelineItem>
+          </Timeline>
         </div>
       </Col>
       <Col span="18">
-        <div>
-          <Button type="primary">新增</Button>
-        </div>
+
         <div>
           <Table stripe :columns="columns" :data="data" style="width: 860px; margin-left: 20px; margin-top: 20px"></Table>
         </div>
+        <div>
+          <Button type="primary" @click="addEvents">新增</Button>
+        </div>
       </Col>
+    <EventAddModal
+    :show="showAddModal"
+    @onOK="onAddModalOK"
+    @onCancel="onAddModalCancel"
+    :username="username"
+    >
+    </EventAddModal>
   </Card>
 </template>
 
@@ -34,11 +42,14 @@
 import { queryForms, getForm } from '@/service/api/dqs'
   import EventLine from './components/event-line'
   import EventLineItem from './components/event-line-item'
+  import EventAddModal from './components/EventAddModal'
 
   export default {
-    components:{EventLine, EventLineItem},
+  components:{EventLine, EventLineItem,EventAddModal},
   data: function () {
     return {
+      username: "",
+      showAddModal: false,
       events: [],
       query: {
         meta: {
@@ -132,17 +143,21 @@ import { queryForms, getForm } from '@/service/api/dqs'
     }
   },
   mounted: function () {
-    getEvents(this.$route.params).then((resp) => {
-      this.events = resp.data.events
-      this.events = this.events.map((item) => {
-        return {
-          ...item,
-          status: 'unselect'
-        }
-      })
-    })
+    this.username = this.$route.params.username
+    this.fetchEventsData()
   },
   methods: {
+    fetchEventsData:function(){
+      return getEvents(this.username).then((resp) => {
+        this.events = resp.data.events
+        this.events = this.events.map((item) => {
+          return {
+            ...item,
+            status: 'unselect'
+          }
+        })
+      })
+    },
     showTable: function (event, index) {
       this.data = []
       this.query.meta.lesson.lesson_teacher_name = event.username
@@ -156,8 +171,19 @@ import { queryForms, getForm } from '@/service/api/dqs'
         this.data = resp.data.forms
       })
     },
+    onAddModalOK:function(event){
+      postEvents(event).then((resp)=>{
+        this.fetchEventsData()
+        if(resp.code === 200){
+          this.showAddModal = false
+        }
+      })
+    },
+    onAddModalCancel:function(){
+      this.showAddModal = false
+    },
     addEvents(){
-
+      this.showAddModal = true
     },
     resetColor: function () {
       this.events = this.events.map((item) => {
