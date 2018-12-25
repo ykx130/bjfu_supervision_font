@@ -88,6 +88,14 @@ export default{
         title: '评价体系选择'
       },
       component: resolve => require(['Views/FormChoose/index'], resolve)
+    },
+    {
+      path: '/work_pan', // 问卷选择
+      name: 'work_pan',
+      meta: {
+        title: '工作假话制定'
+      },
+      component: resolve => require(['Views/WorkPlan/index'], resolve)
     }
   ]
 }
