@@ -27,18 +27,17 @@
   </Form>
   </Modal>
 </template>
-
 <script>
-import {dateToString} from 'Libs/tools'
+import { dateToString } from 'Libs/tools'
 export default {
   name: 'UserAddModal',
   props: {
     show: Boolean,
     onCancel: Function,
     onOK: Function,
-    username: String,
+    username: String
   },
-  watch:{
+  watch: {
     username: function (val) {
       this.event.username = val
     }
@@ -49,15 +48,15 @@ export default {
         name: null,
         timestamp: null,
         detail: null,
-        username: null,
-      },
+        username: null
+      }
     }
   },
   mounted: function () {
   },
   methods: {
-    onTimeStampChange:function(val){
-      this.event.timestamp = dateToString(val,'yyyy-MM-dd')
+    onTimeStampChange: function (val) {
+      this.event.timestamp = dateToString(val, 'yyyy-MM-dd')
     },
     handleCancel: function () {
       this.$emit('onCancel')
@@ -65,8 +64,8 @@ export default {
     handleSubmit (name) {
       this.$emit('onOK', {
         ...this.event
-    })
-  }
+      })
+    }
   }
 }
 </script>

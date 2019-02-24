@@ -3,7 +3,7 @@
     <h1 style="text-align: center">工作计划管理</h1>
     <Row>
       <Col span="16" offset="4">
-        <Carousel v-model="term_index" style="height: 400px;" loop>
+        <Carousel v-model="term_index" style="height: 400px;">
           <CarouselItem v-for="term in terms" :key="term.name" >
             <Card style="height: 400px">
               <div slot="title" style="text-align: center">学期: {{term.name}}</div>

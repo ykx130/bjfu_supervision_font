@@ -1,5 +1,7 @@
 <template>
-      <Table stripe :columns="columns" :data="work_plans"></Table>
+  <div>
+    <Table stripe :columns="columns" :data="work_plans"></Table>
+  </div>
 </template>
 
 <script>
@@ -51,7 +53,7 @@ export default {
               },
               on: {
                 click: () => {
-
+                  this.$emit('')
                 }
               }
             }, '编辑'),
