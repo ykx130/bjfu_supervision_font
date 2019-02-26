@@ -4,12 +4,12 @@
     <Form :model="value" :label-width="80" label-position="left">
       <Row :gutter="16">
         <Col span="6">
-          <FormItem label="章节目录" :required="true" >
+          <FormItem label="章节目录" :required="true"  class="inline-form-item">
             <Input v-model="value.lesson.content" class="inline-form-item"> </Input>
           </FormItem>
         </Col>
         <Col span="6">
-          <FormItem label="听课督导" :required="true" c>
+          <FormItem label="听课督导" :required="true" >
             <Select v-model="value.guider"  @on-change="onGuiderSelectChange" :disabled="guider_disable" class="inline-form-item">
               <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index"   >{{item.name}}</Option>
             </Select>
@@ -34,7 +34,7 @@
   <Form :model="value">
     <table class="table-border meta-table" >
       <tbody>
-      <tr>
+      <tr class="table-form-header">
         <th>课程名字</th>
         <th>任课教师</th>
         <th>上课班级</th>
@@ -276,33 +276,4 @@ export default {
 
 <style scoped lang="less">
 
-  .table-border {
-    border:1px solid #ddd;
-    border-collapse: collapse;
-    border-spacing: 0;
-    tbody>tr{
-      text-align:left;
-      border:1px solid #ddd;
-    };
-    tbody>tr>th {
-      padding: 8px;
-      border:1px solid #ddd;
-    };
-    tbody>tr>td {
-      padding: 8px;
-      border:1px solid #ddd;
-      height: 30px;
-    };
-     .table-form-item {
-       width: 160px;
-       vertical-align:middle;
-     }
-  }
-  .meta-table{
-    width: 100%;
-    font-size: 20px;
-  }
-  .inline-form-item {
-    width: 184px;
-  }
 </style>

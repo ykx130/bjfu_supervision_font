@@ -1,28 +1,34 @@
 <template>
   <Card>
+    <div>
+      <h1 style="text-align: center;color: #468847;background-color: #dff0d8;    border-color: #d6e9c6;">{{ form_meta.name }}</h1>
+      <br/>
+      <!--<divider orientation="left">课程信息</divider>-->
       <div>
-        <h1 style="text-align: center">{{ form_meta.name }}</h1>
-        <br/>
-        <divider orientation="left">课程信息</divider>
-        <div>
-          <Lesson v-model="meta"></Lesson>
-        </div>
-        <br/>
-        <divider orientation="left">问卷内容</divider>
-        <FormShow v-model="form_values" :items="form_meta.items" :disabled="false" ref="ruleform" :ruleValidate="ruleValidate">
-          <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }">
-            <RadioGroup v-model="recommend_model">
-              <Radio label="推荐" :value="1" :disabled="false"></Radio>
-              <Radio label="不推荐" :value="0" :disabled="false"></Radio>
-            </RadioGroup>
-          </FormItem>
-        </FormShow>
+        <Lesson v-model="meta"></Lesson>
+      </div>
+      <br/>
+      <Alert type="error">
+        <strong>注：</strong><br>
+        （1）“教师授课情况总体评价”为“非常满意”，需满足如下条件：8项评价中，非常满意≥5，其中标★项目评价必须为非常满意；且没有“存在不足”及以下。<br>
+        （2）“教师授课情况总体评价”为“存在明显不足”，需满足如下条件：8项评价中，存在明显不足≥3。
+      </Alert>
+      <br/>
+      <divider orientation="left">问卷内容</divider>
+      <FormShow v-model="form_values" :items="form_meta.items" :disabled="false" ref="ruleform" :ruleValidate="ruleValidate">
+        <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }">
+          <RadioGroup v-model="recommend_model">
+            <Radio label="推荐" :value="1" :disabled="false"></Radio>
+            <Radio label="不推荐" :value="0" :disabled="false"></Radio>
+          </RadioGroup>
+        </FormItem>
+      </FormShow>
 
-        <!--{{ruleValidate}}-->
-            <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
-            <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
-            <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
-          </div>
+      <!--{{ruleValidate}}-->
+          <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
+          <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
+          <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
+        </div>
   </Card>
 
 </template>
