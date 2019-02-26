@@ -93,7 +93,7 @@ export default{
       path: '/work_pan', // 问卷选择
       name: 'work_pan',
       meta: {
-        title: '工作假话制定'
+        title: '工作计划制定'
       },
       component: resolve => require(['Views/WorkPlan/index'], resolve)
     }

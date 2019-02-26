@@ -11,27 +11,40 @@ export default {
   },
   component: MainGuider, // 一级目录必须使用Main组件作为component，
   children: [{
-    name: '督导报名中心',
+    name: 'guider_active_attend',
+    meta: {
+      title:'督导报名中心'
+    },
     path: 'attend',
     component: resolve => require(['Views/ActiveAttend/index'], resolve)
   },
     {
-      name: '督导咨询申请',
+      name: 'guider_consult_apply',
+      meta: {
+        title:'督导咨询申请'
+      },
       path: 'consult_apply',
       component: resolve => require(['Views/ConsultApply/index'], resolve)
     },
     {
-      name: '督导问卷填写',
+      name: 'guider_form_choose',
+      meta: {
+        title:'督导问卷填写'
+      },
       path: 'judge',
       component: resolve => require(['Views/GuiderFormChoose/index'], resolve)
     },
     {
-      name: '问卷填写课程',
+      name: 'guider_lesson_form',
+      meta: {
+        title:'课程表'
+      },
       path: 'lesson_form',
       component: resolve => require(['Views/GuiderLessonForm/index'], resolve)
     },
     {
-      name: '督导问卷填写',
+      name: 'guider_form_fill',
+
       path: 'judge/form_fill/:name/:version',
       component: resolve => require(['Views/FormFill/index'], resolve)
     },

@@ -9,9 +9,8 @@
     </Tabs>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="课程名字：" prop="lesson_name">
-        <AutoComplete style="width: 180px" v-model="query.lesson_name" placeholder="请输入用户名字">
-          <Option v-for="(d, index) in data" :value="d.lesson_name" :key="d.lesson_name + d.lesson_id + index">{{ d.lesson_name }}</Option>
-        </AutoComplete>
+        <Input style="width: 180px" v-model="query.lesson_name_like" placeholder="请输入用户名字">
+        </Input>
       </FormItem>
       <FormItem label="学期：" prop="term">
         <Select v-model="query.term" style="width:200px">
@@ -19,9 +18,7 @@
         </Select>
       </FormItem>
       <FormItem label="教师：" prop="lesson_teacher_name">
-        <AutoComplete style="width: 180px" v-model="query.lesson_teacher_name" placeholder="请输入用户名字">
-          <Option v-for="(d,index) in data" :value="d.lesson_teacher_name" :key="d.lesson_teacher_name +  d.lesson_id + index">{{ d.lesson_teacher_name }}</Option>
-        </AutoComplete>
+        <TeacherSelector v-model="query.lesson_teacher_name"></TeacherSelector>
       </FormItem>
       <FormItem >
         <Button type="primary" @click=" onSearch">查询</Button>
@@ -54,21 +51,21 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import BatchLessonWatchModal from './components/BatchLessonWatchModal'
-import {queryLessons, putLesson} from '../../service/api/lesson'
-import {queryTerms, getCurrentTerms} from '../../service/api/term'
+import { queryLessons, putLesson } from '../../service/api/lesson'
+import { queryTerms, getCurrentTerms } from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
-import {updateWithinField} from 'Libs/tools'
+import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
+import TeacherSelector from '@/view/components/teacher_selector'
 
 export default {
-  components: {LessonJudge,LessonProfileModal, FloatBar, BatchLessonWatchModal},
+  components: { LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal, TeacherSelector },
   data: function () {
     return {
-
       query: {
-        lesson_name:undefined,
+        lesson_name: undefined,
         term: undefined,
-        lesson_teacher_name:undefined
+        lesson_teacher_name: undefined
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
@@ -84,7 +81,7 @@ export default {
       columns: [
         {
           type: 'expand',
-          title:"评价",
+          title: '评价',
           width: 70,
           render: (h, params) => {
             return h(LessonJudge, {
@@ -109,10 +106,10 @@ export default {
         {
           title: '课程状态',
           render: (h, params) => {
-            if (params.row.lesson_state === '未完成'){
-              return h('Tag', { props: {color:"red"}}, params.row.lesson_state)
+            if (params.row.lesson_state === '未完成') {
+              return h('Tag', { props: { color: 'red' } }, params.row.lesson_state)
             } else {
-              return h('Tag', { props: {color:"blue"}}, params.row.lesson_state)
+              return h('Tag', { props: { color: 'blue' } }, params.row.lesson_state)
             }
           }
         },
@@ -149,9 +146,9 @@ export default {
     }
   },
   methods: {
-     fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-       let args = {...this.query, ...this.pages}
+      let args = { ...this.query, ...this.pages }
       queryLessons(args).then((resp) => {
         this.selected_lesson_ids = []
         this.data = resp.data.lessons
@@ -161,19 +158,19 @@ export default {
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.fetchData( )
+      this.fetchData()
     },
     onSearch () {
       // 查询变化
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     },
     onProfileModalOK (lesson) {
       // 更新框确定 关闭
       putLesson(lesson).then((resp) => {
         this.showLessonProfileModal = false
         this.pages._page = 1
-        this.fetchData( )
+        this.fetchData()
       })
     },
     onProfileModalCancel () {
@@ -205,7 +202,7 @@ export default {
         this.query.lesson_level = name
       }
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     }
   },
   mounted: function () {
@@ -214,8 +211,8 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryLessons({ ...this.query, ...this.pages}).then((resp) => {
-          this.data = resp.data.lessons
+      queryLessons({ ...this.query, ...this.pages }).then((resp) => {
+        this.data = resp.data.lessons
         this.total = resp.data.total
       })
     })

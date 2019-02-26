@@ -9,209 +9,157 @@
         </div>
         <br/>
         <divider orientation="left">问卷内容</divider>
-            <Form :model="form_inputs" ref="ruleform">
-            <template v-for="it in form_meta.items" >
-                <template v-if="it.item_name === 'sub_title_block_start' " >
-                  <h3 style="height: 80px;line-height: 80px;margin-left: 10px">{{ it.payload.title }}</h3>
-                </template>
-
-                <template v-else-if="it.item_type === 'radio_option'">
-                  <FormItem  :rules="ruleValidate[it.item_name]" :prop="it.item_name +'.value'" >
-                  <Row>
-                    <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
-                    <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
-                  </Row>
-                  <Row>
-                    <RadioGroup v-model="form_inputs[it.item_name].value">
-                      <Radio v-for="op in it.payload.options" :label="op.label" :key="op.value" v-bind:style="{ fontSize:'15px',marginLeft:'50px' }">
-                        <span>{{op.label}}</span>
-                      </Radio>
-                    </RadioGroup>
-                  </Row>
-                </FormItem>
-                </template>
-
-                <template v-else-if="it.item_type === 'checkbox_option'">
-                <FormItem  :required="ruleValidate[it.item_name][0].required" :rules="ruleValidate[it.item_name]" :prop="it.item_name +'.value'" >
-                  <Row>
-                    <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
-                    <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
-                  </Row>
-                  <Row>
-                    <CheckboxGroup v-model="form_inputs[it.item_name].value">
-                      <Checkbox v-for="op in it.payload.options" :label="op.label" :key="op.value" v-bind:style="{ fontSize:'15px',marginLeft:'50px' }">
-                        <span>{{op.label}}</span>
-                      </Checkbox>
-                    </CheckboxGroup>
-                  </Row>
-                </FormItem>
-                </template>
-
-                <template v-else-if="it.item_type === 'raw_text' "  >
-                <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name +'.value'" >
-                  <Row>
-                    <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
-                    <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
-                  </Row>
-                  <Row>
-                    <Input type="textarea" placeholder="Satisfation about teachers..."  v-model="form_inputs[it.item_name].value" v-bind:style="{marginLeft:'50px',width:'50%'}"></Input>
-                  </Row>
-                </FormItem>
-                </template>
-
-                <template v-else-if="it.item_name === 'sub_title_block_end'" >
-                <FormItem >
-                  <!--<h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.options }}</h1>-->
-                  <divider></divider>
-                </FormItem>
-                </template>
-            </template>
-              <!--{{form_inputs['总体评价']}}-->
-              <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }">
-                <RadioGroup v-model="recommend_model" >
-                  <Radio  label="推荐" :value="1" ></Radio>
-                  <Radio label="不推荐" :value="0"></Radio>
-                </RadioGroup>
-              </FormItem>
-            </Form>
+        <FormShow v-model="form_values" :items="form_meta.items" :disabled="false" ref="ruleform" :ruleValidate="ruleValidate">
+          <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }">
+            <RadioGroup v-model="recommend_model">
+              <Radio label="推荐" :value="1" :disabled="false"></Radio>
+              <Radio label="不推荐" :value="0" :disabled="false"></Radio>
+            </RadioGroup>
+          </FormItem>
+        </FormShow>
 
         <!--{{ruleValidate}}-->
             <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
             <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
             <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
           </div>
-
   </Card>
 
 </template>
 <script>
 import { getFormMeta, postForm } from '../../service/api/dqs'
-import { getLesson, updateModelLessonsVote,getModelLessonsVote} from '../../service/api/lesson'
-import Lesson from './components/lesson_meta_form'
+import { getLesson, updateModelLessonsVote, getModelLessonsVote } from '../../service/api/lesson'
+import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
+import FormShow from '@/view/components/form_show/form_show.vue'
 
 export default {
   components: {
-    Lesson
+    Lesson, FormShow
   },
+  name: 'FormFill',
   watch: {
     'meta.lesson': {
-      deep:true,
+      deep: true,
       handler: function () {
-        if (this.meta.lesson.lesson_model !== ""){
+        if (this.meta.lesson.lesson_model === '推荐课') {
           this.show_recommend = true
         } else {
-          this.show_recommend = false;
+          this.show_recommend = false
           this.recommend_model = 0
         }
       },
-      immediate:true
+      immediate: true
     }
   },
   data () {
     return {
-      model_lesson:{
-        id:'',
-        vote:'',
+      model_lesson: {
+        id: '',
+        vote: ''
       },
       form_meta: {
         _id: undefined,
         items: []
       },
-      form_inputs: {},
-      meta: {lesson: {}},
+      form_values: {},
+      meta: { lesson: {} },
       recommend_model: 0,
       show_recommend: false,
-      formValidate:{
-        radio:'',
-        checkbox:'',
-        raw_text:''
+      formValidate: {
+        radio: '',
+        checkbox: '',
+        raw_text: ''
       },
-      ruleValidate:{
-        radio:[
-           { required: false}
-          ],
+      defaultValidateRules: {
+        radio: [
+          { required: false }
+        ],
         checkbox: [
-            { required: false}
-          ],
+          { required: false }
+        ],
         raw_text: [
-            { required: false}
-          ]
+          { required: false }
+        ]
+      },
+      ruleValidate: {
+
       }
     }
   },
   mounted () {
-    let args = this.$route.params;
-
-    getFormMeta(args).then((resp) => {
-      this.form_meta = resp.data.form_meta;
-      this.form_meta.items.forEach((item) => {
-        this.form_inputs[item.item_name] = item;
-        if(item.item_type==='radio_option'){
-          if(item.payload.rules){
-            this.ruleValidate[item.item_name]=[
-              {required: item.payload.rules[0].required, message: '请选择选项', trigger: 'blur'}
-            ];
-          }
-          else{
-            this.ruleValidate[item.item_name]=this.ruleValidate.radio;
-          }
-        }
-        if(item.item_type==='checkbox_option'){
-          if(item.payload.rules) {
-            this.ruleValidate[item.item_name] = [
-              {
-                required: item.payload.rules[0].required, type: 'array', min: item.payload.rules[1].min,
-                message: '请至少选择' + item.payload.rules[1].min + '项', trigger: 'change'
-              },
-              {
-                type: 'array',
-                max: item.payload.rules[1].max,
-                message: '最多选择' + item.payload.rules[1].max + '项',
-                trigger: 'change'
-              }
-            ];
-          }
-          else {
-            this.ruleValidate[item.item_name]=this.ruleValidate.checkbox;
-          }
-        }
-        if(item.item_type==='raw_text'){
-          if(item.payload.rules) {
-            this.ruleValidate[item.item_name] = [
-              {required: item.payload.rules[0].required, message: '请填写内容', trigger: 'blur'},
-              {
-                type: 'string',
-                min: item.payload.rules[1].min,
-                message: '内容多于' + item.payload.rules[1].min + '字',
-                trigger: 'blur'
-              },
-              {
-                type: 'string',
-                max: item.payload.rules[1].max,
-                message: '内容少于' + item.payload.rules[1].max + '字',
-                trigger: 'blur'
-              }
-            ];
-          }
-          else{
-            this.ruleValidate[item.item_name]=this.ruleValidate.raw_text;
-          }
-        }
-        // this.form_inputs[item.item_name].value='[]';
-      })
-    })
-
-
+    this.fetchFormMeta()
   },
   methods: {
+    fetchFormMeta () {
+      let args = this.$route.params
+
+      return getFormMeta(args).then((resp) => {
+        this.form_meta = resp.data.form_meta
+        this.form_meta.items.forEach((item) => {
+          // 添加数据
+          this.form_values[item.item_name] = undefined
+
+          // 处理校验规则
+          if (item.item_type === 'radio_option') {
+            if (item.payload.rules) {
+              this.ruleValidate[item.item_name] = [
+                { required: item.payload.rules[0].required, message: '请选择选项', trigger: 'blur' }
+              ]
+            } else {
+              this.ruleValidate[item.item_name] = this.defaultValidateRules.radio
+            }
+          } else if (item.item_type === 'checkbox_option') {
+            if (item.payload.rules) {
+              this.ruleValidate[item.item_name] = [
+                {
+                  required: item.payload.rules[0].required,
+                  type: 'array',
+                  min: item.payload.rules[1].min,
+                  message: '请至少选择' + item.payload.rules[1].min + '项',
+                  trigger: 'change'
+                },
+                {
+                  type: 'array',
+                  max: item.payload.rules[1].max,
+                  message: '最多选择' + item.payload.rules[1].max + '项',
+                  trigger: 'change'
+                }
+              ]
+            } else {
+              this.ruleValidate[item.item_name] = this.defaultValidateRules.checkbox
+            }
+          } else if (item.item_type === 'raw_text') {
+            if (item.payload.rules) {
+              this.ruleValidate[item.item_name] = [
+                { required: item.payload.rules[0].required, message: '请填写内容', trigger: 'blur' },
+                {
+                  type: 'string',
+                  min: item.payload.rules[1].min,
+                  message: '内容多于' + item.payload.rules[1].min + '字',
+                  trigger: 'blur'
+                },
+                {
+                  type: 'string',
+                  max: item.payload.rules[1].max,
+                  message: '内容少于' + item.payload.rules[1].max + '字',
+                  trigger: 'blur'
+                }
+              ]
+            } else {
+              this.ruleValidate[item.item_name] = this.defaultValidateRules.raw_text
+            }
+          }
+          // this.form_inputs[item.item_name].value='[]';
+        })
+      })
+    },
 
     handleSubmit () {
-      this.meta.lesson.lesson_model=this.recommend_model;
-      if(this.meta.guider==='' || this.meta.lesson.lesson_name==='' ||
-        this.meta.lesson.lesson_date===''|| this.meta.lesson.lesson_times==='' ){
-          this.$Message.error('请填写完整课程信息！')
-      }
-      else {
+      this.meta.lesson.lesson_model = this.recommend_model
+      if (this.meta.guider === '' || this.meta.lesson.lesson_name === '' ||
+        this.meta.lesson.lesson_date === '' || this.meta.lesson.lesson_times === '') {
+        this.$Message.error('请填写完整课程信息！')
+      } else {
         this.$refs.ruleform.validate((valid) => {
           if (valid) {
             let form = {
@@ -220,23 +168,22 @@ export default {
               bind_meta_version: this.form_meta.version,
               meta: this.meta,
               status: '已完成',
-              values: Object.values(this.form_inputs)
+              values: Object.values(this.form_values)
             }
             if (this.recommend_model) {
-              console.log("好评可 提及哦啊")
-              this.model_lesson.id=this.meta.lesson.lesson_id;
-              getModelLessonsVote(this.model_lesson).then((resp)=>{})
+              console.log('好评可 提及哦啊')
+              this.model_lesson.id = this.meta.lesson.lesson_id
+              getModelLessonsVote(this.model_lesson).then((resp) => {})
             }
 
             postForm(form).then(() => {
               location.reload()
             })
             this.$Message.success('添加成功！')
-          }
-          else {
+          } else {
             this.$Message.error('请填写完整信息！')
           }
-        });
+        })
       }
     },
     handleSave () {
@@ -246,13 +193,13 @@ export default {
         bind_meta_version: this.form_meta.version,
         meta: this.meta,
         status: '草稿',
-        values: Object.values(this.form_inputs)
+        values: Object.values(this.form_values)
       }
-      postForm(form).then(()=>{
+      postForm(form).then(() => {
         location.reload()
       })
     },
-    handleCancel() {
+    handleCancel () {
       location.reload()
     }
   }

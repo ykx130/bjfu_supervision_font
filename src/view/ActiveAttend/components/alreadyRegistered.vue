@@ -4,7 +4,9 @@
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="活动名称：" prop="activity">
-        <Input style="width: 180px" v-model="query.name" ></Input>
+        <AutoComplete v-model="query.name_like" :data="activityName"
+                      style="width:180px"
+                      @on-search="handleSearchActivateName"></AutoComplete>
       </FormItem>
       <FormItem label="学期：" :prop="'activity.term'">
         <Select v-model="query.term" style="width:200px">
@@ -27,9 +29,9 @@
 </template>
 
 <script>
-import {queryCurrentuserActives} from '../../../service/api/actives'
-import {queryTerms, getCurrentTerms} from '../../../service/api/term'
-import {updateWithinField} from 'Libs/tools'
+import { queryCurrentuserActives } from '../../../service/api/actives'
+import { queryTerms, getCurrentTerms } from '../../../service/api/term'
+import { updateWithinField } from 'Libs/tools'
 
 export default {
   name: 'alreadyRegistered',
@@ -45,6 +47,7 @@ export default {
         activity_user: {}
       }], // 数据
       terms: [],
+      activityName: [],
       selected_activity_id: '', // 选中编辑的课程ids
       pages: {
         _page: 1,
@@ -125,14 +128,14 @@ export default {
     }
   },
   computed: {
-    currentPath:function () {
+    currentPath: function () {
       return this.$route.path
     }
   },
   methods: {
     fetchData () {
       // 数据表发生变化请求数据
-      queryCurrentuserActives({...this.query, ...this.pages}).then((resp) => {
+      queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
       })
@@ -146,6 +149,14 @@ export default {
       // 查询变化
       this.pages._page = 1
       this.fetchData()
+    },
+    handleSearchActivateName (value) {
+      queryCurrentuserActives({ name_like: value }).then((resp) => {
+        this.activityName.splice(0, this.activityName.length)
+        resp.data.activities.forEach((activity) => {
+          this.activityName.push(activity.name)
+        })
+      })
     }
   },
   mounted: function () {
@@ -155,7 +166,7 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryCurrentuserActives({...this.query, ...this.pages}).then((resp) => {
+      queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
       })

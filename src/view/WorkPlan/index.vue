@@ -2,10 +2,9 @@
   <Card shadow>
     <h1 style="text-align: center">工作计划管理</h1>
     <Row>
-      <Col span="16" offset="4">
         <Carousel v-model="term_index" style="height: 400px;">
           <CarouselItem v-for="term in terms" :key="term.name" >
-            <Card style="height: 400px">
+            <Card style="height: 400px;width: 100%">
               <div slot="title" style="text-align: center">学期: {{term.name}}</div>
               <plan :work_plans="work_plans"></plan>
               <div style="float: right;padding-top: 100px">
@@ -14,7 +13,6 @@
             </Card>
           </CarouselItem>
         </Carousel>
-      </Col>
     </Row>
   </Card>
 </template>

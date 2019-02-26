@@ -55,8 +55,9 @@
       },
       methods:{ 
         judge: function (lesson_id) {
-          this.$store.commit('setLessonId', lesson_id)
-          this.$router.push({path:'/_guider/judge'})
+          this.$router.push({name:'guider_form_choose', query: {
+            'lesson_id': lesson_id
+            }})
         }
       }
     }

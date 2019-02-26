@@ -30,14 +30,12 @@
 import { getLessons } from '../../service/api/dqs'
 import lesson_grid from './components/lesson_grid'
 import { queryTerms, getCurrentTerms } from '../../service/api/term'
-import { queryUsers } from '@/service/api/user'
 import TeacherSelector from '@/view/components/teacher_selector'
 
 export default {
   components: { lesson_grid, TeacherSelector },
   data () {
     return {
-      users: [],
       query: {},
       terms: [],
       columns: [
@@ -345,9 +343,6 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-    })
-    queryUsers().then((resp) => {
-      this.users = resp.data.users
     })
   }
 }

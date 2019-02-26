@@ -7,7 +7,7 @@
           <Select v-model="query.term" style="width:200px">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
-        </FormItem>
+        </  FormItem>
           <FormItem label="教师名字：" prop="lesson_teacher_name">
             <TeacherSelector v-model="query.lesson_teacher_name"></TeacherSelector>
           </FormItem>
@@ -27,16 +27,14 @@
 </template>
 
 <script>
-import { getLessons } from '../../service/api/dqs'
+import { getLessons } from '@/service/api/dqs'
 import lesson_grid from './components/lesson_grid'
-import { queryTerms, getCurrentTerms } from '../../service/api/term'
-import { queryUsers } from '@/service/api/user'
+import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import TeacherSelector from '@/view/components/teacher_selector'
 export default {
   components: { lesson_grid, TeacherSelector },
   data () {
     return {
-      users: [],
       query: {},
       terms: [],
       columns: [
@@ -344,9 +342,6 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-    })
-    queryUsers().then((resp) => {
-      this.users = resp.data.users
     })
   }
 }

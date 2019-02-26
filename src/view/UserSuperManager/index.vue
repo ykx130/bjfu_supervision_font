@@ -5,9 +5,8 @@
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>
         <FormItem label="用户名字：" prop="name">
-          <AutoComplete style="width: 180px" v-model="query.name_like" placeholder="请输入用户名字">
-            <Option v-for="d in data" :value="d.username" :key="d.username">{{ d.username }}</Option>
-          </AutoComplete>
+          <Input style="width: 180px" v-model="query.name_like" placeholder="请输入用户名字">
+          </Input>
         </FormItem>
         <FormItem >
           <Button type="primary" @click=" onSearch">查询</Button>
@@ -43,15 +42,15 @@
 <script>
 import UserProfileModal from './components/UserProfileModal'
 import UserAddModal from './components/UserAddModal'
-import {updateWithinField} from 'Libs/tools'
-import {queryUsers, putUser, postUser} from '../../service/api/user'
+import { updateWithinField } from 'Libs/tools'
+import { queryUsers, putUser, postUser } from '../../service/api/user'
 export default {
-  components: {UserProfileModal, UserAddModal},
+  components: { UserProfileModal, UserAddModal },
   data: function () {
     return {
       query: {
-        name_like:undefined,
-        leader:true
+        name_like: undefined,
+        leader: true
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
@@ -99,7 +98,7 @@ export default {
         {
           title: 'email',
           key: 'email'
-        },
+        }
         // {
         //   title: '操作',
         //   align: 'center',
@@ -128,9 +127,9 @@ export default {
     }
   },
   methods: {
-     fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-       let args = {...this.query, ...this.pages}
+      let args = { ...this.query, ...this.pages }
       queryUsers(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
@@ -139,19 +138,19 @@ export default {
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.fetchData( )
+      this.fetchData()
     },
     onSearch () {
       // 查询变化
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     },
     onProfileModalOK (user) {
       // 更新框确定 关闭
       putUser(user).then((resp) => {
         this.showUserProfileModal = false
         this.pages._page = 1
-        this.fetchData( )
+        this.fetchData()
       })
     },
     onProfileModalCancel () {
@@ -162,7 +161,7 @@ export default {
       postUser(user).then((resp) => {
         this.showUserAddModal = false
         this.pages._page = 1
-        this.fetchData( )
+        this.fetchData()
       })
     },
     onAddModalCancel () {
@@ -170,7 +169,7 @@ export default {
     }
   },
   mounted: function () {
-    queryUsers({ ...this.query, ...this.pages}).then((resp) => {
+    queryUsers({ ...this.query, ...this.pages }).then((resp) => {
       this.data = resp.data.users
       this.total = resp.data.total
     })

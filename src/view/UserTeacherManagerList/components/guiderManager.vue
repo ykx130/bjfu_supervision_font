@@ -5,9 +5,8 @@
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>
         <FormItem label="用户名字：" prop="name">
-          <AutoComplete style="width: 180px" v-model="query.name_like" placeholder="请输入用户名字">
-            <Option v-for="d in data" :value="d.username" :key="d.username">{{ d.username }}</Option>
-          </AutoComplete>
+          <Input style="width: 180px" v-model="query.name_like" placeholder="请输入用户名字">
+        </Input>
         </FormItem>
 
         <FormItem label="学期：" prop="term">
@@ -50,12 +49,12 @@
 
 <script>
 import UserProfileModal from './UserProfileModal'
-import {updateWithinField} from 'Libs/tools'
+import { updateWithinField } from 'Libs/tools'
 import UserAddModal from './UserAddModal'
-import {queryTerms, getCurrentTerms} from '../../../service/api/term'
-import {querySupervisors, putUser, postUser,postSupervisors} from '../../../service/api/user'
+import { queryTerms, getCurrentTerms } from '../../../service/api/term'
+import { querySupervisors, putUser, postUser, postSupervisors } from '../../../service/api/user'
 export default {
-  components: {UserProfileModal, UserAddModal},
+  components: { UserProfileModal, UserAddModal },
   data: function () {
     return {
       query: {
@@ -104,15 +103,15 @@ export default {
           title: '小组长',
           width: 75,
           render: function (h, params) {
-            if (params.row.guider.is_grouper){
-              return h('Icon', {props:{
-                  type:"md-checkmark-circle"
-                },
-                style: {
-                  color: "#19be6b",
-                  fontSize: '30px',
-                  textAlign: 'center'
-                }
+            if (params.row.guider.is_grouper) {
+              return h('Icon', { props: {
+                type: 'md-checkmark-circle'
+              },
+              style: {
+                color: '#19be6b',
+                fontSize: '30px',
+                textAlign: 'center'
+              }
               })
             } else {
               return h('span')
@@ -123,15 +122,15 @@ export default {
           title: '大组长',
           width: 75,
           render: function (h, params) {
-            if (params.row.guider.is_main_grouper){
-              return h('Icon', {props:{
-                  type:"md-checkmark-circle",
-                },
-                style: {
-                  color: "#19be6b",
-                  fontSize: '30px',
-                  textAlign: 'center'
-                }
+            if (params.row.guider.is_main_grouper) {
+              return h('Icon', { props: {
+                type: 'md-checkmark-circle'
+              },
+              style: {
+                color: '#19be6b',
+                fontSize: '30px',
+                textAlign: 'center'
+              }
               })
             } else {
               return h('span')
@@ -166,9 +165,9 @@ export default {
     }
   },
   methods: {
-     fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-       let args = {...this.query, ...this.pages}
+      let args = { ...this.query, ...this.pages }
       querySupervisors(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
@@ -177,18 +176,18 @@ export default {
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.fetchData( )
+      this.fetchData()
     },
     onSearch (query) {
       // 查询变化 当点提交查询条件生效
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     },
     onProfileModalOK (user) {
       // 更新框确定 关闭
       putUser(user).then((resp) => {
         this.pages._page = 1
-        this.fetchData( )
+        this.fetchData()
         this.showUserProfileModal = false
       })
     },
@@ -197,10 +196,10 @@ export default {
     },
     onAddModalOK (user) {
       // 更新框确定 关闭
-      user.term =this.query.term
+      user.term = this.query.term
       postSupervisors(user).then((resp) => {
         this.pages._page = 1
-        this.fetchData( )
+        this.fetchData()
         this.showUserAddModal = false
       })
     },
@@ -214,7 +213,7 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      querySupervisors({ ...this.query, ...this.pages}).then((resp) => {
+      querySupervisors({ ...this.query, ...this.pages }).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
       })

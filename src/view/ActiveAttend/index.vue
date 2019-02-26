@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import {queryCurrentuserActives, putActive, postActive} from '../../service/api/actives'
-import {queryTerms, getCurrentTerms} from '../../service/api/term'
 import alreadyRegistered from './components/alreadyRegistered'
 import canRegister from './components/canRegister'
 
@@ -31,7 +29,7 @@ export default {
     }
   },
   computed: {
-    currentPath:function () {
+    currentPath: function () {
       return this.$route.path
     }
   },

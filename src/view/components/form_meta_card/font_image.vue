@@ -21,7 +21,6 @@ export default {
 
 <style scoped>
 .font-image{
-  width: fit-content;
   color: #fbf4ff;
   border:1px solid;
   border-radius: 50%;

@@ -5,9 +5,8 @@
     <Form :label-width="80" :model="query" inline>
       <Form :label-width="80" :model="query" inline>
         <FormItem label="用户名字：" prop="name">
-          <AutoComplete style="width: 180px" v-model="query.name_like" placeholder="请输入用户名字">
-            <Option v-for="d in data" :value="d.username" :key="d.username">{{ d.username }}</Option>
-          </AutoComplete>
+          <Input style="width: 180px" v-model="query.name_like" placeholder="请输入用户名字">
+          </Input>
         </FormItem>
 
         <FormItem label="学期：" prop="term">
@@ -58,18 +57,18 @@
 
 <script>
 import UserProfileModal from './UserProfileModal'
-import {updateWithinField} from 'Libs/tools'
+import { updateWithinField } from 'Libs/tools'
 import UserAddModal from './UserAddModal'
 import FloatBar from '_c/float_bar/float_bar'
-import {queryTerms, getCurrentTerms} from '../../../service/api/term'
-import {querySupervisors, putUser, postUser, supervisorsRenew} from '../../../service/api/user'
+import { queryTerms, getCurrentTerms } from '../../../service/api/term'
+import { querySupervisors, putUser, postUser, supervisorsRenew } from '../../../service/api/user'
 export default {
-  components: {UserProfileModal, UserAddModal, FloatBar},
+  components: { UserProfileModal, UserAddModal, FloatBar },
   data: function () {
     return {
       query: {
         term: '',
-        name_like:undefined
+        name_like: undefined
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
@@ -114,7 +113,7 @@ export default {
           render: function (h, params) {
             return h('span', params.row.guider.work_state)
           }
-          },
+        },
         {
           title: '小组',
           render: function (h, params) {
@@ -149,9 +148,9 @@ export default {
     }
   },
   methods: {
-     fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-       let args = {...this.query, ...this.pages}
+      let args = { ...this.query, ...this.pages }
       querySupervisors(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
@@ -160,18 +159,18 @@ export default {
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.fetchData( )
+      this.fetchData()
     },
     onSearch (query) {
       // 查询变化 当点提交查询条件生效
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     },
     onProfileModalOK (user) {
       // 更新框确定 关闭
       putUser(user).then((resp) => {
         this.pages._page = 1
-        this.fetchData( )
+        this.fetchData()
         this.showUserProfileModal = false
       })
     },
@@ -182,7 +181,7 @@ export default {
       // 更新框确定 关闭
       postUser(user).then((resp) => {
         this.pages._page = 1
-        this.fetchData( )
+        this.fetchData()
         this.showUserAddModal = false
       })
     },
@@ -199,7 +198,7 @@ export default {
       this.showDelayGuiderModal = false
     },
     onShowDelayGuiderClick () {
-      supervisorsRenew({usernames: this.selected_guider_ids}).then((resp)=>{
+      supervisorsRenew({ usernames: this.selected_guider_ids }).then((resp) => {
         this.showDelayGuiderModal = true
       })
     }
@@ -210,7 +209,7 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      querySupervisors({ ...this.query, ...this.pages}).then((resp) => {
+      querySupervisors({ ...this.query, ...this.pages }).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
       })

@@ -6,7 +6,7 @@
           <div>
             <span>{{ RuleMap[rule.type] }}:<i-switch  v-model="rule.enable"></i-switch> </span>
             <required v-model="rule.value" v-if="rule.type === 'required'"></required>
-            <length v-model="rule.value" v-else-if="rule.type === 'length'"></length>
+            <length v-model="rule.value" v-else-if="rule.type === 'length' && rule.enable"></length>
           </div>
         </Col>
       </template>
@@ -15,56 +15,56 @@
 </template>
 
 <script>
-  import length from './length'
-  import required from './required'
+import length from './length'
+import required from './required'
 
-  export default {
-    name: "rules",
-    components: {
-      length,
-      required
-    },
-    props: {
-      value: {type: Array, default: []},
-      types: Array
-    },
-    watch: {
-      rules: {
-        deep: true,
-        handler: function () {
-          let res = []
-          for (let r in this.rules){
-            if (this.rules[r].enable === true){
-              res.push({
-                type: this.rules[r].type,
-                ...this.rules[r].value
-              })
-            }
+export default {
+  name: 'rules',
+  components: {
+    length,
+    required
+  },
+  props: {
+    value: { type: Array, default: [] },
+    types: Array
+  },
+  watch: {
+    rules: {
+      deep: true,
+      handler: function () {
+        let res = []
+        for (let r in this.rules) {
+          if (this.rules[r].enable === true) {
+            res.push({
+              type: this.rules[r].type,
+              ...this.rules[r].value
+            })
           }
-          this.$emit("input", res)
         }
+        this.$emit('input', res)
       }
-    },
-    data: function () {
+    }
+  },
+  data: function () {
+    return {
+      rules: [],
+      RuleMap: {
+        'required': '必须项校验',
+        'length': '长度校验'
+      }
+    }
+  },
+  mounted: function () {
+    this.rules = this.types.map((item) => {
       return {
-        rules: [],
-        RuleMap: {
-          'required': "必须项校验",
-          'length': "长度校验"
-        }
+        enable: false,
+        type: item,
+        value: {}
       }
-    },
-    mounted: function () {
-      this.rules = this.types.map((item) => {
-        return {
-          enable: false,
-          type: item,
-          value: {}
-        }
-      })
-    },
-
+    })
   }
+
+}
 </script>
 
 <style scoped>

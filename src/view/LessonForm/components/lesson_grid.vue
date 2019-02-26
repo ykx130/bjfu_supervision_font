@@ -55,7 +55,12 @@
       },
       methods:{
         judge: function (lesson_id) {
-
+          this.$router.push({
+            name: 'lesson_form',
+            query: {
+              'lesson_id': lesson_id
+            }
+          })
         }
       }
     }

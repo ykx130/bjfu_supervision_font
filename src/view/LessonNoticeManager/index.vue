@@ -4,9 +4,8 @@
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="课程名字：" prop="lesson_name">
-        <AutoComplete style="width: 180px" v-model="query.lesson_name" placeholder="请输入用户名字">
-          <Option v-for="d in data" :value="d.lesson_name" :key="d.lesson_name">{{ d.lesson_name }}</Option>
-        </AutoComplete>
+        <Input style="width: 180px" v-model="query.lesson_name_like" placeholder="请输入用户名字">
+        </Input>
       </FormItem>
       <FormItem label="学期：" prop="term">
         <Select v-model="query.term" style="width:200px">
@@ -48,21 +47,20 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-import {queryNoticeLessons, putLesson,uploadNoticeLessonApi, putNoticeLesson} from '@/service/api/lesson'
-import {queryTerms, getCurrentTerms} from '../../service/api/term'
+import { queryNoticeLessons, putLesson, uploadNoticeLessonApi, putNoticeLesson } from '@/service/api/lesson'
+import { queryTerms, getCurrentTerms } from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
-import {updateWithinField} from 'Libs/tools'
+import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 
-
 export default {
-  components: {LessonJudge,LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal},
+  components: { LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal },
   data: function () {
     return {
-      uploadNoticeLessonApi:uploadNoticeLessonApi,
+      uploadNoticeLessonApi: uploadNoticeLessonApi,
       query: {
-        lesson_name:undefined,
-        term: undefined,
+        lesson_name_like: undefined,
+        term: undefined
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
@@ -84,7 +82,7 @@ export default {
         },
         {
           type: 'expand',
-          title:"评价",
+          title: '评价',
           width: 70,
           render: (h, params) => {
             return h(LessonJudge, {
@@ -116,7 +114,7 @@ export default {
           render: function (h, params) {
             return (
               <span>{ params.row.assign_group }</span>
-          )
+            )
           }
         },
         {
@@ -124,16 +122,16 @@ export default {
           render: function (h, params) {
             return (
               <span>{ params.row.notice_reason }</span>
-          )
+            )
           }
         },
         {
           title: '课程状态',
           render: (h, params) => {
-            if (params.row.lesson_state === '未完成'){
-              return h('Tag', { props: {color:"red"}}, params.row.lesson_state)
+            if (params.row.lesson_state === '未完成') {
+              return h('Tag', { props: { color: 'red' } }, params.row.lesson_state)
             } else {
-              return h('Tag', { props: {color:"blue"}}, params.row.lesson_state)
+              return h('Tag', { props: { color: 'blue' } }, params.row.lesson_state)
             }
           }
         },
@@ -142,7 +140,7 @@ export default {
           render: function (h, params) {
             return (
               <span>{ params.row.notices }</span>
-          )
+            )
           }
         },
         {
@@ -172,9 +170,9 @@ export default {
     }
   },
   methods: {
-     fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-       let args = {...this.query, ...this.pages}
+      let args = { ...this.query, ...this.pages }
       queryNoticeLessons(args).then((resp) => {
         this.selected_lesson_ids = []
         this.data = resp.data.notice_lessons
@@ -184,12 +182,12 @@ export default {
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.fetchData( )
+      this.fetchData()
     },
     onSearch () {
       // 查询变化
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     },
     onProfileModalOK (lesson) {
       // 更新框确定 关闭
@@ -224,7 +222,7 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryNoticeLessons  ({ ...this.pages, ...this.query}).then((resp) => {
+      queryNoticeLessons({ ...this.pages, ...this.query }).then((resp) => {
         this.data = resp.data.notice_lessons
         this.total = resp.data.total
       })

@@ -41,7 +41,7 @@ export default{
       component: resolve => require(['Views/LessonNoticeManager/index'], resolve)
     },
     {
-      name: '课程表',
+      name: 'lesson_form',
       path: 'lesson_form', // xzl
       meta: {
         icon: 'arrow-graph-up-right',
