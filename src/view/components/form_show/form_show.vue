@@ -46,7 +46,7 @@
             <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
           </Row>
           <Row>
-            <Input type="textarea" placeholder="Satisfation about teachers..." v-model="it.item_name"
+            <Input type="textarea" placeholder="Satisfation about teachers..." v-model="values[it.item_name]"
                    v-bind:style="{marginLeft:'25px',width:'65%'}" :disabled="disabled"></Input>
           </Row>
         </FormItem>

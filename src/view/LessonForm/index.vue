@@ -7,7 +7,7 @@
           <Select v-model="query.term" style="width:200px">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
-        </  FormItem>
+        </FormItem>
           <FormItem label="教师名字：" prop="lesson_teacher_name">
             <TeacherSelector v-model="query.lesson_teacher_name"></TeacherSelector>
           </FormItem>

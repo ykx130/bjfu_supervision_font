@@ -8,25 +8,33 @@
               <div slot="title" style="text-align: center">学期: {{term.name}}</div>
               <plan :work_plans="work_plans"></plan>
               <div style="float: right;padding-top: 100px">
-                <Button type="primary">新增</Button>
+                <Button type="primary" @click="handlePlanAdd(term.name)">新增</Button>
               </div>
             </Card>
           </CarouselItem>
         </Carousel>
     </Row>
+    <PlanAddModal  :term_name="current_term.name"
+                   :show="show_plan_add_modal"
+                   @onCancel="show_plan_add_modal= false"
+                   @onOK="handlePlanAddOK"
+    ></PlanAddModal>
   </Card>
 </template>
 
 <script>
 import Plan from './components/plan'
+import PlanAddModal from './components/planAdd'
 import { queryTerms, getCurrentTerms } from '@/service/api/term'
+import { postWorkPlan, queryWorkPlan } from '@/service/api/work_plan'
 import CollapsedMenu from '../../components/main/components/side-menu/collapsed-menu'
 export default {
   name: 'WorkPlan',
-  components: { CollapsedMenu, Plan },
+  components: { CollapsedMenu, Plan, PlanAddModal },
   data: function () {
     return {
       term_index: 0,
+      show_plan_add_modal: false,
       terms: [],
       work_plans: [
         {
@@ -44,6 +52,21 @@ export default {
           'status': false
         }
       ]
+    }
+  },
+  computed: {
+    current_term: function () {
+      return this.terms[this.term_index]
+    }
+  },
+  methods: {
+    handlePlanAdd (term_name) {
+      this.show_plan_add_modal = true
+    },
+    handlePlanAddOK (plan) {
+      postWorkPlan(plan).then((resp) => {
+
+      })
     }
   },
   mounted: function () {

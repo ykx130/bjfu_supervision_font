@@ -1,15 +1,24 @@
 <template>
+  <div>
     <Table stripe :columns="columns" :data="work_plans"></Table>
+    <planModify :plan_id="select_plan_id"
+                :show="show_plan_modify_modal"
+                @onCancel="show_plan_modify_modal = false"></planModify>
+  </div>
 </template>
 
 <script>
+import planModify from './planModify'
 export default {
+  components: { planModify },
   name: 'plan',
   props: {
     work_plans: Array
   },
   data: function () {
     return {
+      select_plan_id: 1,
+      show_plan_modify_modal: false,
       columns: [{
         title: '计划评价体系名',
         key: 'meta_name'
@@ -51,7 +60,8 @@ export default {
               },
               on: {
                 click: () => {
-                  this.$emit('')
+                  this.show_plan_modify_modal = true
+                  this.select_plan_id = params.row.id
                 }
               }
             }, '编辑'),
