@@ -1,7 +1,6 @@
 <template>
   <Card>
-    <Scroll height="670">
-      <div>
+      <div style="overflow: hidden">
         <!--{{ this.form}}-->
         <h1 style="text-align: center;color: #468847;background-color: #dff0d8;    border-color: #d6e9c6;">{{ form.bind_meta_name }}</h1>
         <br/>
@@ -30,8 +29,11 @@
         <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled">提交</Button>
         <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
       </div>
+        <div style="overflow: hidden">
+          <div v-if="form.status === '已完成'" class="form-status" style="background-color: #cce5ff"><p> {{ form.status }} </p></div>
+          <div v-else class="form-status" style="background-color: #f8d7da"><p> {{ form.status }} </p></div>
+        </div>
       </div>
-    </Scroll>
   </Card>
 </template>
 <script>
@@ -193,3 +195,20 @@ export default {
   }
 }
 </script>
+<style>
+  .form-status{
+    display: inline-block;
+    position: absolute;
+    text-align: center;
+    right: -7%;
+    top: 87%;
+    width: 21%;
+    transform: rotate(-50deg);
+    border-radius: 3px;
+    font-size: 30px;
+    padding: 2px;
+    text-overflow:ellipsis; white-space:nowrap;
+    overflow: hidden;
+    opacity:0.5;
+  }
+</style>
