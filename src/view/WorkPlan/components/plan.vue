@@ -1,24 +1,35 @@
 <template>
   <div>
     <Table stripe :columns="columns" :data="work_plans"></Table>
-    <planModify :plan_id="select_plan_id"
+    <planModify :plan="select_plan"
                 :show="show_plan_modify_modal"
-                @onCancel="show_plan_modify_modal = false"></planModify>
+                @onCancel="show_plan_modify_modal = false"
+                @noOK="handlePlanModifyOK"
+    ></planModify>
+    <PlanAddModal  :term_name="term"
+                   :show="show_plan_add_modal"
+                   @onCancel="show_plan_add_modal= false"
+                   @onOK="handlePlanAddOK"
+    ></PlanAddModal>
   </div>
 </template>
 
 <script>
 import planModify from './planModify'
+import PlanAddModal from './planAdd'
+import { postWorkPlan, queryWorkPlan,putWorkPlan } from '@/service/api/work_plan'
 export default {
-  components: { planModify },
+  components: { planModify,PlanAddModal },
   name: 'plan',
   props: {
-    work_plans: Array
+    term: String
   },
   data: function () {
     return {
-      select_plan_id: 1,
+      select_plan: {},
       show_plan_modify_modal: false,
+      show_plan_add_modal: false,
+      work_plans:[],
       columns: [{
         title: '计划评价体系名',
         key: 'meta_name'
@@ -61,7 +72,7 @@ export default {
               on: {
                 click: () => {
                   this.show_plan_modify_modal = true
-                  this.select_plan_id = params.row.id
+                  this.select_plan = params.row
                 }
               }
             }, '编辑'),
@@ -89,7 +100,22 @@ export default {
       }
       ]
     }
-  }
+  },
+  methods:{
+    handlePlanAdd (term_name) {
+      this.show_plan_add_modal = true
+    },
+    handlePlanAddOK (plan) {
+      postWorkPlan(plan).then((resp) => {
+
+      })
+    },
+    handlePlanModifyOK(plan){
+      putWorkPlan(plan.id, plan).then((resp)=>{
+
+      })
+    }
+  },
 
 }
 </script>

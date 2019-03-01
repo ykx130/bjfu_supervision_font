@@ -26,28 +26,21 @@ export default {
     show: Boolean,
     onCancel: Function,
     onOK: Function,
-    plan_id: ''
+    plan: {type:Object, default:{}}
   },
   data: function () {
     return {
-      plan: {
-        meta_name: '',
-        meta_version: '',
-        status: false
-      }
+
     }
   },
   methods: {
     handleOK: function () {
-      this.$emit('onOK', this.lesson)
+      this.$emit('onOK', this.plan)
     },
     handleCancel: function () {
       this.$emit('onCancel')
     },
     onShowChange: function (show) {
-      if (show) {
-        // 显示的时候拉数
-      }
     }
   },
   mounted: function () {
