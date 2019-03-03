@@ -6,19 +6,31 @@
     @on-cancel="handleCancel"
     @on-visible-change="onShowChange">
     <Form :model="plan">
-      <FormItem prop="meta_name" label="体系名称">
-        <Input type="text" disabled v-model="plan.lesson_name" >
-        </Input>
+      <FormItem prop="form_meta_name" label="体系名称">
+        <Select :lable="plan.form_meta_name"
+                v-model="plan.form_meta_name"
+                @on-change="handleMetaChange"
+                @on-query-change="handleQueryChange" :filterable="true" >
+          <Option v-for="item in form_metas"
+                  :value="item.name"
+                  :key="item.name"
+          >{{ item.name }}</Option>
+        </Select>
       </FormItem>
-      <FormItem prop="meta_version" label="体系版本">
-        <Input type="text" disabled v-model="plan.lesson_attribute">
-        </Input>
+      <FormItem prop="form_meta_version" label="体系版本">
+        <Select  :lable="plan.form_meta_version" v-model="plan.form_meta_version" >
+          <Option v-for="item in meta_versions"
+                  :value="item.version"
+                  :key="item.version"
+          >{{ item.version }}</Option>
+        </Select>
       </FormItem>
     </Form>
   </Modal>
 </template>
 
 <script>
+import { queryFormMetas,getFormMetaHistory } from '@/service/api/dqs'
 import { updateWithinField } from 'Libs/tools'
 export default {
   name: 'PlanProfile',
@@ -30,10 +42,28 @@ export default {
   },
   data: function () {
     return {
-
+      form_metas:[],
+      meta_versions: []
     }
   },
   methods: {
+    fetchMetas() {
+      // 数据表发生变化请求数据
+      queryFormMetas({_page:1, _per_page: 30}).then((resp) => {
+        this.form_metas = resp.data.form_metas
+        this.total = resp.data.total
+      })
+    },
+    handleMetaChange(value) {
+      getFormMetaHistory({name:value}).then((resp)=>{
+        this.meta_versions = resp.data.form_metas
+      })
+    },
+    handleQueryChange(v){
+      queryFormMetas({name_like:v}).then((resp) => {
+        this.form_metas = resp.data.form_metas
+      })
+    },
     handleOK: function () {
       this.$emit('onOK', this.plan)
     },
@@ -43,7 +73,8 @@ export default {
     onShowChange: function (show) {
     }
   },
-  mounted: function () {
+  mounted() {
+    this.fetchMetas()
   }
 }
 </script>
