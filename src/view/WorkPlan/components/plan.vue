@@ -1,6 +1,9 @@
 <template>
-  <div>
+  <div style="width: 1079px">
     <Table stripe :columns="columns" :data="work_plans"></Table>
+    <div style="float: right;padding-top: 100px">
+      <Button type="primary" @click="handlePlanAdd(term.name)">新增</Button>
+    </div>
     <planModify :plan="select_plan"
                 :show="show_plan_modify_modal"
                 @onCancel="show_plan_modify_modal = false"

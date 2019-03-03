@@ -37,14 +37,16 @@ export default {
       this.plan.term = this.term_name
     }
   },
-  handleOK: function () {
-    this.plan = this.term_name
-    this.$emit('onOK', this.plan)
-  },
-  handleCancel: function () {
-    this.$emit('onCancel')
-  },
-  onShowChange: function (show) {
+  methods:{
+    handleOK: function () {
+      this.plan = this.term_name
+      this.$emit('onOK', this.plan)
+    },
+    handleCancel: function () {
+      this.$emit('onCancel')
+    },
+    onShowChange: function (show) {
+    }
   }
 }
 </script>
