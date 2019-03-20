@@ -10,11 +10,15 @@ import importDirective from '@/directive'
 import installPlugin from '@/plugin'
 import ECharts from 'vue-echarts'
 import VueBus from 'vue-bus'
-Vue.use(VueBus)
-
+import MyCharts from '@/components/charts/install'
+import Print from '@/plugin/print'
 import 'iview/dist/styles/iview.css'
 import './index.less'
 import '@/assets/icons/iconfont.css'
+Vue.use(VueBus)
+Vue.use(MyCharts)
+Vue.use(Print)
+
 // 实际打包时应该不引入mock
 /* eslint-disable */
 if (process.env.NODE_ENV !== 'production') require('@/mock')
