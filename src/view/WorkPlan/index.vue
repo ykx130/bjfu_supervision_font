@@ -7,9 +7,6 @@
             <Card style="height: 400px;width: 100%">
               <div slot="title" style="text-align: center">学期: {{term.name}}</div>
               <plan :term="term.name"></plan>
-              <div style="float: right;padding-top: 100px">
-                <Button type="primary" @click="handlePlanAdd(term.name)">新增</Button>
-              </div>
             </Card>
           </CarouselItem>
         </Carousel>

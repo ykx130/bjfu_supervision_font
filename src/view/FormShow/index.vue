@@ -1,6 +1,6 @@
 <template>
   <Card>
-      <div style="overflow: hidden">
+      <div style="overflow: hidden;overflow-x: hidden">
         <!--{{ this.form}}-->
         <h1 style="text-align: center;color: #468847;background-color: #dff0d8;    border-color: #d6e9c6;">{{ form.bind_meta_name }}</h1>
         <br/>
