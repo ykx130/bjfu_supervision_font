@@ -1,5 +1,5 @@
 <template>
-  <div ref="dom" class="charts chart-bar"></div>
+  <div ref="dom" class="charts"></div>
 </template>
 
 <script>
@@ -8,7 +8,7 @@ import tdTheme from './theme.json'
 import { on, off } from '@/libs/tools'
 echarts.registerTheme('tdTheme', tdTheme)
 export default {
-  name: 'StackedBarPortrait',
+  name: 'StackedLinePortrai',
   props: {
     data: Object,
     text: String,
@@ -31,7 +31,7 @@ export default {
         legends.forEach((element, index) => {
           let serie = {
             name: '',
-            type: 'bar',
+            type: 'line',
             stack: '总量',
             label: {
               normal: {
@@ -84,7 +84,7 @@ export default {
       legends.forEach((element, index) => {
         let serie = {
           name: '',
-          type: 'bar',
+          type: 'line',
           stack: '总量',
           label: {
             normal: {
