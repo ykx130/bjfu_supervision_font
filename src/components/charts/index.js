@@ -4,4 +4,5 @@ import ChartWord from './wordcloud'
 import BarLandscape from './barLandscape'
 import StackedBar from './stackedBar'
 import StackedBarPortrait from './stackedBarPortrait'
-export { ChartPie, ChartBar, ChartWord, BarLandscape, StackedBar, StackedBarPortrait }
+import StackedLine from './stackedLine'
+export { ChartPie, ChartBar, ChartWord, BarLandscape, StackedBar, StackedBarPortrait, StackedLine }
