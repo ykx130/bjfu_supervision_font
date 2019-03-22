@@ -5,4 +5,5 @@ import BarLandscape from './barLandscape'
 import StackedBar from './stackedBar'
 import StackedBarPortrait from './stackedBarPortrait'
 import StackedLine from './stackedLine'
-export { ChartPie, ChartBar, ChartWord, BarLandscape, StackedBar, StackedBarPortrait, StackedLine }
+import BarPortrait from './barPortrait'
+export { ChartPie, ChartBar, ChartWord, BarLandscape, StackedBar, StackedBarPortrait, StackedLine, BarPortrait }

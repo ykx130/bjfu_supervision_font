@@ -1,4 +1,4 @@
-import { BarLandscape, StackedBar, StackedBarPortrait, ChartBar, StackedLine } from './index.js'
+import { BarLandscape, StackedBar, StackedBarPortrait, ChartBar, StackedLine, BarPortrait } from './index.js'
 
 export default {
   install (Vue, options) {
@@ -7,5 +7,6 @@ export default {
     Vue.component('StackedBarPortrait', StackedBarPortrait)
     Vue.component('Bar', ChartBar)
     Vue.component('StackedLine', StackedLine)
+    Vue.component('BarPortrait', BarPortrait)
   }
 }

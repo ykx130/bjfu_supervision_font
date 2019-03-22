@@ -72,6 +72,7 @@ export default {
         if (valid) {
           getReport(this.reportArgs.template_id, { term: this.reportArgs.term }).then(res => {
             this.code = res.data
+            console.log(this.code)
             this.reportPreviewShow = true
           })
         } else {
