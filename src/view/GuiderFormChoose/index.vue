@@ -14,14 +14,16 @@
     </Card>
     <Row :gutter="16"  class="form_content">
       <Col span="6" v-for="meta in data" style="margin-bottom: 30px">
-        <form_meta_card :meta="meta" @click.native="onCardClick(meta.name, meta.version)"></form_meta_card>
+        <form_meta_card :key="meta._id" :meta="meta" @click.native="onCardClick(meta.name, meta.version)"></form_meta_card>
       </Col>
     </Row>
   </div>
 </template>
 
 <script>
+import { getCurrentTerms } from '@/service/api/term'
 import { queryFormMetas } from '../../service/api/dqs'
+import { queryWorkPlanDetail } from '@/service/api/work_plan'
 import form_meta_card from 'Views/components/form_meta_card/form_meta_card'
 export default {
   components: { form_meta_card },
@@ -29,7 +31,8 @@ export default {
   data: function () {
     return {
       data: [],
-      query: {}
+      query: {},
+      term: ''
     }
   },
   methods: {
@@ -37,7 +40,7 @@ export default {
       this.$router.push({
         name: 'guider_form_fill',
         params: {
-          'name':name,
+          'name': name,
           'version': version
         },
         query: this.$route.query
@@ -51,8 +54,13 @@ export default {
     }
   },
   mounted: function () {
-    queryFormMetas().then((resp) => {
-      this.data = resp.data.form_metas
+    getCurrentTerms().then((termResp) => {
+      this.term = termResp.data.term.name
+      queryWorkPlanDetail(this.term).then((resp) => {
+        this.data = resp.data.work_plans.map((item) => {
+          return item.form_meta
+        })
+      })
     })
   }
 }

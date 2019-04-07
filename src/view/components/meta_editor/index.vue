@@ -13,9 +13,6 @@
           <FormItem label="问卷名称：">
             <Input v-model="value.name" placeholder="问卷名称..." style="width: 180px"></Input>
           </FormItem>
-          <FormItem label="问卷版本：">
-            <Input v-model="value.version" placeholder="问卷辨识符..." style="width: 180px"></Input>
-          </FormItem>
         </Form>
       </div>
 
@@ -171,119 +168,119 @@
 </template>
 
 <script>
-  import {
-    postFormMeta
-  } from '@/service/api/dqs'
-  import AddItem from './components/add_item'
-  import AddBlock from './components/add_block'
+import {
+  postFormMeta
+} from '@/service/api/dqs'
+import AddItem from './components/add_item'
+import AddBlock from './components/add_block'
 
-  import draggable from 'vuedraggable'
-  export default {
-    name: 'form_meta_editor',
-    components: {
-      AddItem,
-      draggable,
-      AddBlock
-    },
-    props: {
-      value: Object,
-    },
-    watch: {
-      value: {
-        deep:true,
-        handler: function () {
-          this.$emit('input', this.value)
-        }
+import draggable from 'vuedraggable'
+export default {
+  name: 'form_meta_editor',
+  components: {
+    AddItem,
+    draggable,
+    AddBlock
+  },
+  props: {
+    value: Object
+  },
+  watch: {
+    value: {
+      deep: true,
+      handler: function () {
+        this.$emit('input', this.value)
       }
-    },
-    data () {
-      return {
-        item_visible: false,
-        item_edit_visible: false,
-        block_visible:false,
-        block_edit_visible: false,
-        nowIndex: 0
-      }
-    },
-    mounted: function () {
-      // const args = this.$route.params;
-      // if (args.name) {
-      //   getFormMeta(args).then((response) => {
-      //     this.value = response.data.value;
-      //   })
-      // }
-    },
-    methods: {
-      validateItem: function(){
-        let stack = []
-        for (let i in this.value.items){
-          if (this.value.items[i].type === 'block_item'){
-            if(stack.length === 0){
-              // 空栈直接push
-              stack.push(this.value.items[i])
-            } else {
-              // 非空栈查看第一个元素看是否可以归约
-              if (stack[stack.length -1].item_type === this.value.items[i].item_type) {
-                // 相同类型
-                if(this.value.items[i].item_name.endsWith('start')) {
-                  // 开始  不归约
-                  stack.push(this.value.items[i])
-                } else {
-                  // end 规约
-                  stack.pop()
-                }
+    }
+  },
+  data () {
+    return {
+      item_visible: false,
+      item_edit_visible: false,
+      block_visible: false,
+      block_edit_visible: false,
+      nowIndex: 0
+    }
+  },
+  mounted: function () {
+    // const args = this.$route.params;
+    // if (args.name) {
+    //   getFormMeta(args).then((response) => {
+    //     this.value = response.data.value;
+    //   })
+    // }
+  },
+  methods: {
+    validateItem: function () {
+      let stack = []
+      for (let i in this.value.items) {
+        if (this.value.items[i].type === 'block_item') {
+          if (stack.length === 0) {
+            // 空栈直接push
+            stack.push(this.value.items[i])
+          } else {
+            // 非空栈查看第一个元素看是否可以归约
+            if (stack[stack.length - 1].item_type === this.value.items[i].item_type) {
+              // 相同类型
+              if (this.value.items[i].item_name.endsWith('start')) {
+                // 开始  不归约
+                stack.push(this.value.items[i])
+              } else {
+                // end 规约
+                stack.pop()
               }
             }
           }
         }
-        if (stack.length === 0) {
-          return true
-        } else {
-          this.$Message.error("移动失败")
-          return false
-        }
-      },
-      onMoveEnd: function(evt){
-        console.log('拖动前的索引 :' + evt.oldIndex)
-        console.log('拖动后的索引 :' + evt.newIndex)
-        if (!this.validateItem()){
-          let v = this.value.items[evt.oldIndex]
-          this.$set(this.value.items, evt.oldIndex, this.value.items[evt.newIndex])
-          this.$set(this.value.items, evt.newIndex, v)
-        }
-      },
-      appendNewItemBlock: function (value) {
-        console.log(value)
-        this.value.items.push(value)
-        this.$Message.info('Items appended!')
-        this.item_visible = false
-      },
-      editItemBlock: function (index, value) {
-        this.value.items.splice(index, 1)
-        this.value.items.splice(index, 0, value)
-        this.$Message.info('Items edited!')
-        this.item_visible = false
-      },
-      deleteNewBlock: function (item) {
-        let index = this.value.items.indexOf(item)
-        this.value.items.splice(index, 1)
-        this.$Message.info('Items deleted!')
-      },
-      appendNewBlockBlock: function(items){
-        this.value.items.push(items[0])
-        this.value.items.push(items[1])
-        this.$Message.info('Items appended!')
-        this.block_visible = false
-      },
-      editBlockBlock: function(index, value) {
-
-      },
-      submitForm: function () {
-        this.$emit('onSubmitClick')
-        this.$Message.info('Items created!')
       }
+      if (stack.length === 0) {
+        return true
+      } else {
+        this.$Message.error('移动失败')
+        return false
+      }
+    },
+    onMoveEnd: function (evt) {
+      console.log('拖动前的索引 :' + evt.oldIndex)
+      console.log('拖动后的索引 :' + evt.newIndex)
+      if (!this.validateItem()) {
+        let v = this.value.items[evt.oldIndex]
+        this.$set(this.value.items, evt.oldIndex, this.value.items[evt.newIndex])
+        this.$set(this.value.items, evt.newIndex, v)
+      }
+    },
+    appendNewItemBlock: function (value) {
+      console.log(value)
+      this.value.items.push(value)
+      this.$Message.info('Items appended!')
+      this.item_visible = false
+    },
+    editItemBlock: function (index, value) {
+      this.value.items.splice(index, 1)
+      this.value.items.splice(index, 0, value)
+      this.$Message.info('Items edited!')
+      this.item_visible = false
+    },
+    deleteNewBlock: function (item) {
+      let index = this.value.items.indexOf(item)
+      this.value.items.splice(index, 1)
+      this.$Message.info('Items deleted!')
+    },
+    appendNewBlockBlock: function (items) {
+      this.value.items.push(items[0])
+      this.value.items.push(items[1])
+      this.$Message.info('Items appended!')
+      this.block_visible = false
+    },
+    editBlockBlock: function (index, value) {
+
+    },
+    submitForm: function () {
+      this.$emit('onSubmitClick')
+      this.$Message.info('Items created!')
     }
   }
+}
 
 </script>
 

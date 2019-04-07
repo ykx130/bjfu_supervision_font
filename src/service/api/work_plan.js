@@ -13,9 +13,14 @@ export const deleteWorkPlan = (id) => {
 }
 
 export const postWorkPlan = (params) => {
+  params.form_meta_version = 'default'
   return axios.post('/api/work_plans', params)
 }
 
-export const putWorkPlan = (id,params) => {
+export const putWorkPlan = (id, params) => {
   return axios.put(`/api/work_plans/${id}`, params)
+}
+
+export const queryWorkPlanDetail = (term) => {
+  return axios.get(`/api/work_plan/details/${term}`)
 }

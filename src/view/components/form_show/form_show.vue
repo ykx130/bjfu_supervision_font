@@ -2,7 +2,7 @@
   <Form :model="values" ref="ruleform">
     <template v-for="it in items">
       <template v-if="it.item_type === 'sub_title_block'">
-        <span style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.title }}</span>
+        <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">{{ it.payload.title }}</span>
       </template>
 
       <template v-else-if="it.item_type === 'radio_option'">
@@ -54,7 +54,6 @@
 
       <template v-if="it.item_type === 'sub_title_block_end'">
         <FormItem>
-          <h1 style="height: 80px;line-height: 80px;margin-left: 20px">{{ it.payload.options }}</h1>
           <divider></divider>
         </FormItem>
       </template>
