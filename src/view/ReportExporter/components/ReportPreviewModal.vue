@@ -11,6 +11,7 @@
 </template>
 <script>
 import Display from '@/view/components/display'
+import { getPDF } from '@/service/api/templates'
 
 export default {
   name: 'ReportPreviewModal',
@@ -22,12 +23,18 @@ export default {
   },
   methods: {
     handleSubmit () {
-      this.$print(this.$refs.printPart)
-      this.$emit('onClose')
+      let printer = this.$print(this.$refs.printPart)
+      let htmls = printer.init();
+      getPDF({code:htmls}).then((res)=>{
+        let fileurl = "/data_report/" + res.data.path;
+        window.open(fileurl)
+        this.$emit('onClose')
+      }) 
+      
     },
     handleCancel () {
       this.$emit('onClose')
-    }
+    },
   },
   watch: {
     code (val) {

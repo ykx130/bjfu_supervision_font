@@ -13,12 +13,13 @@ const Print = function (dom, options) {
       this.isDOM(dom)
       this.dom = this.isDOM(dom) ? dom : dom.$el;
     }
-    this.init();
+    return this.init();
   };
   Print.prototype = {
     init: function () {
       var content = this.getStyle() + this.getHtml();
-      this.writeIframe(content);
+      return content;
+      // this.writeIframe(content);
     },
     extend: function (obj, obj2) {
       for (var k in obj2) {
@@ -33,7 +34,7 @@ const Print = function (dom, options) {
       for (var i = 0; i < styles.length; i++) {
         str += styles[i].outerHTML;
       }
-      str += "<style>" + (this.options.noPrint ? this.options.noPrint : '.no-print') + "{display:none;}</style>";
+      str += "<style>" + "*{overflow: visible !important;}"+ (this.options.noPrint ? this.options.noPrint : '.no-print') + "{display:none;}</style>";
   
       return str;
     },
