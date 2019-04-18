@@ -25,5 +25,5 @@ export const getReport = (template_id, params) => {
 }
 
 export const getPDF = (params) => {
-  return axios.post('/data_report/print', {parameters: params })
+  return axios.post('/data_report/print', { parameters: params })
 }
