@@ -37,24 +37,24 @@ export default {
         title: '计划评价体系名',
         key: 'form_meta_name'
       },
-      {
-        title: '使用状态',
-        render: (h, params) => {
-          if (params.row.status) {
-            return h('Tag', {
-              props: {
-                color: 'blue'
-              }
-            }, '使用')
-          } else {
-            return h('Tag', {
-              props: {
-                color: 'red'
-              }
-            }, '停用')
-          }
-        }
-      },
+      // {
+      //   title: '使用状态',
+      //   render: (h, params) => {
+      //     if (params.row.status) {
+      //       return h('Tag', {
+      //         props: {
+      //           color: 'blue'
+      //         }
+      //       }, '使用')
+      //     } else {
+      //       return h('Tag', {
+      //         props: {
+      //           color: 'red'
+      //         }
+      //       }, '停用')
+      //     }
+      //   }
+      // },
       {
         title: '操作',
         align: 'center',
