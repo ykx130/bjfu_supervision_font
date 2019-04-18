@@ -20,9 +20,9 @@
 <script>
 import planModify from './planModify'
 import PlanAddModal from './planAdd'
-import { postWorkPlan, queryWorkPlan,putWorkPlan } from '@/service/api/work_plan'
+import { postWorkPlan, queryWorkPlan, putWorkPlan, deleteWorkPlan } from '@/service/api/work_plan'
 export default {
-  components: { planModify,PlanAddModal },
+  components: { planModify, PlanAddModal },
   name: 'plan',
   props: {
     term: String
@@ -32,33 +32,29 @@ export default {
       select_plan: {},
       show_plan_modify_modal: false,
       show_plan_add_modal: false,
-      work_plans:[],
+      work_plans: [],
       columns: [{
         title: '计划评价体系名',
-        key: 'meta_name'
+        key: 'form_meta_name'
       },
-      {
-        title: '计划评价体系版本',
-        key: 'meta_version'
-      },
-      {
-        title: '使用状态',
-        render: (h, params) => {
-          if (params.row.status) {
-            return h('Tag', {
-              props: {
-                color: 'blue'
-              }
-            }, '使用')
-          } else {
-            return h('Tag', {
-              props: {
-                color: 'red'
-              }
-            }, '停用')
-          }
-        }
-      },
+      // {
+      //   title: '使用状态',
+      //   render: (h, params) => {
+      //     if (params.row.status) {
+      //       return h('Tag', {
+      //         props: {
+      //           color: 'blue'
+      //         }
+      //       }, '使用')
+      //     } else {
+      //       return h('Tag', {
+      //         props: {
+      //           color: 'red'
+      //         }
+      //       }, '停用')
+      //     }
+      //   }
+      // },
       {
         title: '操作',
         align: 'center',
@@ -92,7 +88,9 @@ export default {
                   this.$Modal.warning({
                     title: '是否确认删除?',
                     onOk: () => {
-
+                      deleteWorkPlan(params.row.id).then(() => {
+                        this.fetchData()
+                      })
                     }
                   })
                 }
@@ -104,21 +102,30 @@ export default {
       ]
     }
   },
-  methods:{
+  methods: {
+    fetchData () {
+      queryWorkPlan({ term: this.term }).then((resp) => {
+        this.work_plans = resp.data.work_plans
+      })
+    },
     handlePlanAdd (term_name) {
       this.show_plan_add_modal = true
     },
     handlePlanAddOK (plan) {
       postWorkPlan(plan).then((resp) => {
-
+        this.fetchData()
       })
     },
-    handlePlanModifyOK(plan){
-      putWorkPlan(plan.id, plan).then((resp)=>{
-
+    handlePlanModifyOK (plan) {
+      putWorkPlan(plan.id, plan).then((resp) => {
+        this.fetchData()
       })
     }
   },
+
+  created: function () {
+    this.fetchData()
+  }
 
 }
 </script>

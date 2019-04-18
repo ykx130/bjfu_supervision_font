@@ -16,6 +16,9 @@
         <Button type="primary" @click=" onSearch">查询</Button>
       </FormItem>
       <FormItem >
+        <Button @click="onExportExcel" icon="ios-cloud-download-outline" type="primary" >导出</Button>
+      </FormItem>
+      <FormItem >
         <Upload :action="uploadModelLessonApi" name="filename">
           <Button  icon="ios-cloud-upload-outline" type="primary" >导入</Button>
         </Upload>
@@ -190,6 +193,9 @@ export default {
       // 批量关注触发
       this.showBatchLessonWatchModal = false
       console.log('selected lessons id : ', this.selected_lesson_ids)
+    },
+    onExportExcel: function () {
+      
     }
   },
   mounted: function () {

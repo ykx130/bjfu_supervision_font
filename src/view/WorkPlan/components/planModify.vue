@@ -17,20 +17,13 @@
           >{{ item.name }}</Option>
         </Select>
       </FormItem>
-      <FormItem prop="form_meta_version" label="体系版本">
-        <Select  :lable="plan.form_meta_version" v-model="plan.form_meta_version" >
-          <Option v-for="item in meta_versions"
-                  :value="item.version"
-                  :key="item.version"
-          >{{ item.version }}</Option>
-        </Select>
-      </FormItem>
+
     </Form>
   </Modal>
 </template>
 
 <script>
-import { queryFormMetas,getFormMetaHistory } from '@/service/api/dqs'
+import { queryFormMetas, getFormMetaHistory } from '@/service/api/dqs'
 import { updateWithinField } from 'Libs/tools'
 export default {
   name: 'PlanProfile',
@@ -38,29 +31,29 @@ export default {
     show: Boolean,
     onCancel: Function,
     onOK: Function,
-    plan: {type:Object, default:{}}
+    plan: { type: Object, default: {} }
   },
   data: function () {
     return {
-      form_metas:[],
+      form_metas: [],
       meta_versions: []
     }
   },
   methods: {
-    fetchMetas() {
+    fetchMetas () {
       // 数据表发生变化请求数据
-      queryFormMetas({_page:1, _per_page: 30}).then((resp) => {
+      queryFormMetas({ _page: 1, _per_page: 30 }).then((resp) => {
         this.form_metas = resp.data.form_metas
         this.total = resp.data.total
       })
     },
-    handleMetaChange(value) {
-      getFormMetaHistory({name:value}).then((resp)=>{
-        this.meta_versions = resp.data.form_metas
-      })
+    handleMetaChange (value) {
+      // getFormMetaHistory({name:value}).then((resp)=>{
+      //   this.meta_versions = resp.data.form_metas
+      // })
     },
-    handleQueryChange(v){
-      queryFormMetas({name_like:v}).then((resp) => {
+    handleQueryChange (v) {
+      queryFormMetas({ name_like: v }).then((resp) => {
         this.form_metas = resp.data.form_metas
       })
     },
@@ -73,7 +66,7 @@ export default {
     onShowChange: function (show) {
     }
   },
-  mounted() {
+  mounted () {
     this.fetchMetas()
   }
 }

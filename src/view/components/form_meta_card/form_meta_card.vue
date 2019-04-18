@@ -5,7 +5,7 @@
         <Col :span="16"><p class="meta-name">{{ meta.name }}</p></Col>
       </Row>
       <Row>
-        <Col :span="24" style="text-align: left; padding-left: 32%"><p class="normal_font">版本： {{meta.version}} </p></Col>
+        <!--<Col :span="24" style="text-align: left; padding-left: 32%"><p class="normal_font">版本： {{meta.version}} </p></Col>-->
         <Col :span="24" style="text-align: left; padding-left: 32%"><p class="normal_font">创建日期： {{meta.meta.created_at}} </p></Col>
       </Row>
     </Card>

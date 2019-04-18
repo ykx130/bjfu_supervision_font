@@ -18,22 +18,22 @@
 import { queryFormMetas } from '@/service/api/dqs'
 import formMetaHistory from './components/form_meta_history'
 export default {
-  components:{formMetaHistory},
+  components: { formMetaHistory },
   data: function () {
     return {
       columns: [
-        {
-          type: 'expand',
-          title:"评价",
-          width: 70,
-          render: (h, params) => {
-            return h(formMetaHistory, {
-              props: {
-                meta_name: params.row.name
-              }
-            })
-          }
-        },
+        // {
+        //   type: 'expand',
+        //   title:"评价",
+        //   width: 70,
+        //   render: (h, params) => {
+        //     return h(formMetaHistory, {
+        //       props: {
+        //         meta_name: params.row.name
+        //       }
+        //     })
+        //   }
+        // },
         {
           title: '问卷名',
           render: function (h, params) {
@@ -42,14 +42,14 @@ export default {
             )
           }
         },
-        {
-          title: '版本',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.version }</span>
-            )
-          }
-        },
+        // {
+        //   title: '版本',
+        //   render: function (h, params) {
+        //     return (
+        //       <span>{ params.row.version }</span>
+        //     )
+        //   }
+        // },
         {
           title: '创建时间',
           render: function (h, params) {
@@ -81,7 +81,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$router.push({path: `/dqs/form_fill/${params.row.name}/${params.row.version}`})
+                    this.$router.push({ path: `/dqs/form_fill/${params.row.name}/${params.row.version}` })
                   }
                 }
               }, '查看'),
@@ -95,7 +95,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$router.push({path: `/dqs/meta_editor/${params.row.name}/${params.row.version}`})
+                    this.$router.push({ path: `/dqs/meta_editor/${params.row.name}/${params.row.version}` })
                   }
                 }
               }, '编辑')
@@ -106,7 +106,7 @@ export default {
       data: [],
       total: 0,
       query: {
-        meta:{},
+        meta: {}
       },
       pages: {
         _page: 1,
@@ -115,9 +115,9 @@ export default {
     }
   },
   methods: {
-     fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-       let args = {...this.query, ...this.pages}
+      let args = { ...this.query, ...this.pages }
       queryFormMetas(args).then((resp) => {
         this.data = resp.data.form_metas
         this.total = resp.data.total
@@ -126,20 +126,20 @@ export default {
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.fetchData( )
+      this.fetchData()
     },
     onSearch (query) {
       // 查询变化 当点提交查询条件生效
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     }
   },
   mounted: function () {
     let args = this.$route.query
-    queryFormMetas({...args, ...this.query}).then((resp) => {
+    queryFormMetas({ ...args, ...this.query }).then((resp) => {
       this.data = resp.data.form_metas
       this.total = resp.data.total
-  })
+    })
   }
 }
 </script>
