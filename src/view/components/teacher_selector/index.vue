@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <Input @on-focus="show_drop = true" v-model="value" @change="handleInputChange"></Input>
     <div class="teacher_selector" :transfer="true" v-show="show_drop">
       <div>
@@ -24,10 +24,10 @@
             <ul>
               <template v-for="unit in unit_list">
                 <li @click="select_unit = unit" v-if="select_unit === unit" class="underline selected_item"
-                    style="list-style: none">
+                    style="list-style: none;line-height: 25px">
                   {{unit}}
                 </li>
-                <li @click="select_unit = unit" v-else class="underline " style="list-style: none">
+                <li @click="select_unit = unit" v-else class="underline " style="list-style: none;line-height: 25px">
                   {{unit}}
                 </li>
               </template>
@@ -136,14 +136,13 @@ export default {
 <style lang="scss" scoped>
   .teacher_selector {
     position: absolute;
-    height: 600px;
+    height: 500px ;
     width: 500px;
     box-shadow: 0 0 4px 0 rgba(117, 117, 117, 0.5);
     border-radius: 2px;
     padding: 20px 21px;
     z-index: 10000;
     background-color: #fff;
-
   }
 
   .name_content {

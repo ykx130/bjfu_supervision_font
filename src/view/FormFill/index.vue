@@ -57,6 +57,11 @@ export default {
       immediate: true
     }
   },
+  computed: {
+    currentUser: function () {
+      return this.$store.getters.userInfo
+    }
+  },
   data () {
     return {
       model_lesson: {
@@ -103,63 +108,17 @@ export default {
         this.form_meta = resp.data.form_meta
         this.form_meta.items.forEach((item) => {
           // 添加数据
-          this.form_values[item.item_name] = undefined
-
-          // 处理校验规则
-          if (item.item_type === 'radio_option') {
-            if (item.payload.rules) {
-              this.ruleValidate[item.item_name] = [
-                { required: item.payload.rules[0].required, message: '请选择选项', trigger: 'blur' }
-              ]
-            } else {
-              this.ruleValidate[item.item_name] = this.defaultValidateRules.radio
-            }
-          } else if (item.item_type === 'checkbox_option') {
-            if (item.payload.rules) {
-              this.ruleValidate[item.item_name] = [
-                {
-                  required: item.payload.rules[0].required,
-                  type: 'array',
-                  min: item.payload.rules[1].min,
-                  message: '请至少选择' + item.payload.rules[1].min + '项',
-                  trigger: 'change'
-                },
-                {
-                  type: 'array',
-                  max: item.payload.rules[1].max,
-                  message: '最多选择' + item.payload.rules[1].max + '项',
-                  trigger: 'change'
-                }
-              ]
-            } else {
-              this.ruleValidate[item.item_name] = this.defaultValidateRules.checkbox
-            }
-          } else if (item.item_type === 'raw_text') {
-            if (item.payload.rules) {
-              this.ruleValidate[item.item_name] = [
-                { required: item.payload.rules[0].required, message: '请填写内容', trigger: 'blur' },
-                {
-                  type: 'string',
-                  min: item.payload.rules[1].min,
-                  message: '内容多于' + item.payload.rules[1].min + '字',
-                  trigger: 'blur'
-                },
-                {
-                  type: 'string',
-                  max: item.payload.rules[1].max,
-                  message: '内容少于' + item.payload.rules[1].max + '字',
-                  trigger: 'blur'
-                }
-              ]
-            } else {
-              this.ruleValidate[item.item_name] = this.defaultValidateRules.raw_text
-            }
-          }
-          // this.form_inputs[item.item_name].value='[]';
+          this.form_values[item.item_name] = item
         })
       })
     },
-
+    back () {
+      if (this.currentUser.role_names.includes('管理员')) {
+        this.$router.push({ name: '问卷管理' })
+      } else {
+        this.$router.push({ name: '督导端' })
+      }
+    },
     handleSubmit () {
       this.meta.lesson.lesson_model = this.recommend_model
       if (this.meta.guider === '' || this.meta.lesson.lesson_name === '' ||
@@ -183,7 +142,7 @@ export default {
             }
 
             postForm(form).then(() => {
-              location.reload()
+              this.back()
             })
             this.$Message.success('添加成功！')
           } else {
@@ -192,6 +151,7 @@ export default {
         })
       }
     },
+
     handleSave () {
       let form = {
         bind_meta_id: this.form_meta._id,
@@ -202,11 +162,11 @@ export default {
         values: Object.values(this.form_values)
       }
       postForm(form).then(() => {
-        location.reload()
+        this.back()
       })
     },
     handleCancel () {
-      location.reload()
+      this.back()
     }
   }
 }

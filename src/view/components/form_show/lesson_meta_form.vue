@@ -9,21 +9,27 @@
           </FormItem>
         </Col>
         <Col span="6">
-          <FormItem label="听课督导" :required="true" c>
-            <Select v-model="value.guider"  @on-change="onGuiderSelectChange" :disabled="guider_disable || disabled" class="inline-form-item">
-              <Option v-for="(item,index) in users" :value="item.username" :key="item.username + index"   >{{item.name}}</Option>
+          <FormItem label="听课督导" :required="true">
+            <Select v-model="value.guider"
+                    remote
+                    filterable
+                    @on-query-change="onGuiderQueryChange"
+                    @on-change="onGuiderSelectChange"
+                    :disabled="guider_disable || disabled"
+                    class="inline-form-item">
+              <Option v-for="(item, key) in users" :value="item.username" :key="item.username + item.id"   >{{item.name}}</Option>
             </Select>
           </FormItem>
         </Col>
         <Col span="6">
-          <FormItem  label="听课学期" prop="term" :required="true" >
+          <FormItem  label="听课学期" prop="term" >
             <Select v-model="value.term"  @on-change="onTermSelectChange" class="inline-form-item" :disabled="disabled">
               <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
             </Select>
           </FormItem>
         </Col>
         <Col span="6">
-          <FormItem  label="听课级别" prop="term" :required="true">
+          <FormItem  label="听课级别" prop="lesson.lesson_level">
             <Input   v-model="value.lesson.lesson_level" disabled class="inline-form-item"></Input>
           </FormItem>
         </Col>
@@ -46,11 +52,14 @@
           <td>
             <FormItem :required="true" class="table-form-item">
               <Select v-model="value.lesson.id"
+                      remote
+                      :label="value.lesson.lesson_name"
                       @on-change="onSelectedLessonChange"
+                      @on-query-change="onLessonQueryChange"
                       :disabled="lesson_disabled || disabled"
                       filterable>
-                <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_name + index">{{
-                  item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
+                <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_name + item.id">
+                  {{ item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
                 </Option>
               </Select>
             </FormItem>
@@ -78,7 +87,7 @@
           </td>
           <td>
             <FormItem :required="true" class="table-form-item">
-              <Input :value="value.lesson.lesson_room" disabled></Input>
+              <Input v-model="value.lesson.lesson_room" disabled></Input>
             </FormItem>
           </td>
           <td>
@@ -117,16 +126,17 @@ export default {
   },
   data () {
     return {
-      lessons: [],
-      users: [],
-      guider: {},
+      lessons: {},
+      users: {},
       lesson_times: [],
       allow_select_data: [],
       terms: [],
       selected_lesson: { lesson_cases: [] },
       selected_lesson_case: {},
-      lesson_disabled: false, // 禁用课程的表单,
-      guider_disable: false
+      lesson_disabled: '', // 禁用课程的表单,
+      guider_disable: '',
+      guider_name_like: undefined,
+      user_name_like: undefined
     }
   },
   computed: {
@@ -142,101 +152,130 @@ export default {
       }
     }
   },
-  created () {
-    queryTerms().then((resp) => {
-      this.terms = resp.data.terms
-    })
-    let lesson_id = this.$route.query.lesson_id
-    if (lesson_id) {
-      // 课程表跳转
-      getLesson(lesson_id).then((resp) => {
-        // 读取课程
-        this.selected_lesson = resp.data.lesson
-        // 处理case
-        this.value.lesson.lesson_date = undefined
-        this.lesson_times = []
-        this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
-          return item.lesson_date
-        })
-        // 选择case
-        if (this.allow_select_data) {
-          this.onSelectedLessonCaseChange(this.allow_select_data[0])
-        }
-        // 处理表单的附加值
-        this.value.term = this.selected_lesson.term
-
-        this.lesson_disabled = true
-
-        this.lesson_disabled = false
-        queryLessons({ term: this.value.term }).then((resp) => {
-          this.lessons = [resp.data.lessons, this.selected_lesson]
-        })
-
-        querySupervisors({ user_roles: { term: this.value.term } }).then((resp) => {
-          this.users = resp.data.users
-        })
-      })
-    } else {
-      getCurrentTerms().then((termResp) => {
-        this.value.term = termResp.data.term.name
-        queryLessons({ term: this.value.term }).then((resp) => {
-          this.lessons = resp.data.lessons
-        })
-        querySupervisors({ user_roles: { term: this.value.term } }).then((resp) => {
-          this.users = resp.data.users
-        })
-      })
-    }
-  },
   mounted () {
     // 处理当前用户
+    queryTerms().then((resp) => {
+      this.terms = resp.data.terms
+    }).then(() => {
+      let lesson_id = this.$route.query.lesson_id
+      if (lesson_id) {
+        // 课程表跳转
+        getLesson(lesson_id).then((resp) => {
+          // 读取课程
+          this.selected_lesson = resp.data.lesson
+          // 处理case
+          this.lessons[this.selected_lesson.id] = this.selected_lesson
+          this.value.lesson.lesson_date = undefined
+          this.lesson_times = []
+          this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
+            return item.lesson_date
+          })
+          // 选择case
+          if (this.allow_select_data) {
+            this.onSelectedLessonCaseChange(this.allow_select_data[0])
+          }
+          // 处理表单的附加值
+          this.value.term = this.selected_lesson.term
+
+          this.lesson_disabled = true
+
+          this.lesson_disabled = false
+          this.fetchUser()
+        })
+      } else {
+        getCurrentTerms().then((resp) => {
+          this.value.term = resp.data.term.name
+          if (this.lesson_disabled || this.disabled) {
+            this.selected_lesson = this.value.lesson
+            this.$set(this.lessons, this.selected_lesson.id, this.selected_lesson)
+            this.lesson_times = this.value.lesson.lesson_times.map((item) => {
+              return {
+                label: `第${item}节`,
+                value: item
+              }
+            })
+          } else {
+            this.fetchLesson()
+          }
+
+          if (this.guider_disable || this.disabled) {
+            this.$set(this.users, this.value.guider, {
+              'username': this.value.guider,
+              'name': this.value.guider_name
+            })
+          } else {
+            this.fetchUser()
+          }
+        })
+      }
+    })
     if (this.currentUser.guider && !this.currentUser.role_names.includes('管理员')) {
       this.value.guider = this.currentUser.username
       this.value.guider_name = this.currentUser.name
-      this.value.guider_group = this.currentUser.guider_group
+      this.value.guider_group = this.currentUser.guider.groupmd5
     }
   },
   methods: {
+    // 获取所有用户
+    fetchUser: function () {
+      this.users = {}
+      return querySupervisors({ term: this.value.term, name_like: this.guider_name_like }).then((resp) => {
+        resp.data.users.map((item) => {
+          this.$set(this.users, item.username, item)
+        })
+      })
+    },
+
+    // 获取所有课程
+    fetchLesson: function () {
+      this.lessons = {}
+      return queryLessons({ term: this.value.term, lesson_name_like: this.guider_name_like }).then((resp) => {
+        resp.data.lessons.map((item) => {
+          this.$set(this.lessons, item.id, item)
+        })
+      })
+    },
+
     restValue: function () {
       this.value.lesson = {}
     },
-    onLessonQueryChange: function (value) {
-      queryLessons({ lesson_name_like: value }).then((resp) => {
-        this.lessons = resp.data.lessons
-      })
+
+    onGuiderQueryChange: function (value) {
+      this.guider_name_like = value
+      this.fetchUser()
     },
+
+    onLessonQueryChange: function (value) {
+      this.lesson_name_like = value
+      this.fetchLesson()
+    },
+
     onGuiderSelectChange: function (value) {
-      let guider = this.users.find((ele) => {
-        return ele.username === value
-      })
+      let guider = this.users[value]
       if (guider) {
         this.value.guider_name = guider.name
         this.value.guider_group = guider.group
       }
     },
+
     onTermSelectChange: function (value) {
-      queryLessons({ term: this.value.term }).then((resp) => {
-        this.lessons = resp.data.lessons
+      this.fetchLesson().then(() => {
+        this.restValue()
       })
-      querySupervisors({ user_roles: { term: this.value.term } }).then((resp) => {
-        this.users = resp.data.users
-      })
-      this.restValue()
+      this.fetchUser()
     },
+
     onSelectedLessonChange: function (id) {
       /* 选择的课程发生变化 */
-
       if (this.value.lesson.id) {
-        let flag = this.lessons.findIndex((item) => {
-          return item.id === this.value.lesson.id
-        })
-        this.selected_lesson = this.lessons[flag]
+        this.selected_lesson = this.lessons[id]
       } else {
         this.selected_lesson = { lesson_cases: [] }
       }// 查看选的那个
 
       this.value.lesson.lesson_date = undefined
       this.lesson_times = []
+
       this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
         return item.lesson_date
       })
@@ -245,6 +284,7 @@ export default {
         this.onSelectedLessonCaseChange(this.allow_select_data[0])
       }
     },
+
     onSelectedLessonCaseChange: function (value) {
       /* 选择的课程case变化 根据时间 */
       let flag = this.selected_lesson.lesson_cases.findIndex((item) => {
@@ -259,7 +299,6 @@ export default {
       }
 
       this.value.lesson = {
-        ...this.value.lesson.lesson_date,
         id: this.selected_lesson.id,
         lesson_id: this.selected_lesson.lesson_id,
         lesson_name: this.selected_lesson.lesson_name,
@@ -286,6 +325,9 @@ export default {
         }
       }
     }
+  },
+  created () {
+
   }
 }
 </script>

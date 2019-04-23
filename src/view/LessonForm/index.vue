@@ -339,9 +339,10 @@ export default {
   mounted: function () {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
-    })
-    getCurrentTerms().then((termResp) => {
-      this.query.term = termResp.data.term.name
+      getCurrentTerms().then((termResp) => {
+        this.query.term = termResp.data.term.name
+        debugger
+      })
     })
   }
 }

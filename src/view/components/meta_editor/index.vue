@@ -279,6 +279,9 @@ export default {
       this.$emit('onSubmitClick')
       this.$Message.info('Items created!')
     }
+  },
+  mounted: function () {
+    this.value.version = 'default'
   }
 }
 

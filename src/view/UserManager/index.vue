@@ -62,7 +62,7 @@ export default {
       showUserAddModal: false,
       pages: {
         _page: 1,
-        _per_page: 10
+        _per_page: 20
       }, // 分页
       columns: [
         {
