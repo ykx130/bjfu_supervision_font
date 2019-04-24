@@ -10,9 +10,9 @@
         </Col>
         <Col span="6">
           <FormItem label="听课督导" :required="true">
-            <Select v-model="value.guider"
-                    remote
+            <Select :value="value.guider"
                     filterable
+                    remote
                     @on-query-change="onGuiderQueryChange"
                     @on-change="onGuiderSelectChange"
                     :disabled="guider_disable || disabled"
@@ -51,14 +51,14 @@
         <tr>
           <td>
             <FormItem :required="true" class="table-form-item">
-              <Select v-model="value.lesson.id"
+              <Select :value="value.lesson.id"
                       remote
                       :label="value.lesson.lesson_name"
                       @on-change="onSelectedLessonChange"
                       @on-query-change="onLessonQueryChange"
                       :disabled="lesson_disabled || disabled"
                       filterable>
-                <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_name + item.id">
+                <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_id + item.lesson_name + item.id">
                   {{ item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
                 </Option>
               </Select>
@@ -95,7 +95,7 @@
               <Select v-model="value.lesson.lesson_times"  multiple :disabled="disabled">
                 <Option v-for="item in lesson_times"
                         :value="item.value"
-                        :key="item.value"
+                        :key="item.value + item.key"
                 >{{ item.label }}</Option>
               </Select>
             </FormItem>
@@ -229,7 +229,7 @@ export default {
     // 获取所有课程
     fetchLesson: function () {
       this.lessons = {}
-      return queryLessons({ term: this.value.term, lesson_name_like: this.guider_name_like }).then((resp) => {
+      return queryLessons({ term: this.value.term, lesson_name_like: this.lesson_name_like }).then((resp) => {
         resp.data.lessons.map((item) => {
           this.$set(this.lessons, item.id, item)
         })
@@ -241,6 +241,7 @@ export default {
     },
 
     onGuiderQueryChange: function (value) {
+      debugger
       this.guider_name_like = value
       this.fetchUser()
     },
@@ -252,7 +253,9 @@ export default {
 
     onGuiderSelectChange: function (value) {
       let guider = this.users[value]
+
       if (guider) {
+        this.value.guider = guider.username
         this.value.guider_name = guider.name
         this.value.guider_group = guider.group
       }
@@ -267,7 +270,7 @@ export default {
 
     onSelectedLessonChange: function (id) {
       /* 选择的课程发生变化 */
-      if (this.value.lesson.id) {
+      if (id) {
         this.selected_lesson = this.lessons[id]
       } else {
         this.selected_lesson = { lesson_cases: [] }
@@ -299,8 +302,6 @@ export default {
       }
 
       this.value.lesson = {
-        id: this.selected_lesson.id,
-        lesson_id: this.selected_lesson.lesson_id,
         lesson_name: this.selected_lesson.lesson_name,
         lesson_teacher_name: this.selected_lesson.lesson_teacher_name,
         lesson_class: this.selected_lesson.lesson_class,
@@ -311,7 +312,8 @@ export default {
         lesson_level: this.selected_lesson.lesson_level,
         lesson_model: this.selected_lesson.lesson_model,
         lesson_date: value,
-        lesson_room: this.selected_lesson_case.lesson_room
+        lesson_room: this.selected_lesson_case.lesson_room,
+        lesson_times: this.value.lesson.lesson_times ? this.value.lesson.lesson_times :[]
       }
     },
 

@@ -122,7 +122,9 @@ export default {
           this.meta.lesson.lesson_date === '' || this.meta.lesson.lesson_times === '') {
         this.$Message.error('请填写完成课程信息！')
       } else {
-        this.$refs.ruleform.form.validate((valid) => {
+
+        this.$refs.ruleform.validate((valid) => {
+          debugger
           if (valid) {
             let form = {
               status: '已完成',
@@ -140,6 +142,7 @@ export default {
             this.$Message.error('请填写完整信息！')
           }
         })
+
       }
     },
     handleSave () {

@@ -13,7 +13,9 @@
           </Row>
           <Row>
             <RadioGroup v-model="values[it.item_name].value">
-              <Radio v-for="op in it.payload.options" :value="op.value" :label="op.label" :key="op.value"
+              <Radio v-for="op in it.payload.options" :value="op.value"
+                     :label="op.label"
+                     :key="op.label + op.value"
                      v-bind:style="{ fontSize:'15px',marginLeft:'25px' }" :disabled="disabled">
                 <span>{{op.label}}</span>
               </Radio>
@@ -30,7 +32,8 @@
           </Row>
           <Row>
             <CheckboxGroup v-model="values[it.item_name].value">
-              <Checkbox v-for="op in it.payload.options" :label="op.label" :key="op.value"
+              <Checkbox v-for="op in it.payload.options" :label="op.label"
+                        :key="op.label + op.value"
                         v-bind:style="{ fontSize:'15px',marginLeft:'25px' }" :disabled="disabled">
                 <span>{{op.label}}</span>
               </Checkbox>
