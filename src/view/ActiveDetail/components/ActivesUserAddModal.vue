@@ -13,7 +13,7 @@
             </Option>
           </Select>
         </FormItem>
-        <FormItem label="报名状态" prop="state">
+        <FormItem label="报名状态" prop="state" disabled>
           <Select v-model="activity_user.state">
             <Option v-for="state in attend_states" :value="state" :key="state">{{ state }}</Option>
           </Select>
@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import {queryUsers} from '../../../service/api/user'
-import {AttendState, FinAttendState} from '../marcos'
+import { queryUsers } from '../../../service/api/user'
+import { AttendState, FinAttendState } from '../marcos'
 export default {
   name: 'ActivesAddModal',
   data () {
@@ -46,10 +46,10 @@ export default {
           trigger: 'change',
           type: 'object',
           message: '请选择教师',
-          fields: {username: {type: 'string', required: true, message: '请选择教师'}}
+          fields: { username: { type: 'string', required: true, message: '请选择教师' } }
         }],
-        state: [{required: true, trigger: 'change', message: '请选择报名状态' }],
-        fin_state: [{required: true, trigger: 'change', message: '请选择参加状态' }]
+        state: [{ required: true, trigger: 'change', message: '请选择报名状态' }],
+        fin_state: [{ required: true, trigger: 'change', message: '请选择参加状态' }]
       }
     }
   },
@@ -63,7 +63,7 @@ export default {
       this.$refs.activity_user_form.validate((valid) => {
         if (valid) {
           this.$Message.success('添加成功！')
-          this.$emit('onOK', {state: this.activity_user.state, fin_state: this.activity_user.fin_state})
+          this.$emit('onOK', { username: this.activity_user.user.username, state: this.activity_user.state, fin_state: this.activity_user.fin_state })
           this.activity_user = {}
         } else {
           this.$Message.error('请填写完整信息!')
@@ -74,7 +74,7 @@ export default {
       this.$emit('onCancel')
     },
     onSelectUserChange: function (query) {
-      this.queryUsers({name_like: query}).then((resp) => {
+      this.queryUsers({ name_like: query }).then((resp) => {
         this.users = resp.data.users
       })
     }

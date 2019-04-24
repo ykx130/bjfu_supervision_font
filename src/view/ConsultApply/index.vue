@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import {postConsults, queryConsultTypes} from '../../service/api/consult'
+import { postConsults, queryConsultTypes } from '../../service/api/consult'
 export default {
   data: function () {
     return {
@@ -56,7 +56,7 @@ export default {
           phone: '',
           type: '',
           content: '',
-          state: '未协调'
+          state: '待协调'
         }
       })
     }

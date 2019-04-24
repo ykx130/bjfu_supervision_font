@@ -23,7 +23,8 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://47.92.110.74/api/', // 接口的域名  //http://47.92.110.74:8085/
+        target: 'http://172.20.10.2:5000/', // 接口的域名  //http://47.92.110.74:8085/
+        // target: 'http://47.92.110.74:8085/',
         secure: false, // 如果是https接口，需要配置这个参数
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
         pathRewrite: { '^/api': '' }

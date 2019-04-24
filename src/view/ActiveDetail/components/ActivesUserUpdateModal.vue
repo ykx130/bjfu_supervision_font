@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import {getActiveUser} from '../../../service/api/actives'
-import {AttendState, FinAttendState} from '../marcos'
+import { getActiveUser } from '../../../service/api/actives'
+import { AttendState, FinAttendState } from '../marcos'
 export default {
-  name: 'ActivesAddModal',
+  name: 'ActivesUpdateModal',
   data () {
     return {
       activity_user: {},

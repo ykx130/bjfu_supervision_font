@@ -42,7 +42,8 @@
       <Row >
         <Page style="float: right;" :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </Row>
-    <FloatBar><Button type="error" @click="onBatchWatchClick">批量取消关注</Button>
+    <FloatBar>
+      <!--<Button type="error" @click="onBatchWatchClick">批量取消关注</Button>-->
     </FloatBar>
   </Card>
 </template>
@@ -78,11 +79,11 @@ export default {
       }, // 分页
       columns: [
 
-        {
-          type: 'selection',
-          width: 60,
-          align: 'center'
-        },
+        // {
+        //   type: 'selection',
+        //   width: 60,
+        //   align: 'center'
+        // },
         {
           type: 'expand',
           title: '评价',
@@ -219,7 +220,7 @@ export default {
       console.log('selected lessons id : ', this.selected_lesson_ids)
     },
     onExportExcel: function () {
-      
+
     }
   },
   mounted: function () {

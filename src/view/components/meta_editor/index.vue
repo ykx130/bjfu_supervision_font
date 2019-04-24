@@ -202,14 +202,6 @@ export default {
       nowIndex: 0
     }
   },
-  mounted: function () {
-    // const args = this.$route.params;
-    // if (args.name) {
-    //   getFormMeta(args).then((response) => {
-    //     this.value = response.data.value;
-    //   })
-    // }
-  },
   methods: {
     validateItem: function () {
       let stack = []

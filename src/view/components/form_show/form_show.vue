@@ -2,7 +2,14 @@
   <Form :model="values" ref="ruleform">
     <template v-for="it in items">
       <template v-if="it.item_type === 'sub_title_block'">
-        <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">{{ it.payload.title }}</span>
+        <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold" v-if="it.item_name=== 'sub_title_block_start'">{{ it.payload.title }}</span>
+
+        <template v-if="it.item_name=== 'sub_title_block_end'">
+          <FormItem>
+            <divider></divider>
+          </FormItem>
+        </template>
+
       </template>
 
       <template v-else-if="it.item_type === 'radio_option'">
@@ -52,12 +59,6 @@
             <Input type="textarea" placeholder="Satisfation about teachers..." v-model="values[it.item_name].value"
                    v-bind:style="{marginLeft:'25px',width:'65%'}" :disabled="disabled"></Input>
           </Row>
-        </FormItem>
-      </template>
-
-      <template v-if="it.item_type === 'sub_title_block_end'">
-        <FormItem>
-          <divider></divider>
         </FormItem>
       </template>
 
