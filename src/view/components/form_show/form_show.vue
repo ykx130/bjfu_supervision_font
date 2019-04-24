@@ -93,6 +93,11 @@ export default {
       }
     }
   },
+  methods: {
+    validate: function (f) {
+      return this.this.$refs.ruleform.validate(f)
+    }
+  },
   mounted: function () {
     this.items.map((item) => {
       item.payload.rules.map((rule) => {

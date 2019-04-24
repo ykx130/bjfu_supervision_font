@@ -140,7 +140,6 @@ export default {
               this.model_lesson.id = this.meta.lesson.lesson_id
               getModelLessonsVote(this.model_lesson).then((resp) => {})
             }
-
             postForm(form).then(() => {
               this.back()
             })
