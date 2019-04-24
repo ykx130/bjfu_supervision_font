@@ -12,12 +12,14 @@
           <FormItem label="听课督导" :required="true">
             <Select :value="value.guider"
                     filterable
+                    clearable
                     remote
+                    :loading="false"
                     @on-query-change="onGuiderQueryChange"
                     @on-change="onGuiderSelectChange"
                     :disabled="guider_disable || disabled"
                     class="inline-form-item">
-              <Option v-for="(item, key) in users" :value="item.username" :key="item.username + item.id"   >{{item.name}}</Option>
+              <Option v-for="(item, key) in users" :value="item.username" :key="item.username + item.name + item.id"   >{{item.name}}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -51,11 +53,12 @@
         <tr>
           <td>
             <FormItem :required="true" class="table-form-item">
-              <Select :value="value.lesson.id"
+              <Select v-model="value.lesson.id"
                       remote
+                      :remote-method="onLessonQueryChange"
+                      clearable
                       :label="value.lesson.lesson_name"
                       @on-change="onSelectedLessonChange"
-                      @on-query-change="onLessonQueryChange"
                       :disabled="lesson_disabled || disabled"
                       filterable>
                 <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_id + item.lesson_name + item.id">
@@ -132,6 +135,7 @@ export default {
       allow_select_data: [],
       terms: [],
       selected_lesson: { lesson_cases: [] },
+      select_guider: {},
       selected_lesson_case: {},
       lesson_disabled: '', // 禁用课程的表单,
       guider_disable: '',
@@ -212,7 +216,7 @@ export default {
     if (this.currentUser.guider && !this.currentUser.role_names.includes('管理员')) {
       this.value.guider = this.currentUser.username
       this.value.guider_name = this.currentUser.name
-      this.value.guider_group = this.currentUser.guider.groupmd5
+      this.value.guider_group = this.currentUser.guider.group
     }
   },
   methods: {
@@ -241,7 +245,6 @@ export default {
     },
 
     onGuiderQueryChange: function (value) {
-      debugger
       this.guider_name_like = value
       this.fetchUser()
     },
@@ -252,12 +255,15 @@ export default {
     },
 
     onGuiderSelectChange: function (value) {
-      let guider = this.users[value]
-
-      if (guider) {
-        this.value.guider = guider.username
-        this.value.guider_name = guider.name
-        this.value.guider_group = guider.group
+      if (value) {
+        this.select_guider = this.users[value]
+        if (guider) {
+          this.value.guider_name = this.select_guider.name
+          this.value.guider_group = this.select_guider.group
+        }
+      } else {
+        this.value.guider_name = undefined
+        this.value.guider_group = undefined
       }
     },
 
@@ -313,7 +319,7 @@ export default {
         lesson_model: this.selected_lesson.lesson_model,
         lesson_date: value,
         lesson_room: this.selected_lesson_case.lesson_room,
-        lesson_times: this.value.lesson.lesson_times ? this.value.lesson.lesson_times :[]
+        lesson_times: this.value.lesson.lesson_times ? this.value.lesson.lesson_times : []
       }
     },
 
