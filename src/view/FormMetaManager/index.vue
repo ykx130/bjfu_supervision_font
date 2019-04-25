@@ -118,7 +118,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryFormMetas(args).then((resp) => {
+      return queryFormMetas(args).then((resp) => {
         this.data = resp.data.form_metas
         this.total = resp.data.total
       })

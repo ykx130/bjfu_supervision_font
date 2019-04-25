@@ -177,7 +177,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryNoticeLessons(args).then((resp) => {
+      return queryNoticeLessons(args).then((resp) => {
         this.selected_lesson_ids = []
         this.data = resp.data.notice_lessons
         this.total = resp.data.total
@@ -217,7 +217,6 @@ export default {
     onBatchWatchClick: function () {
       // 批量关注触发
       this.showBatchLessonWatchModal = true
-      console.log('selected lessons id : ', this.selected_lesson_ids)
     },
     onExportExcel: function () {
 

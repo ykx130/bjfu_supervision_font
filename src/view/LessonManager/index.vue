@@ -149,7 +149,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryLessons(args).then((resp) => {
+      return queryLessons(args).then((resp) => {
         this.selected_lesson_ids = []
         this.data = resp.data.lessons
         this.total = resp.data.total

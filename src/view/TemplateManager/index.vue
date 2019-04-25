@@ -116,7 +116,7 @@ export default {
     fetchData: function () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryTemplates(args).then((resp) => {
+      return queryTemplates(args).then((resp) => {
         this.data = resp.data.templates
         this.total = resp.data.total
       })

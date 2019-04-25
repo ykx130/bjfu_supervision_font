@@ -21,37 +21,35 @@
 </template>
 
 <script>
-  import { queryFormMetas } from '../../service/api/dqs'
-  import form_meta_card from 'Views/components/form_meta_card/form_meta_card'
-  export default {
-    components: {form_meta_card},
-    name: 'index.vue',
-    data: function () {
-      return {
-        data: [],
-        query: {}
-      }
-    },
-    methods: {
-      onCardClick: function (name, version) {
-        this.$router.push({path: `/dqs/form_fill/${name}/${version}`})
-      }
-    },
-    mounted: function () {
-      queryFormMetas(args).then((resp) => {
-        this.data = resp.data.form_metas
-      })
-      this.$router.push({path: '/_guider/judge'})
-    },
-    onSearch (query) {
-      // 查询变化 当点提交查询条件生效
-      let args = this.$route.query
-      queryFormMetas({...query, args}).then((resp) => {
-        this.data = resp.data.form_metas
-      })
-      this.$router.push({path: '/_guider/judge'})
+import { queryFormMetas } from '../../service/api/dqs'
+import form_meta_card from 'Views/components/form_meta_card/form_meta_card'
+export default {
+  components: { form_meta_card },
+  name: 'index.vue',
+  data: function () {
+    return {
+      data: [],
+      query: {}
     }
+  },
+  methods: {
+    onCardClick: function (name, version) {
+      this.$router.push({ path: `/dqs/form_fill/${name}/${version}` })
+    }
+  },
+  mounted: function () {
+    queryFormMetas(args).then((resp) => {
+      this.data = resp.data.form_metas
+    })
+  },
+  onSearch (query) {
+    // 查询变化 当点提交查询条件生效
+    let args = this.$route.query
+    queryFormMetas({ ...query, args }).then((resp) => {
+      this.data = resp.data.form_metas
+    })
   }
+}
 </script>
 
 <style scoped>

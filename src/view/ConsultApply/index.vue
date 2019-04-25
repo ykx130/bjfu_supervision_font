@@ -44,7 +44,7 @@ export default {
         phone: '',
         type: '',
         content: '',
-        state: '未协调'
+        state: '待协调'
       },
       consult_types: []
     }

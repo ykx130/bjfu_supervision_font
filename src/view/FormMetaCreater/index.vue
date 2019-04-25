@@ -35,12 +35,10 @@ export default {
   },
   methods: {
     handleSubmit: function () {
-      postFormMeta(this.form_meta).then(function (response) {
+      postFormMeta(this.form_meta).then((resp) => {
+        this.$Message.success('问卷创建成功')
         this.$router.push({ name: '问卷管理' })
       })
-        .catch(function (error) {
-          console.log(error)
-        })
     }
   }
 }

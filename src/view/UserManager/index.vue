@@ -158,7 +158,7 @@ export default {
     fetchData: function () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryUsers(args).then((resp) => {
+      return queryUsers(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
       })

@@ -120,7 +120,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryGroupLesson(args).then((resp) => {
+      return queryGroupLesson(args).then((resp) => {
         this.data = resp.data.lesson_records
         this.total = resp.data.total
       })

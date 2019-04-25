@@ -161,7 +161,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryModelLessons(args).then((resp) => {
+      return queryModelLessons(args).then((resp) => {
         this.selected_lesson_ids = []
         this.data = resp.data.model_lessons
         this.total = resp.data.total
@@ -195,18 +195,18 @@ export default {
       console.log('selected lessons id : ', this.selected_lesson_ids)
     },
     onExportExcel: function () {
-      
+
     }
   },
   mounted: function () {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
-    })
-    getCurrentTerms().then((termResp) => {
-      this.query.term = termResp.data.term.name
-      queryModelLessons({ ...this.query, ...this.pages }).then((resp) => {
-        this.data = resp.data.model_lessons
-        this.total = resp.data.total
+      getCurrentTerms().then((termResp) => {
+        this.query.term = termResp.data.term.name
+        queryModelLessons({ ...this.query, ...this.pages }).then((resp) => {
+          this.data = resp.data.model_lessons
+          this.total = resp.data.total
+        })
       })
     })
   }

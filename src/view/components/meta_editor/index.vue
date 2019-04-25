@@ -269,7 +269,6 @@ export default {
     },
     submitForm: function () {
       this.$emit('onSubmitClick')
-      this.$Message.info('Items created!')
     }
   },
   mounted: function () {
