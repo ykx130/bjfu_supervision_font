@@ -51,7 +51,7 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-import { queryNoticeLessons, putLesson, uploadNoticeLessonApi, putNoticeLesson } from '@/service/api/lesson'
+import { queryNoticeLessons, putLesson, uploadNoticeLessonApi, putNoticeLesson, exporNoticeLessonExcel } from '@/service/api/lesson'
 import { queryTerms, getCurrentTerms } from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
@@ -219,7 +219,11 @@ export default {
       this.showBatchLessonWatchModal = true
     },
     onExportExcel: function () {
-
+      exporNoticeLessonExcel().then((resp) => {
+        if (resp.data.code === 200) {
+          window.open('/api/' + resp.data.filename)
+        }
+      })
     }
   },
   mounted: function () {

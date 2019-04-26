@@ -48,7 +48,7 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson } from '@/service/api/lesson'
+import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel } from '@/service/api/lesson'
 import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
@@ -195,7 +195,12 @@ export default {
       console.log('selected lessons id : ', this.selected_lesson_ids)
     },
     onExportExcel: function () {
-
+      exporModelLessonExcel().then((resp) => {
+        if (resp.data.code === 200) {
+          debugger
+          window.open('/api/' + resp.data.filename)
+        }
+      })
     }
   },
   mounted: function () {
