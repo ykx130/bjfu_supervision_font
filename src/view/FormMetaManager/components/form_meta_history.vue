@@ -67,21 +67,7 @@ export default {
                     this.$router.push({ path: `/dqs/form_fill/${params.row.name}/${params.row.version}` })
                   }
                 }
-              }, '查看'),
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '5px'
-                },
-                on: {
-                  click: () => {
-                    this.$router.push({ path: `/dqs/meta_editor/${params.row.name}/${params.row.version}` })
-                  }
-                }
-              }, '编辑')
+              }, '查看')
             ])
           }
         }
