@@ -37,9 +37,11 @@ export default {
   },
   methods: {
     handleSubmit: function () {
-      putFormMeta(this.form_meta).then(function (response) {
-        this.$Message.success('问卷修改成功')
-        this.$router.push({ name: '问卷管理' })
+      putFormMeta(this.form_meta).then(function (resp) {
+        if (resp.data.code === 200) {
+          this.$Message.success('问卷修改成功')
+          this.$router.push({ name: '问卷管理' })
+        }
       })
         .catch(function (error) {
           console.log(error)

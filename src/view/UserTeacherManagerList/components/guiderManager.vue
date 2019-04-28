@@ -203,8 +203,10 @@ export default {
     onProfileModalOK (user) {
       // 更新框确定 关闭
       putSupervisor(user).then((resp) => {
+        if (resp.data.code === 200) {
+          this.fetchData()
+        }
         this.pages._page = 1
-        this.fetchData()
         this.showUserProfileModal = false
       })
     },
@@ -215,8 +217,10 @@ export default {
       // 更新框确定 关闭
       user.term = this.query.term
       postSupervisors(user).then((resp) => {
+        if (resp.data.code === 200) {
+          this.fetchData()
+        }
         this.pages._page = 1
-        this.fetchData()
         this.showUserAddModal = false
       })
     },

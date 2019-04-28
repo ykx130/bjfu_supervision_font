@@ -168,9 +168,11 @@ export default {
     onProfileModalOK (lesson) {
       // 更新框确定 关闭
       putLesson(lesson).then((resp) => {
-        this.showLessonProfileModal = false
-        this.pages._page = 1
-        this.fetchData()
+        if (resp.data.code === 200) {
+          this.showLessonProfileModal = false
+          this.pages._page = 1
+          this.fetchData()
+        }
       })
     },
     onProfileModalCancel () {

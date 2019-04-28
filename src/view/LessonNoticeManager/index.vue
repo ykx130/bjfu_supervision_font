@@ -196,7 +196,11 @@ export default {
     onProfileModalOK (lesson) {
       // 更新框确定 关闭
       putNoticeLesson(lesson).then((resp) => {
+        if (resp.data.code === 200) {
+          this.fetchData()
+        }
         this.showLessonProfileModal = false
+        this.pages._page = 1
       })
     },
     onProfileModalCancel () {

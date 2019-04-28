@@ -145,8 +145,10 @@ export default {
     onReplyModalOK (consult) {
       // 更新框确定 关闭
       putConsults({ id: consult.id, content: consult.content }).then((resp) => {
+        if (resp.data.code === 200) {
+          this.fetchData()
+        }
         this.showConsultManagerModal = false
-        this.fetchData()
       })
     },
     onReplyModalCancel () {

@@ -52,11 +52,13 @@ export default {
   methods: {
     onApplyClick: function () {
       postConsults(this.consults).then((resp) => {
-        this.consults = {
-          phone: '',
-          type: '',
-          content: '',
-          state: '待协调'
+        if (resp.data.code === 200) {
+          this.consults = {
+            phone: '',
+            type: '',
+            content: '',
+            state: '待协调'
+          }
         }
       })
     }

@@ -140,8 +140,10 @@ export default {
               this.model_lesson.id = this.meta.lesson.lesson_id
               getModelLessonsVote(this.model_lesson).then((resp) => {})
             }
-            postForm(form).then(() => {
-              this.back()
+            postForm(form).then((resp) => {
+              if (resp.data.code === 200) {
+                this.back()
+              }
             })
             this.$Message.success('添加成功！')
           } else {
@@ -160,8 +162,10 @@ export default {
         status: '草稿',
         values: Object.values(this.form_values)
       }
-      postForm(form).then(() => {
-        this.back()
+      postForm(form).then((resp) => {
+        if (resp.data.code === 200) {
+          this.back()
+        }
       })
     },
     handleCancel () {

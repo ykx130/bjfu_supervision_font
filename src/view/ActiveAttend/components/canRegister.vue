@@ -136,8 +136,9 @@ export default {
                       content: '是否参加活动?',
                       onOk: () => {
                         return postCurrentActiveUser(params.row.activity.id).then((resp) => {
+                          if (resp.data.code === 200) {
 
-                        }).finally(() => {
+                          }
                           return this.fetchData()
                         })
                       }

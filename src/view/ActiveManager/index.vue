@@ -188,9 +188,11 @@ export default {
       this.showActivityProfileModal = false
     },
     onAddModalOK (activity) {
-      postActive(activity).then(() => {
+      postActive(activity).then((resp) => {
+        if (resp.data.code === 200) {
+          this.fetchData()
+        }
         this.showActiveAddModal = false
-        this.fetchData()
       })
     },
     onAddModalCancel () {
