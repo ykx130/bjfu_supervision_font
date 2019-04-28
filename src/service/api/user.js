@@ -5,7 +5,7 @@ export const getUserByName = (name) => {
 }
 
 export const queryUsers = (params) => {
-  return axios.get('/api/users', {params: params})
+  return axios.get('/api/users', { params: params })
 }
 
 export const putUser = (params) => {
@@ -17,7 +17,7 @@ export const postUser = (params) => {
 }
 
 export const queryGroups = (params) => {
-  return axios.get('/api/groups', {params: params})
+  return axios.get('/api/groups', { params: params })
 }
 
 export const getEvents = (username) => {
@@ -41,13 +41,21 @@ export const currentUser = (params) => {
 }
 
 export const querySupervisors = (params) => {
-  return axios.get('/api/supervisors', {params:params})
+  return axios.get('/api/supervisors', { params: params })
 }
 
 export const postSupervisors = (params) => {
   return axios.post('/api/supervisors', params)
 }
 
-export const supervisorsRenew =(params)=>{
+export const getSupervisor = (id) => {
+  return axios.get(`/api/supervisors/${id}`)
+}
+
+export const putSupervisor = (params) => {
+  return axios.put(`/api/supervisors/${params.id}`, params)
+}
+
+export const supervisorsRenew = (params) => {
   return axios.post('/api/supervisors/batch_renewal', params)
 }
