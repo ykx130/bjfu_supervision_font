@@ -241,7 +241,6 @@ export function stringifyQuery (args) {
       args[key] = null
     } else {
       let t = args[key]
-      debugger
       args[key] = JSON.stringify(args[key])
     }
   }

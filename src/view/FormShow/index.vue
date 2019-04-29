@@ -117,7 +117,6 @@ export default {
       }
     },
     handleSubmit () {
-      debugger
       if (this.meta.guider === '' || this.meta.lesson.lesson_name === '' ||
           this.meta.lesson.lesson_date === '' || this.meta.lesson.lesson_times === '') {
         this.$Message.error('请填写完成课程信息！')

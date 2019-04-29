@@ -19,7 +19,7 @@
                     @on-change="onGuiderSelectChange"
                     :disabled="guider_disable || disabled"
                     class="inline-form-item">
-              <Option v-for="(item, key) in users" :value="item.username" :key="item.username + item.name + item.id"   >{{item.name}}</Option>
+              <Option v-for="(item, key) in users" :value="item.username" :key="item.username + item.name + item.id"   >{{item.username}}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -54,15 +54,15 @@
           <td>
             <FormItem :required="true" class="table-form-item">
               <Select v-model="value.lesson.id"
-                      remote
-                      :remote-method="onLessonQueryChange"
+                      :remote="true"
+                      @on-query-change="onLessonQueryChange"
                       clearable
                       :label="value.lesson.lesson_name"
                       @on-change="onSelectedLessonChange"
                       :disabled="lesson_disabled || disabled"
                       filterable>
                 <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_id + item.lesson_name + item.id">
-                  {{ item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
+                  {{item.lesson_name}}
                 </Option>
               </Select>
             </FormItem>
@@ -139,8 +139,8 @@ export default {
       selected_lesson_case: {},
       lesson_disabled: '', // 禁用课程的表单,
       guider_disable: '',
-      guider_name_like: undefined,
-      user_name_like: undefined
+      guider_name_like: '',
+      user_name_like: ''
     }
   },
   computed: {
@@ -223,8 +223,8 @@ export default {
     // 获取所有用户
     fetchUser: function () {
       this.users = {}
-      return querySupervisors({ term: this.value.term, name_like: this.guider_name_like }).then((resp) => {
-        resp.data.users.map((item) => {
+      return querySupervisors({ term: this.value.term, username_like: this.guider_name_like }).then((resp) => {
+        resp.data.supervisors.map((item) => {
           this.$set(this.users, item.username, item)
         })
       })
@@ -257,7 +257,7 @@ export default {
     onGuiderSelectChange: function (value) {
       if (value) {
         this.select_guider = this.users[value]
-        if (guider) {
+        if (this.select_guider) {
           this.value.guider_name = this.select_guider.name
           this.value.guider_group = this.select_guider.group
         }
@@ -282,9 +282,7 @@ export default {
         this.selected_lesson = { lesson_cases: [] }
       }// 查看选的那个
 
-      this.value.lesson.lesson_date = undefined
       this.lesson_times = []
-
       this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
         return item.lesson_date
       })
@@ -296,6 +294,7 @@ export default {
 
     onSelectedLessonCaseChange: function (value) {
       /* 选择的课程case变化 根据时间 */
+      this.value.lesson.lesson_date = value
       let flag = this.selected_lesson.lesson_cases.findIndex((item) => {
         return item.lesson_date === value
       })
