@@ -204,6 +204,7 @@ export default {
       // 更新框确定 关闭
       putSupervisor(user).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '更新成功' })
           this.fetchData()
         }
         this.pages._page = 1
@@ -218,6 +219,7 @@ export default {
       user.term = this.query.term
       postSupervisors(user).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '新建成功' })
           this.fetchData()
         }
         this.pages._page = 1

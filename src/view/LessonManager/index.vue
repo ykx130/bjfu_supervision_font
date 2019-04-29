@@ -169,10 +169,11 @@ export default {
       // 更新框确定 关闭
       putLesson(lesson).then((resp) => {
         if (resp.data.code === 200) {
-          this.showLessonProfileModal = false
-          this.pages._page = 1
+          this.$Message.success({ content: '课程更新成功' })
           this.fetchData()
         }
+        this.showLessonProfileModal = false
+        this.pages._page = 1
       })
     },
     onProfileModalCancel () {

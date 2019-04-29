@@ -149,6 +149,7 @@ export default {
       // 更新框确定 关闭
       putUser(user).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '更新成功' })
           this.fetchData()
         }
         this.showUserProfileModal = false
@@ -162,6 +163,7 @@ export default {
       // 更新框确定 关闭
       postUser(user).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '督导添加成功' })
           this.fetchData()
         }
         this.showUserAddModal = false

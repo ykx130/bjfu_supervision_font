@@ -177,6 +177,7 @@ export default {
       // 更新框确定 关闭
       putUser(user).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '更新成功' })
           this.fetchData()
         }
         this.showUserProfileModal = false
@@ -190,6 +191,7 @@ export default {
       // 更新框确定 关闭
       postUser(user).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '新建成功' })
           this.fetchData()
         }
         this.showUserAddModal = false

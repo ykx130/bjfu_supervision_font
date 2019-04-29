@@ -146,6 +146,7 @@ export default {
       // 更新框确定 关闭
       putConsults({ id: consult.id, content: consult.content }).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '回复成功' })
           this.fetchData()
         }
         this.showConsultManagerModal = false

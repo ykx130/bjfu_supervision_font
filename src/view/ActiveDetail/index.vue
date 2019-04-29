@@ -188,6 +188,7 @@ export default {
     onUpdateActive: function () {
       putActive(this.activity).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '修改成功' })
           getActive(this.activity_id).then((new_resp) => {
             updateWithinField(this.activity, new_resp.data.activity)
           })
@@ -200,6 +201,7 @@ export default {
     onAddActiveUserModalOK: function (active_user) {
       postActiveUser(this.activity_id, active_user).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '添加成功' })
           queryActiveUsers(this.activity_id).then((new_resp) => {
             this.data = new_resp.data.activity_users
             this.total = new_resp.data.total
@@ -214,6 +216,7 @@ export default {
     onUpdateActiveUserModalOK: function (active_user) {
       putActiveUser(this.activity_id, active_user).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '更新成功' })
           queryActiveUsers(this.activity_id).then((new_resp) => {
             this.data = new_resp.data.activity_users
             this.total = new_resp.data.total

@@ -190,6 +190,7 @@ export default {
     onAddModalOK (activity) {
       postActive(activity).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '活动添加成功' })
           this.fetchData()
         }
         this.showActiveAddModal = false

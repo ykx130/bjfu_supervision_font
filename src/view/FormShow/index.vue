@@ -134,6 +134,7 @@ export default {
             }
             postForm(form).then((resp) => {
               if (resp.data.code === 200) {
+                this.$Message.success({ content: '新建成功' })
                 this.back()
               }
             })
@@ -151,6 +152,7 @@ export default {
       }
       postForm(form).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '新建成功' })
           this.back()
         }
       })

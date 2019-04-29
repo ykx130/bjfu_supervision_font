@@ -137,7 +137,7 @@ export default {
                       onOk: () => {
                         return postCurrentActiveUser(params.row.activity.id).then((resp) => {
                           if (resp.data.code === 200) {
-
+                            this.$Message.success({ content: '报名成功' })
                           }
                           return this.fetchData()
                         })

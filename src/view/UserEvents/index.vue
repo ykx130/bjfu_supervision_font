@@ -173,10 +173,11 @@ export default {
     },
     onAddModalOK: function (event) {
       postEvents(event).then((resp) => {
-        this.fetchEventsData()
         if (resp.data.code === 200) {
-          this.showAddModal = false
+          this.fetchEventsData()
+          this.$Message.success({ content: '新建成功' })
         }
+        this.showAddModal = false
       })
     },
     onAddModalCancel: function () {

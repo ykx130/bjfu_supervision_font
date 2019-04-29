@@ -142,6 +142,7 @@ export default {
             }
             postForm(form).then((resp) => {
               if (resp.data.code === 200) {
+                this.$Message.success({ content: '保存成功' })
                 this.back()
               }
             })
@@ -164,6 +165,7 @@ export default {
       }
       postForm(form).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '保存成功' })
           this.back()
         }
       })

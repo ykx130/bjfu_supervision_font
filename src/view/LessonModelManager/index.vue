@@ -181,6 +181,7 @@ export default {
       // 更新框确定 关闭
       putLesson(lesson).then((resp) => {
         if (resp.data.code === 200) {
+          this.$Message.success({ content: '更新成功' })
           this.fetchData()
         }
         this.showLessonProfileModal = false
@@ -201,7 +202,7 @@ export default {
     onExportExcel: function () {
       exporModelLessonExcel().then((resp) => {
         if (resp.data.code === 200) {
-          debugger
+          this.$Message.success({ content: '导出成功' })
           window.open('/api/' + resp.data.filename)
         }
       })
