@@ -25,7 +25,7 @@ module.exports = {
       '/api': {
         // target: 'http://172.20.10.2:5000/', // 接口的域名  //http://47.92.110.74:8085/
         // target: 'http://47.92.110.74:8085/',
-        target: 'http://127.0.0.1:5000/',
+        target: 'http://0.0.0.0:5000/',
         // target: 'http://202.204.121.155:18085/',
         secure: false, // 如果是https接口，需要配置这个参数
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置

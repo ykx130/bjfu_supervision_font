@@ -186,7 +186,7 @@ export default {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
       return querySupervisors(args).then((resp) => {
-        this.data = resp.data.users
+        this.data = resp.data.supervisors
         this.total = resp.data.total
       })
     },
@@ -234,10 +234,7 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      querySupervisors({ ...this.query, ...this.pages }).then((resp) => {
-        this.data = resp.data.users
-        this.total = resp.data.total
-      })
+      this.fetchData()
     })
   }
 }

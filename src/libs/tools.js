@@ -217,14 +217,12 @@ export const objEqual = (obj1, obj2) => {
   else return !keysArr1.some(key => obj1[key] != obj2[key])
 }
 
-
-
 export function updateWithinField (src_obj, des_obf) {
   /* 用于更新src_obj的字典用另一个 */
   for (let item in src_obj) {
     if (des_obf.hasOwnProperty(item)) {
       // 存在更新src
-      if(typeof src_obj[item] === 'number'){
+      if (typeof src_obj[item] === 'number') {
         src_obj[item] = Number(des_obf[item])
       } else if (typeof src_obj[item] === 'string') {
         src_obj[item] = String(des_obf[item])
@@ -238,15 +236,19 @@ export function updateWithinField (src_obj, des_obf) {
 // stringifyQuery
 
 export function stringifyQuery (args) {
-  for(let key in args){
-    if(args[key]===''){
-      args[key] = null;
+  for (let key in args) {
+    if (args[key] === '') {
+      args[key] = null
+    } else {
+      let t = args[key]
+      debugger
+      args[key] = JSON.stringify(args[key])
     }
   }
   return qs.stringify(args, {
     arrayFormat: 'repeat',
     allowDots: true,
-    skipNulls: true,
+    skipNulls: true
   })
 }
 
@@ -282,22 +284,22 @@ export function transLessonWeekToData (term_day, week, weekday) {
   return moment(term_day).add(week, 'weeks').add(weekday, 'days').format('YYYY-MM-DD')
 }
 
-function addPreZero(num){
-  return ('000000000'+num).slice(-2);
+function addPreZero (num) {
+  return ('000000000' + num).slice(-2)
 }
 
-export function splitLessonString(s_str) {
-  let flag = 0;
-  let res = [];
-  for (flag; flag< s_str.length; flag = flag+2){
-    res.push(s_str.slice(flag, flag+2))
+export function splitLessonString (s_str) {
+  let flag = 0
+  let res = []
+  for (flag; flag < s_str.length; flag = flag + 2) {
+    res.push(s_str.slice(flag, flag + 2))
   }
   return res
 }
 
-export function transTimeToSelectedData(lesson_time_str) {
-  let lesson_times_single = splitLessonString(lesson_time_str).map((item)=>{return parseInt(item)}) //处理单节
-  return lesson_times_single.map((item)=>{
+export function transTimeToSelectedData (lesson_time_str) {
+  let lesson_times_single = splitLessonString(lesson_time_str).map((item) => { return parseInt(item) }) // 处理单节
+  return lesson_times_single.map((item) => {
     return {
       label: `第${item}节`,
       value: addPreZero(item)

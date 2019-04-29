@@ -106,7 +106,6 @@ export default {
       data: [],
       total: 0,
       query: {
-        meta: {}
       },
       pages: {
         _page: 1,
