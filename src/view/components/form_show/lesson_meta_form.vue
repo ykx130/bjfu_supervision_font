@@ -307,6 +307,7 @@ export default {
       }
 
       this.value.lesson = {
+        lesson_id: this.selected_lesson.lesson_id,
         lesson_name: this.selected_lesson.lesson_name,
         lesson_teacher_name: this.selected_lesson.lesson_teacher_name,
         lesson_class: this.selected_lesson.lesson_class,

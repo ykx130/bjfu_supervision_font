@@ -55,7 +55,9 @@ export default {
         bind_meta_name: undefined,
         meta: {
           create_by: undefined,
-          lesson: {}
+          lesson: {
+            lesson_teacher_name: undefined
+          }
         },
         status: undefined
       },

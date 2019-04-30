@@ -1,5 +1,6 @@
 import qs from 'qs'
 import moment from 'moment'
+import lodash from 'lodash'
 
 export const forEach = (arr, fn) => {
   if (!arr.length || !fn) return
@@ -217,6 +218,17 @@ export const objEqual = (obj1, obj2) => {
   else return !keysArr1.some(key => obj1[key] != obj2[key])
 }
 
+export function jsonfiyTypeDeep (obj) {
+  for (let key in obj) {
+    if (typeof obj[key] === 'number' || typeof obj[key] === 'string') {
+      obj[key] = JSON.stringify(obj[key])
+    } else {
+      obj[key] = jsonfiyTypeDeep(obj[key])
+    }
+  }
+  return obj
+}
+
 export function updateWithinField (src_obj, des_obf) {
   /* 用于更新src_obj的字典用另一个 */
   for (let item in src_obj) {
@@ -236,15 +248,9 @@ export function updateWithinField (src_obj, des_obf) {
 // stringifyQuery
 
 export function stringifyQuery (args) {
-  for (let key in args) {
-    if (args[key] === '') {
-      args[key] = null
-    } else {
-      let t = args[key]
-      args[key] = JSON.stringify(args[key])
-    }
-  }
-  return qs.stringify(args, {
+  let query = lodash.cloneDeep(args)
+  query = jsonfiyTypeDeep(query)
+  return qs.stringify(query, {
     arrayFormat: 'repeat',
     allowDots: true,
     skipNulls: true
