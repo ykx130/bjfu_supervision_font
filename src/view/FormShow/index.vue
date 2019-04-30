@@ -25,7 +25,7 @@
             </FormItem>
           </FormShow>
           <!--{{ruleValidate}}-->
-        <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="disabled">保存</Button>
+        <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="form.status==='已完成'">保存</Button>
         <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled">提交</Button>
         <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
       </div>
@@ -37,7 +37,7 @@
   </Card>
 </template>
 <script>
-import { getForm, postForm } from '../../service/api/dqs'
+import { getForm, postForm,putForm } from '../../service/api/dqs'
 import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
 import FormShow from '@/view/components/form_show/form_show.vue'
 import { getLesson, updateModelLessonsVote, getModelLessonsVote } from '../../service/api/lesson'
@@ -70,6 +70,7 @@ export default {
         id: '',
         vote: ''
       },
+      form_id: undefined,
       form_values: {},
       form: {
         meta: { lesson: {} },
@@ -98,8 +99,8 @@ export default {
   },
   methods: {
     fetchForm () {
-      let id = this.$route.params.id
-      getForm(id).then((newresp) => {
+      this.form_id = this.$route.params.id
+      getForm(this.form_id).then((newresp) => {
         this.form = newresp.data.form
         if (this.form.status === '已完成') {
           this.disabled = true
@@ -131,13 +132,12 @@ export default {
               this.model_lesson.id = this.meta.lesson.lesson_id
               getModelLessonsVote(this.model_lesson)
             }
-            postForm(form).then((resp) => {
+            putForm(this.form_id,form).then((resp) => {
               if (resp.data.code === 200) {
                 this.$Message.success({ content: '新建成功' })
                 this.back()
               }
             })
-            this.$Message.success('添加成功！')
           } else {
             this.$Message.error('请填写完整信息！')
           }
@@ -149,7 +149,7 @@ export default {
         status: '草稿',
         values: Object.values(this.form_values)
       }
-      postForm(form).then((resp) => {
+      putForm(this.form_id, form).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '新建成功' })
           this.back()

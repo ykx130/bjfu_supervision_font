@@ -99,7 +99,7 @@ export default {
   },
   methods: {
     validate: function (f) {
-      return this.this.$refs.ruleform.validate(f)
+      return this.$refs.ruleform.validate(f)
     }
   },
   mounted: function () {
