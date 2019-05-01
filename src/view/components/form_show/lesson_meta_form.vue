@@ -59,7 +59,7 @@
                       clearable
                       :label="value.lesson.lesson_name"
                       @on-change="onSelectedLessonChange"
-                      :disabled="lesson_disabled || disabled"
+                      :disabled="disabled"
                       filterable>
                 <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_id + item.lesson_name + item.id">
                   {{item.lesson_name}}
@@ -69,12 +69,13 @@
           </td>
           <td>
             <FormItem  :required="true" class="table-form-item">
-              <Input v-model="value.lesson.lesson_teacher_name" disabled></Input>
+              <Input v-model="value.lesson.lesson_teacher_name"
+                     :disabled="disabled"></Input>
             </FormItem>
           </td>
           <td>
             <FormItem  :required="true" class="table-form-item">
-              <Input v-model="value.lesson.lesson_class" disabled ></Input>
+              <Input v-model="value.lesson.lesson_class" :disabled="disabled" ></Input>
             </FormItem>
           </td>
           <td>
@@ -84,22 +85,21 @@
                            format="yyyy-MM-dd"
                            @on-change="onSelectedLessonCaseChange"
                            :options="getLessonDatePickerOption()"
-                           :disabled="disabled"
-              ></DatePicker>
+                           :disabled="disabled"></DatePicker>
             </FormItem>
           </td>
           <td>
             <FormItem :required="true" class="table-form-item">
-              <Input v-model="value.lesson.lesson_room" disabled></Input>
+              <Input v-model="value.lesson.lesson_room" :disabled="disabled"></Input>
             </FormItem>
           </td>
           <td>
             <FormItem  :required="true" class="table-form-item">
               <Select v-model="value.lesson.lesson_times"  multiple :disabled="disabled">
+
                 <Option v-for="item in lesson_times"
                         :value="item.value"
-                        :key="item.value + item.key"
-                >{{ item.label }}</Option>
+                        :key="item.value + item.key">{{ item.label }}</Option>
               </Select>
             </FormItem>
           </td>
