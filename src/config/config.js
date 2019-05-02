@@ -1,4 +1,5 @@
 import {stringifyQuery, parseQuery} from 'Libs/tools'
+import qs from 'qs'
 
 export const ROUTER_DEFAULT_CONFIG = {
   waitForData: true,
@@ -7,7 +8,11 @@ export const ROUTER_DEFAULT_CONFIG = {
     return parseQuery(str)
   },
   stringifyQuery (args) {
-    var result = stringifyQuery(args)
+    var result = qs.stringify(args, {
+      arrayFormat: 'repeat',
+      allowDots: true,
+      skipNulls: true
+    })
 
     return result ? ('?' + result) : ''
   }

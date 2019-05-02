@@ -53,7 +53,7 @@
         <tr>
           <td>
             <FormItem :required="true" class="table-form-item">
-              <Select v-model="value.lesson.id"
+              <Select v-model="value.lesson.lesson_id"
                       :remote="true"
                       @on-query-change="onLessonQueryChange"
                       clearable
@@ -61,7 +61,7 @@
                       @on-change="onSelectedLessonChange"
                       :disabled="disabled"
                       filterable>
-                <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_id + item.lesson_name + item.id">
+                <Option v-for="(item,index) in lessons" :value="item.lesson_id" :key="item.lesson_id + item.lesson_name + item.id">
                   {{ '     '+item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'+'     '}}
                 </Option>
               </Select>
@@ -168,7 +168,8 @@ export default {
           // 读取课程
           this.selected_lesson = resp.data.lesson
           // 处理case
-          this.lessons[this.selected_lesson.id] = this.selected_lesson
+          this.lessons[this.selected_lesson.lesson_id] = this.selected_lesson
+          this.value.lesson.lesson_id  = this.selected_lesson.lesson_id
           this.value.lesson.lesson_date = undefined
           this.lesson_times = []
           this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
@@ -181,9 +182,6 @@ export default {
           // 处理表单的附加值
           this.value.term = this.selected_lesson.term
 
-          this.lesson_disabled = true
-
-          this.lesson_disabled = false
           this.fetchUser()
         })
       } else {
@@ -191,7 +189,7 @@ export default {
           this.value.term = resp.data.term.name
           if (this.lesson_disabled || this.disabled) {
             this.selected_lesson = this.value.lesson
-            this.$set(this.lessons, this.selected_lesson.id, this.selected_lesson)
+            this.$set(this.lessons, this.selected_lesson.lesson_id, this.selected_lesson)
             this.lesson_times = this.value.lesson.lesson_times.map((item) => {
               return {
                 label: `第${item}节`,
@@ -235,7 +233,7 @@ export default {
       this.lessons = {}
       return queryLessons({ term: this.value.term, lesson_name_like: this.lesson_name_like }).then((resp) => {
         resp.data.lessons.map((item) => {
-          this.$set(this.lessons, item.id, item)
+          this.$set(this.lessons, item.lesson_id, item)
         })
       })
     },
@@ -278,10 +276,10 @@ export default {
       this.fetchUser()
     },
 
-    onSelectedLessonChange: function (id) {
+    onSelectedLessonChange: function (lesson_id) {
       /* 选择的课程发生变化 */
-      if (id) {
-        this.selected_lesson = this.lessons[id]
+      if (lesson_id) {
+        this.selected_lesson = this.lessons[lesson_id]
       } else {
         this.selected_lesson = { lesson_cases: [] }
       }// 查看选的那个
