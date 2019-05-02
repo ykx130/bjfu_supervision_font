@@ -1,7 +1,7 @@
 <template>
   <!--whole form meta editor begin-->
   <Card>
-    <MetaEditor v-model="this.form_meta" @onSubmitClick="handleSubmit"></MetaEditor>
+    <MetaEditor v-model="form_meta" @onSubmitClick="handleSubmit"></MetaEditor>
   </Card>
 
   <!--whole form meta editor end-->
@@ -20,6 +20,7 @@ export default {
   data () {
     return {
       form_meta: {
+        name: '',
         meta: {},
         items: []
       }
