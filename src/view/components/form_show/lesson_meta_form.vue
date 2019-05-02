@@ -62,7 +62,7 @@
                       :disabled="disabled"
                       filterable>
                 <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_id + item.lesson_name + item.id">
-                  {{item.lesson_name}}
+                  {{ '*_'+item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
                 </Option>
               </Select>
             </FormItem>
@@ -250,8 +250,10 @@ export default {
     },
 
     onLessonQueryChange: function (value) {
-      this.lesson_name_like = value
-      this.fetchLesson()
+      if (!value.startWith('*_')) {
+        this.lesson_name_like = value
+        this.fetchLesson()
+      }
     },
 
     onGuiderSelectChange: function (value) {
