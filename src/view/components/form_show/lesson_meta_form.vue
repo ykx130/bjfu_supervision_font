@@ -19,7 +19,7 @@
                     @on-change="onGuiderSelectChange"
                     :disabled="guider_disable || disabled"
                     class="inline-form-item">
-              <Option v-for="(item, key) in users" :value="item.username" :key="item.username + item.name + item.id"   >{{item.username}}</Option>
+              <Option v-for="(item, key) in users" :value="item.username" :key="item.username + item.name + item.id"   >{{'     ' + item.username + '     '}}</Option>
             </Select>
           </FormItem>
         </Col>
@@ -62,7 +62,7 @@
                       :disabled="disabled"
                       filterable>
                 <Option v-for="(item,index) in lessons" :value="item.id" :key="item.lesson_id + item.lesson_name + item.id">
-                  {{ '*_'+item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'}}
+                  {{ '     '+item.lesson_name+'___' + item.lesson_teacher_name+ '___'+item.lesson_class+'___'+'     '}}
                 </Option>
               </Select>
             </FormItem>
@@ -245,12 +245,14 @@ export default {
     },
 
     onGuiderQueryChange: function (value) {
-      this.guider_name_like = value
-      this.fetchUser()
+      if (!(value.startWith('     ') &&value.endsWith('     '))) {
+        this.guider_name_like = value
+        this.fetchUser()
+      }
     },
 
     onLessonQueryChange: function (value) {
-      if (!value.startWith('*_')) {
+      if (!(value.startWith('     ')&&value.endsWith('     '))) {
         this.lesson_name_like = value
         this.fetchLesson()
       }
