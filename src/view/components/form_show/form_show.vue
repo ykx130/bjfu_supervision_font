@@ -20,8 +20,8 @@
           </Row>
           <Row>
             <RadioGroup v-model="values[it.item_name].value">
-              <Radio v-for="op in it.payload.options" :value="op.value"
-                     :label="op.label"
+              <Radio v-for="op in it.payload.options"
+                     :label="op.value"
                      :key="op.label + op.value"
                      v-bind:style="{ fontSize:'15px',marginLeft:'25px' }" :disabled="disabled">
                 <span>{{op.label}}</span>

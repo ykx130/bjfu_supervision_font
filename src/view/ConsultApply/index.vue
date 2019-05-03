@@ -6,7 +6,7 @@
     <Form :label-width="80" :model="consults">
       <FormItem label="咨询类型:">
         <RadioGroup v-model="consults.type">
-          <Radio v-for="type in consult_types" :key="type.name+type.id" :label="type.name" :value="type.name">
+          <Radio v-for="type in consult_types" :key="type.name+type.id" :label="type.name">
             <span >{{ type.name }}</span>
           </Radio>
         </RadioGroup>

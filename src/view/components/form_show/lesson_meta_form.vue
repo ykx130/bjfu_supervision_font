@@ -264,18 +264,12 @@ export default {
       if (value) {
         this.select_guider = this.users[value]
         if (this.select_guider) {
-          this.value = {
-            ...this.value,
-            guider_name: this.select_guider.user.name,
-            guider_group: this.select_guider.group
-          }
+          this.value.guider_name = this.select_guider.user.name
+          this.value.guider_group = this.select_guider.group
         }
       } else {
-        this.value = {
-          ...this.value,
-          guider_name: undefined,
-          guider_group: undefined
-        }
+        this.value.guider_name = undefined
+        this.value.guider_group = undefined
       }
     },
 

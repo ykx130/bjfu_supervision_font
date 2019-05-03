@@ -19,8 +19,8 @@
           <FormShow v-model="form_values" :items="form.values" :disabled="disabled" ref="ruleform">
             <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }" >
               <RadioGroup v-model="recommend_model" >
-                <Radio label="推荐" :value="1" :disabled="disabled"></Radio>
-                <Radio label="不推荐" :value="0" :disabled="disabled"></Radio>
+                <Radio label="推荐" :label="1" :disabled="disabled"></Radio>
+                <Radio label="不推荐" :label="0" :disabled="disabled"></Radio>
               </RadioGroup>
             </FormItem>
           </FormShow>
@@ -98,6 +98,14 @@ export default {
     this.fetchForm()
   },
   methods: {
+    formValue2Items () {
+      this.form.values.map((item, index)=>{
+        if (item.type === 'form_item') {
+          this.form.values[index].value = this.form_values[item.item_name].value
+        }
+      })
+      return this.form.values
+    },
     fetchForm () {
       this.form_id = this.$route.params.id
       getForm(this.form_id).then((newresp) => {
@@ -126,7 +134,7 @@ export default {
           if (valid) {
             let form = {
               status: '已完成',
-              values: Object.values(this.form_values)
+              values: this.formValue2Items()
             }
             if (this.recommend_model) {
               this.model_lesson.id = this.meta.lesson.lesson_id
@@ -147,7 +155,7 @@ export default {
     handleSave () {
       let form = {
         status: '草稿',
-        values: Object.values(this.form_values)
+        values: this.formValue2Items()
       }
       putForm(this.form_id, form).then((resp) => {
         if (resp.data.code === 200) {

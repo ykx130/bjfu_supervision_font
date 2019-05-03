@@ -18,8 +18,8 @@
       <FormShow v-model="form_values" :items="form_meta.items" :disabled="false" ref="ruleform" :ruleValidate="ruleValidate">
         <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }">
           <RadioGroup v-model="recommend_model">
-            <Radio label="推荐" :value="1" :disabled="false"></Radio>
-            <Radio label="不推荐" :value="0" :disabled="false"></Radio>
+            <Radio label="推荐" :label="1" :disabled="false"></Radio>
+            <Radio label="不推荐" :label="0" :disabled="false"></Radio>
           </RadioGroup>
         </FormItem>
       </FormShow>
@@ -101,6 +101,15 @@ export default {
     this.fetchFormMeta()
   },
   methods: {
+    formValue2Items () {
+      this.form_meta.items.map((item, index)=>{
+        if (item.type === 'form_item') {
+          this.form_meta.items[index].value = this.form_values[item.item_name].value
+        }
+      })
+      return this.form_meta.items
+    },
+
     fetchFormMeta () {
       let args = this.$route.params
 
@@ -119,6 +128,9 @@ export default {
         this.$router.push({ name: '督导端' })
       }
     },
+
+
+
     handleSubmit () {
       this.meta.lesson.lesson_model = this.recommend_model
       if (this.meta.guider === '' || this.meta.lesson.lesson_name === '' ||
@@ -133,7 +145,7 @@ export default {
               bind_meta_version: this.form_meta.version,
               meta: this.meta,
               status: '已完成',
-              values: Object.values(this.form_values)
+              values: this.formValue2Items()
             }
             if (this.recommend_model) {
               console.log('好评可 提及哦啊')
@@ -161,7 +173,7 @@ export default {
         bind_meta_version: this.form_meta.version,
         meta: this.meta,
         status: '草稿',
-        values: Object.values(this.form_values)
+        values: this.formValue2Items()
       }
       postForm(form).then((resp) => {
         if (resp.data.code === 200) {
