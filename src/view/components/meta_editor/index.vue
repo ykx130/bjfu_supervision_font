@@ -9,9 +9,9 @@
       <!--form meta start-->
       <div id="form-header">
         <br>
-        <Form :model="value" :label-width="100" inline label-position="left">
-          <FormItem label="问卷名称：">
-            <Input v-model="value.name" placeholder="问卷名称..." style="width: 180px"></Input>
+        <Form ref="meta_form" :model="value" type="text" :label-width="100" inline label-position="left">
+          <FormItem label="问卷名称：" required  prop="name">
+            <Input v-model="value.name" placeholder="问卷名称..." style="width: 180px" ></Input>
           </FormItem>
         </Form>
       </div>
@@ -202,14 +202,6 @@ export default {
       nowIndex: 0
     }
   },
-  mounted: function () {
-    // const args = this.$route.params;
-    // if (args.name) {
-    //   getFormMeta(args).then((response) => {
-    //     this.value = response.data.value;
-    //   })
-    // }
-  },
   methods: {
     validateItem: function () {
       let stack = []
@@ -276,9 +268,17 @@ export default {
 
     },
     submitForm: function () {
-      this.$emit('onSubmitClick')
-      this.$Message.info('Items created!')
+      this.$refs.meta_form.validate((vaild) => {
+        if (vaild) {
+          this.$emit('onSubmitClick')
+        } else {
+          this.$Message.warning('填写完整信息')
+        }
+      })
     }
+  },
+  mounted: function () {
+    this.value.version = 'default'
   }
 }
 

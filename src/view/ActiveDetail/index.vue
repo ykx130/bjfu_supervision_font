@@ -72,15 +72,15 @@
 </template>
 
 <script>
-import {getActive, queryActiveUsers, putActive, postActiveUser, putActiveUser} from '../../service/api/actives'
-import {updateWithinField} from 'Libs/tools'
+import { getActive, queryActiveUsers, putActive, postActiveUser, putActiveUser } from '../../service/api/actives'
+import { updateWithinField } from 'Libs/tools'
 import ActivesUserAddModal from './components/ActivesUserAddModal'
 import ActivesUserUpdateModal from './components/ActivesUserUpdateModal'
 
 // import {lessonLevel} from '../marcos'
 export default {
   name: 'ActiveProfileModal',
-  components: {ActivesUserAddModal, ActivesUserUpdateModal},
+  components: { ActivesUserAddModal, ActivesUserUpdateModal },
   props: {
     show: Boolean,
     onCancel: Function,
@@ -186,35 +186,44 @@ export default {
   },
   methods: {
     onUpdateActive: function () {
-      putActive(this.activity).then(() => {
-        getActive(this.activity_id).then((resp) => {
-          updateWithinField(this.activity, resp.data.activity)
-        })
+      putActive(this.activity).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '修改成功' })
+          getActive(this.activity_id).then((new_resp) => {
+            updateWithinField(this.activity, new_resp.data.activity)
+          })
+        }
       })
     },
     onAddNewActiveUser: function () {
       this.showAddActiveUser = true
     },
     onAddActiveUserModalOK: function (active_user) {
-      postActiveUser(this.activity_id, active_user).then(() => {
-        queryActiveUsers(this.activity_id).then((usrresp) => {
-          this.data = usrresp.data.activity_users
-          this.total = usrresp.data.total
-        })
+      postActiveUser(this.activity_id, active_user).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '添加成功' })
+          queryActiveUsers(this.activity_id).then((new_resp) => {
+            this.data = new_resp.data.activity_users
+            this.total = new_resp.data.total
+          })
+        }
+        this.showAddActiveUser = false
       })
-      this.showAddActiveUser = false
     },
     onAddActiveUserModalCancel: function () {
       this.showAddActiveUser = false
     },
     onUpdateActiveUserModalOK: function (active_user) {
-      putActiveUser(this.activity_id, active_user).then(() => {
-        queryActiveUsers(this.activity_id).then((usrresp) => {
-          this.data = usrresp.data.activity_users
-          this.total = usrresp.data.total
-        })
+      putActiveUser(this.activity_id, active_user).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '更新成功' })
+          queryActiveUsers(this.activity_id).then((new_resp) => {
+            this.data = new_resp.data.activity_users
+            this.total = new_resp.data.total
+          })
+        }
+        this.showUpdateActiveUser = false
       })
-      this.showUpdateActiveUser = false
     },
     onUpdateActiveUserModalCancel: function () {
       this.showUpdateActiveUser = false

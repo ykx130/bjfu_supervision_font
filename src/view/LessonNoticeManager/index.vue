@@ -42,7 +42,8 @@
       <Row >
         <Page style="float: right;" :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </Row>
-    <FloatBar><Button type="error" @click="onBatchWatchClick">批量取消关注</Button>
+    <FloatBar>
+      <!--<Button type="error" @click="onBatchWatchClick">批量取消关注</Button>-->
     </FloatBar>
   </Card>
 </template>
@@ -50,7 +51,7 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-import { queryNoticeLessons, putLesson, uploadNoticeLessonApi, putNoticeLesson } from '@/service/api/lesson'
+import { queryNoticeLessons, putLesson, uploadNoticeLessonApi, putNoticeLesson, exporNoticeLessonExcel } from '@/service/api/lesson'
 import { queryTerms, getCurrentTerms } from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
@@ -78,11 +79,11 @@ export default {
       }, // 分页
       columns: [
 
-        {
-          type: 'selection',
-          width: 60,
-          align: 'center'
-        },
+        // {
+        //   type: 'selection',
+        //   width: 60,
+        //   align: 'center'
+        // },
         {
           type: 'expand',
           title: '评价',
@@ -176,7 +177,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryNoticeLessons(args).then((resp) => {
+      return queryNoticeLessons(args).then((resp) => {
         this.selected_lesson_ids = []
         this.data = resp.data.notice_lessons
         this.total = resp.data.total
@@ -195,7 +196,12 @@ export default {
     onProfileModalOK (lesson) {
       // 更新框确定 关闭
       putNoticeLesson(lesson).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '更新成功' })
+          this.fetchData()
+        }
         this.showLessonProfileModal = false
+        this.pages._page = 1
       })
     },
     onProfileModalCancel () {
@@ -216,10 +222,14 @@ export default {
     onBatchWatchClick: function () {
       // 批量关注触发
       this.showBatchLessonWatchModal = true
-      console.log('selected lessons id : ', this.selected_lesson_ids)
     },
     onExportExcel: function () {
-      
+      exporNoticeLessonExcel().then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '导出成功' })
+          window.open('/api/' + resp.data.filename)
+        }
+      })
     }
   },
   mounted: function () {

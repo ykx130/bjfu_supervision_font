@@ -24,13 +24,13 @@
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
-      <span>课程级别:</span>
       <FormItem prop="lesson_level">
+        <span>课程级别:</span>
         <Select v-model="lesson.lesson_level" >
           <Option v-for="item in lessonLevel" :value="item" :key="item">{{ item }}</Option>
         </Select>
       </FormItem>
-      <FormItem prop="assign_group">
+      <FormItem prop="assign_group"  v-if="lesson.lesson_level === '关注课程'">
         <span>分配督导小组:</span>
         <Select v-model="lesson.assign_group" >
           <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
@@ -48,10 +48,10 @@
 </template>
 
 <script>
-import {getLesson} from '../../../service/api/lesson'
-import {updateWithinField} from 'Libs/tools'
-import {queryGroups} from '../../../service/api/user'
-import {lessonLevel, lessonWatchReason} from '../marcos'
+import { getLesson } from '../../../service/api/lesson'
+import { updateWithinField } from 'Libs/tools'
+import { queryGroups } from '../../../service/api/user'
+import { lessonLevel, lessonWatchReason } from '../marcos'
 export default {
   name: 'LessonProfileModal',
   props: {

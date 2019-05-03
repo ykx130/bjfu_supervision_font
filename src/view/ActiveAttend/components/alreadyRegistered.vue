@@ -135,7 +135,7 @@ export default {
   methods: {
     fetchData () {
       // 数据表发生变化请求数据
-      queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
+      return queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
       })
@@ -163,12 +163,12 @@ export default {
     this.query.state = 'hasAttended'
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
-    })
-    getCurrentTerms().then((termResp) => {
-      this.query.term = termResp.data.term.name
-      queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
-        this.data = resp.data.activities
-        this.total = resp.data.total
+      getCurrentTerms().then((termResp) => {
+        this.query.term = termResp.data.term.name
+        queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
+          this.data = resp.data.activities
+          this.total = resp.data.total
+        })
       })
     })
   }

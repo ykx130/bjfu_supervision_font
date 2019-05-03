@@ -16,16 +16,16 @@
         <divider orientation="left">问卷内容</divider>
         <div>
 
-          <FormShow v-model="form_values" :items="form.values" :disabled="false" ref="ruleform" :ruleValidate="ruleValidate">
-            <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }">
-              <RadioGroup v-model="recommend_model">
-                <Radio label="推荐" :value="1" :disabled="false"></Radio>
-                <Radio label="不推荐" :value="0" :disabled="false"></Radio>
+          <FormShow v-model="form_values" :items="form.values" :disabled="disabled" ref="ruleform">
+            <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }" >
+              <RadioGroup v-model="recommend_model" >
+                <Radio label="推荐" :label="1" :disabled="disabled"></Radio>
+                <Radio label="不推荐" :label="0" :disabled="disabled"></Radio>
               </RadioGroup>
             </FormItem>
           </FormShow>
           <!--{{ruleValidate}}-->
-        <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="disabled">保存</Button>
+        <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="form.status==='已完成'">保存</Button>
         <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled">提交</Button>
         <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
       </div>
@@ -37,13 +37,18 @@
   </Card>
 </template>
 <script>
-import { getForm, postForm } from '../../service/api/dqs'
+import { getForm, postForm,putForm } from '../../service/api/dqs'
 import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
 import FormShow from '@/view/components/form_show/form_show.vue'
 import { getLesson, updateModelLessonsVote, getModelLessonsVote } from '../../service/api/lesson'
 export default {
   components: {
     Lesson, FormShow
+  },
+  computed: {
+    currentUser: function () {
+      return this.$store.getters.userInfo
+    }
   },
   watch: {
     'meta.lesson': {
@@ -65,6 +70,7 @@ export default {
         id: '',
         vote: ''
       },
+      form_id: undefined,
       form_values: {},
       form: {
         meta: { lesson: {} },
@@ -92,68 +98,32 @@ export default {
     this.fetchForm()
   },
   methods: {
+    formValue2Items () {
+      this.form.values.map((item, index)=>{
+        if (item.type === 'form_item') {
+          this.form.values[index].value = this.form_values[item.item_name].value
+        }
+      })
+      return this.form.values
+    },
     fetchForm () {
-      let id = this.$route.params.id
-      getForm(id).then((newresp) => {
+      this.form_id = this.$route.params.id
+      getForm(this.form_id).then((newresp) => {
         this.form = newresp.data.form
         if (this.form.status === '已完成') {
           this.disabled = true
         }
         this.form.values.forEach((item) => {
-          this.form_values[item.item_name] = item.value
-          if (item.item_type === 'radio_option') {
-            if (item.payload.rules) {
-              this.ruleValidate[item.item_name] = [{ required: item.payload.rules[0].required,
-                message: '请选择选项',
-                trigger: 'blur' }]
-            } else {
-              this.ruleValidate[item.item_name] = this.ruleValidate.radio
-            }
-          }
-          if (item.item_type === 'checkbox_option') {
-            if (item.payload.rules) {
-              this.ruleValidate[item.item_name] = [
-                {
-                  required: item.payload.rules[0].required,
-                  type: 'array',
-                  min: item.payload.rules[1].min,
-                  message: '请至少选择' + item.payload.rules[1].min + '项',
-                  trigger: 'change'
-                },
-                {
-                  type: 'array',
-                  max: item.payload.rules[1].max,
-                  message: '最多选择' + item.payload.rules[1].max + '项',
-                  trigger: 'change'
-                }
-              ]
-            } else {
-              this.ruleValidate[item.item_name] = this.ruleValidate.checkbox
-            }
-          }
-          if (item.item_type === 'raw_text') {
-            if (item.payload.rules) {
-              this.ruleValidate[item.item_name] = [
-                { required: item.payload.rules[0].required, message: '请填写内容', trigger: 'blur' },
-                {
-                  type: 'string',
-                  min: item.payload.rules[1].min,
-                  message: '内容多于' + item.payload.rules[1].min + '字',
-                  trigger: 'blur'
-                },
-                {
-                  type: 'string',
-                  max: item.payload.rules[1].max,
-                  message: '内容少于' + item.payload.rules[1].max + '字',
-                  trigger: 'blur'
-                }
-              ]
-            } else {
-              this.ruleValidate[item.item_name] = this.ruleValidate.raw_text
-            }
-          }
+          this.form_values[item.item_name] = item
         })
       })
+    },
+    back () {
+      if (this.currentUser.role_names.includes('管理员')) {
+        this.$router.push({ name: '问卷管理' })
+      } else {
+        this.$router.push({ name: '督导端' })
+      }
     },
     handleSubmit () {
       if (this.meta.guider === '' || this.meta.lesson.lesson_name === '' ||
@@ -164,16 +134,18 @@ export default {
           if (valid) {
             let form = {
               status: '已完成',
-              values: Object.values(this.form_values)
+              values: this.formValue2Items()
             }
             if (this.recommend_model) {
               this.model_lesson.id = this.meta.lesson.lesson_id
               getModelLessonsVote(this.model_lesson)
             }
-            postForm(form).then(() => {
-              location.reload()
+            putForm(this.form_id,form).then((resp) => {
+              if (resp.data.code === 200) {
+                this.$Message.success({ content: '新建成功' })
+                this.back()
+              }
             })
-            this.$Message.success('添加成功！')
           } else {
             this.$Message.error('请填写完整信息！')
           }
@@ -183,14 +155,17 @@ export default {
     handleSave () {
       let form = {
         status: '草稿',
-        values: Object.values(this.form_values)
+        values: this.formValue2Items()
       }
-      postForm(form).then(() => {
-        location.reload()
+      putForm(this.form_id, form).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '新建成功' })
+          this.back()
+        }
       })
     },
     handleCancel () {
-      location.reload()
+      this.back()
     }
   }
 }

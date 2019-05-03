@@ -32,9 +32,9 @@
 </template>
 
 <script>
-import {queryGroupLesson, putLesson} from '../../service/api/lesson'
-import {queryGroups} from '../../service/api/user'
-import {getCurrentTerms, queryTerms} from '@/service/api/term'
+import { queryGroupLesson, putLesson } from '../../service/api/lesson'
+import { queryGroups } from '../../service/api/user'
+import { getCurrentTerms, queryTerms } from '@/service/api/term'
 
 export default {
   data: function () {
@@ -51,14 +51,6 @@ export default {
         _per_page: 10
       }, // 分页
       columns: [
-        {
-          title: '用户号码',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.id }</span>
-            )
-          }
-        },
         {
           title: '用户名称',
           render: function (h, params) {
@@ -125,10 +117,10 @@ export default {
     }
   },
   methods: {
-     fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-       let args = {...this.query, ...this.pages}
-      queryGroupLesson(args).then((resp) => {
+      let args = { ...this.query, ...this.pages }
+      return queryGroupLesson(args).then((resp) => {
         this.data = resp.data.lesson_records
         this.total = resp.data.total
       })
@@ -136,12 +128,12 @@ export default {
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.fetchData( )
+      this.fetchData()
     },
     onSearch () {
       // 查询变化
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     },
     onTypeTabClick (value) {
       this.query.group_name = value
@@ -149,16 +141,15 @@ export default {
         _page: 1,
         _per_page: 10
       }
-      this.fetchData( )
+      this.fetchData()
     }
   },
   mounted: function () {
-
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
 
-    getCurrentTerms().then((resp) =>{
+    getCurrentTerms().then((resp) => {
       this.query.term = resp.data.term.name
       queryGroups().then((resp) => {
         this.groups = resp.data.groups

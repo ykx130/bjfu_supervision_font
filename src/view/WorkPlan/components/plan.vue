@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     fetchData () {
-      queryWorkPlan({ term: this.term }).then((resp) => {
+      return queryWorkPlan({ term: this.term }).then((resp) => {
         this.work_plans = resp.data.work_plans
       })
     },

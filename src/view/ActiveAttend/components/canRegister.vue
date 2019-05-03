@@ -6,7 +6,8 @@
       <FormItem label="活动名称：" prop="activity">
         <AutoComplete v-model="query.name_like" :data="activityName"
                       style="width:180px"
-                      @on-search="handleSearchActivateName"></AutoComplete>      </FormItem>
+                      @on-search="handleSearchActivateName"></AutoComplete>
+      </FormItem>
       <FormItem label="学期：" :prop="'activity.term'">
         <Select v-model="query.term" style="width:200px">
           <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-import { queryCurrentuserActives } from '../../../service/api/actives'
+import { queryCurrentuserActives, postCurrentActiveUser } from '../../../service/api/actives'
 import { queryTerms, getCurrentTerms } from '../../../service/api/term'
 import { updateWithinField } from 'Libs/tools'
 
@@ -130,6 +131,18 @@ export default {
                 on: {
                   click: () => {
                     this.selected_activity_id = params.row.activity.id
+                    this.$Modal.confirm({
+                      title: '参加活动',
+                      content: '是否参加活动?',
+                      onOk: () => {
+                        return postCurrentActiveUser(params.row.activity.id).then((resp) => {
+                          if (resp.data.code === 200) {
+                            this.$Message.success({ content: '报名成功' })
+                          }
+                          return this.fetchData()
+                        })
+                      }
+                    })
                   }
                 }
               }, '报名')
@@ -148,7 +161,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryCurrentuserActives(args).then((resp) => {
+      return queryCurrentuserActives(args).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
       })
@@ -176,12 +189,12 @@ export default {
     this.query.state = 'canAttend'
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
-    })
-    getCurrentTerms().then((termResp) => {
-      this.query.term = termResp.data.term.name
-      queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
-        this.data = resp.data.activities
-        this.total = resp.data.total
+      getCurrentTerms().then((termResp) => {
+        this.query.term = termResp.data.term.name
+        queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
+          this.data = resp.data.activities
+          this.total = resp.data.total
+        })
       })
     })
   }

@@ -34,9 +34,8 @@
     </div>
 
     <float_bar>
-      <Button type="primary" @click="()=>{this.showActiveAddModal=true}">新增</Button>
+      <Button type="primary" @click="showActiveAddModal=true">新增</Button>
     </float_bar>
-    <!--{{this.activity}}-->
     <!--{{this.showActiveAddModal}}-->
   </Card>
 </template>
@@ -189,12 +188,13 @@ export default {
       this.showActivityProfileModal = false
     },
     onAddModalOK (activity) {
-      this.activity = activity // ???
-      postActive(activity).then(() => {
-        this.fetchData()
+      postActive(activity).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '活动添加成功' })
+          this.fetchData()
+        }
+        this.showActiveAddModal = false
       })
-      this.showActiveAddModal = false
-      this.fetchData()
     },
     onAddModalCancel () {
       this.showActiveAddModal = false
@@ -203,10 +203,10 @@ export default {
   mounted: function () {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
-    })
-    getCurrentTerms().then((termResp) => {
-      this.query.term = termResp.data.term.name
-      this.fetchData()
+      getCurrentTerms().then((termResp) => {
+        this.query.term = termResp.data.term.name
+        this.fetchData()
+      })
     })
   }
 }

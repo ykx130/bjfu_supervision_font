@@ -36,7 +36,7 @@
           <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
-      <FormItem prop="lesson_attention_reason" v-if="lesson.lesson_level === '关注课程'">
+      <FormItem prop="lesson_attention_reason">
         <span>关注原因:</span>
         <Select v-model="lesson.lesson_attention_reason" >
           <Option v-for="item in lessonWatchReason" :value="item" :key="item">{{ item }}</Option>
@@ -48,10 +48,10 @@
 </template>
 
 <script>
-import {getNoticeLesson} from '../../../service/api/lesson'
-import {updateWithinField} from 'Libs/tools'
-import {queryGroups} from '../../../service/api/user'
-import {lessonLevel, lessonWatchReason} from '../marcos'
+import { getNoticeLesson } from '../../../service/api/lesson'
+import { updateWithinField } from 'Libs/tools'
+import { queryGroups } from '../../../service/api/user'
+import { lessonLevel, lessonWatchReason } from '../marcos'
 export default {
   name: 'LessonProfileModal',
   props: {
@@ -70,7 +70,8 @@ export default {
         lesson_state: '',
         lesson_teacher_name: '',
         lesson_level: '',
-        lesson_attention_reason: ''
+        lesson_attention_reason: '',
+        assign_group: ''
       },
       lessonLevel: lessonLevel,
       lessonWatchReason: lessonWatchReason, // 课程关注原因,

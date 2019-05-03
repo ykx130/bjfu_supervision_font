@@ -6,7 +6,7 @@
     <Form :label-width="80" :model="consults">
       <FormItem label="咨询类型:">
         <RadioGroup v-model="consults.type">
-          <Radio v-for="type in consult_types" :key="type.name+type.id" :label="type.name" :value="type.name">
+          <Radio v-for="type in consult_types" :key="type.name+type.id" :label="type.name">
             <span >{{ type.name }}</span>
           </Radio>
         </RadioGroup>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import {postConsults, queryConsultTypes} from '../../service/api/consult'
+import { postConsults, queryConsultTypes } from '../../service/api/consult'
 export default {
   data: function () {
     return {
@@ -44,7 +44,7 @@ export default {
         phone: '',
         type: '',
         content: '',
-        state: '未协调'
+        state: '待协调'
       },
       consult_types: []
     }
@@ -52,11 +52,14 @@ export default {
   methods: {
     onApplyClick: function () {
       postConsults(this.consults).then((resp) => {
-        this.consults = {
-          phone: '',
-          type: '',
-          content: '',
-          state: '未协调'
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '新建成功' })
+          this.consults = {
+            phone: '',
+            type: '',
+            content: '',
+            state: '待协调'
+          }
         }
       })
     }

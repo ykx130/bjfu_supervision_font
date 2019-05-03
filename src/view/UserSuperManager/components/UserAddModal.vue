@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { queryUsers} from '../../../service/api/user'
+import { queryUsers } from '../../../service/api/user'
 export default {
   name: 'UserAddModal',
   props: {
@@ -27,7 +27,7 @@ export default {
   data: function () {
     return {
       user: {},
-      users:[],
+      users: []
     }
   },
   mounted: function () {
@@ -36,14 +36,14 @@ export default {
     })
   },
   methods: {
-    onUserSelectQueryChange(value){
-      queryUsers({name_like:value}).then((resp) => {
+    onUserSelectQueryChange (value) {
+      queryUsers({ name_like: value }).then((resp) => {
         this.users = resp.data.users
       })
     },
     handleOK: function () {
-      this.user.role_names.push("领导")
-      this.$emit('onOK', {role_names: this.users.role_names})
+      this.user.leader = true
+      this.$emit('onOK', this.user)
     },
     handleCancel: function () {
       this.$emit('onCancel')

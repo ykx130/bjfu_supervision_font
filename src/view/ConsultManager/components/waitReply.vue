@@ -30,20 +30,20 @@
 </template>
 
 <script>
-import {queryTerms, getCurrentTerms} from '../../../service/api/term'
-import {queryConsults, putConsults} from '../../../service/api/consult'
+import { queryTerms, getCurrentTerms } from '../../../service/api/term'
+import { queryConsults, putConsults } from '../../../service/api/consult'
 import ConsultManagerModal from './ConsultManagerModal'
-import {updateWithinField} from 'Libs/tools'
+import { updateWithinField } from 'Libs/tools'
 
 export default {
-  components: {ConsultManagerModal},
+  components: { ConsultManagerModal },
   name: 'waitReply',
   data: function () {
     return {
       select_tag: '已协调',
       query: {
-        term:undefined,
-        state:undefined
+        term: undefined,
+        state: undefined
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
@@ -117,17 +117,17 @@ export default {
                   this.selected_consult_id = params.row.id
                   this.showConsultManagerModal = true
                 }
-              }}, '协调')
+              } }, '协调')
           }
         }
       ]
     }
   },
   methods: {
-     fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-       let args = {...this.query, ...this.pages}
-      queryConsults(args).then((resp) => {
+      let args = { ...this.query, ...this.pages }
+      return queryConsults(args).then((resp) => {
         this.data = resp.data.consults
         this.total = resp.data.total
       })
@@ -135,18 +135,21 @@ export default {
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.fetchData( )
+      this.fetchData()
     },
     onSearch () {
       // 查询变化
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     },
     onReplyModalOK (consult) {
       // 更新框确定 关闭
-      putConsults({id: consult.id, content: consult.content}).then((resp) => {
+      putConsults({ id: consult.id, content: consult.content }).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '回复成功' })
+          this.fetchData()
+        }
         this.showConsultManagerModal = false
-        this.fetchData( )
       })
     },
     onReplyModalCancel () {
@@ -160,7 +163,7 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryConsults({ ...this.query, ...this.pages}).then((resp) => {
+      queryConsults({ ...this.query, ...this.pages }).then((resp) => {
         this.data = resp.data.consults
         this.total = resp.data.total
       })

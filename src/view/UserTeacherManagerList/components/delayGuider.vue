@@ -25,7 +25,7 @@
       :show="showUserProfileModal"
       @onOK="onProfileModalOK"
       @onCancel="onProfileModalCancel"
-      :username="this.selected_username"
+      :id="selected_id"
     ></UserProfileModal>
 
     <UserAddModal
@@ -61,7 +61,7 @@ import { updateWithinField } from 'Libs/tools'
 import UserAddModal from './UserAddModal'
 import FloatBar from '_c/float_bar/float_bar'
 import { queryTerms, getCurrentTerms } from '../../../service/api/term'
-import { querySupervisors, putUser, postUser, supervisorsRenew } from '../../../service/api/user'
+import { querySupervisors, putUser, postUser, supervisorsRenew, putSupervisor } from '../../../service/api/user'
 export default {
   components: { UserProfileModal, UserAddModal, FloatBar },
   data: function () {
@@ -74,7 +74,7 @@ export default {
       data: [], // 数据
       terms: [],
       selected_guider_ids: [],
-      selected_username: '', // 选中编辑的用户的name
+      selected_id: '', // 选中编辑的用户的name
       showUserProfileModal: false, // 展示编辑弹窗
       showUserAddModal: false,
       showDelayGuiderModal: false,
@@ -94,32 +94,83 @@ export default {
         },
         {
           title: '名字',
-          key: 'name'
+          key: 'user.name',
+          render: function (h, params) {
+            return h('span', params.row.user.name)
+          }
         },
         {
           title: '学院',
-          key: 'unit'
+          key: 'user.unit',
+          render: function (h, params) {
+            return h('span', params.row.user.unit)
+          }
         },
         {
           title: '专业',
-          key: 'skill'
+          key: 'user.skill',
+          render: function (h, params) {
+            return h('span', params.row.user.skill)
+          }
         },
         {
           title: '职称',
-          key: 'prorank'
+          key: 'user.prorank',
+          render: function (h, params) {
+            return h('span', params.row.user.prorank)
+          }
         },
         {
           title: '工作状态',
           render: function (h, params) {
-            return h('span', params.row.guider.work_state)
+            return h('span', params.row.work_state)
           }
         },
         {
           title: '小组',
           render: function (h, params) {
-            return h('span', params.row.guider.group)
+            return h('span', params.row.group)
           }
         },
+        {
+          title: '小组长',
+          width: 75,
+          render: function (h, params) {
+            if (params.row.is_grouper) {
+              return h('Icon', { props: {
+                type: 'md-checkmark-circle'
+              },
+              style: {
+                color: '#19be6b',
+                fontSize: '30px',
+                textAlign: 'center'
+              }
+              })
+            } else {
+              return h('span')
+            }
+          }
+        },
+        {
+          title: '大组长',
+          width: 75,
+          render: function (h, params) {
+            if (params.row.is_main_grouper) {
+              return h('Icon', { props: {
+                type: 'md-checkmark-circle'
+              },
+              style: {
+                color: '#19be6b',
+                fontSize: '30px',
+                textAlign: 'center'
+              }
+              })
+            } else {
+              return h('span')
+            }
+          }
+        },
+
         {
           title: '操作',
           align: 'center',
@@ -135,8 +186,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.selected_username = params.row.username
-
+                    this.selected_id = params.row.id
                     this.showUserProfileModal = true
                   }
                 }
@@ -151,8 +201,8 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      querySupervisors(args).then((resp) => {
-        this.data = resp.data.users
+      return querySupervisors(args).then((resp) => {
+        this.data = resp.data.supervisors
         this.total = resp.data.total
       })
     },
@@ -168,9 +218,12 @@ export default {
     },
     onProfileModalOK (user) {
       // 更新框确定 关闭
-      putUser(user).then((resp) => {
+      putSupervisor(user).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '更新成功' })
+          this.fetchData()
+        }
         this.pages._page = 1
-        this.fetchData()
         this.showUserProfileModal = false
       })
     },
@@ -180,8 +233,11 @@ export default {
     onAddModalOK (user) {
       // 更新框确定 关闭
       postUser(user).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '新建成功' })
+          this.fetchData()
+        }
         this.pages._page = 1
-        this.fetchData()
         this.showUserAddModal = false
       })
     },
@@ -199,6 +255,9 @@ export default {
     },
     onShowDelayGuiderClick () {
       supervisorsRenew({ usernames: this.selected_guider_ids }).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '续约成功, 新的督导在新学期时产生' })
+        }
         this.showDelayGuiderModal = true
       })
     }
@@ -209,10 +268,7 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      querySupervisors({ ...this.query, ...this.pages }).then((resp) => {
-        this.data = resp.data.users
-        this.total = resp.data.total
-      })
+      this.fetchData()
     })
   }
 }

@@ -45,9 +45,9 @@
 
 <script>
 import { queryForms, putForm } from '../../service/api/dqs'
-import {updateWithinField} from 'Libs/tools'
-import {getCurrentTerms, queryTerms} from '@/service/api/term'
-import {queryGroups} from '@/service/api/user'
+import { updateWithinField } from 'Libs/tools'
+import { getCurrentTerms, queryTerms } from '@/service/api/term'
+import { queryGroups } from '@/service/api/user'
 export default {
   data: function () {
     return {
@@ -55,9 +55,11 @@ export default {
         bind_meta_name: undefined,
         meta: {
           create_by: undefined,
-          lesson: {}
+          lesson: {
+            lesson_teacher_name: undefined
+          }
         },
-        status:undefined
+        status: undefined
       },
       total: 0,
       terms: [],
@@ -120,7 +122,7 @@ export default {
           render: function (h, params) {
             return (
               <span>{ params.row.meta.guider_group }</span>
-          )
+            )
           }
         },
         {
@@ -142,12 +144,12 @@ export default {
         {
           title: '状态',
           render: (h, params) => {
-            if (params.row.status === '待提交'){
-              return h('Tag', { props: {color:"red"}}, params.row.status)
+            if (params.row.status === '待提交') {
+              return h('Tag', { props: { color: 'red' } }, params.row.status)
             } else if (params.row.status === '已完成') {
-              return h('Tag', { props: {color:"blue"}}, params.row.status)
-            }  else {
-              return h('Tag',{}, params.row.status)
+              return h('Tag', { props: { color: 'blue' } }, params.row.status)
+            } else {
+              return h('Tag', {}, params.row.status)
             }
           }
         },
@@ -166,7 +168,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$router.push({path: `/dqs/form_show/${params.row._id}`})
+                    this.$router.push({ path: `/dqs/form_show/${params.row._id}` })
                   }
                 }
               }, '查看'),
@@ -182,8 +184,8 @@ export default {
                 on: {
                   click: () => {
                     this.$Modal.confirm({
-                      title:"确认打回问卷?",
-                      onOk: ()=>{
+                      title: '确认打回问卷?',
+                      onOk: () => {
                         this.putBack(params.row)
                       }
                     })
@@ -201,24 +203,24 @@ export default {
     putBack (form) {
       putForm(form._id, {
         status: '待提交'
-      }).then(()=>{
+      }).then(() => {
         this.pages._page = 1
-        this.fetchData( )
-    })
+        this.fetchData()
+      })
     },
-    onTabClick:function(name){
-      if(name === '全部') {
+    onTabClick: function (name) {
+      if (name === '全部') {
         this.query.status = undefined
       } else {
         this.query.status = name
       }
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     },
-     fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-       let args = {...this.query, ...this.pages}
-      queryForms(args).then((resp) => {
+      let args = { ...this.query, ...this.pages }
+      return queryForms(args).then((resp) => {
         this.data = resp.data.forms
         this.total = resp.data.total
       })
@@ -226,24 +228,24 @@ export default {
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.fetchData( )
+      this.fetchData()
     },
     onSearch () {
       // 查询变化 当点提交查询条件生效
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     }
   },
   mounted: function () {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
-    queryGroups().then((resp)=>{
+    queryGroups().then((resp) => {
       this.groups = resp.data.groups
     })
     getCurrentTerms().then((termResp) => {
       this.query.meta.term = termResp.data.term.name
-      queryForms({...this.pages, ...this.query}).then((resp) => {
+      queryForms({ ...this.pages, ...this.query }).then((resp) => {
         this.data = resp.data.forms
         this.total = resp.data.total
       })

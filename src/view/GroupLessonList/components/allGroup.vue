@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import {queryGroupLesson, putLesson} from '../../../service/api/lesson'
-import {queryGroups} from '../../../service/api/user'
+import { queryGroupLesson, putLesson } from '../../../service/api/lesson'
+import { queryGroups } from '../../../service/api/user'
 
 export default {
   name: 'allGroup',
@@ -102,10 +102,10 @@ export default {
     }
   },
   methods: {
-     fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-       let args = {...this.query, ...this.pages}
-      queryGroupLesson(args).then((resp) => {
+      let args = { ...this.query, ...this.pages }
+      return queryGroupLesson(args).then((resp) => {
         this.data = resp.data.lesson_records
         this.total = resp.data.total
       })
@@ -113,12 +113,12 @@ export default {
     onPageChange (page) {
       // 分页变化
       this.pages._page = page
-      this.fetchData( )
+      this.fetchData()
     },
     onSearch () {
       // 查询变化
       this.pages._page = 1
-      this.fetchData( )
+      this.fetchData()
     }
   },
   mounted: function () {

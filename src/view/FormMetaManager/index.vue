@@ -15,7 +15,7 @@
   </Card>
 </template>
 <script>
-import { queryFormMetas } from '@/service/api/dqs'
+import { queryFormMetas, deleteFormMetas } from '@/service/api/dqs'
 import formMetaHistory from './components/form_meta_history'
 export default {
   components: { formMetaHistory },
@@ -87,7 +87,7 @@ export default {
               }, '查看'),
               h('Button', {
                 props: {
-                  type: 'primary',
+                  type: 'error',
                   size: 'small'
                 },
                 style: {
@@ -95,10 +95,20 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$router.push({ path: `/dqs/meta_editor/${params.row.name}/${params.row.version}` })
+                    this.$Modal.confirm({
+                      title: '是否确定删除?',
+                      onOk: () => {
+                        deleteFormMetas(params).then((resp) => {
+                          if (resp.data.code === 200) {
+                            this.$Message.success({ content: '保存成功' })
+                          }
+                          this.fetchData()
+                        })
+                      }
+                    })
                   }
                 }
-              }, '编辑')
+              }, '删除')
             ])
           }
         }
@@ -106,7 +116,6 @@ export default {
       data: [],
       total: 0,
       query: {
-        meta: {}
       },
       pages: {
         _page: 1,
@@ -118,7 +127,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryFormMetas(args).then((resp) => {
+      return queryFormMetas(args).then((resp) => {
         this.data = resp.data.form_metas
         this.total = resp.data.total
       })

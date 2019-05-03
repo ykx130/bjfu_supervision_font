@@ -4,31 +4,31 @@
     title="新增"
     @on-ok="handleOK"
     @on-cancel="handleCancel">
-  <Form :model="user">
+  <Form :model="guider">
 
     <FormItem prop="name" label="名字:" :label-width="40">
-      <Select v-model="user.username" placeholder="名字" filterable on-query-change="onUserSelectQueryChange">
+      <Select v-model="guider.username" placeholder="名字" filterable on-query-change="onUserSelectQueryChange">
         <Option v-for="item in users" :value="item.username" :key="item.name">{{ item.name }}</Option>
       </Select>
       <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
     </FormItem>
     <FormItem label="小组:" :label-width="40" prop="group">
-      <Select v-model="user.group" >
+      <Select v-model="guider.group" >
         <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
       </Select>
     </FormItem>
 
     <FormItem label="工作状态" prop="work_state">
-      <Select v-model="user.work_state" >
+      <Select v-model="guider.work_state" >
         <Option v-for="item in workStateList" :value="item" :key="item">{{ item }}</Option>
       </Select>
     </FormItem>
 
     <FormItem label="身份:">
-        <Checkbox  v-model="user.grouper" label="小组长">
+        <Checkbox  v-model="guider.is_grouper" label="小组长">
           <span>小组长</span>
         </Checkbox>
-        <Checkbox  v-model="user.main_grouper" label="大组长">
+        <Checkbox  v-model="guider.is_main_grouper" label="大组长">
           <span>大组长</span>
         </Checkbox>
     </FormItem>
@@ -47,7 +47,10 @@ export default {
   },
   data: function () {
     return {
-      user: {},
+      guider: {
+        is_grouper:false,
+        is_main_grouper: false
+      },
       users:[],
       roles: ["小组长", "大组长"],
       groups: [],
@@ -69,7 +72,7 @@ export default {
       })
     },
     handleOK: function () {
-      this.$emit('onOK', this.user)
+      this.$emit('onOK', this.guider)
     },
     handleCancel: function () {
       this.$emit('onCancel')

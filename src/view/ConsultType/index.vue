@@ -23,15 +23,15 @@
 </template>
 
 <script>
-import {queryConsultTypes, getConsultTypes, postConsultTypes, deleteConsultTypes} from '../../service/api/consult'
+import { queryConsultTypes, getConsultTypes, postConsultTypes, deleteConsultTypes } from '../../service/api/consult'
 import ConsultTypeAddModal from './components/ConsultTypeAddModal'
 export default {
-  components: {ConsultTypeAddModal},
+  components: { ConsultTypeAddModal },
   data: function () {
     return {
       query: {}, // 查询用的参数
       pages: {
-        "_per_page":20,
+        '_per_page': 20
       },
       total: 0, // 总数量
       data: [], // 数据
@@ -88,10 +88,10 @@ export default {
     }
   },
   methods: {
-     fetchData() {
+    fetchData () {
       // 数据表发生变化请求数据
-       let args = {...this.query, ...this.pages}
-      queryConsultTypes(args).then((resp) => {
+      let args = { ...this.query, ...this.pages }
+      return queryConsultTypes(args).then((resp) => {
         this.data = resp.data.consult_types
         this.total = resp.data.total
       })
@@ -100,7 +100,7 @@ export default {
       // 更新框确定 关闭
       postConsultTypes(consult_types).then((resp) => {
         this.showConsultTypeAddModal = false
-        this.fetchData( )
+        this.fetchData()
       })
     },
     onAddModalCancel () {
@@ -108,7 +108,7 @@ export default {
     },
     onDeleteClcik: function (item) {
       deleteConsultTypes(item.row.id).then(() => {
-        this.fetchData( )
+        this.fetchData()
       })
     },
     selectConsultTypes: function () {
@@ -116,7 +116,7 @@ export default {
     }
   },
   mounted: function () {
-    queryConsultTypes({...this.query, ...this.pages}).then((resp) => {
+    queryConsultTypes({ ...this.query, ...this.pages }).then((resp) => {
       this.data = resp.data.consult_types
       this.total = resp.data.total
     })

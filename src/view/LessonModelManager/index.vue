@@ -48,7 +48,7 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson } from '@/service/api/lesson'
+import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel } from '@/service/api/lesson'
 import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
@@ -161,7 +161,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryModelLessons(args).then((resp) => {
+      return queryModelLessons(args).then((resp) => {
         this.selected_lesson_ids = []
         this.data = resp.data.model_lessons
         this.total = resp.data.total
@@ -180,7 +180,12 @@ export default {
     onProfileModalOK (lesson) {
       // 更新框确定 关闭
       putLesson(lesson).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '更新成功' })
+          this.fetchData()
+        }
         this.showLessonProfileModal = false
+        this.pages._page = 1
       })
     },
     onProfileModalCancel () {
@@ -195,18 +200,23 @@ export default {
       console.log('selected lessons id : ', this.selected_lesson_ids)
     },
     onExportExcel: function () {
-      
+      exporModelLessonExcel().then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '导出成功' })
+          window.open('/api/' + resp.data.filename)
+        }
+      })
     }
   },
   mounted: function () {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
-    })
-    getCurrentTerms().then((termResp) => {
-      this.query.term = termResp.data.term.name
-      queryModelLessons({ ...this.query, ...this.pages }).then((resp) => {
-        this.data = resp.data.model_lessons
-        this.total = resp.data.total
+      getCurrentTerms().then((termResp) => {
+        this.query.term = termResp.data.term.name
+        queryModelLessons({ ...this.query, ...this.pages }).then((resp) => {
+          this.data = resp.data.model_lessons
+          this.total = resp.data.total
+        })
       })
     })
   }

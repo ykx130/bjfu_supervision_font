@@ -2,11 +2,11 @@
 import axios from 'Plugins/axios'
 
 export const queryActives = (params) => {
-  return axios.get('/api/activities', {params: params})
+  return axios.get('/api/activities', { params: params })
 }
 
 export const queryCurrentuserActives = (params) => {
-  return axios.get('/api/current_user/activities', {params: params})
+  return axios.get('/api/current_user/activities', { params: params })
 }
 
 export const getActive = (id) => {
@@ -34,6 +34,13 @@ export const getActiveUser = (active_id, username) => {
 
 export const postActiveUser = (active_id, params) => {
   return axios.post('/api/activities/' + active_id + '/activity_users', params)
+}
+
+export const postCurrentActiveUser = (active_id) => {
+  return axios.post('/api/activities/' + active_id + '/activity_users', {
+    state: '已报名',
+    fin_state: '报名已参加'
+  })
 }
 
 export const putActiveUser = (active_id, params) => {

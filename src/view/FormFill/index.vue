@@ -18,8 +18,8 @@
       <FormShow v-model="form_values" :items="form_meta.items" :disabled="false" ref="ruleform" :ruleValidate="ruleValidate">
         <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }">
           <RadioGroup v-model="recommend_model">
-            <Radio label="推荐" :value="1" :disabled="false"></Radio>
-            <Radio label="不推荐" :value="0" :disabled="false"></Radio>
+            <Radio label="推荐" :label="1" :disabled="false"></Radio>
+            <Radio label="不推荐" :label="0" :disabled="false"></Radio>
           </RadioGroup>
         </FormItem>
       </FormShow>
@@ -55,6 +55,11 @@ export default {
         }
       },
       immediate: true
+    }
+  },
+  computed: {
+    currentUser: function () {
+      return this.$store.getters.userInfo
     }
   },
   data () {
@@ -96,6 +101,15 @@ export default {
     this.fetchFormMeta()
   },
   methods: {
+    formValue2Items () {
+      this.form_meta.items.map((item, index)=>{
+        if (item.type === 'form_item') {
+          this.form_meta.items[index].value = this.form_values[item.item_name].value
+        }
+      })
+      return this.form_meta.items
+    },
+
     fetchFormMeta () {
       let args = this.$route.params
 
@@ -103,62 +117,19 @@ export default {
         this.form_meta = resp.data.form_meta
         this.form_meta.items.forEach((item) => {
           // 添加数据
-          this.form_values[item.item_name] = undefined
-
-          // 处理校验规则
-          if (item.item_type === 'radio_option') {
-            if (item.payload.rules) {
-              this.ruleValidate[item.item_name] = [
-                { required: item.payload.rules[0].required, message: '请选择选项', trigger: 'blur' }
-              ]
-            } else {
-              this.ruleValidate[item.item_name] = this.defaultValidateRules.radio
-            }
-          } else if (item.item_type === 'checkbox_option') {
-            if (item.payload.rules) {
-              this.ruleValidate[item.item_name] = [
-                {
-                  required: item.payload.rules[0].required,
-                  type: 'array',
-                  min: item.payload.rules[1].min,
-                  message: '请至少选择' + item.payload.rules[1].min + '项',
-                  trigger: 'change'
-                },
-                {
-                  type: 'array',
-                  max: item.payload.rules[1].max,
-                  message: '最多选择' + item.payload.rules[1].max + '项',
-                  trigger: 'change'
-                }
-              ]
-            } else {
-              this.ruleValidate[item.item_name] = this.defaultValidateRules.checkbox
-            }
-          } else if (item.item_type === 'raw_text') {
-            if (item.payload.rules) {
-              this.ruleValidate[item.item_name] = [
-                { required: item.payload.rules[0].required, message: '请填写内容', trigger: 'blur' },
-                {
-                  type: 'string',
-                  min: item.payload.rules[1].min,
-                  message: '内容多于' + item.payload.rules[1].min + '字',
-                  trigger: 'blur'
-                },
-                {
-                  type: 'string',
-                  max: item.payload.rules[1].max,
-                  message: '内容少于' + item.payload.rules[1].max + '字',
-                  trigger: 'blur'
-                }
-              ]
-            } else {
-              this.ruleValidate[item.item_name] = this.defaultValidateRules.raw_text
-            }
-          }
-          // this.form_inputs[item.item_name].value='[]';
+          this.form_values[item.item_name] = item
         })
       })
     },
+    back () {
+      if (this.currentUser.role_names.includes('管理员')) {
+        this.$router.push({ name: '问卷管理' })
+      } else {
+        this.$router.push({ name: '督导端' })
+      }
+    },
+
+
 
     handleSubmit () {
       this.meta.lesson.lesson_model = this.recommend_model
@@ -174,16 +145,18 @@ export default {
               bind_meta_version: this.form_meta.version,
               meta: this.meta,
               status: '已完成',
-              values: Object.values(this.form_values)
+              values: this.formValue2Items()
             }
             if (this.recommend_model) {
               console.log('好评可 提及哦啊')
               this.model_lesson.id = this.meta.lesson.lesson_id
               getModelLessonsVote(this.model_lesson).then((resp) => {})
             }
-
-            postForm(form).then(() => {
-              location.reload()
+            postForm(form).then((resp) => {
+              if (resp.data.code === 200) {
+                this.$Message.success({ content: '保存成功' })
+                this.back()
+              }
             })
             this.$Message.success('添加成功！')
           } else {
@@ -192,6 +165,7 @@ export default {
         })
       }
     },
+
     handleSave () {
       let form = {
         bind_meta_id: this.form_meta._id,
@@ -199,14 +173,17 @@ export default {
         bind_meta_version: this.form_meta.version,
         meta: this.meta,
         status: '草稿',
-        values: Object.values(this.form_values)
+        values: this.formValue2Items()
       }
-      postForm(form).then(() => {
-        location.reload()
+      postForm(form).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '保存成功' })
+          this.back()
+        }
       })
     },
     handleCancel () {
-      location.reload()
+      this.back()
     }
   }
 }

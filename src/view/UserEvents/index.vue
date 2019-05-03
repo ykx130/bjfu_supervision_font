@@ -37,18 +37,18 @@
 </template>
 
 <script>
-  import { postEvents } from '@/service/api/events'
-  import { getEvents } from '@/service/api/user'
+import { postEvents } from '@/service/api/events'
+import { getEvents } from '@/service/api/user'
 import { queryForms, getForm } from '@/service/api/dqs'
-  import EventLine from './components/event-line'
-  import EventLineItem from './components/event-line-item'
-  import EventAddModal from './components/EventAddModal'
+import EventLine from './components/event-line'
+import EventLineItem from './components/event-line-item'
+import EventAddModal from './components/EventAddModal'
 
-  export default {
-  components:{EventLine, EventLineItem,EventAddModal},
+export default {
+  components: { EventLine, EventLineItem, EventAddModal },
   data: function () {
     return {
-      username: "",
+      username: '',
       showAddModal: false,
       events: [],
       query: {
@@ -131,7 +131,7 @@ import { queryForms, getForm } from '@/service/api/dqs'
                 },
                 on: {
                   click: () => {
-                    this.$router.push({path: `/dqs/form_show/${params.row._id}`})
+                    this.$router.push({ path: `/dqs/form_show/${params.row._id}` })
                   }
                 }
               }, '查看')
@@ -147,7 +147,7 @@ import { queryForms, getForm } from '@/service/api/dqs'
     this.fetchEventsData()
   },
   methods: {
-    fetchEventsData:function(){
+    fetchEventsData: function () {
       return getEvents(this.username).then((resp) => {
         this.events = resp.data.events
         this.events = this.events.map((item) => {
@@ -171,18 +171,19 @@ import { queryForms, getForm } from '@/service/api/dqs'
         this.data = resp.data.forms
       })
     },
-    onAddModalOK:function(event){
-      postEvents(event).then((resp)=>{
-        this.fetchEventsData()
-        if(resp.code === 200){
-          this.showAddModal = false
+    onAddModalOK: function (event) {
+      postEvents(event).then((resp) => {
+        if (resp.data.code === 200) {
+          this.fetchEventsData()
+          this.$Message.success({ content: '新建成功' })
         }
+        this.showAddModal = false
       })
     },
-    onAddModalCancel:function(){
+    onAddModalCancel: function () {
       this.showAddModal = false
     },
-    addEvents(){
+    addEvents () {
       this.showAddModal = true
     },
     resetColor: function () {

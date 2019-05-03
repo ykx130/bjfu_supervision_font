@@ -130,7 +130,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      queryUsers(args).then((resp) => {
+      return queryUsers(args).then((resp) => {
         this.data = resp.data.users
         this.total = resp.data.total
       })
@@ -148,9 +148,12 @@ export default {
     onProfileModalOK (user) {
       // 更新框确定 关闭
       putUser(user).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '更新成功' })
+          this.fetchData()
+        }
         this.showUserProfileModal = false
         this.pages._page = 1
-        this.fetchData()
       })
     },
     onProfileModalCancel () {
@@ -159,9 +162,12 @@ export default {
     onAddModalOK (user) {
       // 更新框确定 关闭
       postUser(user).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '督导添加成功' })
+          this.fetchData()
+        }
         this.showUserAddModal = false
         this.pages._page = 1
-        this.fetchData()
       })
     },
     onAddModalCancel () {

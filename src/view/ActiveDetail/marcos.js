@@ -1,6 +1,5 @@
 export const AttendState = [
-  '已报名',
-  '未报名'
+  '已报名'
 ] // 报名状态
 
 export const FinAttendState = [
