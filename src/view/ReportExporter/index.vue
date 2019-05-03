@@ -32,6 +32,7 @@
 <script>
 import ReportPreviewModal from './components/ReportPreviewModal'
 import { queryTemplates, getReport } from '../../service/api/templates'
+import { getCurrentTerms } from '@/service/api/term'
 
 export default {
   name: 'ReportExporter',
@@ -83,6 +84,9 @@ export default {
   mounted: function () {
     queryTemplates({ _page: 1, _per_page: 30 }).then(res => {
       this.templates = res.data.templates
+    })
+    getCurrentTerms().then((res) => {
+      this.reportArgs.term = res.data.term.name + '学期'
     })
   }
 }

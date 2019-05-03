@@ -4,7 +4,7 @@
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="模板名：" prop="title">
-        <Input style="width: 180px" v-model="query.title_like" placeholder="请输入模板名">
+        <Input style="width: 180px" v-model="query._like_title" placeholder="请输入模板名">
         </Input>
       </FormItem>
 
@@ -48,7 +48,7 @@ export default {
   data: function () {
     return {
       query: {
-        title_like: undefined
+        _like_title: undefined
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
