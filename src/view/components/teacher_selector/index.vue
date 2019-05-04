@@ -48,7 +48,7 @@
 <script>
 import Drop from 'iview/src/components/select/dropdown'
 import { UNIT_LIST } from '@/service/const/index'
-import { queryUsers } from '@/service/api/user.js'
+import { queryLessonTeacherName } from '@/service/api/lesson.js'
 import pinyin from 'pinyin'
 
 export default {
@@ -65,14 +65,44 @@ export default {
       unit_list: UNIT_LIST,
       show_drop: false,
       select_unit: undefined,
-      letter_names_list: [],
       value: '',
-      users: []
+      teacher_names: []
     }
   },
   watch: {
     select_unit: function () {
       this.fetchUserAndLetter()
+    }
+  },
+  computed: {
+    letter_names_list: function () {
+      let letter_names = []
+      let res = {}
+      // 分割
+      this.teacher_names.forEach((item, index) => {
+        let py = pinyin(item, {
+            style: pinyin.STYLE_FIRST_LETTER
+          }
+        )
+        let ckey = '#'
+        if (py.length) {
+          if (py[0].length) {
+            ckey = (py[0][0][0]).toUpperCase()
+          }
+        }
+        if (!res.hasOwnProperty(ckey)) {
+          res[ckey] = []
+        }
+        res[ckey].push(item)
+      })
+
+      Object.keys(res).forEach((key) => {
+        letter_names.push({
+          'ckey': key,
+          'names': res[key]
+        })
+      })
+      return letter_names
     }
   },
   methods: {
@@ -85,38 +115,10 @@ export default {
       this.$emit('input', this.value)
     },
     getUsersData () {
-      return queryUsers({
-        unit: this.select_unit
+      return queryLessonTeacherName({
+        lesson_teacher_unit: this.select_unit
       }).then((resp) => {
-        this.users = resp.data.users
-      })
-    },
-    getLetterNames () {
-      this.letter_names_list.splice(0, this.letter_names_list.length)
-      let res = {}
-      // 分割
-      this.users.forEach((item, index) => {
-        let py = pinyin(item.name, {
-          style: pinyin.STYLE_FIRST_LETTER
-        }
-        )
-        let ckey = '#'
-        if (py.length) {
-          if (py[0].length) {
-            ckey = (py[0][0][0]).toUpperCase()
-          }
-        }
-        if (!res.hasOwnProperty(ckey)) {
-          res[ckey] = []
-        }
-        res[ckey].push(item.name)
-      })
-
-      Object.keys(res).forEach((key) => {
-        this.letter_names_list.push({
-          'ckey': key,
-          'names': res[key]
-        })
+        this.teacher_names = resp.data.teacher_names
       })
     },
     fetchUserAndLetter () {

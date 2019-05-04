@@ -98,7 +98,7 @@ export default {
                     this.$Modal.confirm({
                       title: '是否确定删除?',
                       onOk: () => {
-                        deleteFormMetas(params).then((resp) => {
+                        deleteFormMetas(params.row).then((resp) => {
                           if (resp.data.code === 200) {
                             this.$Message.success({ content: '保存成功' })
                           }
