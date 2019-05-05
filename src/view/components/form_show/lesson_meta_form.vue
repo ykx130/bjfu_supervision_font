@@ -235,7 +235,7 @@ export default {
     // 获取所有课程
     fetchLesson: function () {
       this.lessons = {}
-      return queryLessons({ term: this.value.term, lesson_name_like: this.lesson_name_like }).then((resp) => {
+      return queryLessons({ term: this.value.term, lesson_or_teacher_name_or: this.lesson_name_like }).then((resp) => {
         resp.data.lessons.map((item) => {
           this.$set(this.lessons, item.lesson_id, item)
         })
