@@ -146,8 +146,10 @@ export default {
   }
 
   .name_content {
+    overflow: scroll;
     overflow-y: auto;
     overflow-x: hidden;
+    height: 400px;
     padding: 10px 13px 0 13px;
     label {
       display: block;
