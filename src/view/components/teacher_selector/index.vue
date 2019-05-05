@@ -122,9 +122,7 @@ export default {
       })
     },
     fetchUserAndLetter () {
-      return this.getUsersData().then(() => {
-        this.getLetterNames()
-      })
+      return this.getUsersData()
     }
   },
   created () {
