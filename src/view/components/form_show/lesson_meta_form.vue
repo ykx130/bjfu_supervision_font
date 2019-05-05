@@ -287,7 +287,19 @@ export default {
       } else {
         this.selected_lesson = { lesson_cases: [] }
       }// 查看选的那个
-
+      this.value.lesson = {
+        lesson_id: this.selected_lesson.lesson_id,
+        raw_lesson_id: this.selected_lesson.raw_lesson_id,
+        lesson_name: this.selected_lesson.lesson_name,
+        lesson_teacher_name: this.selected_lesson.lesson_teacher_name,
+        lesson_class: this.selected_lesson.lesson_class,
+        lesson_teacher_unit: this.selected_lesson.lesson_teacher_unit,
+        lesson_attribute: this.selected_lesson.lesson_attribute,
+        assign_group: this.selected_lesson.assign_group,
+        lesson_year: this.selected_lesson.lesson_year,
+        lesson_level: this.selected_lesson.lesson_level,
+        lesson_model: this.selected_lesson.lesson_model,
+      }
       this.lesson_times = []
       this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
         return item.lesson_date
@@ -313,16 +325,7 @@ export default {
       }
 
       this.value.lesson = {
-        lesson_id: this.selected_lesson.lesson_id,
-        lesson_name: this.selected_lesson.lesson_name,
-        lesson_teacher_name: this.selected_lesson.lesson_teacher_name,
-        lesson_class: this.selected_lesson.lesson_class,
-        lesson_teacher_unit: this.selected_lesson.lesson_teacher_unit,
-        lesson_attribute: this.selected_lesson.lesson_attribute,
-        assign_group: this.selected_lesson.assign_group,
-        lesson_year: this.selected_lesson.lesson_year,
-        lesson_level: this.selected_lesson.lesson_level,
-        lesson_model: this.selected_lesson.lesson_model,
+        ...this.value.lesson,
         lesson_date: value,
         lesson_room: this.selected_lesson_case.lesson_room,
         lesson_times: this.value.lesson.lesson_times ? this.value.lesson.lesson_times : []
