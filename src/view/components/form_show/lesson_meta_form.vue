@@ -310,7 +310,7 @@ export default {
         assign_group: this.selected_lesson.assign_group,
         lesson_year: this.selected_lesson.lesson_year,
         lesson_level: this.selected_lesson.lesson_level,
-        lesson_model: this.selected_lesson.lesson_model
+        lesson_model: this.selected_lesson.lesson_model,
       }
       this.onSelectedLessonCaseChange(undefined)
     },

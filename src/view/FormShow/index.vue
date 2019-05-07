@@ -17,12 +17,42 @@
         <div>
 
           <FormShow v-model="form_values" :items="form.values" :disabled="disabled" ref="ruleform">
-            <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }" >
-              <RadioGroup v-model="recommend_model" >
-                <Radio label="推荐" :label="1" :disabled="disabled"></Radio>
-                <Radio label="不推荐" :label="0" :disabled="disabled"></Radio>
-              </RadioGroup>
-            </FormItem>
+            <div v-show="!form.model_lesson.is_model_lesson">
+              <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
+              <FormItem>
+                <Row>
+                  <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：是否推荐为好评课?</span>
+                </Row>
+                <Row>
+                  <RadioGroup v-model="form.model_lesson.recommend" >
+                    <Radio
+                      :label="1"
+                      v-bind:style="{ fontSize:'15px',marginLeft:'25px' }"
+                      disabled
+                    >推荐</Radio>
+                    <Radio :label="0"
+                           v-bind:style="{ fontSize:'15px',marginLeft:'25px' }"
+                           disabled
+                    >不推荐</Radio>
+                  </RadioGroup>
+                </Row>
+              </FormItem>
+
+              <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">（若选择为“推荐为好评课堂，请写出推荐理由； 若选择“待定，还需进一步完善”，请写出意见及建议。)</span>
+
+              <FormItem>
+                <Row>
+                  <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：结论及意见</span>
+                </Row>
+                <Row>
+                  <Input type="textarea"
+                         disabled
+                         v-model="form.model_lesson.recommend_reason"
+                         placeholder="Satisfation about teachers..."
+                         v-bind:style="{marginLeft:'25px',width:'65%'}"></Input>
+                </Row>
+              </FormItem>
+            </div>
           </FormShow>
           <!--{{ruleValidate}}-->
         <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="form.status==='已完成'">保存</Button>
@@ -77,6 +107,7 @@ export default {
         values: []
       },
       recommend_model: 0,
+      recommend_reason: "",
       show_recommend: false,
       disabled: false,
       meta: { lesson: {} },
@@ -134,7 +165,12 @@ export default {
           if (valid) {
             let form = {
               status: '已完成',
-              values: this.formValue2Items()
+              values: this.formValue2Items(),
+              model_lesson: {
+                lesson_id: this.form_meta.lesson.lesson_id,
+                guider: this.form_meta.guider,
+                recommend: this.recommend_model
+              }
             }
             if (this.recommend_model) {
               this.model_lesson.id = this.meta.lesson.lesson_id
@@ -155,7 +191,12 @@ export default {
     handleSave () {
       let form = {
         status: '草稿',
-        values: this.formValue2Items()
+        values: this.formValue2Items(),
+        model_lesson: {
+          lesson_id: this.form_meta.lesson.lesson_id,
+          guider: this.form_meta.guider,
+          recommend: this.recommend_model
+        }
       }
       putForm(this.form_id, form).then((resp) => {
         if (resp.data.code === 200) {

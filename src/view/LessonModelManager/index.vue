@@ -53,9 +53,10 @@ import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
+import ModelJudge from './components/ModelJudge'
 
 export default {
-  components: { LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal },
+  components: { ModelJudge,LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal },
   data: function () {
     return {
       uploadModelLessonApi: uploadModelLessonApi,
@@ -77,10 +78,10 @@ export default {
       columns: [
         {
           type: 'expand',
-          title: '评价',
+          title: '好评推荐',
           width: 70,
           render: (h, params) => {
-            return h(LessonJudge, {
+            return h(ModelJudge, {
               props: {
                 lesson_id: params.row.lesson_id
               }
