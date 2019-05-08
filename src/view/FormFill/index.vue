@@ -99,7 +99,7 @@ export default {
       form_values: {},
       meta: { lesson: {} },
       recommend_model: 0,
-      recommend_reason: "",
+      recommend_reason: '',
       show_recommend: false,
       formValidate: {
         radio: '',
@@ -127,7 +127,7 @@ export default {
   },
   methods: {
     formValue2Items () {
-      this.form_meta.items.map((item, index)=>{
+      this.form_meta.items.map((item, index) => {
         if (item.type === 'form_item') {
           this.form_meta.items[index].value = this.form_values[item.item_name].value
         }
@@ -154,14 +154,14 @@ export default {
       }
     },
 
-    getForm(status) {
+    getForm (status) {
       let form = {
         bind_meta_id: this.form_meta._id,
         bind_meta_name: this.form_meta.name,
         bind_meta_version: this.form_meta.version,
         meta: this.meta,
         status: status,
-        values: this.formValue2Items(),
+        values: this.formValue2Items()
       }
       form['model_lesson'] = {
         recommend: this.recommend_model,
@@ -172,21 +172,17 @@ export default {
     },
 
     handleSubmit () {
-      this.meta.lesson.lesson_model = this.recommend_model
       if (this.meta.guider === '' || this.meta.lesson.lesson_name === '' ||
         this.meta.lesson.lesson_date === '' || this.meta.lesson.lesson_times === '') {
         this.$Message.error('请填写完整课程信息！')
       } else {
         this.$refs.ruleform.validate((valid) => {
           if (valid) {
-
+            let form = this.getForm('已完成')
             if (this.show_recommend) {
               console.log('好评课 确定')
-              postModelLessonsVote({
-                lesson_id: this.form.meta.lesson.lesson_id
-              }).then((resp) => {})
+              postModelLessonsVote({ lesson_id: form.meta.lesson.lesson_id })
             }
-            let form = this.getForm("已完成")
             postForm(form).then((resp) => {
               if (resp.data.code === 200) {
                 this.$Message.success({ content: '保存成功' })
@@ -202,7 +198,7 @@ export default {
     },
 
     handleSave () {
-      let form = this.getForm("草稿")
+      let form = this.getForm('草稿')
       postForm(form).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '保存成功' })
