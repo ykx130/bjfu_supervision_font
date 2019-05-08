@@ -16,12 +16,40 @@
       <br/>
       <divider orientation="left">问卷内容</divider>
       <FormShow v-model="form_values" :items="form_meta.items" :disabled="false" ref="ruleform" :ruleValidate="ruleValidate">
-        <FormItem label="是否推荐为好评课" v-show="show_recommend" v-bind:style="{marginLeft:'25px',fontSize:'15px' }">
-          <RadioGroup v-model="recommend_model">
-            <Radio label="推荐" :label="1" :disabled="false"></Radio>
-            <Radio label="不推荐" :label="0" :disabled="false"></Radio>
-          </RadioGroup>
-        </FormItem>
+       <div v-show="show_recommend">
+         <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
+         <FormItem>
+           <Row>
+             <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：是否推荐为好评课?</span>
+           </Row>
+           <Row>
+             <RadioGroup v-model="recommend_model" >
+               <Radio
+                 :label="1"
+                 v-bind:style="{ fontSize:'15px',marginLeft:'25px' }"
+               >推荐</Radio>
+               <Radio :label="0"
+                      v-bind:style="{ fontSize:'15px',marginLeft:'25px' }"
+               >不推荐</Radio>
+             </RadioGroup>
+           </Row>
+         </FormItem>
+
+         <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">（若选择为“推荐为好评课堂，请写出推荐理由； 若选择“待定，还需进一步完善”，请写出意见及建议。)</span>
+
+         <FormItem>
+           <Row>
+             <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：结论及意见</span>
+           </Row>
+           <Row>
+             <Input type="textarea"
+                    v-model="recommend_reason"
+                    placeholder="Satisfation about teachers..."
+                    v-bind:style="{marginLeft:'25px',width:'65%'}"></Input>
+           </Row>
+         </FormItem>
+       </div>
+
       </FormShow>
 
       <!--{{ruleValidate}}-->
@@ -34,7 +62,7 @@
 </template>
 <script>
 import { getFormMeta, postForm } from '../../service/api/dqs'
-import { getLesson, updateModelLessonsVote, getModelLessonsVote } from '../../service/api/lesson'
+import { getLesson, updateModelLessonsVote, postModelLessonsVote } from '../../service/api/lesson'
 import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
 import FormShow from '@/view/components/form_show/form_show.vue'
 
@@ -64,10 +92,6 @@ export default {
   },
   data () {
     return {
-      model_lesson: {
-        id: '',
-        vote: ''
-      },
       form_meta: {
         _id: undefined,
         items: []
@@ -75,6 +99,7 @@ export default {
       form_values: {},
       meta: { lesson: {} },
       recommend_model: 0,
+      recommend_reason: "",
       show_recommend: false,
       formValidate: {
         radio: '',
@@ -129,7 +154,22 @@ export default {
       }
     },
 
-
+    getForm(status) {
+      let form = {
+        bind_meta_id: this.form_meta._id,
+        bind_meta_name: this.form_meta.name,
+        bind_meta_version: this.form_meta.version,
+        meta: this.meta,
+        status: status,
+        values: this.formValue2Items(),
+      }
+      form['model_lesson'] = {
+        recommend: this.recommend_model,
+        recommend_reason: this.recommend_reason,
+        is_model_lesson: !this.show_recommend
+      }
+      return form
+    },
 
     handleSubmit () {
       this.meta.lesson.lesson_model = this.recommend_model
@@ -139,19 +179,14 @@ export default {
       } else {
         this.$refs.ruleform.validate((valid) => {
           if (valid) {
-            let form = {
-              bind_meta_id: this.form_meta._id,
-              bind_meta_name: this.form_meta.name,
-              bind_meta_version: this.form_meta.version,
-              meta: this.meta,
-              status: '已完成',
-              values: this.formValue2Items()
+
+            if (this.show_recommend) {
+              console.log('好评课 确定')
+              postModelLessonsVote({
+                lesson_id: this.form.meta.lesson.lesson_id
+              }).then((resp) => {})
             }
-            if (this.recommend_model) {
-              console.log('好评可 提及哦啊')
-              this.model_lesson.id = this.meta.lesson.lesson_id
-              getModelLessonsVote(this.model_lesson).then((resp) => {})
-            }
+            let form = this.getForm("已完成")
             postForm(form).then((resp) => {
               if (resp.data.code === 200) {
                 this.$Message.success({ content: '保存成功' })
@@ -167,14 +202,7 @@ export default {
     },
 
     handleSave () {
-      let form = {
-        bind_meta_id: this.form_meta._id,
-        bind_meta_name: this.form_meta.name,
-        bind_meta_version: this.form_meta.version,
-        meta: this.meta,
-        status: '草稿',
-        values: this.formValue2Items()
-      }
+      let form = this.getForm("草稿")
       postForm(form).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '保存成功' })

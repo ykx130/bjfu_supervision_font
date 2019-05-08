@@ -26,7 +26,7 @@
         </Col>
         <Col span="6">
           <FormItem label="听课学期" prop="term">
-            <Select v-model="value.term" @on-change="onTermSelectChange" class="inline-form-item" :disabled="disabled">
+            <Select :placement="'bottom'" v-model="value.term" @on-change="onTermSelectChange" class="inline-form-item" :disabled="disabled">
               <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
             </Select>
           </FormItem>
@@ -114,7 +114,7 @@
   </div>
 </template>
 <script>
-import { queryLessons, getLesson } from '@/service/api/lesson'
+import { queryLessons, getLesson, queryLessonCase } from '@/service/api/lesson'
 import { querySupervisors } from '@/service/api/user'
 import { dateToString } from 'Libs/tools'
 import { queryTerms, getCurrentTerms } from '@/service/api/term'
@@ -235,7 +235,7 @@ export default {
     // 获取所有课程
     fetchLesson: function () {
       this.lessons = {}
-      return queryLessons({ term: this.value.term, lesson_name_like: this.lesson_name_like }).then((resp) => {
+      return queryLessons({ term: this.value.term, lesson_or_teacher_name_or: this.lesson_name_like }).then((resp) => {
         resp.data.lessons.map((item) => {
           this.$set(this.lessons, item.lesson_id, item)
         })
@@ -284,36 +284,24 @@ export default {
       /* 选择的课程发生变化 */
       if (lesson_id) {
         this.selected_lesson = this.lessons[lesson_id]
+        this.selected_lesson.lesson_cases = []
+        queryLessonCase({ lesson_id: this.selected_lesson.id }).then((resp) => {
+          this.selected_lesson.lesson_cases = resp.data.lesson_cases
+          this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
+            return item.lesson_date
+          })
+          if (this.allow_select_data.length > 0) {
+            this.onSelectedLessonCaseChange(this.allow_select_data[0])
+          } else {
+            this.onSelectedLessonCaseChange(undefined)
+          }
+        })
       } else {
         this.selected_lesson = { lesson_cases: [] }
       }// 查看选的那个
-
-      this.lesson_times = []
-      this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
-        return item.lesson_date
-      })
-
-      if (this.allow_select_data) {
-        this.onSelectedLessonCaseChange(this.allow_select_data[0])
-      }
-    },
-
-    onSelectedLessonCaseChange: function (value) {
-      /* 选择的课程case变化 根据时间 */
-      this.value.lesson.lesson_date = value
-      let flag = this.selected_lesson.lesson_cases.findIndex((item) => {
-        return item.lesson_date === value
-      })
-      if (flag !== -1) {
-        this.lesson_times = transTimeToSelectedData(this.selected_lesson.lesson_cases[flag].lesson_time)
-        this.selected_lesson_case = this.selected_lesson.lesson_cases[flag]
-      } else {
-        this.lesson_times = []
-        this.selected_lesson_case = {}
-      }
-
       this.value.lesson = {
         lesson_id: this.selected_lesson.lesson_id,
+        raw_lesson_id: this.selected_lesson.raw_lesson_id,
         lesson_name: this.selected_lesson.lesson_name,
         lesson_teacher_name: this.selected_lesson.lesson_teacher_name,
         lesson_class: this.selected_lesson.lesson_class,
@@ -323,9 +311,40 @@ export default {
         lesson_year: this.selected_lesson.lesson_year,
         lesson_level: this.selected_lesson.lesson_level,
         lesson_model: this.selected_lesson.lesson_model,
-        lesson_date: value,
-        lesson_room: this.selected_lesson_case.lesson_room,
-        lesson_times: this.value.lesson.lesson_times ? this.value.lesson.lesson_times : []
+      }
+      this.onSelectedLessonCaseChange(undefined)
+    },
+
+    onSelectedLessonCaseChange: function (value) {
+      if (value) {
+        /* 选择的课程case变化 根据时间 */
+        this.value.lesson.lesson_date = value
+        let flag = this.selected_lesson.lesson_cases.findIndex((item) => {
+          return item.lesson_date === value
+        })
+        if (flag !== -1) {
+          this.lesson_times = transTimeToSelectedData(this.selected_lesson.lesson_cases[flag].lesson_time)
+          this.selected_lesson_case = this.selected_lesson.lesson_cases[flag]
+        } else {
+          this.lesson_times = []
+          this.selected_lesson_case = {}
+        }
+
+        this.value.lesson = {
+          ...this.value.lesson,
+          lesson_date: value,
+          lesson_room: this.selected_lesson_case.lesson_room,
+          lesson_times: this.value.lesson.lesson_times ? this.value.lesson.lesson_times : []
+        }
+      } else {
+        this.lesson_times = []
+        this.selected_lesson_case = {}
+        this.value.lesson = {
+          ...this.value.lesson,
+          lesson_date: undefined,
+          lesson_room: undefined,
+          lesson_times: []
+        }
       }
     },
 

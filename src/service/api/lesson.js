@@ -45,8 +45,8 @@ export const queryModelLessons = (params) => {
   return axios.get('/api/model_lessons', { params: params })
 }
 
-export const getModelLessonsVote = (params) => {
-  return axios.get(`/api/model_lessons／${params.id}／vote`)
+export const postModelLessonsVote = (params) => {
+  return axios.post(`/api/model_lessons／${params.lesson_id}／vote`, {vote:true})
 }
 
 export const updateModelLessonsVote = (params) => {
@@ -67,4 +67,12 @@ export const exporNoticeLessonExcel = (params) => {
 
 export const exporModelLessonExcel = (params) => {
   return axios.post(`/api/model_lessons/excel/export`, params)
+}
+
+export const queryLessonTeacherName = (params) => {
+  return axios.get('/api/teacher_names', { params: params })
+}
+
+export const queryLessonCase = (params) => {
+  return axios.get('/api/lesson_cases', { params: params })
 }
