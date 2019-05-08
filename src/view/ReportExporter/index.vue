@@ -18,7 +18,7 @@
         </Select>
       </FormItem>
       <FormItem>
-        <Button type="primary" @click="handleDisplay('reportForm')">预览</Button>
+        <Button type="primary" @click="handleDisplay('reportForm')"  :loading="pageLoading">预览</Button>
       </FormItem>
     </Form>
 
@@ -27,6 +27,14 @@
       :show="reportPreviewShow"
       @onClose="onPreviewModalClose">
     </ReportPreviewModal>
+
+    <Modal
+      title="下载提示"
+      :value="downloadShow"
+      @on-ok="handleDownloadTip()"
+      @on-cancel="handleDownloadTip()">
+      如果未开始下载，请<a :href="fileurl">点击尝试</a>
+    </Modal>
   </Card>
 </template>
 <script>
@@ -47,6 +55,9 @@ export default {
       templates: [],
       code: undefined,
       reportPreviewShow: false,
+      pageLoading: false,
+      downloadShow: false,
+      fileurl: '',
       rules: {
         term: [{ required: true, message: '学期不能为空', trigger: 'blur,change' }],
         template_id: [{ required: true, type: 'number', message: '请选择模板', trigger: 'change' }]
@@ -65,12 +76,18 @@ export default {
         }, 200)
       }
     },
-    onPreviewModalClose () {
+    onPreviewModalClose (arg) {
       this.reportPreviewShow = false
+      this.pageLoading = false
+      if (arg) {
+        this.fileurl = arg
+        this.downloadShow = true
+      }
     },
     handleDisplay (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
+          this.pageLoading = true
           getReport(this.reportArgs.template_id, { term: this.reportArgs.term }).then(res => {
             this.code = res.data
             this.reportPreviewShow = true
@@ -79,6 +96,9 @@ export default {
           return false
         }
       })
+    },
+    handleDownloadTip () {
+      this.downloadShow = false
     }
   },
   mounted: function () {
