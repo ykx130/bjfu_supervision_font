@@ -70,7 +70,7 @@
 import { getForm, postForm,putForm } from '../../service/api/dqs'
 import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
 import FormShow from '@/view/components/form_show/form_show.vue'
-import { getLesson, updateModelLessonsVote, getModelLessonsVote } from '../../service/api/lesson'
+import { getLesson, updateModelLessonsVote, postModelLessonsVote } from '../../service/api/lesson'
 export default {
   components: {
     Lesson, FormShow
@@ -171,10 +171,6 @@ export default {
                 guider: this.form_meta.guider,
                 recommend: this.recommend_model
               }
-            }
-            if (this.recommend_model) {
-              this.model_lesson.id = this.meta.lesson.lesson_id
-              getModelLessonsVote(this.model_lesson)
             }
             putForm(this.form_id,form).then((resp) => {
               if (resp.data.code === 200) {

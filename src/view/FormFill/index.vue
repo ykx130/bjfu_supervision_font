@@ -62,7 +62,7 @@
 </template>
 <script>
 import { getFormMeta, postForm } from '../../service/api/dqs'
-import { getLesson, updateModelLessonsVote, getModelLessonsVote } from '../../service/api/lesson'
+import { getLesson, updateModelLessonsVote, postModelLessonsVote } from '../../service/api/lesson'
 import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
 import FormShow from '@/view/components/form_show/form_show.vue'
 
@@ -92,10 +92,6 @@ export default {
   },
   data () {
     return {
-      model_lesson: {
-        id: '',
-        vote: ''
-      },
       form_meta: {
         _id: undefined,
         items: []
@@ -184,10 +180,11 @@ export default {
         this.$refs.ruleform.validate((valid) => {
           if (valid) {
 
-            if (this.recommend_model) {
-              console.log('好评可 提及哦啊')
-              this.model_lesson.id = this.meta.lesson.lesson_id
-              getModelLessonsVote(this.model_lesson).then((resp) => {})
+            if (this.show_recommend) {
+              console.log('好评课 确定')
+              postModelLessonsVote({
+                lesson_id: this.form.meta.lesson.lesson_id
+              }).then((resp) => {})
             }
             let form = this.getForm("已完成")
             postForm(form).then((resp) => {
