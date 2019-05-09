@@ -5,7 +5,7 @@
     <!--<p>选项:{{this.qsItem.payload}}</p>-->
     <!--<Button type="primary" @click="modal1 = true">文本题</Button>-->
 
-    <Form :label-width="50" style="width: 400px">
+    <Form :label-width="60" style="width: 400px">
       <FormItem label="子标题:">
         <Row>
           <Col span="18">

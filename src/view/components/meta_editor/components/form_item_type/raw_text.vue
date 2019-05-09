@@ -5,11 +5,18 @@
     <!--<p>选项:{{this.qsItem.payload}}</p>-->
     <!--<Button type="primary" @click="modal1 = true">文本题</Button>-->
 
-      <Form :label-width="50" style="width: 400px">
-        <FormItem label="题目:">
+      <Form :label-width="80" style="width: 400px">
+        <FormItem label="题目标题:">
           <Row>
             <Col span="18">
-              <Input v-model="qsItem.item_name" placeholder="Enter something..."></Input>
+              <Input v-model="qsItem.title" placeholder="将在问卷上展示 可重复"></Input>
+            </Col>
+          </Row>
+        </FormItem>
+        <FormItem label="题目名称:">
+          <Row>
+            <Col span="18">
+              <Input v-model="qsItem.item_name" placeholder="用于检索, 请保证全局唯一"></Input>
             </Col>
           </Row>
         </FormItem>
@@ -42,6 +49,7 @@ export default {
     return {
       qsItem: {
         item_name: '',
+        title: '',
         type: 'form_item',
         item_type: 'raw_text'
       },
