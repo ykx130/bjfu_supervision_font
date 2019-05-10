@@ -20,7 +20,7 @@
             </span>
           </span>
         </span>周</p>
-      <Button type="text" @click="judge(lesson.lesson_id)" style="color: #348EED">评价</Button>
+      <Button type="text" @click="judge(lesson.lesson_id, lesson.term)" style="color: #348EED">评价</Button>
       <span>-------</span>
     </div>
   </div>
@@ -54,11 +54,12 @@ export default {
     })
   },
   methods: {
-    judge: function (lesson_id) {
+    judge: function (lesson_id, term) {
       this.$router.push({
         name: 'guider_form_choose',
         query: {
-          'lesson_id': lesson_id
+          'lesson_id': lesson_id,
+          'term': this.$route.query.term
         }
       })
     }

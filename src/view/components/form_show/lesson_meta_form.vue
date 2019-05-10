@@ -173,18 +173,10 @@ export default {
           this.selected_lesson = resp.data.lesson
           // 处理case
           this.lessons[this.selected_lesson.lesson_id] = this.selected_lesson
-          this.value.lesson.lesson_id = this.selected_lesson.lesson_id
-          this.value.lesson.lesson_date = undefined
+          this.onSelectedLessonChange(this.selected_lesson.lesson_id)
           this.lesson_times = []
-          this.allow_select_data = this.selected_lesson.lesson_cases.map((item) => {
-            return item.lesson_date
-          })
-          // 选择case
-          if (this.allow_select_data) {
-            this.onSelectedLessonCaseChange(this.allow_select_data[0])
-          }
-          // 处理表单的附加值
           this.value.term = this.selected_lesson.term
+          // 处理表单的附加值
 
           this.fetchUser()
         })

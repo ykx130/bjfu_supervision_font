@@ -5,11 +5,11 @@
         <Form :label-width="80" :model="query" inline>
         <FormItem label="学期：" prop="term">
           <Select v-model="query.term" style="width:200px">
-            <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
+            <Option v-for="item in terms" :value="item.name" :key="item.name" @on-change="onTermChange">{{ item.name }}</Option>
           </Select>
         </FormItem>
           <FormItem label="教师名字：" prop="lesson_teacher_name">
-              <TeacherSelector v-model="query.lesson_teacher_name"></TeacherSelector>
+              <TeacherSelector :term="query.term"  v-model="query.lesson_teacher_name"></TeacherSelector>
           </FormItem>
           <FormItem >
             <Button type="primary" @click="onSearch">查看</Button>
@@ -38,6 +38,7 @@ export default {
     return {
       query: {},
       terms: [],
+      term: '',
       columns: [
         {
           title: '#',
@@ -334,6 +335,10 @@ export default {
     },
     onSearch: function () {
       this.pullLessons()
+    },
+    onTermChange: function (value) {
+      this.term =value
+      this.$router.push({name:this.$route.name, query:{term: this.term} })
     }
 
   },
