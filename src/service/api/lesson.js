@@ -46,7 +46,7 @@ export const queryModelLessons = (params) => {
 }
 
 export const postModelLessonsVote = (params) => {
-  return axios.post(`/api/model_lessons／${params.lesson_id}／vote`, {vote:true})
+  return axios.post(`/api/model_lessons/${params.lesson_id}/vote`, { vote: true })
 }
 
 export const updateModelLessonsVote = (params) => {

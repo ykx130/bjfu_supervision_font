@@ -57,8 +57,9 @@ export default {
   props: {
     empty_text: {
       type: String,
-      default: '暂无数据'
-    }
+      default: '暂无数据',
+    },
+    term: {type:String, default: ''},
   },
   data () {
     return {
@@ -72,6 +73,9 @@ export default {
   watch: {
     select_unit: function () {
       this.fetchUserAndLetter()
+    },
+    term:  function () {
+        this.fetchUserAndLetter()
     }
   },
   computed: {
@@ -116,7 +120,8 @@ export default {
     },
     getUsersData () {
       return queryLessonTeacherName({
-        lesson_teacher_unit: this.select_unit
+        lesson_teacher_unit: this.select_unit,
+        term: this.term
       }).then((resp) => {
         this.teacher_names = resp.data.teacher_names
       })

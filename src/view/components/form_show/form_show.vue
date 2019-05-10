@@ -15,7 +15,7 @@
       <template v-else-if="it.item_type === 'radio_option'">
         <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name">
           <Row>
-            <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
+            <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
             <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
           </Row>
           <Row>
@@ -34,7 +34,7 @@
       <template v-else-if="it.item_type === 'checkbox_option'">
         <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name">
           <Row>
-            <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
+            <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
             <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
           </Row>
           <Row>
@@ -52,7 +52,7 @@
       <template v-if="it.item_type === 'raw_text'">
         <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name">
           <Row>
-            <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.item_name}}</span>
+            <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
             <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
           </Row>
           <Row>

@@ -3,8 +3,10 @@
     <Card>
       <Row>
         <Col span="6">
-          问卷名字：
-              <Input style="width: 180px" v-model="query.name" ></Input>
+          学期：
+            <Select v-model="term" style="width:200px">
+              <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
+            </Select>
         </Col>
         <Col span="6">
           <Button type="primary" style="margin-left: 20px;width: 80px" @click=" onSearch">查询</Button>
@@ -21,7 +23,7 @@
 </template>
 
 <script>
-import { getCurrentTerms } from '@/service/api/term'
+import { getCurrentTerms,queryTerms } from '@/service/api/term'
 import { queryFormMetas } from '../../service/api/dqs'
 import { queryWorkPlanDetail } from '@/service/api/work_plan'
 import form_meta_card from 'Views/components/form_meta_card/form_meta_card'
@@ -32,7 +34,8 @@ export default {
     return {
       data: [],
       query: {},
-      term: ''
+      term: '',
+      terms: []
     }
   },
   methods: {
@@ -48,19 +51,34 @@ export default {
     },
     onSearch (query) {
       // 查询变化 当点提交查询条件生效
-      queryFormMetas({ ...query }).then((resp) => {
-        this.data = resp.data.form_metas
-      })
-    }
-  },
-  mounted: function () {
-    getCurrentTerms().then((termResp) => {
-      this.term = termResp.data.term.name
       queryWorkPlanDetail(this.term).then((resp) => {
         this.data = resp.data.work_plans.map((item) => {
           return item.form_meta
         })
       })
+    }
+  },
+  mounted: function () {
+    queryTerms().then((resp) => {
+      this.terms = resp.data.terms
+
+      if (this.$route.query.term) {
+        this.term = this.$route.query.term
+        queryWorkPlanDetail(this.term).then((resp) => {
+          this.data = resp.data.work_plans.map((item) => {
+            return item.form_meta
+          })
+        })
+      } else {
+        getCurrentTerms().then((termResp) => {
+          this.term = termResp.data.term.name
+          queryWorkPlanDetail(this.term).then((resp) => {
+            this.data = resp.data.work_plans.map((item) => {
+              return item.form_meta
+            })
+          })
+        })
+      }
     })
   }
 }
