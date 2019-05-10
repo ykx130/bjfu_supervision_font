@@ -4,7 +4,9 @@
     <br>
     <Form :label-width="80" :model="reportArgs" ref="reportForm" :rules="rules">
       <FormItem label="学期" prop="term">
-        <Input v-model="reportArgs.term" placeholder="请输入"/>
+        <Select v-model="reportArgs.term" style="width:200px">
+          <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
+        </Select>
       </FormItem>
       <FormItem label="模板" prop="template_id">
         <Select
@@ -40,7 +42,7 @@
 <script>
 import ReportPreviewModal from './components/ReportPreviewModal'
 import { queryTemplates, getReport } from '../../service/api/templates'
-import { getCurrentTerms } from '@/service/api/term'
+import { getCurrentTerms, queryTerms } from '@/service/api/term'
 
 export default {
   name: 'ReportExporter',
@@ -57,6 +59,7 @@ export default {
       reportPreviewShow: false,
       pageLoading: false,
       downloadShow: false,
+      terms: [],
       fileurl: '',
       rules: {
         term: [{ required: true, message: '学期不能为空', trigger: 'blur,change' }],
@@ -107,6 +110,9 @@ export default {
     })
     getCurrentTerms().then((res) => {
       this.reportArgs.term = res.data.term.name + '学期'
+    })
+    queryTerms().then((resp) => {
+      this.terms = resp.data.terms
     })
   }
 }
