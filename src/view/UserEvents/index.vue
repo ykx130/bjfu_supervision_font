@@ -3,8 +3,8 @@
       <h1>用户大事件</h1>
 
       <Col span="6">
-        <div>
-          <Timeline v-model="events" style="float:left;margin-left: 20px" >
+        <div style="height: 100%">
+          <Timeline v-model="events" style="margin-left: 20px" >
             <TimelineItem v-for="(event,index) in events" :key="'event'+index" >
               <div  @click="showTable(event, index)">
                 <p style="font-size: 14px; font-weight: bold;" :class="event.status" >{{ event.timestamp}}</p>
@@ -20,7 +20,7 @@
       <Col span="18">
 
         <div>
-          <Table stripe :columns="columns" :data="data" style="width: 860px; margin-left: 20px; margin-top: 20px"></Table>
+          <Table stripe :columns="columns" :data="data" style="width: 720px; margin-left: 20px; margin-top: 20px"></Table>
         </div>
         <div>
           <Button type="primary" @click="addEvents">新增</Button>

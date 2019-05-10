@@ -69,6 +69,7 @@ export default{
       name: '各组评价情况查看',
       path: 'lesson_records', // xzl
       meta: {
+
       },
       component: resolve => require(['Views/GroupLessonList/index'], resolve)
     },
@@ -76,6 +77,7 @@ export default{
       name: '问卷数据分析',
       path: 'form_sa', // xzl
       meta: {
+        access: ['管理员'],
         title: '评价结果预览'
       },
       component: resolve => require(['Views/FormStatic/index'], resolve)
@@ -93,6 +95,7 @@ export default{
       path: '/work_pan', // 问卷选择
       name: 'work_pan',
       meta: {
+        access: ['管理员'],
         title: '工作计划制定'
       },
       component: resolve => require(['Views/WorkPlan/index'], resolve)
