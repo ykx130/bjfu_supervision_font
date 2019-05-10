@@ -26,7 +26,7 @@
       </FormItem>
       <span>好评状态:</span>
       <FormItem prop="lesson_state">
-        <Select v-model="lesson.status" style="width:200px">
+        <Select v-model="lesson.status" style="width:100%">
           <Option value="推荐为好评课" >推荐为好评课</Option>
           <Option value="待商榷" >待商榷</Option>
         </Select>
@@ -36,10 +36,10 @@
 </template>
 
 <script>
-import {getModelLesson} from '../../../service/api/lesson'
-import {updateWithinField} from 'Libs/tools'
-import {queryGroups} from '../../../service/api/user'
-import {lessonLevel, lessonWatchReason} from '../marcos'
+import { getModelLesson } from '../../../service/api/lesson'
+import { updateWithinField } from 'Libs/tools'
+import { queryGroups } from '../../../service/api/user'
+import { lessonLevel, lessonWatchReason } from '../marcos'
 export default {
   name: 'LessonProfileModal',
   props: {
