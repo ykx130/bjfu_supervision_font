@@ -24,6 +24,13 @@
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
+      <span>好评状态:</span>
+      <FormItem prop="lesson_state">
+        <Select v-model="lesson.status" style="width:200px">
+          <Option value="推荐为好评课" >推荐为好评课</Option>
+          <Option value="待商榷" >待商榷</Option>
+        </Select>
+      </FormItem>
     </Form>
   </Modal>
 </template>
@@ -47,11 +54,7 @@ export default {
         id: '',
         lesson_name: '',
         lesson_attribute: '',
-        lesson_id: '',
-        lesson_state: '',
-        lesson_teacher_name: '',
-        lesson_level: '',
-        lesson_attention_reason: ''
+        status: ''
       },
       lessonLevel: lessonLevel,
       lessonWatchReason: lessonWatchReason, // 课程关注原因,

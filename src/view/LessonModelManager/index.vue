@@ -48,7 +48,7 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel } from '@/service/api/lesson'
+import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel,putModelLesson } from '@/service/api/lesson'
 import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
@@ -109,10 +109,10 @@ export default {
         {
           title: '好评状态',
           render: (h, params) => {
-            if (params.row.status === '推荐课') {
-              return h('Tag', { props: { color: 'red' } }, params.row.status)
+            if (params.row.status === 1) {
+              return h('Tag', { props: { color: 'red' } }, '推荐为好评课')
             } else {
-              return h('Tag', { props: { color: 'blue' } }, params.row.status)
+              return h('Tag', { props: { color: 'blue' } }, '待商榷')
             }
           }
         },
@@ -180,7 +180,7 @@ export default {
     },
     onProfileModalOK (lesson) {
       // 更新框确定 关闭
-      putLesson(lesson).then((resp) => {
+      putModelLesson(lesson).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '更新成功' })
           this.fetchData()
