@@ -1,4 +1,5 @@
 <template>
+<div>
   <Card>
     <h1>报告导出</h1>
     <br>
@@ -20,10 +21,9 @@
         </Select>
       </FormItem>
       <FormItem>
-        <Button type="primary" @click="handleDisplay('reportForm')"  :loading="pageLoading">预览</Button>
+        <Button type="primary" @click="handleDisplay('reportForm')">预览</Button>
       </FormItem>
     </Form>
-
     <ReportPreviewModal
       :code="code"
       :show="reportPreviewShow"
@@ -38,6 +38,7 @@
       如果未开始下载，请<a :href="fileurl">点击尝试</a>
     </Modal>
   </Card>
+</div>
 </template>
 <script>
 import ReportPreviewModal from './components/ReportPreviewModal'
@@ -57,7 +58,6 @@ export default {
       templates: [],
       code: undefined,
       reportPreviewShow: false,
-      pageLoading: false,
       downloadShow: false,
       terms: [],
       fileurl: '',
@@ -81,7 +81,7 @@ export default {
     },
     onPreviewModalClose (arg) {
       this.reportPreviewShow = false
-      this.pageLoading = false
+      this.$Spin.hide()
       if (arg) {
         this.fileurl = arg
         this.downloadShow = true
@@ -90,10 +90,11 @@ export default {
     handleDisplay (name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          this.pageLoading = true
+          this.$Spin.show()
           getReport(this.reportArgs.template_id, { term: this.reportArgs.term }).then(res => {
             this.code = res.data
             this.reportPreviewShow = true
+            this.$Spin.hide()
           })
         } else {
           return false

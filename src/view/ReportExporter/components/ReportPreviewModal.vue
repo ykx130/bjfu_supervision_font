@@ -31,6 +31,7 @@ export default {
     handleSubmit () {
       let printer = this.$print(this.$refs.printPart)
       let htmls = printer.init()
+      this.$Spin.show()
       getPDF({ code: htmls }).then((res) => {
         let fileurl = '/data_report/' + res.data.path
         window.open(fileurl)
