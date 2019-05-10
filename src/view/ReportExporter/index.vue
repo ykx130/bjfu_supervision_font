@@ -109,9 +109,6 @@ export default {
     queryTemplates({ _page: 1, _per_page: 30 }).then(res => {
       this.templates = res.data.templates
     })
-    getCurrentTerms().then((res) => {
-      this.reportArgs.term = res.data.term.name + '学期'
-    })
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
