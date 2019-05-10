@@ -8,9 +8,21 @@ import tdTheme from './theme.json'
 import { on, off } from '@/libs/tools'
 echarts.registerTheme('tdTheme', tdTheme)
 export default {
-  name: 'StackedLinePortrai',
+  name: 'StackedLinePortrait',
   props: {
     data: Object,
+    name_key: {
+      type: String,
+      default: 'name'
+    },
+    value_key: {
+      type: String,
+      default: 'value'
+    },
+    legend_key: {
+      type: String,
+      default: 'legend'
+    },
     text: String,
     subtext: String
   },
@@ -23,27 +35,31 @@ export default {
     value: {
       deep: true,
       handler: function () {
-        let xAxisData = Object.keys(this.data)
-        let seriesData = Object.values(this.data)
+        let xAxisData = []
+        let seriesData = []
         let series = []
-        let legends = Object.keys(this.data[xAxisData[0]])
-        legends = legends.reverse()
-        legends.forEach((element, index) => {
+        let legends = []
+        this.data[0].values.forEach((item) => {
+          xAxisData.push(item[this.name_key])
+        })
+
+        this.data.forEach((element, index) => {
           let serie = {
             name: '',
             type: 'line',
             stack: '总量',
             label: {
               normal: {
-                show: true,
+                show: false,
                 position: 'inside'
               }
             },
             data: []
           }
-          serie.name = element
-          seriesData.forEach(single_arra => {
-            serie.data.push(single_arra[element])
+          legends.push(element[this.legend_key])
+          serie.name = element[this.legend_key]
+          element.values.forEach(single_arra => {
+            serie.data.push(single_arra[this.value_key])
           })
           series.push(serie)
         })
@@ -54,11 +70,18 @@ export default {
             x: 'center'
           },
           legend: {
-            data: this.legends
+            data: legends
+          },
+          grid: {
+            bottom: '25%'
           },
           xAxis: {
             type: 'category',
-            data: xAxisData
+            data: xAxisData,
+            axisLabel: {// 坐标轴刻度标签的相关设置。
+              interval: 0,
+              rotate: '45'
+            }
           },
           yAxis: {
             type: 'value'
@@ -75,31 +98,38 @@ export default {
     }
   },
   mounted () {
+    debugger
     this.$nextTick(() => {
-      let xAxisData = Object.keys(this.data)
-      let seriesData = Object.values(this.data)
+      let xAxisData = []
+      let seriesData = []
       let series = []
-      let legends = Object.keys(this.data[xAxisData[0]])
-      legends = legends.reverse()
-      legends.forEach((element, index) => {
+      let legends = []
+      console.log(this.data)
+      this.data[0].values.forEach((item) => {
+        xAxisData.push(item[this.name_key])
+      })
+
+      this.data.forEach((element, index) => {
         let serie = {
           name: '',
           type: 'line',
           stack: '总量',
           label: {
             normal: {
-              show: true,
+              show: false,
               position: 'inside'
             }
           },
           data: []
         }
-        serie.name = element
-        seriesData.forEach(single_arra => {
-          serie.data.push(single_arra[element])
+        legends.push(element[this.legend_key])
+        serie.name = element[this.legend_key]
+        element.values.forEach(single_arra => {
+          serie.data.push(single_arra[this.value_key])
         })
         series.push(serie)
       })
+      debugger
       let option = {
         title: {
           text: this.text,
@@ -107,17 +137,25 @@ export default {
           x: 'center'
         },
         legend: {
-          data: this.legends
+          data: legends
+        },
+        grid: {
+          bottom: '25%'
         },
         xAxis: {
           type: 'category',
-          data: xAxisData
+          data: xAxisData,
+          axisLabel: {// 坐标轴刻度标签的相关设置。
+            interval: 0,
+            rotate: '45'
+          }
         },
         yAxis: {
           type: 'value'
         },
         series: series
       }
+      debugger
       this.dom = echarts.init(this.$refs.dom, 'tdTheme')
       this.dom.setOption(option)
       on(window, 'resize', this.resize)

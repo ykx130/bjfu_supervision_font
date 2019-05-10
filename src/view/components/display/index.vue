@@ -11,8 +11,9 @@ export default {
     }
   },
   watch: {
-    code () {
+    code: function () {
       this.destroyCode()
+
       this.renderCode()
     }
   },
@@ -37,7 +38,7 @@ export default {
     splitCode () {
       const script = this.getSource(this.code, 'script').replace(/export default/, 'return ')
       const style = this.getSource(this.code, 'style')
-      const template = '<div id="app" style="height: 100%;width: 100%;">' + this.getSource(this.code, 'template') + '</div>'
+      const template = '<div id="app_display" style="height: 100%;width: 100%;">' + this.getSource(this.code, 'template') + '</div>'
 
       this.js = script
       this.css = style
@@ -51,7 +52,8 @@ export default {
 
         parseStrToFunc.template = this.html
         const Component = Vue.extend(parseStrToFunc)
-        this.component = new Component().$mount(this.$refs.display)
+        this.component = new Component().$mount()
+        this.$refs.display.appendChild(this.component.$el)
 
         if (this.css !== '') {
           const style = document.createElement('style')
@@ -64,9 +66,12 @@ export default {
     },
     destroyCode () {
       const $target = document.getElementById(this.id)
-      if ($target) $target.parentNode.removeChild($target)
+      if ($target) {
+        $target.parentNode.removeChild($target)
+      }
 
       if (this.component) {
+        this.$refs.display.removeChild(this.component.$el)
         this.component.$destroy()
         this.component = null
       }
@@ -79,9 +84,6 @@ export default {
         str += $chars.charAt(Math.floor(Math.random() * maxPos))
       }
       return str
-    },
-    print () {
-      this.$print(this.$refs.display)
     }
   },
   created () {

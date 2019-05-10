@@ -4,7 +4,7 @@
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="模板名：" prop="title">
-        <Input style="width: 180px" v-model="query.title_like" placeholder="请输入模板名">
+        <Input style="width: 180px" v-model="query._like_title" placeholder="请输入模板名">
         </Input>
       </FormItem>
 
@@ -26,7 +26,7 @@
       @onCancel="onAddModalCancel"
     ></TemplateAddModal>
 
-    <Table border stripe :columns="columns" :data="data"></Table>
+    <Table border stripe :columns="columns" :data="data" :loading="tableLoading"></Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
@@ -48,13 +48,14 @@ export default {
   data: function () {
     return {
       query: {
-        title_like: undefined
+        _like_title: undefined
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
       selected_id: undefined, // 选中编辑的用户的name
       showTemplateProfileModal: false, // 展示编辑弹窗
       showTemplateAddModal: false,
+      tableLoading: false,
       pages: {
         _page: 1,
         _per_page: 10
@@ -115,10 +116,12 @@ export default {
   methods: {
     fetchData: function () {
       // 数据表发生变化请求数据
+      this.tableLoading = true
       let args = { ...this.query, ...this.pages }
       return queryTemplates(args).then((resp) => {
         this.data = resp.data.templates
         this.total = resp.data.total
+        this.tableLoading = false
       })
     },
     onPageChange (page) {
