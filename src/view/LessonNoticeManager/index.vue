@@ -125,7 +125,7 @@ export default {
           title: '关注原因',
           render: function (h, params) {
             return (
-              <span>{ params.row.notice_reason }</span>
+              <span>{ params.row.lesson_attention_reason }</span>
             )
           }
         },
