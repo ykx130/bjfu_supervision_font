@@ -19,7 +19,9 @@
         <Button @click="onExportExcel" icon="ios-cloud-download-outline" type="primary" >导出</Button>
       </FormItem>
       <FormItem >
-        <Upload :action="uploadModelLessonApi" name="filename">
+        <Upload :action="uploadModelLessonApi"
+                :on-success="handleImportExcelSucc"
+                name="filename">
           <Button  icon="ios-cloud-upload-outline" type="primary" >导入</Button>
         </Upload>
       </FormItem>
@@ -48,7 +50,7 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel,putModelLesson } from '@/service/api/lesson'
+import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel, putModelLesson } from '@/service/api/lesson'
 import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
@@ -56,7 +58,7 @@ import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 import ModelJudge from './components/ModelJudge'
 
 export default {
-  components: { ModelJudge,LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal },
+  components: { ModelJudge, LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal },
   data: function () {
     return {
       uploadModelLessonApi: uploadModelLessonApi,
@@ -207,6 +209,14 @@ export default {
           window.open('/api/' + resp.data.filename)
         }
       })
+    },
+    handleImportExcelSucc: function (response, file, fileList) {
+      if (response.code !== 200) {
+        this.$Message.warning({ content: '部分导出失败' })
+        window.open('/api/' + response.fail_excel_path)
+      } else {
+        this.$Message.success({ content: '导入成功' })
+      }
     }
   },
   mounted: function () {

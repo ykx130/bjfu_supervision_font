@@ -19,7 +19,10 @@
         <Button @click="onExportExcel" icon="ios-cloud-download-outline" type="primary" >导出</Button>
       </FormItem>
       <FormItem >
-        <Upload :action="uploadNoticeLessonApi" :show-upload-list="false" name="filename">
+        <Upload :action="uploadNoticeLessonApi"
+                :on-success="handleImportExcelSucc"
+                :show-upload-list="false"
+                name="filename">
           <Button  icon="ios-cloud-upload-outline" type="primary" >导入</Button>
         </Upload>
       </FormItem>
@@ -230,6 +233,14 @@ export default {
           window.open('/api/' + resp.data.filename)
         }
       })
+    },
+    handleImportExcelSucc: function (response, file, fileList) {
+      if (response.code !== 200) {
+        this.$Message.warning({ content: '部分导出失败' })
+        window.open('/api/' + response.fail_excel_path)
+      } else {
+        this.$Message.success({ content: '导入成功' })
+      }
     }
   },
   mounted: function () {
