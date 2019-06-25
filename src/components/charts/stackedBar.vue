@@ -43,7 +43,7 @@ export default {
           }
           serie.name = element
           seriesData.forEach(single_arra => {
-            serie.data.push(single_arra[element])
+            serie.data.push(parseFloat(single_arra[element].toFixed(3)))
           })
           series.push(serie)
         })
@@ -96,7 +96,7 @@ export default {
         }
         serie.name = element
         seriesData.forEach(single_arra => {
-          serie.data.push(single_arra[element])
+          serie.data.push(parseFloat(single_arra[element].toFixed(3)))
         })
         series.push(serie)
       })
