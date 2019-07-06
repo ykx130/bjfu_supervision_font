@@ -9,7 +9,7 @@
             </Select>
         </Col>
         <Col span="6">
-          <Button type="primary" style="margin-left: 20px;width: 80px" @click=" onSearch">查询</Button>
+          <Button type="primary" style="margin-left: 20px;width: 80px" @click=" onSearch" >查询</Button>
         </Col>
       </Row>
 
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { getCurrentTerms,queryTerms } from '@/service/api/term'
+import { getCurrentTerms, queryTerms } from '@/service/api/term'
 import { queryFormMetas } from '../../service/api/dqs'
 import { queryWorkPlanDetail } from '@/service/api/work_plan'
 import form_meta_card from 'Views/components/form_meta_card/form_meta_card'

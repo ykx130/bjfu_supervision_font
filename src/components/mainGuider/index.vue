@@ -42,16 +42,16 @@
       <Header>
         <Menu  mode="horizontal" theme="primary" :active-name="activity_name" @on-select="onMenuSelect">
           <div class="layout-nav">
-            <template v-permission="['督导','管理员']">
-              <MenuItem name="judge">
+            <template >
+              <MenuItem name="judge" v-role ="['督导','管理员']">
                 <Icon type="ios-paper" />
                 评价填写
               </MenuItem>
-              <MenuItem name="lesson_form">
+              <MenuItem name="lesson_form" v-role ="['督导','管理员']">
                 <Icon type="ios-construct" />
                 课程表
               </MenuItem>
-              <MenuItem name="my_form">
+              <MenuItem name="my_form" v-role ="['督导','管理员']">
                 <Icon type="ios-construct" />
                 我的评价
               </MenuItem>
@@ -71,7 +71,7 @@
           <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px; float: right;color:#E6EFFA" :lang="local"/>
           <!--<error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount" style="float: right; margin-right: 10px;color:#E6EFFA"></error-store>-->
           <fullscreen v-model="isFullscreen" style="margin-right: 10px; float: right;color:#E6EFFA"/>
-          <span @click="handleClickToAdmin" style="margin-right: 10px; float: right;color:#E6EFFA"> 切换到管理员端 </span>
+          <span @click="handleClickToAdmin" style="margin-right: 10px; float: right;color:#E6EFFA"  v-role ="['管理员', '领导', '小组长', '大组长']"> 切换到管理员端 </span>
         </Menu>
       </Header>
       <Content class="content-wrapper">
@@ -194,9 +194,11 @@ export default {
     }
   },
   mounted () {
+    debugger
     if (this.$route.path === '/_guider') {
       this.$router.replace('/_guider/judge')
     }
+    console.log(this)
     this.highlightMenu()
     /**
        * @description 初始化设置面包屑导航和标签导航

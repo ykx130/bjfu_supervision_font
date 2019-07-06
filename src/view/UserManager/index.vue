@@ -34,7 +34,7 @@
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </div>
     </div>
-    <Button type="primary" @click="()=>{this.showUserAddModal=true}" >
+    <Button type="primary" @click="()=>{this.showUserAddModal=true}" v-role ="['管理员']" >
       新增
     </Button>
   </Card>
@@ -140,6 +140,10 @@ export default {
                 style: {
                   marginRight: '2px'
                 },
+                directives: [{
+                  name: 'role',
+                  value: ['管理员']
+                }],
                 on: {
                   click: () => {
                     this.selected_username = params.row.username

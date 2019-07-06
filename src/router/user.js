@@ -8,14 +8,14 @@ export default{
   component: Main,
   meta: {
     icon: 'md-people',
-    title: '用户中心',
-    access: ['管理员']
+    title: '用户中心'
   },
   children: [
     {
       name: '用户管理',
       path: 'guiders', // xzl
       meta: {
+        access: ['管理员', '学院领导']
       },
       component: resolve => require(['Views/UserManager/index'], resolve)
     },
@@ -23,6 +23,7 @@ export default{
       name: '督导管理',
       path: 'teachers', // xzl
       meta: {
+        access: ['管理员', '学院领导', '大组长', '小组长']
       },
       component: resolve => require(['Views/UserTeacherManagerList/index'], resolve)
     },
@@ -30,6 +31,7 @@ export default{
       name: '学院负责人',
       path: 'supers', // xzl
       meta: {
+        access: ['管理员']
       },
       component: resolve => require(['Views/UserSuperManager/index'], resolve)
     },
