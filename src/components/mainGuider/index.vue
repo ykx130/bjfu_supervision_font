@@ -43,6 +43,10 @@
         <Menu  mode="horizontal" theme="primary" :active-name="activity_name" @on-select="onMenuSelect">
           <div class="layout-nav">
             <template >
+              <MenuItem name="notice_lesson" v-role ="['督导','管理员']">
+                <Icon type="ios-paper" />
+                学期重点关注
+              </MenuItem>
               <MenuItem name="judge" v-role ="['督导','管理员']">
                 <Icon type="ios-paper" />
                 评价填写
