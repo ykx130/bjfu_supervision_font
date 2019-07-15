@@ -39,7 +39,9 @@ export default {
                 position: 'inside'
               }
             },
-            data: []
+            data: [],
+            barWidth: 10,
+            barGap: '200%'
           }
           serie.name = element
           seriesData.forEach(single_arra => {
@@ -58,12 +60,16 @@ export default {
           },
           yAxis: {
             type: 'category',
-            data: yAxisData
+            data: yAxisData,
+            splitLine: {
+              show: false
+            }
           },
           xAxis: {
             type: 'value'
           },
-          series: series
+          series: series,
+          color: ['#5b9bd5', '#ed7d31', '#a5a5a5', '#ffc000', '#ff0000']
         }
         this.dom.setOption(option)
       }
@@ -92,7 +98,9 @@ export default {
               position: 'inside'
             }
           },
-          data: []
+          data: [],
+          barWidth: 10,
+          barGap: '200%'
         }
         serie.name = element
         seriesData.forEach(single_arra => {
@@ -111,14 +119,18 @@ export default {
         },
         yAxis: {
           type: 'category',
-          data: yAxisData
+          data: yAxisData,
+          splitLine: {
+            show: false
+          }
         },
         xAxis: {
           type: 'value'
         },
-        series: series
+        series: series,
+        color: ['#5b9bd5', '#ed7d31', '#a5a5a5', '#ffc000', '#ff0000']
       }
-      this.dom = echarts.init(this.$refs.dom, 'tdTheme')
+      this.dom = echarts.init(this.$refs.dom)
       this.dom.setOption(option)
       on(window, 'resize', this.resize)
     })

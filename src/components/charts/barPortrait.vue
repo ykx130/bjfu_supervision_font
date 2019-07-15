@@ -37,15 +37,24 @@ export default {
           },
           xAxis: {
             type: 'category',
-            data: xAxisData
+            data: xAxisData,
+            splitLine: {
+              show: false
+            }
           },
           yAxis: {
-            type: 'value'
+            type: 'value',
+            min: 85,
+            max: 100,
+            interval: 5
           },
           series: [{
             data: seriesData,
-            type: 'bar'
-          }]
+            type: 'bar',
+            barWidth: 40
+
+          }],
+          color: ['#5b9bd5', '#ed7d31', '#a5a5a5', '#ffc000', '#ff0000']
         }
         this.dom.setOption(option)
       }
@@ -72,17 +81,25 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: xAxisData
+          data: xAxisData,
+          splitLine: {
+            show: false
+          }
         },
         yAxis: {
-          type: 'value'
+          type: 'value',
+          min: 85,
+          max: 100,
+          interval: 5
         },
         series: [{
           data: seriesData,
-          type: 'bar'
-        }]
+          type: 'bar',
+          barWidth: 40
+        }],
+        color: ['#5b9bd5', '#ed7d31', '#a5a5a5', '#ffc000', '#ff0000']
       }
-      this.dom = echarts.init(this.$refs.dom, 'tdTheme')
+      this.dom = echarts.init(this.$refs.dom)
       this.dom.setOption(option)
       on(window, 'resize', this.resize)
     })

@@ -46,7 +46,7 @@ const Print = function (dom, options) {
       var canvas = this.dom.querySelectorAll('canvas')
 
       for (let i =0; i< canvas.length; i++) {
-        canvas[i].outerHTML = '<img src='+canvas[i].toDataURL() + ' style="padding:30px 0;height: 360px; width: 600px;" />'
+        canvas[i].outerHTML = '<div style="margin: 30px 0;"><img src='+canvas[i].toDataURL("image/png") + '/></div>';
       }
 
       for (var k = 0; k < inputs.length; k++) {

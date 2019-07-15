@@ -58,12 +58,19 @@ export default {
           },
           xAxis: {
             type: 'category',
-            data: xAxisData
+            data: xAxisData,
+            splitLine: {
+              show: false
+            }
           },
           yAxis: {
             type: 'value'
           },
-          series: series
+          series: series,
+          color: ['#5b9bd5', '#ed7d31', '#a5a5a5', '#ffc000', '#ff0000'],
+          textStyle: {
+            color: '#fff'
+          }
         }
         this.dom.setOption(option)
       }
@@ -111,14 +118,21 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: xAxisData
+          data: xAxisData,
+          splitLine: {
+            show: false
+          }
         },
         yAxis: {
           type: 'value'
         },
-        series: series
+        series: series,
+        color: ['#5b9bd5', '#ed7d31', '#a5a5a5', '#ffc000', '#ff0000'],
+        textStyle: {
+          color: '#fff'
+        }
       }
-      this.dom = echarts.init(this.$refs.dom, 'tdTheme')
+      this.dom = echarts.init(this.$refs.dom)
       this.dom.setOption(option)
       on(window, 'resize', this.resize)
     })
