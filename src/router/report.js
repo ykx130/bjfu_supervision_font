@@ -7,7 +7,9 @@ export default{
   path: '/report',
   meta: {
     icon: 'ios-book',
-    title: '教学质量分析'
+    title: '教学质量分析',
+    access: ['管理员']
+
   },
   component: Main,
   children: [

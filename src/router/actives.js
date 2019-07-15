@@ -9,7 +9,8 @@ export default
   component: Main,
   meta: {
     icon: 'ios-outlet',
-    title: '活动中心'
+    title: '活动中心',
+    access: ['管理员']
   },
   children: [
     {
@@ -41,4 +42,4 @@ export default
       },
       component: resolve => require(['Views/ActiveAttend/index'], resolve)
     }
-  ]}
+  ] }

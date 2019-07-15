@@ -40,7 +40,7 @@
     </div>
   </div>
 
-    <Button type="primary" @click="()=>{this.showUserAddModal=true}" >
+    <Button type="primary" @click="()=>{this.showUserAddModal=true}" v-role ="['管理员']">
       新增
     </Button>
   </div>
@@ -164,6 +164,10 @@ export default {
                   type: 'primary',
                   size: 'small'
                 },
+                directives: [{
+                  name: 'role',
+                  value: ['管理员']
+                }],
                 style: {
                   marginRight: '2px'
                 },

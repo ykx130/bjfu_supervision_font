@@ -8,7 +8,8 @@ export default
   path: '/consult',
   meta: {
     icon: 'md-person',
-    title: '咨询中心'
+    title: '咨询中心',
+    access: ['管理员']
   },
   component: Main,
   children: [
@@ -40,4 +41,4 @@ export default
       },
       component: resolve => require(['Views/ConsultApply/index'], resolve)
     }
-  ]}
+  ] }

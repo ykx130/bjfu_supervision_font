@@ -2,10 +2,10 @@
 import store from '@/store'
 
 export default{
-  inserted(el, binding, vnode) {
+  deep: true,
+  inserted (el, binding, vnode) {
     const { value } = binding
     const access = store.getters && store.getters.access
-
     if (value && value instanceof Array && value.length > 0) {
       const permissionRoles = value
 

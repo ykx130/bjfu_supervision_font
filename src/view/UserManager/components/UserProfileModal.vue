@@ -76,7 +76,6 @@
         </Col>
       </Row>
 
-
       <Row :gutter="16">
         <Col span="12">
         <FormItem label="状态:" :label-width="50" prop="status">
@@ -108,10 +107,10 @@
 </template>
 
 <script>
-import {getUserByName, queryGroups} from '../../../service/api/user'
-import {updateWithinField} from '@/libs/tools'
-import {dateToString} from '@/libs/tools'
-import { sexList, unitlist, prorankList, stateList, workStatelist, statusList} from '../marcos'
+import { getUserByName, queryGroups } from '../../../service/api/user'
+import { updateWithinField } from '@/libs/tools'
+import { dateToString } from '@/libs/tools'
+import { sexList, unitlist, prorankList, stateList, workStatelist, statusList } from '../marcos'
 export default {
   name: 'UserProfileModal',
   props: {
@@ -143,9 +142,9 @@ export default {
       workStateList: workStatelist,
       statusList: statusList,
       ruleValidate: {
-        username: [{required: true, message: 'the username can not be empty', trigger: 'blur'}],
-        name: [{required: true, message: 'the name can not be empty', trigger: 'blur'}],
-        sex: [{required: true, message: 'the sex can not be empty', trigger: 'change'}],
+        username: [{ required: true, message: 'the username can not be empty', trigger: 'blur' }],
+        name: [{ required: true, message: 'the name can not be empty', trigger: 'blur' }],
+        sex: [{ required: true, message: 'the sex can not be empty', trigger: 'change' }],
         role_names: [{
           required: true,
           type: 'array',
@@ -153,14 +152,14 @@ export default {
           message: 'choose at least one role name',
           trigger: 'change'
         }],
-        unit: [{required: true, message: 'the unit can not be empty', trigger: 'change'}],
-        skill: [{required: true, message: 'the skill can not be empty', trigger: 'blur'}],
-        prorank: [{required: true, message: 'the prorank can not be empty', trigger: 'change'}],
-        state: [{required: true, message: 'the state can not be empty', trigger: 'change'}],
-        status: [{required: true, message: 'the status can not be empty', trigger: 'change'}],
-        email: [{required: true, message: 'the email can not be empty', trigger: 'blur'},
-          {type: 'email', message: 'Invalid email format', trigger: 'blur'}],
-        phone: [{required: true, message: 'the phone can not be empty', trigger: 'blur'},
+        unit: [{ required: true, message: 'the unit can not be empty', trigger: 'change' }],
+        skill: [{ required: true, message: 'the skill can not be empty', trigger: 'blur' }],
+        prorank: [{ required: true, message: 'the prorank can not be empty', trigger: 'change' }],
+        state: [{ required: true, message: 'the state can not be empty', trigger: 'change' }],
+        status: [{ required: true, message: 'the status can not be empty', trigger: 'change' }],
+        email: [{ required: true, message: 'the email can not be empty', trigger: 'blur' },
+          { type: 'email', message: 'Invalid email format', trigger: 'blur' }],
+        phone: [{ required: true, message: 'the phone can not be empty', trigger: 'blur' },
           {
             validator (rule, value, callback) {
               if (!value) {
@@ -177,7 +176,7 @@ export default {
     }
   },
   mounted: function () {
-    this.roles = ["管理员", "学院领导"]
+    this.roles = ['管理员', '学院领导']
     queryGroups().then((resp) => {
       this.groups = resp.data.groups
     })
@@ -194,13 +193,10 @@ export default {
       this.$emit('onCancel')
     },
     handleSubmit (name) {
-
       this.$refs[name].validate((valid) => {
         if (valid) {
           // alert("Success！");
-          this.$emit('onOK', {...this.user,
-            start_time: dateToString(this.user.start_time, 'yyyy-MM-dd hh:mm:ss'),
-            end_time: dateToString(this.user.end_time, 'yyyy-MM-dd hh:mm:ss') })
+          this.$emit('onOK', { ...this.user })
           this.$Message.success('Success！')
         } else {
           // alert("Fail!");

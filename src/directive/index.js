@@ -11,7 +11,7 @@ const importDirective = Vue => {
    * }
    */
   Vue.directive('draggable', directive.draggable)
-  Vue.directive('permission', permission)
+  Vue.directive('role', permission)
 }
 
 export default importDirective
