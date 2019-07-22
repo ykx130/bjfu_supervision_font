@@ -46,6 +46,9 @@
               <MenuItem name="notice_lesson" v-role ="['督导','管理员']">
                 <Icon type="ios-paper" />
                 学期重点关注
+              <MenuItem name="lesson_model" v-role ="['督导','管理员']">
+                <Icon type="ios-keypad" />
+                好评课堂
               </MenuItem>
               <MenuItem name="judge" v-role ="['督导','管理员']">
                 <Icon type="ios-paper" />
