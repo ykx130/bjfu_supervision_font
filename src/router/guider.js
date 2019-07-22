@@ -69,7 +69,11 @@ export default {
     name: '督导关注课程',
     path: 'notice_lesson',
     component: resolve => require(['Views/GuiderNoticeLesson/index'], resolve)
-
+  },
+  {
+    name: '督导好评课程',
+    path: 'lesson_model',
+    component: resolve => require(['Views/LessonModelManager/index.vue'], resolve)
   }
   ]
 }

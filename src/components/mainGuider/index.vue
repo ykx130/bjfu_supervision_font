@@ -42,10 +42,10 @@
       <Header>
         <Menu  mode="horizontal" theme="primary" :active-name="activity_name" @on-select="onMenuSelect">
           <div class="layout-nav">
-            <template >
               <MenuItem name="notice_lesson" v-role ="['督导','管理员']">
                 <Icon type="ios-paper" />
                 学期重点关注
+              </MenuItem>
               <MenuItem name="lesson_model" v-role ="['督导','管理员']">
                 <Icon type="ios-keypad" />
                 好评课堂
@@ -62,7 +62,6 @@
                 <Icon type="ios-construct" />
                 我的评价
               </MenuItem>
-            </template>
 
           <MenuItem name="attend">
             <Icon type="ios-people" />
@@ -73,6 +72,7 @@
             咨询申请
           </MenuItem>
           </div>
+
           <user :user-avator="userAvator" style="float: right; margin-right: 40px"/>
           <userNotices style="margin-right: 10px; float: right;color: #E6EFFA"></userNotices>
           <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px; float: right;color:#E6EFFA" :lang="local"/>
