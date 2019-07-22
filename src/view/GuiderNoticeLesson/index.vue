@@ -89,18 +89,7 @@ export default {
         //   width: 60,
         //   align: 'center'
         // },
-        {
-          type: 'expand',
-          title: '评价',
-          width: 70,
-          render: (h, params) => {
-            return h(LessonJudge, {
-              props: {
-                lesson_id: params.row.lesson_id
-              }
-            })
-          }
-        },
+
         {
           title: '课程名字',
           render: function (h, params) {

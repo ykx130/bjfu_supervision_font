@@ -73,7 +73,12 @@ export default {
   {
     name: '督导好评课程',
     path: 'lesson_model',
-    component: resolve => require(['Views/LessonModelManager/index.vue'], resolve)
+    component: resolve => require(['Views/GuiderModelLesson/index.vue'], resolve)
+  },
+  {
+    name: '督导学院教学院长',
+    path: 'leader_lookup',
+    component: resolve => require(['Views/UserSuperManager/index.vue'], resolve)
   }
   ]
 }

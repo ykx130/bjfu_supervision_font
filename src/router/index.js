@@ -26,8 +26,8 @@ router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
   // const token = getToken()
   if (to.name !== LOGIN_PAGE_NAME) {
-    currentUser().then((resp) => {
-      if (resp.data.code !== 200) {
+    store.dispatch('getUserInfo').then((resp) => {
+      if (resp.code !== 200) {
         next({ name: LOGIN_PAGE_NAME })
       }
     }).catch(() => {

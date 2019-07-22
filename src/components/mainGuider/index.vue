@@ -47,32 +47,31 @@
       <Header>
         <Menu mode="horizontal" theme="primary" :active-name="activity_name" @on-select="onMenuSelect">
           <div class="layout-nav">
-            <Submenu name="notice_lesson" v-role="['督导','管理员']">
-              <template slot="title">
-                <Icon type="ios-keypad"/>
-                根据课程填写评价
-              </template>
-              <MenuItem name="notice_lesson" v-role="['督导','管理员']">
-                <Icon type="ios-paper"/>
-                学期重点关注
-              </MenuItem>
-              <MenuItem name="lesson_model" v-role="['督导','管理员']">
-                <Icon type="ios-keypad"/>
-                好评课堂
-              </MenuItem>
-              <MenuItem name="lesson_form" v-role="['督导','管理员']">
-                <Icon type="ios-construct"/>
-                课程表
-              </MenuItem>
-            </Submenu>
+            <MenuItem name="notice_lesson" v-role="['督导','管理员']">
+              <Icon type="ios-paper"/>
+              学期重点关注
+            </MenuItem>
+            <MenuItem name="lesson_model" v-role="['督导','管理员']">
+              <Icon type="ios-keypad"/>
+              好评课堂
+            </MenuItem>
+            <MenuItem name="lesson_form" v-role="['督导','管理员']">
+              <Icon type="ios-construct"/>
+              课程表
+            </MenuItem>
             <MenuItem name="judge" v-role="['督导','管理员']">
               <Icon type="ios-paper"/>
-              我要评价
+              填评价表
             </MenuItem>
 
             <MenuItem name="my_form" v-role="['督导','管理员']">
               <Icon type="ios-construct"/>
-              我的评价
+              已做评价
+            </MenuItem>
+
+            <MenuItem name="leader_lookup" v-role="['督导','管理员']">
+              <Icon type="ios-construct"/>
+              学院教学院长
             </MenuItem>
 
             <MenuItem name="attend">
@@ -94,6 +93,7 @@
           <span @click="handleClickToAdmin" style="margin-right: 10px; float: right;color:#E6EFFA"
                 v-role="['管理员', '领导', '小组长', '大组长']"> 切换到管理员端 </span>
         </Menu>
+        s
       </Header>
       <Content class="content-wrapper">
         <router-view/>
