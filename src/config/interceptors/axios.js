@@ -54,7 +54,11 @@ export function responseFailFunc (responseError) {
 
   switch (stauts) {
     case 401:
+      bus.$bus.$emit('global.message.warning', '未登录请先登录')
+      break
+    case 403:
       bus.$bus.$emit('global.message.warning', responseError.response.data.msg)
+      break
     case 200: break
     default:
       bus.$bus.$emit('global.message.error', '系统异常')
