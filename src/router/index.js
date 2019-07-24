@@ -33,7 +33,8 @@ router.beforeEach((to, from, next) => {
     }).catch(() => {
       next({ name: LOGIN_PAGE_NAME })
     })
-    if (store.state.user.userInfo.is_admin) {
+    if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader ||
+      (store.state.user.userInfo.is_guider && (store.state.user.userInfo.guider.is_grouper || store.state.user.userInfo.guider.is_main_grouper))) {
       if (to.path === '/') {
         next({ name: 'home' })
       }
