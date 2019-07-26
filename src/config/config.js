@@ -1,4 +1,4 @@
-import {stringifyQuery, parseQuery} from 'Libs/tools'
+import { stringifyQuery, parseQuery } from 'Libs/tools'
 import qs from 'qs'
 
 export const ROUTER_DEFAULT_CONFIG = {
