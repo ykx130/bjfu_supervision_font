@@ -12,7 +12,7 @@
         </Col>
         <Col span="8" offset="8">
           <FormItem prop="username" label="姓名">
-            <Input type="text" style="width: 300px;" v-model="user.username"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.username" disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>
@@ -25,7 +25,7 @@
         </Col>
         <Col span="8" offset="8">
           <FormItem prop="unit" label="所属机构">
-            <Input type="text" style="width: 300px;" v-model="user.unit"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.unit" disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>
@@ -33,7 +33,7 @@
       <Row>
         <Col span="8">
           <FormItem prop="state" label="教师状态">
-            <Input type="text" style="width: 300px;" v-model="user.state"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.state" disabled="true"></Input>
           </FormItem>
         </Col>
         <Col span="8" offset="8">
@@ -51,7 +51,7 @@
         </Col>
         <Col span="8" offset="8">
           <FormItem prop="group" label="组别">
-            <Input type="text" style="width: 300px;" v-model="user.guider.group"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.guider.group" disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>
@@ -59,12 +59,12 @@
       <Row>
         <Col span="8">
           <FormItem prop="status" label="签约状态">
-            <Input type="text" style="width: 300px;" v-model="user.status"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.status" disabled="true"></Input>
           </FormItem>
         </Col>
         <Col span="8" offset="8">
           <FormItem prop="prorank" label="职称">
-            <Input type="text" style="width: 300px;" v-model="user.prorank"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.prorank" disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>
@@ -72,19 +72,19 @@
       <Row>
         <Col span="8">
           <FormItem prop="term" label="开始学期">
-            <Input type="text" style="width: 300px;" v-model="user.guider.term"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.guider.term" disabled="true"></Input>
           </FormItem>
         </Col>
         <Col span="8" offset="8">
           <FormItem prop="term" label="结束学期">
-            <Input type="text" style="width: 300px;" v-model="user.guider.term"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.guider.term" disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="8">
           <FormItem prop="work_state" label="督导类型">
-            <Input type="text" style="width: 300px;" v-model="user.guider.work_state"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.guider.work_state" disabled="true"></Input>
           </FormItem>
         </Col>
         <Col span="8" offset="8">

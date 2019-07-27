@@ -20,7 +20,7 @@
             </span>
           </span>
         </span>周</p>
-      <Button type="text" @click="judge(lesson.lesson_id, lesson.term)" style="color: #348EED">评价</Button>
+      <Button type="text" @click="judge(lesson.lesson_id, lesson.term)" style="color: #348EED" v-role="['管理员', '督导']">评价</Button>
       <span>-------</span>
     </div>
   </div>

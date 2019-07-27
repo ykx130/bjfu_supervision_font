@@ -74,6 +74,7 @@ export default {
       selected_lesson_id: '', // 选中编辑的课程ids
       showLessonProfileModal: false, // 展示编辑弹窗
       showBatchLessonWatchModal: false,
+
       pages: {
         _page: 1,
         _per_page: 10
@@ -122,24 +123,29 @@ export default {
         {
           title: '操作',
           align: 'center',
+
           render: (h, params) => {
             return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '2px'
-                },
-                on: {
-                  click: () => {
-                    this.selected_lesson_id = params.row.lesson_id
-                    this.showLessonProfileModal = true
-                  }
+            h('Button', {
+              props: {
+                type: 'primary',
+                size: 'small'
+              },
+              directives: [{
+                name: 'role',
+                value: ['管理员','大组长']
+              }],
+              style: {
+                marginRight: '2px',
+              },
+              on: {
+                click: () => {
+                  this.selected_lesson_id = params.row.lesson_id
+                  this.showLessonProfileModal = true
                 }
-              }, '查看')
-            ])
+              }
+            }, '查看')
+          ])
           }
         }
       ]
@@ -164,6 +170,7 @@ export default {
       // 查询变化
       this.pages._page = 1
       this.fetchData()
+
     },
     onProfileModalOK (lesson) {
       // 更新框确定 关闭
@@ -171,11 +178,13 @@ export default {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '课程更新成功' })
           this.fetchData()
+
         }
         this.showLessonProfileModal = false
         this.pages._page = 1
       })
     },
+
     onProfileModalCancel () {
       this.showLessonProfileModal = false
     },
