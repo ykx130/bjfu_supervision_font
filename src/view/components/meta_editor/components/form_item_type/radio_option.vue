@@ -44,6 +44,9 @@
           </Col>
         </Row>
       </FormItem>
+      <label v-for="(item,index) in radioData" :key="index">
+        <input @click="getRadioVal(item.value)" type="radio" :value="item.value">{{item.value}}
+      </label>
       <FormItem>
         <Row>
           <Col span="12">
@@ -77,12 +80,18 @@ export default {
   },
   data () {
     return {
+      radioData:[
+        {value:'正面'},
+        {value:'反面'},
+
+      ],
       qsItem: {
         title: '',
         item_name: '',
         weight: '',
         type: 'form_item',
-        item_type: 'radio_option'
+        item_type: 'radio_option',
+        item_radio:''
       },
       index: 1,
       qsInputOptions: [{
@@ -111,7 +120,11 @@ export default {
     ok () {
       this.$emit('onInput', {...this.qsItem,
         payload: {options: this.qsInputOptions, rules:this.rules}})
+    },
+    getRadioVal(value){
+      this.qsItem.item_radio=value
     }
+
   }
 }
 </script>

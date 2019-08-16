@@ -36,19 +36,39 @@
       <div>
         <!--single item begin-->
 
+
         <!--card begin-->
         <Card id="form-card">
+          <!--
+          <tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
+            <tab-pane
+
+              v-for="(item, index) in editableTabs"
+              :key="item.name"
+              :label="item.title"
+              :name="item.name"
+            >
+            -->
+          <tabs v-model="activeName">
+            <tab-pane label="正面" name="first" :key="'first'">
+
           <draggable v-model="value.items" style="padding-bottom: 30px; width: 100%;" @update="onMoveEnd">
             <Form class="form-card-form" v-for="(item, index) in value.items " :key="item.item_name" label-position="left" label-width="150">
               <div class="form-card-form-option">
                 <!--information begin-->
                 <!--if sub_title_block_start begin-->
-                <div v-if="item.item_type === 'sub_title_block' ">
+
+
+                <div v-if="item.item_type === 'sub_title_block'">
+<!--                  <div v-if="item item_radio==='正面'">-->
                   <div v-if="item.item_name === 'sub_title_block_start'"><h3> {{ item.payload.title }} </h3></div>
                   <div v-if="item.item_name === 'sub_title_block_end' ">
                     __end__
+
+
                   </div>
                 </div>
+
                 <!--if sub_title_block_start end-->
 
                 <!--if raw_text begin-->
@@ -124,6 +144,103 @@
 
             </Form>
           </draggable>
+
+
+          </tab-pane>
+            <tab-pane label="反面" name="second" :key="'second'">
+              <draggable v-model="value.items" style="padding-bottom: 30px; width: 100%;" @update="onMoveEnd">
+                <Form class="form-card-form" v-for="(item, index) in value.items " :key="item.item_name" label-position="left" label-width="150">
+                  <div class="form-card-form-option">
+                    <!--information begin-->
+                    <!--if sub_title_block_start begin-->
+                    <div v-if="item.item_type === 'sub_title_block' ">
+                      <!--<div v-if="item.payload.item_radio==='反面'">-->
+
+                      <div v-if="item.item_name === 'sub_title_block_start'&&iradio === '2' "><h3> {{ item.payload.title }} </h3></div>
+                      <div v-if="item.item_name === 'sub_title_block_end' ">
+                        __end__
+                      </div>
+                    </div>
+                    <!--if sub_title_block_start end-->
+
+                    <!--if raw_text begin-->
+                    <div v-if="item.item_type === 'raw_text' ">
+                      <h3 class=  "option-title">文本项</h3>
+                      <Form :model="item" :label-width="80" inline class="option-form">
+                        <FormItem label="名称">
+                          <Input v-model="item.item_name" placeholder="表头名称..." style="width: 180px"></Input>
+                        </FormItem>
+                      </Form>
+                    </div>
+                    <!--if raw_text end-->
+
+                    <!--if radio_option start-->
+                    <div v-if="item.item_type === 'radio_option' ">
+                      <h3 class="option-title">单选项</h3>
+                      <Form :model="item" :label-width="80" inline class="option-form">
+                        <FormItem label="名称">
+                          <Input v-model="item.item_name" placeholder="表头名称..." style="width: 180px"></Input>
+                        </FormItem>
+                        <FormItem label="单选项">
+                          <RadioGroup>
+                            <Radio v-for="option in item.payload.options" :label="option.label" :key="option.value">
+                              <span v-model="option.value">{{ option.value }}</span>
+                            </Radio>
+                          </RadioGroup>
+                        </FormItem>
+                        <FormItem v-if="item.payload.weight" label="权重">
+                          <Input v-model="item.payload.weight" placeholder="权重..." style="width: 180px"></Input>
+                        </FormItem>
+                      </Form>
+                    </div>
+                    <!--if radio_option end-->
+
+                    <!--if checkbox_option start-->
+                    <div v-if="item.item_type === 'checkbox_option' ">
+                      <h3 class="option-title">多选项</h3>
+                      <Form :model="item" :label-width="80" inline class="option-form">
+                        <FormItem label="名称">
+                          <Input v-model="item.item_name" placeholder="表头名称..." style="width: 180px"></Input>
+                        </FormItem>
+                        <FormItem label="多选项">
+                          <CheckboxGroup>
+                            <Checkbox v-for="option in item.payload.options" :label="option.label" :key="option.value">
+                              <span v-model="option.value">{{ option.value }}</span>
+                            </Checkbox>
+                          </CheckboxGroup>
+                        </FormItem>
+                        <FormItem v-if="item.payload.weight" label="权重">
+                          <Input v-model="item.payload.weight" placeholder="权重..." style="width: 180px"></Input>
+                        </FormItem>
+                      </Form>
+                    </div>
+                    <!--if checkbox_option end-->
+
+                    <!--sub_title_block_end begin-->
+
+                    <!--sub_title_block_end end-->
+
+                    <!--information end-->
+
+                    <!--button begin-->
+
+                    <div v-if="item.item_type === 'raw_text' || item.item_type === 'radio_option' || item.item_type === 'checkbox_option' ">
+                      <Button @click="nowIndex = index; item_edit_visible = true" class="option-button-edit">编辑</Button>
+                      <Button icon="md-trash" type="warning" v-on:click="deleteNewBlock(item)" class="option-button-del" shape="circle"></Button>
+                    </div>
+                    <!--button end-->
+
+                  </div>
+
+                  <Divider />
+
+                </Form>
+              </draggable>
+            </tab-pane>
+        </tabs>
+
+
+
           <div>
             <Button class="form-buttons" @click="block_visible = true">追加样式</Button>
             <Button class="form-buttons" @click="item_visible = true">追加题目</Button>
@@ -199,7 +316,22 @@ export default {
       item_edit_visible: false,
       block_visible: false,
       block_edit_visible: false,
-      nowIndex: 0
+      nowIndex: 0,
+      activeName: "first",
+
+
+      // editableTabsValue: '2',
+      // editableTabs: [{
+      //   title: 'Tab 1',
+      //   name: '1',
+      //   content: 'Tab 1 content'
+      // }, {
+      //   title: 'Tab 2',
+      //   name: '2',
+      //   content: 'Tab 2 content'
+      // }],
+      // tabIndex: 2
+
     }
   },
   methods: {
@@ -280,6 +412,35 @@ export default {
   mounted: function () {
     this.value.version = 'default'
   }
+
+
+  // addTab(targetName) {
+  //   let newTabName = ++this.tabIndex + '';
+  //   this.editableTabs.push({
+  //     title: 'New Tab',
+  //     name: newTabName,
+  //     content: 'New Tab content'
+  //   });
+  //   this.editableTabsValue = newTabName;
+  // },
+  // removeTab(targetName) {
+  //   let tabs = this.editableTabs;
+  //   let activeName = this.editableTabsValue;
+  //   if (activeName === targetName) {
+  //     tabs.forEach((tab, index) => {
+  //       if (tab.name === targetName) {
+  //         let nextTab = tabs[index + 1] || tabs[index - 1];
+  //         if (nextTab) {
+  //           activeName = nextTab.name;
+  //         }
+  //       }
+  //     });
+  //   }
+  //
+  //   this.editableTabsValue = activeName;
+  //   this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+  // }
+
 }
 
 </script>
