@@ -59,3 +59,7 @@ export const putSupervisor = (params) => {
 export const supervisorsRenew = (params) => {
   return axios.post('/api/supervisors/batch_renewal', params)
 }
+
+export const getCaptcha = () => {
+  return axios.get('/api/captcha')
+}

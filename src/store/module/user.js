@@ -1,4 +1,4 @@
-import { loginUser,logoutUser,currentUser } from '@/service/api/user'
+import { loginUser, logoutUser, currentUser } from '@/service/api/user'
 import { setToken, getToken } from '@/libs/util'
 
 export default {
@@ -41,12 +41,14 @@ export default {
   },
   actions: {
     // 登录
-    handleLogin ({ commit }, {userName, password}) {
+    handleLogin ({ commit }, { userName, password, code, uuid }) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
         loginUser({
           username: userName,
-          password: password
+          password: password,
+          'code': code,
+          'uuid': uuid
         }).then(res => {
           resolve()
         }).catch(err => {
@@ -59,7 +61,7 @@ export default {
       return new Promise((resolve, reject) => {
         logoutUser(state.token).then(() => {
           commit('setAccess', [])
-          commit('setUserInfo', {role_names:[] ,id:0, userName:''})
+          commit('setUserInfo', { role_names: [], id: 0, userName: '' })
           resolve()
         }).catch(err => {
           reject(err)
