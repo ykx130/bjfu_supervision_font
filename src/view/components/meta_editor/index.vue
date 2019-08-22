@@ -38,8 +38,17 @@
 
         <!--card begin-->
         <Card id="form-card">
+
           <draggable v-model="value.items" style="padding-bottom: 30px; width: 100%;" @update="onMoveEnd">
-            <Form class="form-card-form" v-for="(item, index) in value.items " :key="item.item_name" label-position="left" label-width="150">
+            <tabs v-model="editableTabsValue" type="card" closable @tab-remove="removeTab" >
+              <tab-pane
+                      :key="item.name"
+                      v-for="(item, index) in editableTabs"
+                      :label="item.title"
+                      :name="item.name"
+              >
+
+            <Form class="form-card-form" v-for="(item, index) in value.items " :key="item.item_name" label-position="left" label-width="150" >
               <div class="form-card-form-option">
                 <!--information begin-->
                 <!--if sub_title_block_start begin-->
@@ -123,7 +132,14 @@
               <Divider />
 
             </Form>
+              </tab-pane>
+
+            </tabs>
+            <Button style='position: absolute;right:24px;top:22px;' @click="addTab(editableTabsValue)"> + </Button>
+
           </draggable>
+
+
           <div>
             <Button class="form-buttons" @click="block_visible = true">追加样式</Button>
             <Button class="form-buttons" @click="item_visible = true">追加题目</Button>
@@ -199,7 +215,26 @@ export default {
       item_edit_visible: false,
       block_visible: false,
       block_edit_visible: false,
-      nowIndex: 0
+      nowIndex: 0,
+      Pages:[1],
+      pvalue:1,
+      pagenum:1,
+
+      editableTabsValue: '1',
+      editableTabs: [{
+        title: 'Page 1',
+        name: '1',
+        payload:{
+          page:1,
+        }
+      }],
+
+      // }, {
+      //   title: 'Page 2',
+      //   name: '2',
+      //
+      // }],
+      tabIndex: 1
     }
   },
   methods: {
@@ -244,8 +279,9 @@ export default {
     appendNewItemBlock: function (value) {
       console.log(value)
       this.value.items.push(value)
-      this.$Message.info('Items appended!')
+      this.$Message.info('Items appended!!!')
       this.item_visible = false
+      this.pagenum=this.pvalue
     },
     editItemBlock: function (index, value) {
       this.value.items.splice(index, 1)
@@ -263,6 +299,7 @@ export default {
       this.value.items.push(items[1])
       this.$Message.info('Items appended!')
       this.block_visible = false
+      this.pagenum=this.pvalue
     },
     editBlockBlock: function (index, value) {
 
@@ -275,7 +312,40 @@ export default {
           this.$Message.warning('填写完整信息')
         }
       })
+    },
+    addTab(targetName) {
+      let newTabName = ++this.tabIndex + '';
+      this.pvalue++;
+      let i=this.pvalue;
+      this.Page.push(this.pvalue);
+      this.editableTabs.push({
+        title: 'Page '+i,
+        name: newTabName,
+        payload:{
+          page:this.pvalue
+        }
+      });
+      this.editableTabsValue = newTabName;
+    },
+    removeTab(targetName) {
+      let tabs = this.editableTabs;
+      this.Page.splice(-1);
+      let activeName = this.editableTabsValue;
+      if (activeName === targetName) {
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            let nextTab = tabs[index + 1] || tabs[index - 1];
+            if (nextTab) {
+              activeName = nextTab.name;
+            }
+          }
+        });
+      }
+
+      this.editableTabsValue = activeName;
+      this.editableTabs = tabs.filter(tab => tab.name !== targetName);
     }
+
   },
   mounted: function () {
     this.value.version = 'default'
