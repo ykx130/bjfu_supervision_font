@@ -25,29 +25,25 @@ const turnTo = (to, access, next) => {
 router.beforeEach((to, from, next) => {
   iView.LoadingBar.start()
   // const token = getToken()
+
   if (to.name !== LOGIN_PAGE_NAME) {
-    store.dispatch('getUserInfo').then((resp) => {
-      if (resp.code !== 200) {
-        next({ name: LOGIN_PAGE_NAME })
-      }
-    }).catch(() => {
-      next({ name: LOGIN_PAGE_NAME })
-    })
-    if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader ||
-      (store.state.user.userInfo.is_guider && (store.state.user.userInfo.guider.is_grouper || store.state.user.userInfo.guider.is_main_grouper))) {
+    if (store.state.user.userInfo.username) {
       if (to.path === '/') {
-        next({ name: 'home' })
+        if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader ||
+          (store.state.user.userInfo.is_guider && (store.state.user.userInfo.guider.is_grouper || store.state.user.userInfo.guider.is_main_grouper))) {
+          next({ name: 'home' })
+        } else {
+          next({ name: '督导端' })
+        }
+      } else {
+        next()
       }
     } else {
-      if (to.path === '/') {
-        next({ name: '督导端' })
-      }
+      next({ name: 'login' })
     }
   } else {
     next()
   }
-
-  next()
 })
 
 router.afterEach(to => {

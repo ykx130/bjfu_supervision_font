@@ -154,6 +154,7 @@ export default {
     handleOK: function () {
       this.$refs.activity_form.validate((valid) => {
         if (valid) {
+          debugger
           this.activity.inputtime.start_time = dateToString(this.activity.inputtime.start_time, 'yyyy-MM-dd hh:mm:ss')
           this.activity.inputtime.end_time = dateToString(this.activity.inputtime.end_time, 'yyyy-MM-dd hh:mm:ss')
           this.activity.inputapplytime.apply_start_time = dateToString(this.activity.inputapplytime.apply_start_time, 'yyyy-MM-dd hh:mm:ss')
@@ -175,7 +176,6 @@ export default {
             return
           }
           // this.loading= true;
-          this.$Message.success('添加成功！')
           this.addActivity = {
             name: this.activity.name,
             teacher: this.activity.teacher,
@@ -223,13 +223,14 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
+      this.activity.term = termResp.data.term.name
     })
     queryUsers().then((resp) => {
       this.users = resp.data.users
     })
     queryActives(args).then((resp) => {
       this.data = resp.data.activities
-      this.total = resp.data.activities.length
+      this.total = resp.data.total
     })
   }
 }
