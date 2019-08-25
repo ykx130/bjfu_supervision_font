@@ -6,7 +6,7 @@
     @on-cancel="handleCancel">
     <Form :model="lesson">
 
-      <FormItem prop="assign_group" label="分配督导小组">
+      <FormItem prop="group_name" label="分配督导小组">
         <Select v-model="lesson.assign_group" >
           <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>

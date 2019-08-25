@@ -12,9 +12,9 @@
       </Select>
       <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
     </FormItem>
-    <FormItem label="小组:" :label-width="40" prop="group">
-      <Select v-model="guider.group" >
-        <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+    <FormItem label="小组:" :label-width="40" prop="group_name">
+      <Select v-model="guider.group_name" >
+        <Option v-for="item in groups" :value="item.group_name" :key="item.id">{{ item.group_name }}</Option>
       </Select>
     </FormItem>
 
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  import { queryUsers, queryGroups} from '@/service/api/user'
+import { queryUsers, queryGroups } from '@/service/api/user'
 export default {
   name: 'UserAddModal',
   props: {
@@ -48,13 +48,13 @@ export default {
   data: function () {
     return {
       guider: {
-        is_grouper:false,
+        is_grouper: false,
         is_main_grouper: false
       },
-      users:[],
-      roles: ["小组长", "大组长"],
+      users: [],
+      roles: ['小组长', '大组长'],
       groups: [],
-      workStateList: ['兼职', '全职'],
+      workStateList: ['兼职', '全职']
     }
   },
   mounted: function () {
@@ -66,8 +66,8 @@ export default {
     })
   },
   methods: {
-    onUserSelectQueryChange(value){
-      queryUsers({name_like:value}).then((resp) => {
+    onUserSelectQueryChange (value) {
+      queryUsers({ name_like: value }).then((resp) => {
         this.users = resp.data.users
       })
     },

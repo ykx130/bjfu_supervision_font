@@ -30,10 +30,10 @@
           <Option v-for="item in lessonLevel" :value="item" :key="item">{{ item }}</Option>
         </Select>
       </FormItem>
-      <FormItem prop="assign_group">
+      <FormItem prop="group_name">
         <span>分配督导小组:</span>
-        <Select v-model="lesson.assign_group" >
-          <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+        <Select v-model="lesson.group_name" >
+          <Option v-for="item in groups" :value="item.group_name" :key="item.id">{{ item.group_name }}</Option>
         </Select>
       </FormItem>
       <FormItem prop="lesson_attention_reason">
@@ -71,7 +71,7 @@ export default {
         lesson_teacher_name: '',
         lesson_level: '',
         lesson_attention_reason: '',
-        assign_group: ''
+        group_name: ''
       },
       lessonLevel: lessonLevel,
       lessonWatchReason: lessonWatchReason, // 课程关注原因,

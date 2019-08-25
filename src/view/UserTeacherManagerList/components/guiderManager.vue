@@ -113,7 +113,7 @@ export default {
         {
           title: '小组',
           render: function (h, params) {
-            return h('span', params.row.group)
+            return h('span', params.row.group_name)
           }
         },
         {
