@@ -43,7 +43,7 @@
 
           <draggable v-model="value.items" style="padding-bottom: 30px; width: 100%;" @update="onMoveEnd">
               <Tabs v-model="current_page">
-                  <TabPane v-for="(item,idx) in  pages" :label="item" :name="item"></TabPane>
+                  <TabPane v-for="(item,idx) in  pages" :label="item" :name="item" :key="item"></TabPane>
               </Tabs>
 
 

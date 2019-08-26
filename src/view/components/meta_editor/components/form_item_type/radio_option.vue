@@ -44,9 +44,7 @@
           </Col>
         </Row>
       </FormItem>
-      <label v-for="(item,index) in radioData" :key="index">
-        <input @click="getRadioVal(item.value)" type="radio" :value="item.value">{{item.value}}
-      </label>
+
       <FormItem>
         <Row>
           <Col span="12">
@@ -63,7 +61,7 @@
 import Rule from '../rules'
 export default {
   name: 'radio_option',
-  components:{Rule},
+  components: { Rule },
   watch: {
     qsItem: {
       handler: function (val) {
@@ -72,7 +70,7 @@ export default {
       deep: true
     },
     rules: {
-      deep:true,
+      deep: true,
       handler: function () {
         this.ok()
       }
@@ -80,25 +78,19 @@ export default {
   },
   data () {
     return {
-      radioData:[
-        {value:'正面'},
-        {value:'反面'},
-
-      ],
       qsItem: {
         title: '',
         item_name: '',
         weight: '',
         type: 'form_item',
-        item_type: 'radio_option',
-        item_radio:''
+        item_type: 'radio_option'
       },
       index: 1,
       qsInputOptions: [{
         label: '',
         value: ''
       }],
-      rules:[]
+      rules: []
     }
   },
   props: {
@@ -118,11 +110,8 @@ export default {
       this.ok()
     },
     ok () {
-      this.$emit('onInput', {...this.qsItem,
-        payload: {options: this.qsInputOptions, rules:this.rules}})
-    },
-    getRadioVal(value){
-      this.qsItem.item_radio=value
+      this.$emit('onInput', { ...this.qsItem,
+        payload: { options: this.qsInputOptions, rules: this.rules } })
     }
 
   }
