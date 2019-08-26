@@ -50,7 +50,9 @@ export default {
       item_end: {
         item_name: 'sub_title_block_end',
         type: 'block_item',
-        item_type: 'sub_title_block'
+        item_type: 'sub_title_block',
+        payload: {
+        }
       }
     }
   },

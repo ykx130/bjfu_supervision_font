@@ -16,7 +16,7 @@
         <divider orientation="left">问卷内容</divider>
         <div>
 
-          <FormShow v-model="form_values" :items="form.values" :disabled="disabled" ref="ruleform">
+          <FormShow v-model="form_values" :pages="form_meta.pages" :items="form.values" :disabled="disabled" ref="ruleform">
             <div v-show="!form.model_lesson.is_model_lesson">
               <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
               <FormItem>
@@ -67,7 +67,7 @@
   </Card>
 </template>
 <script>
-import { getForm, postForm,putForm } from '../../service/api/dqs'
+import { getForm, postForm, putForm } from '../../service/api/dqs'
 import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
 import FormShow from '@/view/components/form_show/form_show.vue'
 import { getLesson, updateModelLessonsVote, postModelLessonsVote } from '../../service/api/lesson'
@@ -107,7 +107,7 @@ export default {
         values: []
       },
       recommend_model: 0,
-      recommend_reason: "",
+      recommend_reason: '',
       show_recommend: false,
       disabled: false,
       meta: { lesson: {} },
@@ -130,7 +130,7 @@ export default {
   },
   methods: {
     formValue2Items () {
-      this.form.values.map((item, index)=>{
+      this.form.values.map((item, index) => {
         if (item.type === 'form_item') {
           this.form.values[index].value = this.form_values[item.item_name].value
         }
@@ -172,7 +172,7 @@ export default {
                 recommend: this.recommend_model
               }
             }
-            putForm(this.form_id,form).then((resp) => {
+            putForm(this.form_id, form).then((resp) => {
               if (resp.data.code === 200) {
                 this.$Message.success({ content: '新建成功' })
                 this.back()

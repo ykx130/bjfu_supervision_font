@@ -36,48 +36,46 @@
       <div>
         <!--single item begin-->
 
-
         <!--card begin-->
         <Card id="form-card">
 
+          <Tabs v-model="current_page">
+            <TabPane v-for="item in  value.pages" :label="item" :name="item" :key="item"></TabPane>
+          </Tabs>
+          <Button style='position: absolute;right:24px;top:22px;' @click="page_visible=true"> + </Button>
 
-          <draggable v-model="value.items" style="padding-bottom: 30px; width: 100%;" @update="onMoveEnd">
-              <Tabs v-model="current_page">
-                  <TabPane v-for="(item,idx) in  pages" :label="item" :name="item" :key="item"></TabPane>
-              </Tabs>
+          <Form label-position="left" label-width="150" class="form-card-form">
+            <draggable v-model="value.items" style="padding-bottom: 30px; width: 100%;" @update="onMoveEnd">
 
-
-            <Form class="form-card-form" v-for="(item, index) in value.items " :key="item.item_name" label-position="left" label-width="150" >
-              <div class="form-card-form-option">
-                <!--information begin-->
-                <!--if sub_title_block_start begin-->
-                <div v-if="item.item_type === 'sub_title_block' && item.payload.page === current_page ">
-                  <div v-if="item.item_name === 'sub_title_block_start'"><h3> {{ item.payload.title }} </h3></div>
-                  <div v-if="item.item_name === 'sub_title_block_end' ">
-                    __end__
-
-
+              <div  v-for="(item, index) in value.items " >
+                <div class="form-card-form-option">
+                  <!--information begin-->
+                  <!--if sub_title_block_start begin-->
+                  <div v-if="item.item_type === 'sub_title_block' && item.payload.page === current_page">
+                    <div v-if="item.item_name === 'sub_title_block_start'"><h3> {{ item.payload.title }} </h3></div>
+                    <div v-if="item.item_name === 'sub_title_block_end' ">
+                      __end__
+                    </div>
                   </div>
-                </div>
 
-                <!--if sub_title_block_start end-->
+                  <!--if sub_title_block_start end-->
 
-                <!--if raw_text begin-->
-                <div v-if="item.item_type === 'raw_text'&& item.payload.page === current_page ">
-                  <h3 class=  "option-title">文本项</h3>
+                  <!--if raw_text begin-->
+                  <div v-if="item.item_type === 'raw_text'&& item.payload.page === current_page ">
+                    <h3 class=  "option-title">文本项</h3>
                     <FormItem label="名称">
                       <Input v-model="item.item_name" placeholder="表头名称..." style="width: 180px"></Input>
                     </FormItem>
                     <div>
-                        <Button @click="nowIndex = index; item_edit_visible = true" class="option-button-edit">编辑</Button>
-                        <Button icon="md-trash" type="warning" v-on:click="deleteNewBlock(item)" class="option-button-del" shape="circle"></Button>
+                      <Button @click="nowIndex = index; item_edit_visible = true" class="option-button-edit">编辑</Button>
+                      <Button icon="md-trash" type="warning" v-on:click="deleteNewBlock(item)" class="option-button-del" shape="circle"></Button>
                     </div>
-                </div>
-                <!--if raw_text end-->
+                  </div>
+                  <!--if raw_text end-->
 
-                <!--if radio_option start-->
-                <div v-if="item.item_type === 'radio_option' && item.payload.page === current_page">
-                  <h3 class="option-title">单选项</h3>
+                  <!--if radio_option start-->
+                  <div v-if="item.item_type === 'radio_option' && item.payload.page === current_page">
+                    <h3 class="option-title">单选项</h3>
                     <FormItem label="名称">
                       <Input v-model="item.item_name" placeholder="表头名称..." style="width: 180px"></Input>
                     </FormItem>
@@ -92,15 +90,15 @@
                       <Input v-model="item.payload.weight" placeholder="权重..." style="width: 180px"></Input>
                     </FormItem>
                     <div>
-                        <Button @click="nowIndex = index; item_edit_visible = true" class="option-button-edit">编辑</Button>
-                        <Button icon="md-trash" type="warning" v-on:click="deleteNewBlock(item)" class="option-button-del" shape="circle"></Button>
+                      <Button @click="nowIndex = index; item_edit_visible = true" class="option-button-edit">编辑</Button>
+                      <Button icon="md-trash" type="warning" v-on:click="deleteNewBlock(item)" class="option-button-del" shape="circle"></Button>
                     </div>
-                </div>
-                <!--if radio_option end-->
+                  </div>
+                  <!--if radio_option end-->
 
-                <!--if checkbox_option start-->
-                <div v-if="item.item_type === 'checkbox_option' && item.payload.page === current_page">
-                  <h3 class="option-title">多选项</h3>
+                  <!--if checkbox_option start-->
+                  <div v-if="item.item_type === 'checkbox_option' && item.payload.page === current_page">
+                    <h3 class="option-title">多选项</h3>
                     <FormItem label="名称">
                       <Input v-model="item.item_name" placeholder="表头名称..." style="width: 180px"></Input>
                     </FormItem>
@@ -115,31 +113,16 @@
                       <Input v-model="item.payload.weight" placeholder="权重..." style="width: 180px"></Input>
                     </FormItem>
                     <div>
-                        <Button @click="nowIndex = index; item_edit_visible = true" class="option-button-edit">编辑</Button>
-                        <Button icon="md-trash" type="warning" v-on:click="deleteNewBlock(item)" class="option-button-del" shape="circle"></Button>
+                      <Button @click="nowIndex = index; item_edit_visible = true" class="option-button-edit">编辑</Button>
+                      <Button icon="md-trash" type="warning" v-on:click="deleteNewBlock(item)" class="option-button-del" shape="circle"></Button>
                     </div>
+                  </div>
                 </div>
-                <!--if checkbox_option end-->
-
-                <!--sub_title_block_end begin-->
-
-                <!--sub_title_block_end end-->
-
-                <!--information end-->
-
-                <!--button begin-->
-
-
-                <!--button end-->
-
+                <Divider/>
               </div>
 
-              <Divider />
-
-            </Form>
-            <Button style='position: absolute;right:24px;top:22px;' @click="page_visible=true"> + </Button>
-
-          </draggable>
+            </draggable>
+          </Form>
           <div>
             <Button class="form-buttons" @click="block_visible = true">追加样式</Button>
             <Button class="form-buttons" @click="item_visible = true">追加题目</Button>
@@ -205,6 +188,11 @@ export default {
   props: {
     value: Object
   },
+  computed: {
+    pages: function () {
+      return this.value.pages
+    }
+  },
   watch: {
     value: {
       deep: true,
@@ -219,11 +207,10 @@ export default {
       item_edit_visible: false,
       block_visible: false,
       block_edit_visible: false,
-      page_visible:false,
-      page_edit_visible:false,
+      page_visible: false,
+      page_edit_visible: false,
       nowIndex: 0,
-      pages:[],
-      current_page:'',
+      current_page: '正面'
     }
   },
   methods: {
@@ -268,7 +255,7 @@ export default {
     appendNewItemBlock: function (value) {
       console.log(value)
       value.payload.page = this.current_page
-      this.value.current_page.push(value)
+      this.value.items.push(value)
       this.$Message.info('current_page appended!!!')
       this.item_visible = false
     },
@@ -284,20 +271,20 @@ export default {
       this.$Message.info('Items deleted!')
     },
     appendNewBlockBlock: function (items) {
+      items[0].payload.page = this.current_page
+      items[1].payload.page = this.current_page
       this.value.items.push(items[0])
       this.value.items.push(items[1])
-      value.payload.page = this.current_page
       this.$Message.info('Items appended!')
       this.block_visible = false
     },
     editBlockBlock: function (index, value) {
 
     },
-    appemdNewpage:function(page) {
-
-        this.pages.push(page);
-        // this.Pages.splice(pages,-1
-        this.page_visible=false;
+    appemdNewpage: function (page) {
+      this.value.pages.push(page)
+      // this.Pages.splice(pages,-1
+      this.page_visible = false
     },
     submitForm: function () {
       this.$refs.meta_form.validate((vaild) => {
@@ -307,44 +294,13 @@ export default {
           this.$Message.warning('填写完整信息')
         }
       })
-    },
-
-    removeTab(targetName) {
-     this.pages.pop()
     }
-
   },
   mounted: function () {
     this.value.version = 'default'
+    this.value.pages = ['正面']
+    this.current_page = this.value.pages[0]
   }
-
-
-  // addTab(targetName) {
-  //   let newTabName = ++this.tabIndex + '';
-  //   this.editableTabs.push({
-  //     title: 'New Tab',
-  //     name: newTabName,
-  //     content: 'New Tab content'
-  //   });
-  //   this.editableTabsValue = newTabName;
-  // },
-  // removeTab(targetName) {
-  //   let tabs = this.editableTabs;
-  //   let activeName = this.editableTabsValue;
-  //   if (activeName === targetName) {
-  //     tabs.forEach((tab, index) => {
-  //       if (tab.name === targetName) {
-  //         let nextTab = tabs[index + 1] || tabs[index - 1];
-  //         if (nextTab) {
-  //           activeName = nextTab.name;
-  //         }
-  //       }
-  //     });
-  //   }
-  //
-  //   this.editableTabsValue = activeName;
-  //   this.editableTabs = tabs.filter(tab => tab.name !== targetName);
-  // }
 
 }
 

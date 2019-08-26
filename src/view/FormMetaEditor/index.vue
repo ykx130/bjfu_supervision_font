@@ -23,7 +23,8 @@ export default {
     return {
       form_meta: {
         meta: {},
-        items: []
+        items: [],
+        pages: ['正面']
       }
     }
   },
