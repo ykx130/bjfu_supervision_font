@@ -103,46 +103,46 @@
 </template>
 
 <script>
-  import {getUserByName} from '@/service/api/user'
+import { getUserByName } from '@/service/api/user'
 
-  export default {
-    data: function () {
-      return {
-        user: {},
-        userValidate: {
-          email: [{type: 'email', message: 'Invalid email format', trigger: 'blur'}],
-          phone: [{
-              validator (rule, value, callback) {
-                if (!value) {
-                  return callback(new Error('the phone can not be empty'))
-                } else if (!/^[1][34578][0-9]{9}$/.test(value)) {
-                  callback('手机号格式不正确')
-                } else {
-                  callback()
-                }
-              }
-            }]
-        }
-      }
-    },
-    mounted: function () {
-      let username = this.$route.params.username;
-      getUserByName(username).then((resp) => {
-        this.user = resp.data.user
-      })
-    },
-    methods: {
-      handleSubmit (name) {
-        this.$refs[name].validate((valid) => {
-          if (valid) {
-            this.$Message.success('Success！')
-          } else {
-            this.$Message.error('Fail!')
+export default {
+  data: function () {
+    return {
+      user: {},
+      userValidate: {
+        email: [{ type: 'email', message: 'Invalid email format', trigger: 'blur' }],
+        phone: [{
+          validator (rule, value, callback) {
+            if (!value) {
+              return callback(new Error('the phone can not be empty'))
+            } else if (!/^[1][34578][0-9]{9}$/.test(value)) {
+              callback('手机号格式不正确')
+            } else {
+              callback()
+            }
           }
-        })
-      },
+        }]
+      }
+    }
+  },
+  mounted: function () {
+    let username = this.$route.params.username
+    getUserByName(username).then((resp) => {
+      this.user = resp.data.user
+    })
+  },
+  methods: {
+    handleSubmit (name) {
+      this.$refs[name].validate((valid) => {
+        if (valid) {
+          this.$Message.success('Success！')
+        } else {
+          this.$Message.error('Fail!')
+        }
+      })
     }
   }
+}
 </script>
 
 <style scoped>

@@ -16,9 +16,9 @@
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
-      <FormItem prop="group">
-        <Select v-model="user.group" >
-          <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+      <FormItem prop="group_name">
+        <Select v-model="user.group_name" >
+          <Option v-for="item in groups" :value="item.group_name" :key="item.group_name">{{ item.group_name }}</Option>
         </Select>
       </FormItem>
     </Form>
@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import {getUserByName, queryGroups} from '../../../service/api/user'
-import {updateWithinField} from 'Libs/tools'
+import { getUserByName, queryGroups } from '../../../service/api/user'
+import { updateWithinField } from 'Libs/tools'
 export default {
   name: 'UserProfileModal',
   props: {
@@ -42,7 +42,7 @@ export default {
         id: '',
         name: '',
         username: '',
-        group: '',
+        group_name: '',
         role_names: []
       },
       groups: []

@@ -136,7 +136,7 @@ export default {
           title: '组别',
           render: function (h, params) {
             return (
-              <span>{ params.row.user.group }</span>
+              <span>{ params.row.user.group_name }</span>
             )
           }
         },

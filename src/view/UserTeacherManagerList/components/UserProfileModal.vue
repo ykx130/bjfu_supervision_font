@@ -11,9 +11,9 @@
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
-      <FormItem label="组别" prop="group">
-        <Select v-model="guider.group">
-          <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+      <FormItem label="组别" prop="group_name">
+        <Select v-model="guider.group_name">
+          <Option v-for="item in groups" :value="item.group_name" :key="item.group_name">{{ item.group_name }}</Option>
         </Select>
       </FormItem>
       <FormItem label="工作状态" prop="work_state">

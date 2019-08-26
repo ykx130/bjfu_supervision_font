@@ -246,9 +246,21 @@ export function updateWithinField (src_obj, des_obf) {
 }
 
 // stringifyQuery
+export function cleanEmptyFields (object) {
+  Object.keys(object).forEach((key) => {
+    if (object[key] === undefined || object[key] === '') {
+      delete object[key]
+    }
+    if (typeof object[key] === 'object') {
+      object[key] = cleanEmptyFields(object[key])
+    }
+  })
+  return object
+}
 
 export function stringifyQuery (args) {
   let query = lodash.cloneDeep(args)
+  query = cleanEmptyFields(query)
   query = jsonfiyTypeDeep(query)
   return qs.stringify(query, {
     arrayFormat: 'repeat',

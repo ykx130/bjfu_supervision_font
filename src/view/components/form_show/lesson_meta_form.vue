@@ -210,7 +210,7 @@ export default {
     if (this.currentUser.guider && !this.currentUser.role_names.includes('管理员')) {
       this.value.guider = this.currentUser.username
       this.value.guider_name = this.currentUser.name
-      this.value.guider_group = this.currentUser.guider.group
+      this.value.guider_group = this.currentUser.guider.group_name
     }
   },
   methods: {
@@ -257,7 +257,7 @@ export default {
         this.select_guider = this.users[value]
         if (this.select_guider) {
           this.value.guider_name = this.select_guider.user.name
-          this.value.guider_group = this.select_guider.group
+          this.value.guider_group = this.select_guider.group_name
         }
       } else {
         this.value.guider_name = undefined
@@ -299,10 +299,10 @@ export default {
         lesson_class: this.selected_lesson.lesson_class,
         lesson_teacher_unit: this.selected_lesson.lesson_teacher_unit,
         lesson_attribute: this.selected_lesson.lesson_attribute,
-        assign_group: this.selected_lesson.assign_group,
+        group_name: this.selected_lesson.group_name,
         lesson_year: this.selected_lesson.lesson_year,
         lesson_level: this.selected_lesson.lesson_level,
-        lesson_model: this.selected_lesson.lesson_model,
+        lesson_model: this.selected_lesson.lesson_model
       }
       this.onSelectedLessonCaseChange(undefined)
     },

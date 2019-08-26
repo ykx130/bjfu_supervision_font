@@ -17,9 +17,14 @@
           <Row>
             <Col span="18">
               <Input v-model="qsItem.item_name" placeholder="用于检索, 请保证全局唯一"></Input>
+
             </Col>
           </Row>
         </FormItem>
+
+        <label v-for="(item,index) in radioData" :key="index">
+          <input @click="getRadioVal(item.value)" type="radio" :value="item.value">{{item.value}}
+        </label>
       </Form>
     <Rule v-model="rules" :types="['required', 'length']"></Rule>
   </div>
@@ -47,11 +52,17 @@ export default {
   },
   data () {
     return {
+      radioData:[
+        {value:'正面'},
+        {value:'反面'},
+
+      ],
       qsItem: {
         item_name: '',
         title: '',
         type: 'form_item',
-        item_type: 'raw_text'
+        item_type: 'raw_text',
+        item_radio:''
       },
       rules:[]
     }
@@ -62,6 +73,9 @@ export default {
   methods: {
     ok () {
       this.$emit('onInput', {...this.qsItem, payload:{rules:this.rules}})
+    },
+    getRadioVal(value){
+      this.qsItem.item_radio=value
     }
   }
 }

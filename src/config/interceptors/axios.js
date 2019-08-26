@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import router from '@/router'
 
 var bus = new Vue()
 export function requestSuccessFunc (requestObj) {

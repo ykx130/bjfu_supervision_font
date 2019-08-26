@@ -14,12 +14,19 @@
         </span>
       </Input>
     </FormItem>
+    <FormItem prop="code" style="display: flex;">
+      <Input type="code" size="large" maxlength="4"  v-model="form.code" placeholder="验证码"
+             style="width: 90px;height: 40px;position: relative;bottom: 10px" >
+      </Input>
+      <img style="margin-left: 10px;" :src="'/api/'+captcha_url" @click="refreshCaptcha()" width="80px" height="40px"/>
+    </FormItem>
     <FormItem>
       <Button @click="handleSubmit" type="primary" long>登录</Button>
     </FormItem>
   </Form>
 </template>
 <script>
+import { getCaptcha } from '@/service/api/user'
 export default {
   name: 'LoginForm',
   props: {
@@ -40,11 +47,17 @@ export default {
       }
     }
   },
+  mounted: function () {
+    this.refreshCaptcha()
+  },
   data () {
     return {
+      captcha_url: '',
       form: {
         userName: 'super_admin',
-        password: ''
+        password: '',
+        code: '',
+        uuid: ''
       }
     }
   },
@@ -57,12 +70,20 @@ export default {
     }
   },
   methods: {
+    refreshCaptcha: function () {
+      getCaptcha().then((resp) => {
+        this.form.uuid = resp.data.uuid
+        this.captcha_url = resp.data.path
+      })
+    },
     handleSubmit () {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.$emit('on-success-valid', {
             userName: this.form.userName,
-            password: this.form.password
+            password: this.form.password,
+            code: this.form.code,
+            uuid: this.form.uuid
           })
         }
       })

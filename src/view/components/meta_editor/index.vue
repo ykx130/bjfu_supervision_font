@@ -36,8 +36,10 @@
       <div>
         <!--single item begin-->
 
+
         <!--card begin-->
         <Card id="form-card">
+
 
           <draggable v-model="value.items" style="padding-bottom: 30px; width: 100%;" @update="onMoveEnd">
               <Tabs v-model="current_page">
@@ -53,8 +55,11 @@
                   <div v-if="item.item_name === 'sub_title_block_start'"><h3> {{ item.payload.title }} </h3></div>
                   <div v-if="item.item_name === 'sub_title_block_end' ">
                     __end__
+
+
                   </div>
                 </div>
+
                 <!--if sub_title_block_start end-->
 
                 <!--if raw_text begin-->
@@ -135,8 +140,6 @@
             <Button style='position: absolute;right:24px;top:22px;' @click="page_visible=true"> + </Button>
 
           </draggable>
-
-
           <div>
             <Button class="form-buttons" @click="block_visible = true">追加样式</Button>
             <Button class="form-buttons" @click="item_visible = true">追加题目</Button>
@@ -314,6 +317,35 @@ export default {
   mounted: function () {
     this.value.version = 'default'
   }
+
+
+  // addTab(targetName) {
+  //   let newTabName = ++this.tabIndex + '';
+  //   this.editableTabs.push({
+  //     title: 'New Tab',
+  //     name: newTabName,
+  //     content: 'New Tab content'
+  //   });
+  //   this.editableTabsValue = newTabName;
+  // },
+  // removeTab(targetName) {
+  //   let tabs = this.editableTabs;
+  //   let activeName = this.editableTabsValue;
+  //   if (activeName === targetName) {
+  //     tabs.forEach((tab, index) => {
+  //       if (tab.name === targetName) {
+  //         let nextTab = tabs[index + 1] || tabs[index - 1];
+  //         if (nextTab) {
+  //           activeName = nextTab.name;
+  //         }
+  //       }
+  //     });
+  //   }
+  //
+  //   this.editableTabsValue = activeName;
+  //   this.editableTabs = tabs.filter(tab => tab.name !== targetName);
+  // }
+
 }
 
 </script>

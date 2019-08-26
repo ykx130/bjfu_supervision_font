@@ -7,18 +7,25 @@
 <script>
 export default {
   name: 'App',
-  methods:{
+  methods: {
     registEvent: function () {
-      this.$bus.$on('global.message.warning', function(arg) {
+      this.$bus.$on('global.message.warning', function (arg) {
         this.$Message.warning(arg)
       })
-      this.$bus.$on('global.message.error', function(arg) {
+      this.$bus.$on('global.message.error', function (arg) {
         this.$Message.error(arg)
       })
     }
   },
-  mounted:function () {
+  mounted: function () {
     this.registEvent()
+    this.$store.dispatch('getUserInfo').then((resp) => {
+      if (resp.code !== 200) {
+        this.$router.push({ name: 'login' })
+      }
+    }).catch(() => {
+      this.$router.push({ name: 'login' })
+    })
   }
 }
 </script>

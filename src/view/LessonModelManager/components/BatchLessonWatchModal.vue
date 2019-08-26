@@ -6,8 +6,8 @@
     @on-cancel="handleCancel">
     <Form :model="lesson">
 
-      <FormItem prop="assign_group" label="分配督导小组">
-        <Select v-model="lesson.assign_group" >
+      <FormItem prop="group_name" label="分配督导小组">
+        <Select v-model="lesson.group_name" >
           <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import {queryGroups} from '../../../service/api/user'
-import {lessonLevel, lessonWatchReason} from '../marcos'
+import { queryGroups } from '../../../service/api/user'
+import { lessonLevel, lessonWatchReason } from '../marcos'
 export default {
   name: 'BatchLessonWatchModal',
   props: {

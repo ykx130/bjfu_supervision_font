@@ -120,7 +120,7 @@ export default {
           title: '分配组别',
           render: function (h, params) {
             return (
-              <span>{ params.row.assign_group }</span>
+              <span>{ params.row.group_name }</span>
             )
           }
         },
