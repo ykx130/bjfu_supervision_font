@@ -23,7 +23,7 @@ export default {
   components: {
     LoginForm
   },
-  mixin: { UserMixin },
+  mixins: [ UserMixin ],
   methods: {
     ...mapActions([
       'handleLogin',

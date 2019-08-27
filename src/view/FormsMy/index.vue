@@ -1,10 +1,10 @@
 <template>
   <div>
     <Card>
-      <Row>
-        <Col span="6">
+      <Row v-role="['管理员']">
+        <Col span="6"  >
           学期：
-          <Select v-model="query.meta.term" style="width:200px" v-role ="['管理员']">
+          <Select v-model="query.meta.term" style="width:200px" >
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </Col>

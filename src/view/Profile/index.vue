@@ -51,7 +51,7 @@
         </Col>
         <Col span="8" offset="8">
           <FormItem prop="group" label="组别">
-            <Input type="text" style="width: 300px;" v-model="user.guider.group" disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.guider.group_name" disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>

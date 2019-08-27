@@ -26,7 +26,7 @@
         </Col>
         <Col span="6">
           <FormItem label="听课学期" prop="term">
-            <Select :placement="'bottom'" v-model="value.term" @on-change="onTermSelectChange" class="inline-form-item" :disabled="disabled">
+            <Select :placement="'bottom'" v-model="value.term" @on-change="onTermSelectChange" class="inline-form-item" :disabled="disabled || disabled_term">
               <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
             </Select>
           </FormItem>
@@ -144,7 +144,8 @@ export default {
       lesson_disabled: '', // 禁用课程的表单,
       guider_disable: '',
       guider_name_like: '',
-      user_name_like: ''
+      user_name_like: '',
+      disabled_term: true
     }
   },
   computed: {
@@ -183,6 +184,9 @@ export default {
       } else {
         getCurrentTerms().then((resp) => {
           this.value.term = resp.data.term.name
+          if(this.currentUser.role_names.includes('管理员')) {
+            this.disabled_term = true
+          }
           if (this.lesson_disabled || this.disabled) {
             this.selected_lesson = this.value.lesson
             this.$set(this.lessons, this.selected_lesson.lesson_id, this.selected_lesson)
