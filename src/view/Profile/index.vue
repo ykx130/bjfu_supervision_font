@@ -97,17 +97,23 @@
       <br>
       <FormItem>
         <Button type="primary">更新基本信息</Button>
+        <Button @click="newpass_visible=true">重置密码</Button>
       </FormItem>
+
+      <change-pass :show="newpass_visible"@onOk="chanpassword"@onCancel="()=>{this.newpass_visible=false}"></change-pass>
     </Form>
   </Card>
 </template>
 
 <script>
 import { getUserByName } from '@/service/api/user'
-
+import { newPassword } from '../../service/api/user'
+import ChangePass from './components/ChangePass'
 export default {
+  components: { ChangePass },
   data: function () {
     return {
+      newpass_visible: false,
       user: {},
       userValidate: {
         email: [{ type: 'email', message: 'Invalid email format', trigger: 'blur' }],
@@ -140,6 +146,10 @@ export default {
           this.$Message.error('Fail!')
         }
       })
+    },
+    chanpassword: function (passwd) {
+      newPassword(this.$route.params.username, { 'password': passwd })
+      this.newpass_visible = false
     }
   }
 }
