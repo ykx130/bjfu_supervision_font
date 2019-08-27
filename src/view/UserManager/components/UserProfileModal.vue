@@ -101,18 +101,22 @@
           </Input>
         </FormItem>
         </Col>
+        <Button @click="changepass_visible=true">重置密码</Button>
+        <new-password :show="changepass_visible"@onOk="changepassword"@onCancel="()=>{this.changepass_visible=false}"></new-password>
       </Row>
     </Form>
   </Modal>
 </template>
 
 <script>
-import { getUserByName, queryGroups } from '../../../service/api/user'
+import NewPassword from './ChangePassword'
+import { getUserByName, queryGroups, newPassword } from '../../../service/api/user'
 import { updateWithinField } from '@/libs/tools'
 import { dateToString } from '@/libs/tools'
 import { sexList, unitlist, prorankList, stateList, workStatelist, statusList } from '../marcos'
 export default {
   name: 'UserProfileModal',
+  components: { NewPassword },
   props: {
     show: Boolean,
     onCancel: Function,
@@ -121,6 +125,7 @@ export default {
   },
   data: function () {
     return {
+      changepass_visible: false,
       user: {
         id: undefined,
         name: undefined,
@@ -211,6 +216,10 @@ export default {
           updateWithinField(this.user, resp.data.user)
         })
       }
+    },
+    changepassword: function (passwd) {
+      newPassword(this.username, { 'password': passwd })
+      this.changepass_visible = false
     }
   }
 }

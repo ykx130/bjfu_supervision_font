@@ -63,3 +63,7 @@ export const supervisorsRenew = (params) => {
 export const getCaptcha = () => {
   return axios.get('/api/captcha')
 }
+
+export const newPassword = (username, params) => {
+  return axios.put(`/api/users/${username}/password`, params)
+}
