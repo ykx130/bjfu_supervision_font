@@ -17,47 +17,51 @@
         <div>
 
           <FormShow v-model="form_values" :pages="form_meta.pages" :items="form.values" :disabled="disabled" ref="ruleform">
-            <div v-show="!form.model_lesson.is_model_lesson">
-              <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
-              <FormItem>
-                <Row>
-                  <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：是否推荐为好评课?</span>
-                </Row>
-                <Row>
-                  <RadioGroup v-model="form.model_lesson.recommend" >
-                    <Radio
-                      :label="1"
-                      v-bind:style="{ fontSize:'15px',marginLeft:'25px' }"
-                      disabled
-                    >推荐</Radio>
-                    <Radio :label="0"
-                           v-bind:style="{ fontSize:'15px',marginLeft:'25px' }"
+            <div>
+              <div v-show="!form.model_lesson.is_model_lesson">
+                <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
+                <FormItem>
+                  <Row>
+                    <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：是否推荐为好评课?</span>
+                  </Row>
+                  <Row>
+                    <RadioGroup v-model="form.model_lesson.recommend" >
+                      <Radio
+                        :label="1"
+                        v-bind:style="{ fontSize:'15px',marginLeft:'25px' }"
+                        disabled
+                      >推荐</Radio>
+                      <Radio :label="0"
+                             v-bind:style="{ fontSize:'15px',marginLeft:'25px' }"
+                             disabled
+                      >不推荐</Radio>
+                    </RadioGroup>
+                  </Row>
+                </FormItem>
+
+                <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">（若选择为“推荐为好评课堂，请写出推荐理由； 若选择“待定，还需进一步完善”，请写出意见及建议。)</span>
+
+                <FormItem>
+                  <Row>
+                    <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：结论及意见</span>
+                  </Row>
+                  <Row>
+                    <Input type="textarea"
                            disabled
-                    >不推荐</Radio>
-                  </RadioGroup>
-                </Row>
-              </FormItem>
+                           v-model="form.model_lesson.recommend_reason"
+                           placeholder="Satisfation about teachers..."
+                           v-bind:style="{marginLeft:'25px',width:'65%'}"></Input>
+                  </Row>
+                </FormItem>
+              </div>
+              <!--{{ruleValidate}}-->
+              <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="form.status==='已完成'">保存</Button>
+              <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled">提交</Button>
+              <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
 
-              <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">（若选择为“推荐为好评课堂，请写出推荐理由； 若选择“待定，还需进一步完善”，请写出意见及建议。)</span>
-
-              <FormItem>
-                <Row>
-                  <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：结论及意见</span>
-                </Row>
-                <Row>
-                  <Input type="textarea"
-                         disabled
-                         v-model="form.model_lesson.recommend_reason"
-                         placeholder="Satisfation about teachers..."
-                         v-bind:style="{marginLeft:'25px',width:'65%'}"></Input>
-                </Row>
-              </FormItem>
             </div>
           </FormShow>
-          <!--{{ruleValidate}}-->
-        <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="form.status==='已完成'">保存</Button>
-        <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled">提交</Button>
-        <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
+
       </div>
         <div style="overflow: hidden">
           <div v-if="form.status === '已完成'" class="form-status" style="background-color: #cce5ff"><p> {{ form.status }} </p></div>

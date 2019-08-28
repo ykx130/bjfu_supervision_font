@@ -67,7 +67,7 @@
         </template>
 
       </template>
-      <slot></slot>
+      <slot v-if="current_page === pages[pages.length - 1]"></slot>
     </Form>
   </div>
 </template>
