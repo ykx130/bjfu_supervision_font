@@ -7,7 +7,7 @@
     <div class="login-con">
       <Card icon="log-in" title="欢迎登录" :bordered="false">
         <div class="form-con">
-          <login-form @on-success-valid="handleSubmit"></login-form>
+          <login-form ref="login" @on-success-valid="handleSubmit"></login-form>
         </div>
       </Card>
     </div>
@@ -31,11 +31,16 @@ export default {
     ]),
     handleSubmit ({ userName, password, uuid, code }) {
       this.handleLogin({ userName, password, uuid, code }).then(res => {
-        this.getUserInfo().then(res => {
-          this.$router.push({
-            path: '/'
+        debugger
+        if (res.data.code === 200){
+          this.getUserInfo().then(res => {
+            this.$router.push({
+              path: '/'
+            })
           })
-        })
+        } else {
+          this.$refs.login.refreshCaptcha()
+        }
       })
     }
   }

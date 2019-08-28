@@ -141,8 +141,8 @@ export default {
       selected_lesson: { lesson_cases: [] },
       select_guider: {},
       selected_lesson_case: {},
-      lesson_disabled: '', // 禁用课程的表单,
-      guider_disable: '',
+      lesson_disabled: false, // 禁用课程的表单,
+      guider_disable: false,
       guider_name_like: '',
       user_name_like: '',
       disabled_term: true
@@ -186,6 +186,7 @@ export default {
           this.value.term = resp.data.term.name
           if(this.currentUser.role_names.includes('管理员')) {
             this.disabled_term = true
+            this.guider_disable = true
           }
           if (this.lesson_disabled || this.disabled) {
             this.selected_lesson = this.value.lesson

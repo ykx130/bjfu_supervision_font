@@ -50,7 +50,7 @@ export default {
           'code': code,
           'uuid': uuid
         }).then(res => {
-          resolve()
+          resolve(res)
         }).catch(err => {
           reject(err)
         })

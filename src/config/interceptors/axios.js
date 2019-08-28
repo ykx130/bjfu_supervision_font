@@ -36,7 +36,7 @@ export function responseSuccessFunc (responseObj) {
       // 比如最常见的授权过期跳登录
       // 特定弹窗
       // 跳转特定页面等
-      bus.$bus.$emit('global.message.error', '系统异常 原因: ' + resData.msg)
+      bus.$bus.$emit('global.message.error',   resData.msg)
       // location.href = xxx // 这里的路径也可以放到全局配置里
       return responseObj
     default:
@@ -53,7 +53,7 @@ export function responseFailFunc (responseError) {
 
   switch (stauts) {
     case 401:
-      bus.$bus.$emit('global.message.warning', '未登录请先登录')
+      bus.$bus.$emit('global.message.warning', responseError.response.data.msg)
       break
     case 403:
       bus.$bus.$emit('global.message.warning', responseError.response.data.msg)
