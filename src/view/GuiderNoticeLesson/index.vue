@@ -106,7 +106,24 @@ export default {
             )
           }
         },
-
+        {
+          title: '上课教师',
+          render: function (h, params) {
+            return h('span', params.row.lesson_teacher_name)
+          }
+        },
+        {
+          title: '上课学院',
+          render: function (h, params) {
+            return h('span', params.row.lesson_unit )
+          }
+        },
+        {
+          title: '上课班级',
+          render: function (h, params) {
+            return h('span', params.row.lesson_class )
+          }
+        },
         {
           title: '分配组别',
           render: function (h, params) {

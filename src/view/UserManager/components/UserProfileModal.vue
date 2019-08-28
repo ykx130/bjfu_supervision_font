@@ -138,7 +138,7 @@ export default {
         phone: undefined,
         role_names: []
       },
-      roles: [],
+      roles: ['管理员', '学院领导'],
       groups: [],
       sexList: sexList,
       unitList: unitlist,
@@ -181,7 +181,6 @@ export default {
     }
   },
   mounted: function () {
-    this.roles = ['管理员', '学院领导']
     queryGroups().then((resp) => {
       this.groups = resp.data.groups
     })
@@ -202,7 +201,6 @@ export default {
         if (valid) {
           // alert("Success！");
           this.$emit('onOK', { ...this.user })
-          this.$Message.success('Success！')
         } else {
           // alert("Fail!");
           this.$Message.error('信息错误')

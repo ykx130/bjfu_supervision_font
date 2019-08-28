@@ -1,0 +1,944 @@
+{
+    "_id": ObjectId("5ccda76c9dc6d6a7e874641b"),
+    "meta": {
+        "created_by": "admin",
+        "created_at": "2019-05-02 22:39:07"
+    },
+    "name": "体育课评价用表第2版",
+    "version": "default",
+    "using": true,
+    "pages": [
+        "评价表正面",
+        "评价表反面"
+    ],
+    "items": [
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "sub_title_block_start",
+            "type": "block_item",
+            "item_type": "sub_title_block",
+            "payload": {
+                "pages": "评价表正面",
+                "title": "教师授课情况-授课态度"
+            },
+            "title": "sub_title_block_start"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "教师授课情况-授课态度#★教师精神面貌好，授课有热情",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "非常满意",
+                        "value": "1"
+                    },
+                    {
+                        "label": "满意",
+                        "value": "2"
+                    },
+                    {
+                        "label": "正常",
+                        "value": "3"
+                    },
+                    {
+                        "label": "存在不足",
+                        "value": "4"
+                    },
+                    {
+                        "label": "明显不足",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "★教师精神面貌好，授课有热情"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "sub_title_block_end",
+            "type": "block_item",
+            "item_type": "sub_title_block",
+            "payload": {
+                "pages": "评价表正面"
+            },
+            "title": "sub_title_block_end"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "sub_title_block_start",
+            "type": "block_item",
+            "item_type": "sub_title_block",
+            "payload": {
+                "pages": "评价表正面",
+                "title": "教师授课情况-授课内容"
+            },
+            "title": "sub_title_block_start"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "教师授课情况-授课内容#★内容充实，教学结构、运动量与强度合理",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "非常满意",
+                        "value": "1"
+                    },
+                    {
+                        "label": "满意",
+                        "value": "2"
+                    },
+                    {
+                        "label": "正常",
+                        "value": "3"
+                    },
+                    {
+                        "label": "存在不足",
+                        "value": "4"
+                    },
+                    {
+                        "label": "明显不足",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "★内容充实，教学结构、运动量与强度合理"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "教师授课情况-授课内容#重视能力训练及兴趣爱好的培养",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "非常满意",
+                        "value": "1"
+                    },
+                    {
+                        "label": "满意",
+                        "value": "2"
+                    },
+                    {
+                        "label": "正常",
+                        "value": "3"
+                    },
+                    {
+                        "label": "存在不足",
+                        "value": "4"
+                    },
+                    {
+                        "label": "明显不足",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "重视能力训练及兴趣爱好的培养"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "教师授课情况-授课内容#注重心理素质和社会适应能力的培养",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "非常满意",
+                        "value": "1"
+                    },
+                    {
+                        "label": "满意",
+                        "value": "2"
+                    },
+                    {
+                        "label": "正常",
+                        "value": "3"
+                    },
+                    {
+                        "label": "存在不足",
+                        "value": "4"
+                    },
+                    {
+                        "label": "明显不足",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "注重心理素质和社会适应能力的培养"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "sub_title_block_end",
+            "type": "block_item",
+            "item_type": "sub_title_block",
+            "payload": {
+                "pages": "评价表正面"
+            },
+            "title": "sub_title_block_end"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "sub_title_block_start",
+            "type": "block_item",
+            "item_type": "sub_title_block",
+            "payload": {
+                "pages": "评价表正面",
+                "title": "教师授课情况-授课过程"
+            },
+            "title": "sub_title_block_start"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "教师授课情况-授课过程#教学方法、手段及教学组织科学合理",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "非常满意",
+                        "value": "1"
+                    },
+                    {
+                        "label": "满意",
+                        "value": "2"
+                    },
+                    {
+                        "label": "正常",
+                        "value": "3"
+                    },
+                    {
+                        "label": "存在不足",
+                        "value": "4"
+                    },
+                    {
+                        "label": "明显不足",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "教学方法、手段及教学组织科学合理"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "教师授课情况-授课过程#★讲解和示范熟练、准确",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "非常满意",
+                        "value": "1"
+                    },
+                    {
+                        "label": "满意",
+                        "value": "2"
+                    },
+                    {
+                        "label": "正常",
+                        "value": "3"
+                    },
+                    {
+                        "label": "存在不足",
+                        "value": "4"
+                    },
+                    {
+                        "label": "明显不足",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "★讲解和示范熟练、准确"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "教师授课情况-授课过程#能与学生交流互动，引导学生积极思考",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "非常满意",
+                        "value": "1"
+                    },
+                    {
+                        "label": "满意",
+                        "value": "2"
+                    },
+                    {
+                        "label": "正常",
+                        "value": "3"
+                    },
+                    {
+                        "label": "存在不足",
+                        "value": "4"
+                    },
+                    {
+                        "label": "明显不足",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "能与学生交流互动，引导学生积极思考"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "教师授课情况-授课过程#★注意课堂安全，防范安全事故发生",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "非常满意",
+                        "value": "1"
+                    },
+                    {
+                        "label": "满意",
+                        "value": "2"
+                    },
+                    {
+                        "label": "正常",
+                        "value": "3"
+                    },
+                    {
+                        "label": "存在不足",
+                        "value": "4"
+                    },
+                    {
+                        "label": "明显不足",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "★注意课堂安全，防范安全事故发生"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "sub_title_block_end",
+            "type": "block_item",
+            "item_type": "sub_title_block",
+            "payload": {
+                "pages": "评价表正面"
+            },
+            "title": "sub_title_block_end"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "sub_title_block_start",
+            "type": "block_item",
+            "item_type": "sub_title_block",
+            "payload": {
+                "pages": "评价表正面",
+                "title": "教师授课情况-教学效果"
+            },
+            "title": "sub_title_block_start"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "教师授课情况-教学效果#完成本课教学任务，得到较好的身体锻炼效果和情绪体验",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "非常满意",
+                        "value": "1"
+                    },
+                    {
+                        "label": "满意",
+                        "value": "2"
+                    },
+                    {
+                        "label": "正常",
+                        "value": "3"
+                    },
+                    {
+                        "label": "存在不足",
+                        "value": "4"
+                    },
+                    {
+                        "label": "明显不足",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "完成本课教学任务，得到较好的身体锻炼效果和情绪体验"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "教师授课情况-教学效果#教师授课情况总体评价",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "非常满意",
+                        "value": "1"
+                    },
+                    {
+                        "label": "满意",
+                        "value": "2"
+                    },
+                    {
+                        "label": "正常",
+                        "value": "3"
+                    },
+                    {
+                        "label": "存在不足",
+                        "value": "4"
+                    },
+                    {
+                        "label": "明显不足",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "教师授课情况总体评价"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "sub_title_block_end",
+            "type": "block_item",
+            "item_type": "sub_title_block",
+            "payload": {
+                "pages": "评价表正面"
+            },
+            "title": "sub_title_block_end"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "sub_title_block_start",
+            "type": "block_item",
+            "item_type": "sub_title_block",
+            "payload": {
+                "pages": "评价表正面",
+                "title": "学生听课情况-到课情况"
+            },
+            "title": "sub_title_block_start"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "学生听课情况-到课情况#到课情况",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "良好（没有或极个别学生迟到、早退）",
+                        "value": "1"
+                    },
+                    {
+                        "label": "一般",
+                        "value": "2"
+                    },
+                    {
+                        "label": "迟到、早退现象严重",
+                        "value": "3"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "到课情况"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "学生听课情况-到课情况#课堂表现",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "checkbox_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "遵守课堂规则",
+                        "value": "1"
+                    },
+                    {
+                        "label": "及时与老师沟通",
+                        "value": "1"
+                    },
+                    {
+                        "label": "能积极思考",
+                        "value": "1"
+                    },
+                    {
+                        "label": "按质按量完成教学任务",
+                        "value": "1"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "课堂表现"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "学生听课情况-到课情况#学生听课情况总体评价",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表正面",
+                "options": [
+                    {
+                        "label": "非常满意",
+                        "value": "1"
+                    },
+                    {
+                        "label": "满意",
+                        "value": "2"
+                    },
+                    {
+                        "label": "正常",
+                        "value": "3"
+                    },
+                    {
+                        "label": "存在不足",
+                        "value": "4"
+                    },
+                    {
+                        "label": "明显不足",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "学生听课情况总体评价"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "学生听课情况-到课情况#其它-评述",
+            "type": "form_item",
+            "item_type": "raw_text",
+            "payload": {
+                "pages": "评价表正面",
+                "rules": []
+            },
+            "title": "其它-评述"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "sub_title_block_end",
+            "type": "block_item",
+            "item_type": "sub_title_block",
+            "payload": {
+                "pages": "评价表正面"
+            },
+            "title": "sub_title_block_end"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "sub_title_block_start",
+            "type": "block_item",
+            "item_type": "sub_title_block",
+            "payload": {
+                "pages": "评价表反面",
+                "title": "评价表背面"
+            },
+            "title": "sub_title_block_start"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "评价表背面#一、您对这节课的整体印象是？",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "radio_option",
+            "payload": {
+                "pages": "评价表反面",
+                "options": [
+                    {
+                        "label": "是一节各方面都很好的课或非常有特色的课，印象非常好",
+                        "value": "1"
+                    },
+                    {
+                        "label": "是一节比较好的课，对主要教学过程和效果感到满意，印象较好，仍有提升空间",
+                        "value": "2"
+                    },
+                    {
+                        "label": "各方面表现正常，没有印象深刻的表现，也没有较大的不足或问题",
+                        "value": "3"
+                    },
+                    {
+                        "label": "某些环节存在不足，有待改进，总的来说不大满意",
+                        "value": "4"
+                    },
+                    {
+                        "label": "存在相当多的问题或较严重的问题，很不满意",
+                        "value": "5"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "一、您对这节课的整体印象是？"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "整体印象#如果以上各方面不能准确表达您的意见，您可以自己评述或提出具体意见和建议-评述",
+            "type": "form_item",
+            "item_type": "raw_text",
+            "payload": {
+                "pages": "评价表反面",
+                "rules": []
+            },
+            "title": "如果以上各方面不能准确表达您的意见，您可以自己评述或提出具体意见和建议-评述"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "评价表背面#二、您认为授课教师在本节课的表现中可取之处是？",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "checkbox_option",
+            "payload": {
+                "pages": "评价表反面",
+                "options": [
+                    {
+                        "label": "教师很投入",
+                        "value": "1"
+                    },
+                    {
+                        "label": "教师精神面貌好",
+                        "value": "2"
+                    },
+                    {
+                        "label": "教师备课充分",
+                        "value": "3"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "二、您认为授课教师在本节课的表现中可取之处是？"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "可取之处#教学内容",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "checkbox_option",
+            "payload": {
+                "pages": "评价表反面",
+                "options": [
+                    {
+                        "label": "教学内容充实，教学结构科学",
+                        "value": "1"
+                    },
+                    {
+                        "label": "运动量和强度合理",
+                        "value": "1"
+                    },
+                    {
+                        "label": "重视学生综合素质培养",
+                        "value": "1"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "教学内容"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "可取之处#教学过程",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "checkbox_option",
+            "payload": {
+                "pages": "评价表反面",
+                "options": [
+                    {
+                        "label": "教学方法及教学组织科学合理",
+                        "value": "1"
+                    },
+                    {
+                        "label": "讲解清楚，示范准确，手段有效",
+                        "value": "1"
+                    },
+                    {
+                        "label": "与学生有良好沟通",
+                        "value": "1"
+                    },
+                    {
+                        "label": "关注学生练习细节，发现问题及时纠正",
+                        "value": "1"
+                    },
+                    {
+                        "label": "青年教师表现相当好",
+                        "value": "1"
+                    },
+                    {
+                        "label": "青年教师表现不错",
+                        "value": "1"
+                    },
+                    {
+                        "label": "青年教师表现还可以",
+                        "value": "1"
+                    },
+                    {
+                        "label": "有学者风范",
+                        "value": "1"
+                    },
+                    {
+                        "label": "有特色",
+                        "value": "1"
+                    },
+                    {
+                        "label": "有魅力",
+                        "value": "1"
+                    },
+                    {
+                        "label": "很受学生欢迎",
+                        "value": "1"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "教学过程"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "可取之处#如果以上各方面不能准确表达您的意见，您可以自己评述或提出具体意见和建议-评述",
+            "type": "form_item",
+            "item_type": "raw_text",
+            "payload": {
+                "pages": "评价表反面",
+                "rules": []
+            },
+            "title": "如果以上各方面不能准确表达您的意见，您可以自己评述或提出具体意见和建议-评述"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "评价表背面#三、您认为本节课存在的问题是以下哪些？",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "checkbox_option",
+            "payload": {
+                "pages": "评价表反面",
+                "options": [
+                    {
+                        "label": "精神状态欠佳，投入不足",
+                        "value": "1"
+                    },
+                    {
+                        "label": "备课不充分",
+                        "value": "1"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "三、您认为本节课存在的问题是以下哪些？"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "存在的问题#教学内容",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "checkbox_option",
+            "payload": {
+                "pages": "评价表反面",
+                "options": [
+                    {
+                        "label": "内容不够充实，学时利用不充分",
+                        "value": "1"
+                    },
+                    {
+                        "label": "没有教案或内容过于简略、不规范",
+                        "value": "1"
+                    },
+                    {
+                        "label": "教学结构不合理",
+                        "value": "1"
+                    },
+                    {
+                        "label": "与理论教学衔接不太好",
+                        "value": "1"
+                    },
+                    {
+                        "label": "缺乏对学生拼搏意识及合作精神的培养",
+                        "value": "1"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "教学内容"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "存在的问题#教学过程",
+            "weight": "1",
+            "type": "form_item",
+            "item_type": "checkbox_option",
+            "payload": {
+                "pages": "评价表反面",
+                "options": [
+                    {
+                        "label": "课堂组织较混乱，教学秩序不佳",
+                        "value": "1"
+                    },
+                    {
+                        "label": "内容讲述不够清楚",
+                        "value": "1"
+                    },
+                    {
+                        "label": "示范不够熟练准确",
+                        "value": "1"
+                    },
+                    {
+                        "label": "分类指导不足，缺乏与学生互动，发现或解答学生疑问不及时",
+                        "value": "1"
+                    },
+                    {
+                        "label": "课堂气氛不活跃，学生完成练习积极性不高、不认真或不能独立完成练习的情况较多",
+                        "value": "1"
+                    },
+                    {
+                        "label": "存在安全隐患（环境）",
+                        "value": "1"
+                    },
+                    {
+                        "label": "存在安全隐患（教学过程）",
+                        "value": "1"
+                    },
+                    {
+                        "label": "存在安全隐患（提前警示不够）",
+                        "value": "1"
+                    },
+                    {
+                        "label": "青年教师：经验不足，或某些方面还有所欠缺",
+                        "value": "1"
+                    },
+                    {
+                        "label": "中年教师：未表现出应有水平，仍有若干需要改进的环节",
+                        "value": "1"
+                    }
+                ],
+                "rules": []
+            },
+            "title": "教学过程"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "存在的问题#如果以上各方面不能准确表达您的意见，您可以自己评述或提出具体意见和建议-评述",
+            "type": "form_item",
+            "item_type": "raw_text",
+            "payload": {
+                "pages": "评价表反面",
+                "rules": []
+            },
+            "title": "如果以上各方面不能准确表达您的意见，您可以自己评述或提出具体意见和建议-评述"
+        },
+        {
+            "item_type_name": null,
+            "item_detail": null,
+            "using": true,
+            "item_name": "评价表背面#四、补充。如果以上各方面不能准确表达您的意见，您可以自己评述或提出具体意见和建议-评述",
+            "type": "form_item",
+            "item_type": "raw_text",
+            "payload": {
+                "pages": "评价表反面",
+                "rules": []
+            },
+            "title": "四、补充。如果以上各方面不能准确表达您的意见，您可以自己评述或提出具体意见和建议-评述"
+        }
+    ],
+    "versino": "default"
+}

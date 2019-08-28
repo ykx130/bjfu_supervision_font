@@ -6,7 +6,7 @@
     @on-cancel="handleCancel">
   <Form :model="user">
     <FormItem prop="username">
-      <Select v-model="user.username" placeholder="名字" filterable on-query-change="onUserSelectQueryChange">
+      <Select v-model="user.username" placeholder="名字" filterable @on-query-change="onUserSelectQueryChange">
         <Option v-for="item in users" :value="item.username" :key="item.username" >{{ item.username }}</Option>
       </Select>
       <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
@@ -42,7 +42,7 @@ export default {
       })
     },
     handleOK: function () {
-      this.user.leader = true
+      this.user.is_leader = true
       this.$emit('onOK', this.user)
     },
     handleCancel: function () {

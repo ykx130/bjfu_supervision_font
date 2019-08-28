@@ -19,7 +19,7 @@ export default {
   },
   mounted: function () {
     this.refreshNotce()
-    this.notice_timer = setInterval(this.refreshNotce, 10000)
+    this.notice_timer = setInterval(this.refreshNotce, 50000)
   },
   beforeDestroy: function () {
     clearInterval(this.notice_timer)
@@ -31,14 +31,17 @@ export default {
       })
     },
     showNotice: function () {
-      getLatestNotices().then((resp) => {
-        if (this.notices_count > 0) {
-          this.$Modal.info({
-            title: resp.data.notice.title,
-            content: resp.data.notice.body
-          })
-        }
-      })
+      if (this.notices_count > 0) {
+        getLatestNotices().then((resp) => {
+          if (this.notices_count > 0) {
+            this.$Modal.info({
+              title: resp.data.notice.title,
+              content: resp.data.notice.body
+            })
+            this.notices_count = this.notices_count - 1
+          }
+        })
+      }
     }
   }
 }

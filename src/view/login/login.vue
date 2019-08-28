@@ -31,7 +31,6 @@ export default {
     ]),
     handleSubmit ({ userName, password, uuid, code }) {
       this.handleLogin({ userName, password, uuid, code }).then(res => {
-        debugger
         if (res.data.code === 200){
           this.getUserInfo().then(res => {
             this.$router.push({

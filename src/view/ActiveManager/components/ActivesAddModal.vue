@@ -154,7 +154,6 @@ export default {
     handleOK: function () {
       this.$refs.activity_form.validate((valid) => {
         if (valid) {
-          debugger
           this.activity.inputtime.start_time = dateToString(this.activity.inputtime.start_time, 'yyyy-MM-dd hh:mm:ss')
           this.activity.inputtime.end_time = dateToString(this.activity.inputtime.end_time, 'yyyy-MM-dd hh:mm:ss')
           this.activity.inputapplytime.apply_start_time = dateToString(this.activity.inputapplytime.apply_start_time, 'yyyy-MM-dd hh:mm:ss')

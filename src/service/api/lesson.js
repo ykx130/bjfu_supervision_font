@@ -49,6 +49,10 @@ export const postModelLessonsVote = (params) => {
   return axios.post(`/api/model_lessons/${params.lesson_id}/vote`, { vote: true })
 }
 
+export const postModelLesson = (params) =>{
+  return axios.post(`/api/model_lessons`, params)
+}
+
 export const updateModelLessonsVote = (params) => {
   return axios.put(`/api/model_lessons／${params.id}／vote`, params)
 }

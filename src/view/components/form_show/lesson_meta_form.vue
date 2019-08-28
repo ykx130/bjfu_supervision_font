@@ -182,6 +182,10 @@ export default {
   },
   mounted () {
     // 处理当前用户
+    if(!this.currentUser.role_names.includes('管理员')) {
+      this.disabled_term = true
+      this.guider_disable = true
+    }
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     }).then(() => {
@@ -203,10 +207,6 @@ export default {
       } else {
         getCurrentTerms().then((resp) => {
           this.value.term = resp.data.term.name
-          if(!this.currentUser.role_names.includes('管理员')) {
-            this.disabled_term = true
-            this.guider_disable = true
-          }
           if (this.lesson_disabled || this.disabled) {
             this.selected_lesson = this.value.lesson
             this.$set(this.lessons, this.selected_lesson.lesson_id, this.selected_lesson)

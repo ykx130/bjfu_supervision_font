@@ -1,5 +1,6 @@
 <template>
   <Card>
+    <BackTop></BackTop>
     <div>
       <h1 style="text-align: center;color: #468847;background-color: #dff0d8;    border-color: #d6e9c6;">{{ form_meta.name }}</h1>
       <br/>
@@ -15,7 +16,7 @@
       </Alert>
       <br/>
       <divider orientation="left">问卷内容</divider>
-      <FormShow v-model="form_values" :pages="form_meta.pages" :items="form_meta.items" :disabled="false" ref="ruleform" :ruleValidate="ruleValidate">
+      <FormShow v-model="form_values" :pages="form_meta.pages" :items="form_meta.items" :disabled="false" ref="lesson_info">
         <div>
           <div v-show="show_recommend">
             <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
@@ -106,25 +107,6 @@ export default {
       recommend_model: 0,
       recommend_reason: '',
       show_recommend: false,
-      formValidate: {
-        radio: '',
-        checkbox: '',
-        raw_text: ''
-      },
-      defaultValidateRules: {
-        radio: [
-          { required: false }
-        ],
-        checkbox: [
-          { required: false }
-        ],
-        raw_text: [
-          { required: false }
-        ]
-      },
-      ruleValidate: {
-
-      }
     }
   },
   mounted () {
@@ -147,7 +129,9 @@ export default {
         this.form_meta = resp.data.form_meta
         this.form_meta.items.forEach((item) => {
           // 添加数据
-          this.form_values[item.item_name] = item
+          if (item.type === 'form_item') {
+            this.form_values[item.item_name] = item
+          }
         })
       })
     },
@@ -155,7 +139,7 @@ export default {
       if (this.currentUser.role_names.includes('管理员')) {
         this.$router.push({ name: '问卷管理' })
       } else {
-        this.$router.push({ name: '督导端' })
+        this.$router.push({ name: '督导我的提交' })
       }
     },
 
@@ -166,6 +150,7 @@ export default {
         bind_meta_version: this.form_meta.version,
         meta: this.meta,
         status: status,
+        pages: this.form_meta.pages,
         values: this.formValue2Items()
       }
       form['model_lesson'] = {

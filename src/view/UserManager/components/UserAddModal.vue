@@ -125,7 +125,7 @@ export default {
         end_time: ''
       },
       users: [],
-      roles: [],
+      roles:  ['管理员', '学院领导'] ,
       groups: [],
       sexList: sexList,
       unitList: unitlist,
@@ -164,7 +164,6 @@ export default {
     queryUsers().then((resp) => {
       this.users = resp.data.users
     })
-    this.roles = ['管理员', '学院领导']
 
     queryGroups().then((resp) => {
       this.groups = resp.data.groups
@@ -180,11 +179,10 @@ export default {
       this.$emit('onCancel')
     },
     handleSubmit (name) {
-      this.$emit('onOK', { ...this.user }),
       this.$refs[name].validate((valid) => {
         if (valid) {
           // alert("Success！");
-          this.$Message.success('Success！')
+          this.$emit('onOK', { ...this.user })
         } else {
           // alert("Fail!");
           this.$Message.error('Fail!')

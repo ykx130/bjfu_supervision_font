@@ -16,7 +16,7 @@
     <div style="padding-top: 15px"></div>
     <Card>
       <Tabs :value="query.group_name" @on-click="onTypeTabClick">
-        <TabPane v-for="(item, index) in groups" :label="item.name" :name="item.name" :key="item.name + index"></TabPane>
+        <TabPane v-for="(item, index) in groups" :label="item.group_name" :name="item.group_name" :key="item.group_name + index"></TabPane>
       </Tabs>
       <br>
 
@@ -91,28 +91,28 @@ export default {
             )
           }
         },
-        {
-          title: '操作',
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '2px'
-                },
-                on: {
-                  click: () => {
-                    this.group_name = params.row.group_name
-                  }
-                }
-              }, '查看')
-            ])
-          }
-        }
+        // {
+        //   title: '操作',
+        //   align: 'center',
+        //   render: (h, params) => {
+        //     return h('div', [
+        //       h('Button', {
+        //         props: {
+        //           type: 'primary',
+        //           size: 'small'
+        //         },
+        //         style: {
+        //           marginRight: '2px'
+        //         },
+        //         on: {
+        //           click: () => {
+        //             this.group_name = params.row.group_name
+        //           }
+        //         }
+        //       }, '查看')
+        //     ])
+        //   }
+        // }
       ]
     }
   },

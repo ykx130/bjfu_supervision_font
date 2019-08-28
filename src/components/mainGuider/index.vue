@@ -47,22 +47,29 @@
       <Header>
         <Menu mode="horizontal" theme="primary" :active-name="activity_name" @on-select="onMenuSelect">
           <div class="layout-nav">
-            <MenuItem name="notice_lesson" v-role="['督导','管理员']">
-              <Icon type="ios-paper"/>
-              学期重点关注
-            </MenuItem>
-            <MenuItem name="lesson_model" v-role="['督导','管理员']">
-              <Icon type="ios-keypad"/>
-              好评课堂
-            </MenuItem>
-            <MenuItem name="lesson_form" v-role="['督导','管理员']">
-              <Icon type="ios-construct"/>
-              课程表
-            </MenuItem>
-            <MenuItem name="judge" v-role="['督导','管理员']">
-              <Icon type="ios-paper"/>
-              填评价表
-            </MenuItem>
+            <Submenu name="3" v-role="['督导','管理员']">
+              <template slot="title">
+                <Icon type="ios-stats" />
+                我要填写评价
+              </template>
+              <MenuItem name="notice_lesson" >
+                <Icon type="ios-paper"/>
+                根据学期重点关注
+              </MenuItem>
+              <MenuItem name="lesson_model" v-role="['督导','管理员']">
+                <Icon type="ios-keypad"/>
+                根据好评课堂
+              </MenuItem>
+              <MenuItem name="lesson_form" v-role="['督导','管理员']">
+                <Icon type="ios-construct"/>
+                根据课程表
+              </MenuItem>
+              <MenuItem name="judge" v-role="['督导','管理员']">
+                <Icon type="ios-paper"/>
+                直接填评价表
+              </MenuItem>
+            </Submenu>
+
 
             <MenuItem name="my_form" v-role="['督导','管理员']">
               <Icon type="ios-construct"/>

@@ -34,23 +34,28 @@
       :lesson_id="this.selected_lesson_id"
     ></LessonProfileModal>
 
-    <BatchLessonWatchModal
-      :show="showBatchLessonWatchModal"
-      @onOK="onBatchRemoveModalOK"
-      @onCancel="onBatchRemoveModalCancel"
-    ></BatchLessonWatchModal>
+    <ModelLessonAdd
+        :show="showAddModelLesson"
+        @onOK="onModelLessonAddOK"
+        :term="this.query.term"
+        @onCancel="showAddModelLesson = false"
+    >
+
+    </ModelLessonAdd>
 
     <Table  border stripe :columns="columns" :data="data"></Table>
     <Row >
       <Page  style="float: right;" :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
     </Row>
+
+    <Button type="primary" @click="showAddModelLesson=true">导入为好评课</Button>
   </Card>
 </template>
 
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
-import BatchLessonRemoveModal from './components/BatchLessonWatchModal'
-import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel, putModelLesson } from '@/service/api/lesson'
+import ModelLessonAdd from './components/ModelLessonAdd'
+import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel, putModelLesson , postModelLesson} from '@/service/api/lesson'
 import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
@@ -58,9 +63,10 @@ import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 import ModelJudge from './components/ModelJudge'
 
 export default {
-  components: { ModelJudge, LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal },
+  components: { ModelJudge, LessonJudge, LessonProfileModal, FloatBar,ModelLessonAdd },
   data: function () {
     return {
+      showAddModelLesson: false,
       uploadModelLessonApi: uploadModelLessonApi,
       query: {
         lesson_name: undefined,
@@ -70,9 +76,8 @@ export default {
       data: [], // 数据
       terms: [],
       selected_lesson_ids: [],
-      selected_lesson_id: '', // 选中编辑的课程ids
+      selected_lesson_id: 0, // 选中编辑的课程ids
       showLessonProfileModal: false, // 展示编辑弹窗
-      showBatchLessonWatchModal: false,
       pages: {
         _page: 1,
         _per_page: 10
@@ -107,11 +112,29 @@ export default {
             )
           }
         },
-
+        {
+          title: '上课教师',
+          render: function (h, params) {
+            return h('span', params.row.lesson_teacher_name)
+          }
+        },
+        {
+          title: '上课学院',
+          render: function (h, params) {
+            return h('span', params.row.lesson_unit )
+          }
+        },
+        {
+          title: '上课班级',
+          render: function (h, params) {
+            return h('span', params.row.lesson_class )
+          }
+        },
         {
           title: '好评状态',
+          width:120,
           render: (h, params) => {
-            if (params.row.status === 1) {
+            if (params.row.status === '推荐为好评课') {
               return h('Tag', { props: { color: 'red' } }, '推荐为好评课')
             } else {
               return h('Tag', { props: { color: 'blue' } }, '待商榷')
@@ -180,6 +203,16 @@ export default {
       this.pages._page = 1
       this.fetchData()
     },
+    onModelLessonAddOK(lesson) {
+      postModelLesson({'lesson_id': lesson.lesson_id,
+      }).then((resp)=>{
+        if (resp.code === 200){
+          this.$Message.success("添加成功！")
+        }
+        this.fetchData()
+      })
+      this.showAddModelLesson = false
+    },
     onProfileModalOK (lesson) {
       // 更新框确定 关闭
       putModelLesson(lesson).then((resp) => {
@@ -193,14 +226,6 @@ export default {
     },
     onProfileModalCancel () {
       this.showLessonProfileModal = false
-    },
-    onBatchRemoveModalCancel () {
-      this.showBatchLessonWatchModal = false
-    },
-    onBatchRemoveModalOK: function () {
-      // 批量关注触发
-      this.showBatchLessonWatchModal = false
-      console.log('selected lessons id : ', this.selected_lesson_ids)
     },
     onExportExcel: function () {
       exporModelLessonExcel().then((resp) => {

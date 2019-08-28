@@ -39,8 +39,8 @@ export default {
   data () {
     return {
       rules: {
-        term: [{ required: true, message: '模板名不能为空', trigger: 'blur' }],
-        lesson_teacher_name: [{ required: true, message: '模板内容不能为空', trigger: 'blur' }]
+        term: [{ required: true, message: '学期不能为空', trigger: 'blur' }],
+        lesson_teacher_name: [{ required: true, message: '教师名字不能为空', trigger: 'blur' }]
       },
       query: {},
       terms: [],

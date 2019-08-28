@@ -1,4 +1,4 @@
-<template>
+  <template>
   <Modal
     :value="show"
     title="Title"
@@ -33,7 +33,7 @@
       <FormItem prop="group_name">
         <span>分配督导小组:</span>
         <Select v-model="lesson.group_name" >
-          <Option v-for="item in groups" :value="item.group_name" :key="item.id">{{ item.group_name }}</Option>
+          <Option v-for="item in groups" :value="item.group_name" :key="item.group_name">{{ item.group_name }}</Option>
         </Select>
       </FormItem>
       <FormItem prop="lesson_attention_reason">

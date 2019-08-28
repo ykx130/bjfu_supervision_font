@@ -43,7 +43,11 @@ router.beforeEach((to, from, next) => {
         turnTo(to, store.state.user.access, next)
       }
     } else {
-      next({ name: 'login' })
+      store.dispatch('getUserInfo').then((resp) => {
+          next()
+      }).catch(() => {
+        next({ name: 'login' })
+      })
     }
   } else {
     next()

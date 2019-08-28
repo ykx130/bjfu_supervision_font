@@ -19,13 +19,7 @@ export default {
   },
   mounted: function () {
     this.registEvent()
-    this.$store.dispatch('getUserInfo').then((resp) => {
-      if (resp.code !== 200) {
-        this.$router.push({ name: 'login' })
-      }
-    }).catch(() => {
-      this.$router.push({ name: 'login' })
-    })
+
   }
 }
 </script>

@@ -49,7 +49,6 @@
             </Tag>
           </template>
           <template slot-scope="{ row, index }" slot="action">
-            <Button type="primary" size="small" style="margin-right: 5px" @click="handleChangeClick(row)">修改</Button>
             <Button type="primary" size="small" @click="handleChangeWatch(row)">查看</Button>
           </template>
         </Table>
@@ -119,7 +118,7 @@ export default {
     }
   },
   methods: {
-    fetchForms () {
+      fetchForms () {
       return queryMyForms({ ...this.query, ...this.pages }).then((resp) => {
         this.data = resp.data.forms
         this.total = resp.data.total
@@ -143,10 +142,10 @@ export default {
   created: function () {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
-      if (this.terms.length > 0) {
-        this.query.meta.term = this.terms[0].name
-      }
-      this.fetchForms()
+      getCurrentTerms().then((term_resp)=>{
+        this.query.meta.term = term_resp.data.term.name
+        this.fetchForms()
+      })
     })
   }
 }

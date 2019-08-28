@@ -46,7 +46,7 @@ export default {
     show: Boolean,
     onCancel: Function,
     onOK: Function,
-    lesson_id: ''
+    lesson_id: Number
   },
   data: function () {
     return {

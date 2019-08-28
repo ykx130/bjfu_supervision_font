@@ -7,12 +7,12 @@
       <Row>
         <Col span="8">
           <FormItem prop="id" label="督导ID">
-            <Input type="text" style="width: 300px;" v-model="user.id" disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.id" :disabled="true"></Input>
           </FormItem>
         </Col>
         <Col span="8" offset="8">
           <FormItem prop="username" label="姓名">
-            <Input type="text" style="width: 300px;" v-model="user.username" disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.username" :disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>
@@ -33,7 +33,7 @@
       <Row>
         <Col span="8">
           <FormItem prop="state" label="教师状态">
-            <Input type="text" style="width: 300px;" v-model="user.state" disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.state" :disabled="true"></Input>
           </FormItem>
         </Col>
         <Col span="8" offset="8">
@@ -51,7 +51,7 @@
         </Col>
         <Col span="8" offset="8">
           <FormItem prop="group" label="组别">
-            <Input type="text" style="width: 300px;" v-model="user.guider.group_name" disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.guider.group_name" :disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>
@@ -59,12 +59,12 @@
       <Row>
         <Col span="8">
           <FormItem prop="status" label="签约状态">
-            <Input type="text" style="width: 300px;" v-model="user.status" disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.status" :disabled="true"></Input>
           </FormItem>
         </Col>
         <Col span="8" offset="8">
           <FormItem prop="prorank" label="职称">
-            <Input type="text" style="width: 300px;" v-model="user.prorank" disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.prorank" :disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>
@@ -72,19 +72,19 @@
       <Row>
         <Col span="8">
           <FormItem prop="term" label="开始学期">
-            <Input type="text" style="width: 300px;" v-model="user.guider.term" disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.guider.term" :disabled="true"></Input>
           </FormItem>
         </Col>
         <Col span="8" offset="8">
           <FormItem prop="term" label="结束学期">
-            <Input type="text" style="width: 300px;" v-model="user.guider.term" disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.guider.term" :disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>
       <Row>
         <Col span="8">
           <FormItem prop="work_state" label="督导类型">
-            <Input type="text" style="width: 300px;" v-model="user.guider.work_state" disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.guider.work_state" :disabled="true"></Input>
           </FormItem>
         </Col>
         <Col span="8" offset="8">
@@ -96,8 +96,8 @@
       <br>
       <br>
       <FormItem>
-        <Button type="primary">更新基本信息</Button>
-        <Button @click="newpass_visible=true">重置密码</Button>
+        <Button type="primary" style="margin-right: 30px">更新基本信息</Button>
+        <Button  @click="newpass_visible=true">重置密码</Button>
       </FormItem>
 
       <change-pass :show="newpass_visible"@onOk="chanpassword"@onCancel="()=>{this.newpass_visible=false}"></change-pass>

@@ -23,7 +23,7 @@ export default {
         name: '',
         meta: {},
         items: [],
-        pages: ['正面']
+        pages: ['评价表正面']
       }
     }
   },

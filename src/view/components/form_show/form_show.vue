@@ -67,7 +67,7 @@
         </template>
 
       </template>
-      <slot v-if="current_page === pages[pages.length - 1]"></slot>
+      <slot v-if="((!pages) ||current_page === pages[pages.length - 1])"></slot>
     </Form>
   </div>
 </template>
@@ -84,7 +84,7 @@ export default {
   data: function () {
     return {
       ruleValidate: {},
-      current_page: '正面'
+      current_page: '评价表正面'
     }
   },
   model: {
@@ -92,7 +92,7 @@ export default {
     event: 'change'
   },
   computed: {
-    form: function () {
+    lessonInfoForm: function () {
       return this.$refs.ruleform
     }
   },
@@ -111,14 +111,16 @@ export default {
   },
   mounted: function () {
     this.items.map((item) => {
-      item.payload.rules.map((rule) => {
+      if (item.type==='form_item' && item.payload.rules){
         this.ruleValidate[item.item_name] = []
-        if (rule.type === 'required') {
-          this.ruleValidate[item.item_name].push({ required: rule.required, message: '请填写内容', trigger: 'blur' })
-        } else if (rule.type === 'length') {
-          this.ruleValidate[item.item_name].push({ required: rule.required, message: '请填写内容', trigger: 'blur' })
-        }
-      })
+        item.payload.rules.map((rule) => {
+          if (rule.type === 'required') {
+            this.ruleValidate[item.item_name].push({ required: rule.required, message: '此选项必填', trigger: 'blur' })
+          } else if (rule.type === 'length') {
+            this.ruleValidate[item.item_name].push({min: rule.min, max: rule.max  ,message: `此选项长度在${rule.min} ~ ${rule.max} 之间`, trigger: 'blur' })
+          }
+        })
+      }
     })
   }
 }

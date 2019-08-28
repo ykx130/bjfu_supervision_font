@@ -98,7 +98,6 @@ export default {
     }
   },
   mounted () {
-    debugger
     this.$nextTick(() => {
       let xAxisData = []
       let seriesData = []
@@ -129,7 +128,6 @@ export default {
         })
         series.push(serie)
       })
-      debugger
       let option = {
         title: {
           text: this.text,
@@ -155,7 +153,6 @@ export default {
         },
         series: series
       }
-      debugger
       this.dom = echarts.init(this.$refs.dom, 'tdTheme')
       this.dom.setOption(option)
       on(window, 'resize', this.resize)

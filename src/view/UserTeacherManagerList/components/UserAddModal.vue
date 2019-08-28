@@ -7,14 +7,14 @@
   <Form :model="guider">
 
     <FormItem prop="name" label="名字:" :label-width="40">
-      <Select v-model="guider.username" placeholder="名字" filterable on-query-change="onUserSelectQueryChange">
+      <Select v-model="guider.username" placeholder="名字" filterable @on-query-change="onUserSelectQueryChange">
         <Option v-for="item in users" :value="item.username" :key="item.name">{{ item.name }}</Option>
       </Select>
       <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
     </FormItem>
     <FormItem label="小组:" :label-width="40" prop="group_name">
       <Select v-model="guider.group_name" >
-        <Option v-for="item in groups" :value="item.group_name" :key="item.id">{{ item.group_name }}</Option>
+        <Option v-for="item in groups" :value="item.group_name" :key="item.group_name">{{ item.group_name }}</Option>
       </Select>
     </FormItem>
 

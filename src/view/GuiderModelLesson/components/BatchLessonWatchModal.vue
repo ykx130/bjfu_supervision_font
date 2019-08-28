@@ -8,7 +8,7 @@
 
       <FormItem prop="group_name" label="分配督导小组">
         <Select v-model="lesson.group_name" >
-          <Option v-for="item in groups" :value="item.group_name" :key="item.id">{{ item.group_name }}</Option>
+          <Option v-for="item in groups" :value="item.group_name" :key="item.group_name">{{ item.group_name }}</Option>
         </Select>
       </FormItem>
 

@@ -210,7 +210,7 @@ export default {
       page_visible: false,
       page_edit_visible: false,
       nowIndex: 0,
-      current_page: '正面'
+      current_page: '评价表正面'
     }
   },
   methods: {
@@ -298,7 +298,7 @@ export default {
   },
   mounted: function () {
     this.value.version = 'default'
-    this.value.pages = ['正面']
+    this.value.pages = ['评价表正面']
     this.current_page = this.value.pages[0]
   }
 

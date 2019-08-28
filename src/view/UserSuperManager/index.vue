@@ -50,7 +50,7 @@ export default {
     return {
       query: {
         name_like: undefined,
-        leader: true
+        is_leader: true
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据

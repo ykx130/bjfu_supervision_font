@@ -32,14 +32,14 @@
       </FormItem>
       <FormItem prop="group_name"  v-if="lesson.lesson_level === '关注课程'">
         <span>分配督导小组:</span>
-        <Select v-model="lesson.group_name" >
-          <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+        <Select v-model="lesson.group_name"  :disabled="disable_notice_info">
+          <Option v-for="item in groups" :value="item.group_name" :key="item.group_name" >{{ item.group_name }}</Option>
         </Select>
       </FormItem>
-      <FormItem prop="lesson_attention_reason" v-if="lesson.lesson_level === '关注课程'">
+      <FormItem prop="lesson_attention_reason" v-if="lesson.lesson_level === '关注课程'" >
         <span>关注原因:</span>
-        <Select v-model="lesson.lesson_attention_reason" >
-          <Option v-for="item in lessonWatchReason" :value="item" :key="item">{{ item }}</Option>
+        <Select v-model="lesson.lesson_attention_reason" :disabled="disable_notice_info" >
+          <Option v-for="item in lessonWatchReason" :value="item" :key="item" >{{ item }}</Option>
         </Select>
       </FormItem>
 
@@ -58,7 +58,7 @@ export default {
     show: Boolean,
     onCancel: Function,
     onOK: Function,
-    lesson_id: ''
+    lesson_id: String
   },
   data: function () {
     return {
@@ -70,8 +70,10 @@ export default {
         lesson_state: '',
         lesson_teacher_name: '',
         lesson_level: '',
-        lesson_attention_reason: ''
+        lesson_attention_reason: '',
+        group_name: '',
       },
+      disable_notice_info: false, // 禁用
       lessonLevel: lessonLevel,
       lessonWatchReason: lessonWatchReason, // 课程关注原因,
       groups: [] // 所有的小组
@@ -87,8 +89,13 @@ export default {
     onShowChange: function (show) {
       if (show) {
         // 显示的时候拉数据
+        this.disable_notice_info = false
         getLesson(this.lesson_id).then((resp) => {
-          updateWithinField(this.lesson, resp.data.lesson)
+            if (resp.data.lesson['lesson_level']==='关注课程'){
+              debugger
+              this.disable_notice_info = true
+            }
+            updateWithinField(this.lesson, resp.data.lesson)
         })
       }
     }

@@ -24,7 +24,7 @@ export default {
       form_meta: {
         meta: {},
         items: [],
-        pages: ['正面']
+        pages: ['评价表正面']
       }
     }
   },

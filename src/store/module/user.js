@@ -1,6 +1,5 @@
 import { loginUser, logoutUser, currentUser } from '@/service/api/user'
 import { setToken, getToken } from '@/libs/util'
-
 export default {
   state: {
     userName: '',
@@ -75,17 +74,14 @@ export default {
     // 获取用户相关信息
     getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
-        try {
           currentUser().then(res => {
             const data = res.data
             commit('setUserInfo', data.current_user)
             resolve(data)
           }).catch(err => {
+
             reject(err)
           })
-        } catch (error) {
-          reject(error)
-        }
       })
     }
   },

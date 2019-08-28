@@ -2,13 +2,13 @@
   <div>
     <Card>
       <Row>
-        <Form :label-width="80" :model="query" inline>
+        <Form :label-width="80" ref="form" :model="query" inline required :rules="rules">
         <FormItem label="学期：" prop="term" v-role ="['管理员']">
           <Select v-model="query.term" style="width:200px">
             <Option v-for="item in terms" :value="item.name" :key="item.name" @on-change="onTermChange">{{ item.name }}</Option>
           </Select>
         </FormItem>
-          <FormItem label="教师名字：" prop="lesson_teacher_name">
+          <FormItem label="教师名字：" prop="lesson_teacher_name" >
               <TeacherSelector :term="query.term"  v-model="query.lesson_teacher_name"></TeacherSelector>
           </FormItem>
           <FormItem >
@@ -37,6 +37,10 @@ export default {
   data () {
     return {
       query: {},
+      rules: {
+        term: [{ required: true, message: '学期不能为空', trigger: 'blur' }],
+        lesson_teacher_name: [{ required: true, message: '教师名字不能为空', trigger: 'blur' }]
+      },
       terms: [],
       term: '',
       columns: [
@@ -334,7 +338,11 @@ export default {
       })
     },
     onSearch: function () {
-      this.pullLessons()
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.pullLessons()
+        }
+      })
     },
     onTermChange: function (value) {
       this.term = value
