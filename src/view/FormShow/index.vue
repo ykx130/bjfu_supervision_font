@@ -82,6 +82,9 @@ export default {
   computed: {
     currentUser: function () {
       return this.$store.getters.userInfo
+    },
+    lessonInfo :function () {
+      return this.$refs.lesson_info.lessonInfoForm
     }
   },
   watch: {
@@ -160,44 +163,48 @@ export default {
         this.$router.push({ name: '督导端' })
       }
     },
-    handleSubmit () {
-      if (this.meta.guider === '' || this.meta.lesson.lesson_name === '' ||
-          this.meta.lesson.lesson_date === '' || this.meta.lesson.lesson_times === '') {
-        this.$Message.error('请填写完成课程信息！')
-      } else {
-        this.$refs.ruleform.validate((valid) => {
-          if (valid) {
-            let form = {
-              status: '已完成',
-              values: this.formValue2Items(),
-              model_lesson: {
-                lesson_id: this.form_meta.lesson.lesson_id,
-                guider: this.form_meta.guider,
-                recommend: this.recommend_model
-              }
-            }
-            putForm(this.form_id, form).then((resp) => {
-              if (resp.data.code === 200) {
-                this.$Message.success({ content: '新建成功' })
-                this.back()
-              }
-            })
-          } else {
-            this.$Message.error('请填写完整信息！')
-          }
-        })
+    produceFrom (status) {
+      let form = {
+        bind_meta_id: this.form_meta._id,
+        bind_meta_name: this.form_meta.name,
+        bind_meta_version: this.form_meta.version,
+        meta: this.meta,
+        status: status,
+        values: this.formValue2Items()
       }
+      form['model_lesson'] = {
+        recommend: this.recommend_model,
+        recommend_reason: this.recommend_reason,
+        is_model_lesson: !this.show_recommend
+      }
+      return form
+    },
+    handleSubmit () {
+      this.lessonInfo.validate((valid_lesson)=>{
+        if (valid_lesson) {
+          this.$refs.ruleform.validate((valid) => {
+            if (valid) {
+              let form = this.produceFrom('已完成')
+              if (this.show_recommend) {
+                postModelLessonsVote({ lesson_id: form.meta.lesson.lesson_id })
+              }
+              postForm(form).then((resp) => {
+                if (resp.data.code === 200) {
+                  this.$Message.success('添加成功！')
+                  this.back()
+                }
+              })
+            } else {
+              this.$Message.warning("检查问卷信息是否填写完整")
+            }
+          })
+        } else {
+          this.$Message.warning("检查课程信息是否填写完整")
+        }
+      })
     },
     handleSave () {
-      let form = {
-        status: '草稿',
-        values: this.formValue2Items(),
-        model_lesson: {
-          lesson_id: this.form_meta.lesson.lesson_id,
-          guider: this.form_meta.guider,
-          recommend: this.recommend_model
-        }
-      }
+      let form = this.produceFrom('草稿')
       putForm(this.form_id, form).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '新建成功' })

@@ -5,7 +5,7 @@
       <br/>
       <!--<divider orientation="left">课程信息</divider>-->
       <div>
-        <Lesson v-model="meta"></Lesson>
+        <Lesson v-model="meta" ref="lesson_info"></Lesson>
       </div>
       <br/>
       <Alert type="error">
@@ -90,6 +90,9 @@ export default {
   computed: {
     currentUser: function () {
       return this.$store.getters.userInfo
+    },
+    lessonInfo :function () {
+      return this.$refs.lesson_info.lessonInfoForm
     }
   },
   data () {
@@ -156,7 +159,7 @@ export default {
       }
     },
 
-    getForm (status) {
+    produceFrom (status) {
       let form = {
         bind_meta_id: this.form_meta._id,
         bind_meta_name: this.form_meta.name,
@@ -174,37 +177,43 @@ export default {
     },
 
     handleSubmit () {
-      if (this.meta.guider === '' || this.meta.lesson.lesson_name === '' ||
-        this.meta.lesson.lesson_date === '' || this.meta.lesson.lesson_times === '') {
-        this.$Message.error('请填写完整课程信息！')
-      } else {
-        this.$refs.ruleform.validate((valid) => {
-          if (valid) {
-            let form = this.getForm('已完成')
-            if (this.show_recommend) {
-              console.log('好评课 确定')
-              postModelLessonsVote({ lesson_id: form.meta.lesson.lesson_id })
-            }
-            postForm(form).then((resp) => {
-              if (resp.data.code === 200) {
-                this.$Message.success({ content: '保存成功' })
-                this.back()
+      this.lessonInfo.validate((valid_lesson)=>{
+        if (valid_lesson) {
+            this.$refs.ruleform.validate((valid) => {
+              if (valid) {
+                let form = this.produceFrom('已完成')
+                if (this.show_recommend) {
+                  postModelLessonsVote({ lesson_id: form.meta.lesson.lesson_id })
+                }
+                postForm(form).then((resp) => {
+                  if (resp.data.code === 200) {
+                    this.$Message.success('添加成功！')
+                    this.back()
+                  }
+                })
+              } else {
+                this.$Message.warning("检查问卷信息是否填写完整")
               }
             })
-            this.$Message.success('添加成功！')
-          } else {
-            this.$Message.error('请填写完整信息！')
-          }
-        })
-      }
+        } else {
+          this.$Message.warning("检查课程信息是否填写完整")
+        }
+      })
+
     },
 
     handleSave () {
-      let form = this.getForm('草稿')
-      postForm(form).then((resp) => {
-        if (resp.data.code === 200) {
-          this.$Message.success({ content: '保存成功' })
-          this.back()
+      this.lessonInfo.validate((valid_lesson)=>{
+        if (valid_lesson){
+          let form = this.produceFrom('草稿')
+          postForm(form).then((resp) => {
+            if (resp.data.code === 200) {
+              this.$Message.success({ content: '保存成功' })
+              this.back()
+            }
+          })
+        } else {
+          this.$Message.warning("检查课程信息是否填写完整")
         }
       })
     },

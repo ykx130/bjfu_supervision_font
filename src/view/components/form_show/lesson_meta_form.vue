@@ -1,14 +1,14 @@
 <template>
   <div>
-    <Form :model="value" :label-width="80" label-position="left">
+    <Form :model="value" :rules="rules" ref="lesson_info_form" :label-width="80" label-position="left">
       <Row :gutter="16">
         <Col span="6">
-          <FormItem label="章节目录" :required="true">
+          <FormItem label="章节目录" :required="true" prop="lesson.content">
             <Input v-model="value.lesson.content" class="inline-form-item" :disabled="disabled"> </Input>
           </FormItem>
         </Col>
         <Col span="6">
-          <FormItem label="听课督导" :required="true">
+          <FormItem label="听课督导" :required="true" >
             <Select v-model="value.guider"
                     filterable
                     clearable
@@ -25,7 +25,7 @@
           </FormItem>
         </Col>
         <Col span="6">
-          <FormItem label="听课学期" prop="term">
+          <FormItem label="听课学期">
             <Select :placement="'bottom'" v-model="value.term" @on-change="onTermSelectChange" class="inline-form-item" :disabled="disabled || disabled_term">
               <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
             </Select>
@@ -76,12 +76,12 @@
             </FormItem>
           </td>
           <td>
-            <FormItem :required="true" class="table-form-item">
+            <FormItem :required="true" class="table-form-item" prop="lesson.lesson_class">
               <Input v-model="value.lesson.lesson_class" :disabled="disabled"></Input>
             </FormItem>
           </td>
           <td>
-            <FormItem :required="true" class="table-form-item">
+            <FormItem :required="true" class="table-form-item" prop="lesson.lesson_date">
               <DatePicker width="100%" type="date"
                           :value="value.lesson.lesson_date"
                           format="yyyy-MM-dd"
@@ -96,7 +96,7 @@
             </FormItem>
           </td>
           <td>
-            <FormItem :required="true" class="table-form-item">
+            <FormItem :required="true" class="table-form-item" prop="lesson.lesson_times">
               <Select v-model="value.lesson.lesson_times" multiple :disabled="disabled">
 
                 <Option v-for="item in lesson_times"
@@ -121,6 +121,7 @@ import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import { transTimeToSelectedData } from 'Libs/tools'
 
 export default {
+
   props: {
     value: {
       default: { lesson: {} }
@@ -145,12 +146,30 @@ export default {
       guider_disable: false,
       guider_name_like: '',
       user_name_like: '',
-      disabled_term: true
+      disabled_term: true,
+      rules: {
+        'lesson.content': [
+          { required: true, message: '请输入章节名称', trigger: 'blur' },
+        ],
+        'lesson.lesson_class': [
+          {required: true, message: '班级不能为空', trigger: 'blur'}
+        ],
+        'lesson.lesson_date': [
+          {required: true, message: '日期不能为空', trigger: 'blur'}
+        ],
+        'lesson.lesson_times': [
+           {required: true, message: '节次不能为空', trigger: 'blur'}
+    ]
+
+      }
     }
   },
   computed: {
     currentUser: function () {
       return this.$store.getters.userInfo
+    },
+    lessonInfoForm: function () {
+      return this.$refs.lesson_info_form
     }
   },
   watch: {
@@ -184,7 +203,7 @@ export default {
       } else {
         getCurrentTerms().then((resp) => {
           this.value.term = resp.data.term.name
-          if(this.currentUser.role_names.includes('管理员')) {
+          if(!this.currentUser.role_names.includes('管理员')) {
             this.disabled_term = true
             this.guider_disable = true
           }
