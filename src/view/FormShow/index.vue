@@ -56,15 +56,16 @@
                 </FormItem>
               </div>
               <!--{{ruleValidate}}-->
-              <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="form.status==='已完成'">保存</Button>
-              <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled">提交</Button>
-              <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
 
             </div>
           </FormShow>
 
       </div>
-        <div style="overflow: hidden">
+      <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="form.status==='已完成'">保存</Button>
+      <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled">提交</Button>
+      <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
+
+      <div style="overflow: hidden">
           <div v-if="form.status === '已完成'" class="form-status" style="background-color: #cce5ff"><p> {{ form.status }} </p></div>
           <div v-else class="form-status" style="background-color: #f8d7da"><p> {{ form.status }} </p></div>
         </div>
@@ -123,10 +124,18 @@ export default {
     this.fetchForm()
   },
   methods: {
+    formValue2Items () {
+      this.form.values.map((item, index) => {
+        if (item.type === 'form_item') {
+          this.form.values[index].value = this.form_values[item.item_name]
+        }
+      })
+      return this.form.values
+    },
     produceFrom (status) {
       let form = {
         status: status,
-        values: this.form.values
+        values: this.formValue2Items()
       }
       return form
     },
@@ -137,8 +146,11 @@ export default {
         if (this.form.status === '已完成') {
           this.disabled = true
         }
-        this.form.values.forEach((item) => {
-          this.form_values[item.item_name] = item
+        newresp.data.form.values.forEach((item) => {
+          // 添加数据
+          if (item.type === 'form_item') {
+            this.form_values[item.item_name] = item.value
+          }
         })
       })
     },

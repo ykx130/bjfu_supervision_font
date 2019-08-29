@@ -92,7 +92,6 @@ export default {
         this.disable_notice_info = false
         getLesson(this.lesson_id).then((resp) => {
             if (resp.data.lesson['lesson_level']==='关注课程'){
-              debugger
               this.disable_notice_info = true
             }
             updateWithinField(this.lesson, resp.data.lesson)
