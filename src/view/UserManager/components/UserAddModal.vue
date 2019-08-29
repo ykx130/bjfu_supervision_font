@@ -2,7 +2,7 @@
   <Modal
     :value="show"
     title="新增"
-    :loading="true"
+    :loading="loading"
     @on-ok="handleSubmit"
     @on-cancel="handleCancel">
   <Form :model="user" ref="user_form" :rules="ruleValidate">
@@ -125,6 +125,7 @@ export default {
         start_time: '',
         end_time: ''
       },
+      loading: true,
       users: [],
       roles:  ['管理员', '学院领导'] ,
       groups: [],
@@ -174,6 +175,14 @@ export default {
     validate: function (f) {
       return this.$refs.user_form.validate(f)
     },
+    changeLoading: function() {
+      setTimeout(()=>{
+        this.loading = false;
+        this.$nextTick(()=>{
+          this.loading = true
+        })
+      }, 500)
+    },
     /* handleOK: function () {
       this.$emit('onOK', {...this.user,
         start_time: dateToString(this.user.start_time, 'yyyy-MM-dd hh:mm:ss'),
@@ -185,14 +194,14 @@ export default {
     },
     handleSubmit () {
       this.$refs.user_form.validate((valid) => {
+        this.changeLoading()
         if (valid) {
-          // alert("Success！");
-          this.$emit('onOK', { ...this.user })
+          this.$emit('onOK', { ...this.user }, valid)
         } else {
-          // alert("Fail!");
           this.$Message.error('信息填写错误请检查!')
         }
       })
+
     }
   }
 }

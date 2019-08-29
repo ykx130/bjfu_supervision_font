@@ -2,10 +2,11 @@
   <Modal
     :value="show"
     title="查看"
-    @on-ok="handleSubmit('user')"
+    :loading="loading"
+    @on-ok="handleSubmit"
     @on-cancel="handleCancel"
     @on-visible-change="onShowChange">
-    <Form :model="user" ref="user" :rules="ruleValidate">
+    <Form :model="user" ref="user_form" :rules="ruleValidate">
       <Row :gutter="16">
         <Col span="12">
         <FormItem prop="username">
@@ -25,7 +26,7 @@
 
       <Row >
         <Col span="10" >
-        <FormItem label="性别:" :label-width="40" prop="sex">
+        <FormItem label="性别:" :label-width="50" prop="sex">
           <Select  v-model="user.sex">
             <Option v-for="item in sexList " :value="item" :key="item ">{{ item }}</Option>
           </Select>
@@ -125,6 +126,7 @@ export default {
   },
   data: function () {
     return {
+      loading: true,
       changepass_visible: false,
       user: {
         id: undefined,
@@ -193,17 +195,29 @@ export default {
         end_time: dateToString(this.user.end_time, 'yyyy-MM-dd hh:mm:ss')
       })
     }, */
+    changeLoading: function() {
+      setTimeout(()=>{
+        this.loading = false;
+        this.$nextTick(()=>{
+          this.loading = true
+        })
+      }, 500)
+    },
+    validate: function (f) {
+      return this.$refs.user.validate(f)
+    },
     handleCancel: function () {
       this.$emit('onCancel')
     },
-    handleSubmit (name) {
-      this.$refs[name].validate((valid) => {
+    handleSubmit () {
+      this.$refs.user_form.validate((valid) => {
+        this.changeLoading()
         if (valid) {
           // alert("Success！");
           this.$emit('onOK', { ...this.user })
         } else {
           // alert("Fail!");
-          this.$Message.error('信息错误')
+          this.$Message.error('信息填写错误请检查!')
         }
       })
     },

@@ -5,7 +5,7 @@
       title="增加一项活动"
       @on-ok="handleOK"
       @on-cancel="handleCancel"
-
+      :loading="loading"
       style="width: 600px;"><!--:load="loading"-->
       <Form :label-width="100" style="width: 400px" ref="activity_form" :model="activity" :rules="ruleValidate">
         <form-item label="活动名称:" prop="name">
@@ -93,6 +93,7 @@ export default {
   },
   data () {
     return {
+      loading: true,
       modal: false,
       // loading: true,
       date: new Date(),
@@ -151,7 +152,16 @@ export default {
     }
   },
   methods: {
+    changeLoading: function() {
+      setTimeout(()=>{
+        this.loading = false;
+        this.$nextTick(()=>{
+          this.loading = true
+        })
+      }, 500)
+    },
     handleOK: function () {
+      this.changeLoading()
       this.$refs.activity_form.validate((valid) => {
         if (valid) {
           this.activity.inputtime.start_time = dateToString(this.activity.inputtime.start_time, 'yyyy-MM-dd hh:mm:ss')
