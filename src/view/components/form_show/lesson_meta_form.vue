@@ -149,17 +149,17 @@ export default {
       disabled_term: true,
       rules: {
         'lesson.content': [
-          { required: true, message: '请输入章节名称', trigger: 'blur' },
+          { required: true, message: '请输入章节名称', trigger: 'blur' }
         ],
         'lesson.lesson_class': [
-          {required: true, message: '班级不能为空', trigger: 'blur'}
+          { required: true, message: '班级不能为空', trigger: 'blur' }
         ],
         'lesson.lesson_date': [
-          {required: true, message: '日期不能为空', trigger: 'blur'}
+          { required: true, message: '日期不能为空', trigger: 'blur' }
         ],
         'lesson.lesson_times': [
-           {required: true, message: '节次不能为空', trigger: 'blur'}
-    ]
+          { required: true, message: '节次不能为空', trigger: 'blur' }
+        ]
 
       }
     }
@@ -182,7 +182,7 @@ export default {
   },
   mounted () {
     // 处理当前用户
-    if(!this.currentUser.role_names.includes('管理员')) {
+    if (!this.currentUser.role_names.includes('管理员')) {
       this.disabled_term = true
       this.guider_disable = true
     }
@@ -322,9 +322,11 @@ export default {
         lesson_teacher_name: this.selected_lesson.lesson_teacher_name,
         lesson_class: this.selected_lesson.lesson_class,
         lesson_teacher_unit: this.selected_lesson.lesson_teacher_unit,
+        lesson_unit: this.selected_lesson.lesson_unit,
         lesson_attribute: this.selected_lesson.lesson_attribute,
         group_name: this.selected_lesson.group_name,
         lesson_year: this.selected_lesson.lesson_year,
+        lesson_semester: this.selected_lesson.lesson_semester,
         lesson_level: this.selected_lesson.lesson_level,
         lesson_model: this.selected_lesson.lesson_model
       }
