@@ -113,7 +113,6 @@
     },
     methods: {
       validate: function (f) {
-        debugger
         return this.$refs.ruleform.validate(f)
       },
       fillValidateRule: function () {

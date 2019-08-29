@@ -2,9 +2,10 @@
   <Modal
     :value="show"
     title="新增"
-    @on-ok="handleSubmit('user')"
+    :loading="true"
+    @on-ok="handleSubmit"
     @on-cancel="handleCancel">
-  <Form :model="user" ref="user" :rules="ruleValidate">
+  <Form :model="user" ref="user_form" :rules="ruleValidate">
     <Row :gutter="16">
       <Col span="12">
        <FormItem prop="username">
@@ -170,22 +171,26 @@ export default {
     })
   },
   methods: {
+    validate: function (f) {
+      return this.$refs.user_form.validate(f)
+    },
     /* handleOK: function () {
       this.$emit('onOK', {...this.user,
         start_time: dateToString(this.user.start_time, 'yyyy-MM-dd hh:mm:ss'),
         end_time: dateToString(this.user.end_time, 'yyyy-MM-dd hh:mm:ss') })
     }, */
+
     handleCancel: function () {
       this.$emit('onCancel')
     },
-    handleSubmit (name) {
-      this.$refs[name].validate((valid) => {
+    handleSubmit () {
+      this.$refs.user_form.validate((valid) => {
         if (valid) {
           // alert("Success！");
           this.$emit('onOK', { ...this.user })
         } else {
           // alert("Fail!");
-          this.$Message.error('Fail!')
+          this.$Message.error('信息填写错误请检查!')
         }
       })
     }
