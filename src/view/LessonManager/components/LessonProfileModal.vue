@@ -26,7 +26,7 @@
       </FormItem>
       <FormItem prop="lesson_level">
         <span>课程级别:</span>
-        <Select v-model="lesson.lesson_level" >
+        <Select v-model="lesson.lesson_level" :disabled="disable_notice_info">
           <Option v-for="item in lessonLevel" :value="item" :key="item">{{ item }}</Option>
         </Select>
       </FormItem>
