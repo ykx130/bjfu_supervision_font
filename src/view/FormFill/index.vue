@@ -51,13 +51,12 @@
               </Row>
             </FormItem>
           </div>
-          <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
-          <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
-          <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
         </div>
 
       </FormShow>
-
+      <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
+      <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
+      <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>s
       <!--{{ruleValidate}}-->
         </div>
   </Card>
@@ -119,7 +118,7 @@ export default {
     formValue2Items () {
       this.form_meta.items.map((item, index) => {
         if (item.type === 'form_item') {
-          this.form_meta.items[index].value = this.form_values[item.item_name].value
+          this.form_meta.items[index].value = this.form_values[item.item_name]
         }
       })
       return this.form_meta.items
@@ -132,7 +131,11 @@ export default {
         resp.data.form_meta.items.forEach((item) => {
           // 添加数据
           if (item.type === 'form_item') {
-            this.form_values[item.item_name] = item
+            if (item.item_type === 'checkbox_option'){
+              this.form_values[item.item_name] = []
+            } else {
+              this.form_values[item.item_name] = ''
+            }
           }
         })
         this.form_meta = resp.data.form_meta
@@ -169,6 +172,7 @@ export default {
       this.lessonInfo.validate((valid_lesson)=>{
         if (valid_lesson) {
             this.formInfo.validate((valid) => {
+              console.log(this.form_values)
               if (valid) {
                 let form = this.produceFrom('已完成')
                 if (this.show_recommend) {

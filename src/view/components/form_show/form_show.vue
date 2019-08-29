@@ -19,13 +19,13 @@
         </template>
 
         <template v-if="it.item_type === 'radio_option'" >
-          <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name" v-show="it.payload.page === current_page">
+          <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name"  v-show="it.payload.page === current_page">
             <Row>
               <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
               <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
             </Row>
             <Row>
-              <RadioGroup v-model="values[it.item_name].value">
+              <RadioGroup v-model="values[it.item_name]">
                 <Radio v-for="op in it.payload.options"
                        :label="op.value"
                        :key="op.label + op.value"
@@ -44,7 +44,7 @@
               <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
             </Row>
             <Row>
-              <CheckboxGroup v-model="values[it.item_name].value">
+              <CheckboxGroup v-model="values[it.item_name]">
                 <Checkbox v-for="op in it.payload.options" :label="op.label"
                           :key="op.label + op.value"
                           v-bind:style="{ fontSize:'15px',marginLeft:'25px' }" :disabled="disabled">
@@ -62,7 +62,7 @@
               <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
             </Row>
             <Row>
-              <Input type="textarea" placeholder="Satisfation about teachers..." v-model="values[it.item_name].value"
+              <Input type="textarea" placeholder="Satisfation about teachers..." v-model="values[it.item_name]"
                      v-bind:style="{marginLeft:'25px',width:'65%'}" :disabled="disabled"></Input>
             </Row>
           </FormItem>
@@ -121,14 +121,22 @@
             this.ruleValidate[item.item_name] = []
             item.payload.rules.map((rule) => {
               if (rule.type === 'required') {
-                this.ruleValidate[item.item_name].push({required: rule.required, message: '此选项必填', trigger: 'blur'})
+                this.ruleValidate[item.item_name].push({validator: (rule,value, callback)=>{
+                      if (!this.values[rule.fullField]) {
+                        console.log(this.values[rule.fullField])
+                        callback(new Error(`出错${rule.fullField}`))
+                      } else {
+                        callback()
+                      }
+                  }, message: '此选项必填', trigger: 'blur', item_name: item.item_name})
               } else if (rule.type === 'length') {
-                this.ruleValidate[item.item_name].push({
-                  min: rule.min,
-                  max: rule.max,
-                  message: `此选项长度在${rule.min} ~ ${rule.max} 之间`,
-                  trigger: 'blur'
-                })
+                this.ruleValidate[item.item_name].push({validator: (rule,value, callback)=>{
+                    if (! (this.values[rule.fullField].length > rule.min)) {
+                      callback(new Error(`出错${rule.fullField}`))
+                    } else {
+                      callback()
+                    }
+                  }, message: '此选项必填', trigger: 'blur', item_name: item.item_name, min:rule.min, max: rule.max})
               }
             })
           }
