@@ -16,7 +16,7 @@
       </Alert>
       <br/>
       <divider orientation="left">问卷内容</divider>
-      <FormShow v-model="form_values" :pages="form_meta.pages" :items="form_meta.items" :disabled="false" ref="lesson_info">
+      <FormShow v-model="form_values" :pages="form_meta.pages" :items="form_meta.items" :disabled="false" ref="form_info">
         <div>
           <div v-show="show_recommend">
             <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
@@ -93,7 +93,10 @@ export default {
       return this.$store.getters.userInfo
     },
     lessonInfo :function () {
-      return this.$refs.lesson_info.lessonInfoForm
+      return this.$refs.lesson_info
+    },
+    formInfo : function () {
+      return this.$refs.form_info
     }
   },
   data () {
@@ -126,13 +129,14 @@ export default {
       let args = this.$route.params
 
       return getFormMeta(args).then((resp) => {
-        this.form_meta = resp.data.form_meta
-        this.form_meta.items.forEach((item) => {
+        resp.data.form_meta.items.forEach((item) => {
           // 添加数据
           if (item.type === 'form_item') {
             this.form_values[item.item_name] = item
           }
         })
+        this.form_meta = resp.data.form_meta
+
       })
     },
     back () {
@@ -164,7 +168,7 @@ export default {
     handleSubmit () {
       this.lessonInfo.validate((valid_lesson)=>{
         if (valid_lesson) {
-            this.$refs.ruleform.validate((valid) => {
+            this.formInfo.validate((valid) => {
               if (valid) {
                 let form = this.produceFrom('已完成')
                 if (this.show_recommend) {

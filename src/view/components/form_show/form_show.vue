@@ -5,19 +5,21 @@
     </Tabs>
     <Form :model="values" ref="ruleform">
       <template v-for="it in items">
-        <template v-if="it.item_type === 'sub_title_block' && it.payload.page === current_page">
-          <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold" v-if="it.item_name=== 'sub_title_block_start'">{{ it.payload.title }}</span>
+        <template v-if="it.item_type === 'sub_title_block'">
+          <div v-show="it.payload.page === current_page">
+              <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold"
+                    v-if="it.item_name=== 'sub_title_block_start'">{{ it.payload.title }}</span>
 
-          <template v-if="it.item_name=== 'sub_title_block_end'">
-            <FormItem>
-              <divider></divider>
-            </FormItem>
-          </template>
-
+            <template v-if="it.item_name=== 'sub_title_block_end'">
+              <FormItem>
+                <divider></divider>
+              </FormItem>
+            </template>
+          </div>
         </template>
 
-        <template v-else-if="it.item_type === 'radio_option' && it.payload.page === current_page">
-          <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name">
+        <template v-if="it.item_type === 'radio_option'" >
+          <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name" v-show="it.payload.page === current_page">
             <Row>
               <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
               <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
@@ -35,8 +37,8 @@
           </FormItem>
         </template>
 
-        <template v-else-if="it.item_type === 'checkbox_option'  && it.payload.page === current_page">
-          <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name">
+        <template v-if="it.item_type === 'checkbox_option'" >
+          <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name" v-show="it.payload.page === current_page">
             <Row>
               <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
               <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
@@ -53,8 +55,8 @@
           </FormItem>
         </template>
 
-        <template v-if="it.item_type === 'raw_text'  && it.payload.page === current_page">
-          <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name">
+        <template v-if="it.item_type === 'raw_text'" >
+          <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name" v-show="it.payload.page === current_page">
             <Row>
               <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
               <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
@@ -73,57 +75,71 @@
 </template>
 
 <script>
-export default {
-  name: 'form_show',
-  props: {
-    values: Object,
-    disabled: Boolean,
-    items: Array,
-    pages: Array
-  },
-  data: function () {
-    return {
-      ruleValidate: {},
-      current_page: '评价表正面'
-    }
-  },
-  model: {
-    prop: 'values',
-    event: 'change'
-  },
-  computed: {
-    lessonInfoForm: function () {
-      return this.$refs.ruleform
-    }
-  },
-  watch: {
-    values: {
-      deep: true,
-      handler: function () {
-        this.$emit('change', this.values)
+  export default {
+    name: 'form_show',
+    props: {
+      values: Object,
+      disabled: Boolean,
+      items: Array,
+      pages: Array
+    },
+    data: function () {
+      return {
+        ruleValidate: {},
+        current_page: '评价表正面'
       }
-    }
-  },
-  methods: {
-    validate: function (f) {
-      return this.$refs.ruleform.validate(f)
-    }
-  },
-  mounted: function () {
-    this.items.map((item) => {
-      if (item.type==='form_item' && item.payload.rules){
-        this.ruleValidate[item.item_name] = []
-        item.payload.rules.map((rule) => {
-          if (rule.type === 'required') {
-            this.ruleValidate[item.item_name].push({ required: rule.required, message: '此选项必填', trigger: 'blur' })
-          } else if (rule.type === 'length') {
-            this.ruleValidate[item.item_name].push({min: rule.min, max: rule.max  ,message: `此选项长度在${rule.min} ~ ${rule.max} 之间`, trigger: 'blur' })
+    },
+    model: {
+      prop: 'values',
+      event: 'change'
+    },
+    computed: {
+
+    },
+    watch: {
+      values: {
+        deep: true,
+        handler: function () {
+          this.$emit('change', this.values)
+        }
+      },
+      items: {
+        deep: true,
+        handler: function () {
+          this.fillValidateRule()
+          console.log( this.ruleValidate)
+        }
+      }
+    },
+    methods: {
+      validate: function (f) {
+        debugger
+        return this.$refs.ruleform.validate(f)
+      },
+      fillValidateRule: function () {
+        this.items.map((item) => {
+          if (item.type === 'form_item' && item.payload.rules) {
+            this.ruleValidate[item.item_name] = []
+            item.payload.rules.map((rule) => {
+              if (rule.type === 'required') {
+                this.ruleValidate[item.item_name].push({required: rule.required, message: '此选项必填', trigger: 'blur'})
+              } else if (rule.type === 'length') {
+                this.ruleValidate[item.item_name].push({
+                  min: rule.min,
+                  max: rule.max,
+                  message: `此选项长度在${rule.min} ~ ${rule.max} 之间`,
+                  trigger: 'blur'
+                })
+              }
+            })
           }
         })
       }
-    })
+    },
+    mounted: function () {
+      this.fillValidateRule()
+    }
   }
-}
 </script>
 
 <style scoped>

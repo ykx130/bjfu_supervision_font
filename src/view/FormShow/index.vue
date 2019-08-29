@@ -17,7 +17,7 @@
         <divider orientation="left">问卷内容</divider>
         <div>
 
-          <FormShow v-model="form_values" :pages="form.pages" :items="form.values" :disabled="disabled" ref="lesson_info">
+          <FormShow v-model="form_values" :pages="form.pages" :items="form.values" :disabled="disabled" ref="form_info">
             <div>
               <div v-show="!form.model_lesson.is_model_lesson">
                 <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
@@ -84,23 +84,11 @@ export default {
     currentUser: function () {
       return this.$store.getters.userInfo
     },
-    lessonInfo :function () {
-      return this.$refs.lesson_info.lessonInfoForm
+    formInfo :function () {
+      return this.$refs.form_info
     }
   },
   watch: {
-    'meta.lesson': {
-      deep: true,
-      handler: function () {
-        if (this.meta.lesson.lesson_model !== '') {
-          this.show_recommend = true
-        } else {
-          this.show_recommend = false
-          this.recommend_model = 0
-        }
-      },
-      immediate: true
-    }
   },
   data () {
     return {
@@ -112,12 +100,9 @@ export default {
       form_values: {},
       form: {
         meta: { lesson: {} },
-        values: []
-
+        values: [],
+        model_lesson:{}
       },
-      recommend_model: 0,
-      recommend_reason: '',
-      show_recommend: false,
       disabled: false,
       meta: { lesson: {} },
       defaultValidateRules: {
@@ -165,9 +150,7 @@ export default {
       }
     },
     handleSubmit () {
-      this.lessonInfo.validate((valid_lesson)=>{
-        if (valid_lesson) {
-          this.$refs.lesson_info.validate((valid) => {
+      this.formInfo.validate((valid) => {
             if (valid) {
               let form = this.produceFrom('已完成')
               putForm(this.form_id, form).then((resp) => {
@@ -180,10 +163,6 @@ export default {
               this.$Message.warning("检查问卷信息是否填写完整")
             }
           })
-        } else {
-          this.$Message.warning("检查课程信息是否填写完整")
-        }
-      })
     },
     handleSave () {
       let form = this.produceFrom('草稿')

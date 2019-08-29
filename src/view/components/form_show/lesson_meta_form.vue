@@ -239,6 +239,9 @@ export default {
   },
   methods: {
     // 获取所有用户
+    validate: function (f) {
+      return this.lessonInfoForm.validate(f)
+    },
     fetchUser: function () {
       this.users = {}
       return querySupervisors({ term: this.value.term, username_like: this.guider_name_like }).then((resp) => {
