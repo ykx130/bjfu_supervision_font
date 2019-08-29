@@ -119,6 +119,7 @@ export default {
       postWorkPlan(plan).then((resp) => {
         this.fetchData()
       })
+      this.show_plan_add_modal = false
     },
     handlePlanModifyOK (plan) {
       putWorkPlan(plan.id, plan).then((resp) => {

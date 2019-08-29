@@ -8,19 +8,19 @@
     <Form :model="lesson">
       <span>课程名字:</span>
       <FormItem prop="lesson_name">
-        <Input type="text" disabled v-model="lesson.lesson_name" placeholder="名字">
+        <Input type="text" disabled v-model="lesson.lesson_name" placeholder="名字" :disabled="true">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
       <span>课程属性:</span>
       <FormItem prop="lesson_attribute">
-        <Input type="text" disabled v-model="lesson.lesson_attribute" placeholder="课程属性">
+        <Input type="text" disabled v-model="lesson.lesson_attribute" placeholder="课程属性" :disabled="true">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
       <span>课程状态:</span>
       <FormItem prop="lesson_state">
-        <Input type="text" disabled v-model="lesson.lesson_state" placeholder="课程状态">
+        <Input type="text" disabled v-model="lesson.lesson_state" placeholder="课程状态" :disabled="true">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>

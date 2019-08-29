@@ -161,9 +161,9 @@ export default {
     },
     onAddModalOK (user) {
       // 更新框确定 关闭
-      postUser(user).then((resp) => {
+      putUser(user).then((resp) => {
         if (resp.data.code === 200) {
-          this.$Message.success({ content: '督导添加成功' })
+          this.$Message.success({ content: '领导添加成功' })
           this.fetchData()
         }
         this.showUserAddModal = false

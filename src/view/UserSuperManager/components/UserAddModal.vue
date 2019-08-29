@@ -7,7 +7,7 @@
   <Form :model="user">
     <FormItem prop="username">
       <Select v-model="user.username" placeholder="名字" filterable @on-query-change="onUserSelectQueryChange">
-        <Option v-for="item in users" :value="item.username" :key="item.username" >{{ item.username }}</Option>
+        <Option v-for="item in users" :value="item.username" :key="item.username" >{{ item.name }}</Option>
       </Select>
       <!--<Icon type="ios-person-outline" slot="prepend"></Icon>-->
     </FormItem>
@@ -26,7 +26,9 @@ export default {
   },
   data: function () {
     return {
-      user: {},
+      user: {
+        is_leader: true
+      },
       users: []
     }
   },

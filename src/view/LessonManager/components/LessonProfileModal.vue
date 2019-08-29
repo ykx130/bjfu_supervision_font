@@ -14,13 +14,13 @@
       </FormItem>
       <span>课程属性:</span>
       <FormItem prop="lesson_attribute">
-        <Input type="text" v-model="lesson.lesson_attribute" placeholder="课程属性">
+        <Input type="text" v-model="lesson.lesson_attribute" placeholder="课程属性" :disabled="true">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
       <span>课程状态:</span>
       <FormItem prop="lesson_state">
-        <Input type="text" v-model="lesson.lesson_state" placeholder="课程状态">
+        <Input type="text" v-model="lesson.lesson_state" placeholder="课程状态" :disabled="true">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
