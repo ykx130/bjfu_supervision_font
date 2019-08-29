@@ -77,7 +77,7 @@ export default {
     'meta.lesson': {
       deep: true,
       handler: function () {
-        if (this.meta.lesson.lesson_model === '推荐课') {
+        if (this.meta.lesson.lesson_model === '推荐为好评课' || this.meta.lesson.lesson_model === '待商榷') {
           this.show_recommend = true
         } else {
           this.show_recommend = false
@@ -91,10 +91,10 @@ export default {
     currentUser: function () {
       return this.$store.getters.userInfo
     },
-    lessonInfo :function () {
+    lessonInfo: function () {
       return this.$refs.lesson_info
     },
-    formInfo : function () {
+    formInfo: function () {
       return this.$refs.form_info
     }
   },
@@ -108,7 +108,7 @@ export default {
       meta: { lesson: {} },
       recommend_model: 0,
       recommend_reason: '',
-      show_recommend: false,
+      show_recommend: false
     }
   },
   mounted () {
@@ -131,7 +131,7 @@ export default {
         resp.data.form_meta.items.forEach((item) => {
           // 添加数据
           if (item.type === 'form_item') {
-            if (item.item_type === 'checkbox_option'){
+            if (item.item_type === 'checkbox_option') {
               this.form_values[item.item_name] = []
             } else {
               this.form_values[item.item_name] = ''
@@ -139,7 +139,6 @@ export default {
           }
         })
         this.form_meta = resp.data.form_meta
-
       })
     },
     back () {
@@ -169,35 +168,34 @@ export default {
     },
 
     handleSubmit () {
-      this.lessonInfo.validate((valid_lesson)=>{
+      this.lessonInfo.validate((valid_lesson) => {
         if (valid_lesson) {
-            this.formInfo.validate((valid) => {
-              console.log(this.form_values)
-              if (valid) {
-                let form = this.produceFrom('已完成')
-                if (this.show_recommend) {
-                  postModelLessonsVote({ lesson_id: form.meta.lesson.lesson_id })
-                }
-                postForm(form).then((resp) => {
-                  if (resp.data.code === 200) {
-                    this.$Message.success('添加成功！')
-                    this.back()
-                  }
-                })
-              } else {
-                this.$Message.warning("检查问卷信息是否填写完整")
+          this.formInfo.validate((valid) => {
+            console.log(this.form_values)
+            if (valid) {
+              let form = this.produceFrom('已完成')
+              if (this.show_recommend) {
+                postModelLessonsVote({ lesson_id: form.meta.lesson.lesson_id })
               }
-            })
+              postForm(form).then((resp) => {
+                if (resp.data.code === 200) {
+                  this.$Message.success('添加成功！')
+                  this.back()
+                }
+              })
+            } else {
+              this.$Message.warning('检查问卷信息是否填写完整')
+            }
+          })
         } else {
-          this.$Message.warning("检查课程信息是否填写完整")
+          this.$Message.warning('检查课程信息是否填写完整')
         }
       })
-
     },
 
     handleSave () {
-      this.lessonInfo.validate((valid_lesson)=>{
-        if (valid_lesson){
+      this.lessonInfo.validate((valid_lesson) => {
+        if (valid_lesson) {
           let form = this.produceFrom('草稿')
           postForm(form).then((resp) => {
             if (resp.data.code === 200) {
@@ -206,7 +204,7 @@ export default {
             }
           })
         } else {
-          this.$Message.warning("检查课程信息是否填写完整")
+          this.$Message.warning('检查课程信息是否填写完整')
         }
       })
     },
