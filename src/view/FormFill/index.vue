@@ -162,7 +162,7 @@ export default {
       form['model_lesson'] = {
         recommend: this.recommend_model,
         recommend_reason: this.recommend_reason,
-        is_model_lesson: !this.show_recommend
+        is_model_lesson: this.show_recommend
       }
       return form
     },
