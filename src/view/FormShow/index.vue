@@ -155,11 +155,7 @@ export default {
       })
     },
     back () {
-      if (this.currentUser.role_names.includes('管理员')) {
-        this.$router.push({ name: '问卷管理' })
-      } else {
-        this.$router.push({ name: '督导我的提交' })
-      }
+      this.$router.back()
     },
     handleSubmit () {
       this.formInfo.validate((valid) => {
