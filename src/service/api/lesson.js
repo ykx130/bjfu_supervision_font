@@ -26,11 +26,15 @@ export const putLesson = (params) => {
 }
 
 export const putModelLesson = (params) => {
-  return axios.put('/api/model_lessons/' + params.id, params)
+  let id=params.id
+  params.id=undefined
+  return axios.put('/api/model_lessons/' + id, params)
 }
 
 export const putNoticeLesson = (params) => {
-  return axios.put('/api/notice_lessons' + params.id, params)
+  let id=params.id
+  params.id=undefined
+  return axios.put('/api/notice_lessons' + id, params)
 }
 
 export const postLesson = (params) => {
@@ -54,7 +58,9 @@ export const postModelLesson = (params) =>{
 }
 
 export const updateModelLessonsVote = (params) => {
-  return axios.put(`/api/model_lessons／${params.id}／vote`, params)
+  let id=params.id
+  params.id=undefined
+  return axios.put(`/api/model_lessons／${id}／vote`, params)
 }
 
 export const uploadModelLessonApi = '/api/model_lessons/excel/import'
