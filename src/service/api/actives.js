@@ -14,6 +14,7 @@ export const getActive = (id) => {
 }
 
 export const putActive = (params) => {
+
   return axios.put('/api/activities/' + params.id, params)
 }
 

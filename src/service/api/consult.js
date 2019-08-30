@@ -9,7 +9,9 @@ export const getConsultById = (id) => {
 }
 
 export const putConsults = (params) => {
-  return axios.put('/api/consults/' + params.id, params)
+  let id = params.id
+  params.id = undefined
+  return axios.put('/api/consults/' + id, params)
 }
 
 export const postConsults = (params) => {

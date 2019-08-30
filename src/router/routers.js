@@ -33,6 +33,7 @@ export default [
     path: '/',
     name: '_home',
     component: Main,
+    redirect: {name: 'home'},
     meta: {
       hideInMenu: false,
       notCache: true
