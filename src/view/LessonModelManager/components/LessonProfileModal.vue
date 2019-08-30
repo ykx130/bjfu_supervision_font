@@ -31,6 +31,12 @@
           <Option value="待商榷" >待商榷</Option>
         </Select>
       </FormItem>
+      <FormItem prop="is_lock" style="width:100%" label="锁定状态:">
+        <i-switch  v-model="lesson.is_lock" size="large"  :true-value="1" :false-value="0">
+          <span slot="open" style="width:100%">锁定</span>
+          <span slot="close" style="width:100%">非锁定</span>
+        </i-switch>
+      </FormItem>
     </Form>
   </Modal>
 </template>
@@ -54,7 +60,8 @@ export default {
         id: '',
         lesson_name: '',
         lesson_attribute: '',
-        status: ''
+        status: '',
+        is_lock: 0
       },
       lessonLevel: lessonLevel,
       lessonWatchReason: lessonWatchReason, // 课程关注原因,

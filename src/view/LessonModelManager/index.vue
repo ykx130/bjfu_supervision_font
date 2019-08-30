@@ -158,6 +158,16 @@ export default {
           }
         },
         {
+          title: '锁定状态',
+          render: function (h, params) {
+              if (params.row.is_lock) {
+                return h('Tag', { props: { color: 'red' } }, '锁定')
+              } else {
+                return h('Tag', { props: { color: 'blue' } }, '非锁定')
+              }
+          }
+        },
+        {
           title: '操作',
           align: 'center',
           render: (h, params) => {

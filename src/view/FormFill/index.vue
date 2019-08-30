@@ -77,7 +77,7 @@ export default {
     'meta.lesson': {
       deep: true,
       handler: function () {
-        if (this.meta.lesson.lesson_model === '推荐为好评课' || this.meta.lesson.lesson_model === '待商榷') {
+        if ((this.meta.lesson.lesson_model === '推荐为好评课' || this.meta.lesson.lesson_model === '待商榷') && (!this.meta.lesson.is_lock)) {
           this.show_recommend = true
         } else {
           this.show_recommend = false
@@ -162,7 +162,7 @@ export default {
       form['model_lesson'] = {
         recommend: this.recommend_model,
         recommend_reason: this.recommend_reason,
-        is_model_lesson: this.show_recommend
+        is_model_lesson: this.show_recommend,
       }
       return form
     },

@@ -331,7 +331,8 @@ export default {
         lesson_year: this.selected_lesson.lesson_year,
         lesson_semester: this.selected_lesson.lesson_semester,
         lesson_level: this.selected_lesson.lesson_level,
-        lesson_model: this.selected_lesson.lesson_model
+        lesson_model: this.selected_lesson.lesson_model,
+        is_lock : this.selected_lesson.is_lock
       }
       this.onSelectedLessonCaseChange(undefined)
     },
