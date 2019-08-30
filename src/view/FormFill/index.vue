@@ -56,7 +56,7 @@
       </FormShow>
       <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
       <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
-      <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>s
+      <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
       <!--{{ruleValidate}}-->
         </div>
   </Card>
