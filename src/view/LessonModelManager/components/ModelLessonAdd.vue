@@ -37,10 +37,16 @@ export default {
       lesson_name_like: ''
     }
   },
+  watch: {
+    term: function () {
+      this.fetchLesson()
+    }
+  },
   methods: {
     fetchLesson: function () {
       this.lessons = {}
       return queryLessons({ term: this.term, lesson_or_teacher_name_or: this.lesson_name_like }).then((resp) => {
+        this.lessons = {}
         resp.data.lessons.map((item) => {
           this.$set(this.lessons, item.lesson_id, item)
         })
@@ -65,8 +71,8 @@ export default {
   mounted: function () {
     queryGroups().then((resp) => {
       this.groups = resp.data.groups
+      this.fetchLesson()
     })
-    this.fetchLesson()
   }
 }
 </script>
