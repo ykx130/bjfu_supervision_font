@@ -53,7 +53,9 @@ export const getSupervisor = (id) => {
 }
 
 export const putSupervisor = (params) => {
-  return axios.put(`/api/supervisors/${params.id}`, params)
+  let id=params.id
+  params.id=undefined
+  return axios.put(`/api/supervisors/${id}`, params)
 }
 
 export const supervisorsRenew = (params) => {
