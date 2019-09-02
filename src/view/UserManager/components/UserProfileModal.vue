@@ -10,7 +10,7 @@
       <Row :gutter="16">
         <Col span="12">
         <FormItem prop="username">
-          <Input type="text" v-model="user.username" placeholder="用户名">
+          <Input type="text" v-model="user.username" placeholder="用户名" disabled>
           <Icon type="ios-person-outline" slot="prepend"></Icon>
           </Input>
         </FormItem>
@@ -28,7 +28,7 @@
         <Col span="10" >
         <FormItem label="性别:" :label-width="50" prop="sex">
           <Select  v-model="user.sex">
-            <Option v-for="item in sexList " :value="item" :key="item ">{{ item }}</Option>
+            <Option v-for="item in sexList " :value="item" :key="'gender_'+item">{{ item }}</Option>
           </Select>
         </FormItem>
         </Col>
@@ -138,7 +138,12 @@ export default {
         group: undefined,
         email: undefined,
         phone: undefined,
-        role_names: []
+        role_names: [],
+        sex: '',
+        unit: '',
+        status: '',
+        state: '',
+        prorank: ''
       },
       roles: ['管理员', '学院领导'],
       groups: [],
@@ -230,7 +235,11 @@ export default {
       }
     },
     changepassword: function (passwd) {
-      newPassword(this.username, { 'password': passwd })
+      newPassword(this.username, { 'password': passwd }).then((resp)=>{
+        if (resp.data.code === 200 ){
+          this.$Message.success('修改成功！')
+        }
+      })
       this.changepass_visible = false
     }
   }
