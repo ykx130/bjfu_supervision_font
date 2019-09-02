@@ -37,9 +37,9 @@ export default {
               name: '_home'
             })
           })
-        } else {
-          this.$refs.login.refreshCaptcha()
         }
+      }).finally(()=>{
+        this.$refs.login.refreshCaptcha()
       })
     }
   }
