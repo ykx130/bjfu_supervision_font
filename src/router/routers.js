@@ -33,7 +33,7 @@ export default [
     path: '/',
     name: '_home',
     component: Main,
-    redirect: {name: 'home'},
+    redirect: { name: 'home' },
     meta: {
       hideInMenu: false,
       notCache: true
@@ -44,6 +44,7 @@ export default [
         name: 'home',
         meta: {
           title: '首页',
+          access: ['管理员', '学院领导', '大组长', '小组长'],
           notCache: true,
           icon: 'md-home'
         },
@@ -53,10 +54,10 @@ export default [
   },
   dsq,
   user,
-  actives,
   lesson,
-  consult,
   guider,
+  actives,
+  consult,
   report,
   {
     path: '/error_logger',

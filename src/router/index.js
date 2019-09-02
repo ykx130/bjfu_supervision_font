@@ -22,7 +22,7 @@ const turnTo = (to, access, next) => {
     next()
   } else {
     if (canTurnTo(to.name, access, routes)) next() // 有权限，可访问
-    else next({ replace: true, name: 'error_401' }) // 无权限，重定向到401页面
+    else next({ replace: true, name: '督导端' }) // 无权限，重定向到401页面
   }
 }
 
@@ -32,10 +32,9 @@ router.beforeEach((to, from, next) => {
 
   if (to.name !== LOGIN_PAGE_NAME) {
     if (store.state.user.userInfo.username) {
-      if (to.path === '/') {
-        if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader ||
-          (store.state.user.userInfo.is_guider && (store.state.user.userInfo.guider.is_grouper || store.state.user.userInfo.guider.is_main_grouper))) {
-          next({ name: 'home' })
+      if (to.name === '_home') {
+        if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader || store.state.user.userInfo.guider.is_grouper || store.state.user.userInfo.guider.is_main_grouper) {
+          next()
         } else {
           next({ name: '督导端' })
         }
@@ -44,7 +43,7 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       store.dispatch('getUserInfo').then((resp) => {
-          next()
+        next()
       }).catch(() => {
         next({ name: 'login' })
       })
