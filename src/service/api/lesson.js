@@ -86,3 +86,6 @@ export const queryLessonTeacherName = (params) => {
 export const queryLessonCase = (params) => {
   return axios.get('/api/lesson_cases', { params: params })
 }
+export const exporLessonRecordExcel = (params) => {
+  return axios.post(`/api/lesson_records/excel/export`, params)
+}

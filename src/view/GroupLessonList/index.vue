@@ -10,6 +10,11 @@
             </Select>
         </span>
         </Col>
+        <Col span="6">
+        <span>
+          <Button @click="onExportExcel" icon="ios-cloud-download-outline" type="primary" label="导出">导出</Button>
+        </span>
+        </Col>
       </Row>
     </Card>
 
@@ -35,7 +40,7 @@
 import { queryGroupLesson, putLesson } from '../../service/api/lesson'
 import { queryGroups } from '../../service/api/user'
 import { getCurrentTerms, queryTerms } from '@/service/api/term'
-
+import {exporLessonRecordExcel}from '@/service/api/lesson'
 export default {
   data: function () {
     return {
@@ -142,6 +147,14 @@ export default {
         _per_page: 10
       }
       this.fetchData()
+    },
+    onExportExcel: function () {
+      exporLessonRecordExcel().then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '导出成功' })
+          window.open('/api/' + resp.data.filename)
+        }
+      })
     }
   },
   mounted: function () {
