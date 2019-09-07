@@ -75,78 +75,88 @@
 </template>
 
 <script>
-  export default {
-    name: 'form_show',
-    props: {
-      values: Object,
-      disabled: Boolean,
-      items: Array,
-      pages: Array
-    },
-    data: function () {
-      return {
-        ruleValidate: {},
-        current_page: '评价表正面'
-      }
-    },
-    model: {
-      prop: 'values',
-      event: 'change'
-    },
-    computed: {
-
-    },
-    watch: {
-      values: {
-        deep: true,
-        handler: function () {
-          this.$emit('change', this.values)
-        }
-      },
-      items: {
-        deep: true,
-        handler: function () {
-          this.fillValidateRule()
-          console.log( this.ruleValidate)
-        }
-      }
-    },
-    methods: {
-      validate: function (f) {
-        return this.$refs.ruleform.validate(f)
-      },
-      fillValidateRule: function () {
-        this.items.map((item) => {
-          if (item.type === 'form_item' && item.payload.rules) {
-            this.ruleValidate[item.item_name] = []
-            item.payload.rules.map((rule) => {
-              if (rule.type === 'required') {
-                this.ruleValidate[item.item_name].push({validator: (rule,value, callback)=>{
-                      if (!this.values[rule.fullField]) {
-                        console.log(this.values[rule.fullField])
-                        callback(new Error(`出错${rule.fullField}`))
-                      } else {
-                        callback()
-                      }
-                  }, message: '此选项必填', trigger: 'blur', item_name: item.item_name})
-              } else if (rule.type === 'length') {
-                this.ruleValidate[item.item_name].push({validator: (rule,value, callback)=>{
-                    if (! (this.values[rule.fullField].length > rule.min)) {
-                      callback(new Error(`出错${rule.fullField}`))
-                    } else {
-                      callback()
-                    }
-                  }, message: '此选项必填', trigger: 'blur', item_name: item.item_name, min:rule.min, max: rule.max})
-              }
-            })
-          }
-        })
-      }
-    },
-    mounted: function () {
-      this.fillValidateRule()
+export default {
+  name: 'form_show',
+  props: {
+    values: Object,
+    disabled: Boolean,
+    items: Array,
+    pages: Array
+  },
+  data: function () {
+    return {
+      ruleValidate: {},
+      current_page: '评价表正面'
     }
+  },
+  model: {
+    prop: 'values',
+    event: 'change'
+  },
+  computed: {
+
+  },
+  watch: {
+    values: {
+      deep: true,
+      handler: function () {
+        this.$emit('change', this.values)
+      }
+    },
+    items: {
+      deep: true,
+      handler: function () {
+        this.fillValidateRule()
+        console.log(this.ruleValidate)
+      }
+    }
+  },
+  methods: {
+    validate: function (f) {
+      return this.$refs.ruleform.validate(f)
+    },
+    fillValidateRule: function () {
+      this.items.map((item) => {
+        if (item.type === 'form_item' && item.payload.rules) {
+          this.ruleValidate[item.item_name] = []
+          item.payload.rules.map((rule) => {
+            if (rule.type === 'required') {
+              this.ruleValidate[item.item_name].push({ validator: (rule, value, callback) => {
+                if (!this.values[rule.fullField]) {
+                  console.log(this.values[rule.fullField])
+                  callback(new Error(`出错${rule.fullField}`))
+                } else {
+                  callback()
+                }
+              },
+              message: '此选项必填',
+              trigger: 'blur',
+              item_name: item.item_name })
+            } else if (rule.type === 'length') {
+              this.ruleValidate[item.item_name].push({ validator: (rule, value, callback) => {
+                if (!(this.values[rule.fullField].length > rule.min)) {
+                  callback(new Error(`出错${rule.fullField}`))
+                } else {
+                  callback()
+                }
+              },
+              message: '此选项必填',
+              trigger: 'blur',
+              item_name: item.item_name,
+              min: rule.min,
+              max: rule.max })
+            } else if (rule.type === 'code') {
+              this.ruleValidate[item.item_name].push({ validator: new Function('rule', 'value', 'callback', rule.code), message: '此选项必填', trigger: 'blur', item_name: item.item_name, values: this.values })
+            }
+          })
+        }
+      })
+    }
+  },
+  mounted: function () {
+    this.fillValidateRule()
   }
+}
 </script>
 
 <style scoped>
