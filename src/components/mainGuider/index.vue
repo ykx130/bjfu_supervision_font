@@ -56,7 +56,7 @@
 <!--            </Submenu>-->
             <MenuItem name="notice_lesson" v-role="['督导','管理员']">
               <Icon type="ios-bookmarks-outline" />
-              学期重点关注
+              重点关注
             </MenuItem>
             <MenuItem name="lesson_model" v-role="['督导','管理员']">
               <Icon type="ios-happy-outline" />
@@ -127,7 +127,7 @@ import mapState from '@/mixins/UserMixin'
 
 export default {
   name: 'mainGuider',
-  mixins:[mapState],
+  mixins: [mapState],
   components: {
     Fullscreen,
     // HeaderBar,
@@ -222,15 +222,20 @@ export default {
         query
       })
     },
-    handleClickToAdmin(value) {
+    handleClickToAdmin (value) {
       // this.$router.push({ name: 'home' })
-
+      if (value !== '督导') {
         this.setCurrentAccess(value)
         this.$router.push({ name: 'home' })
+      } else {
+        this.setCurrentAccess(value)
+        this.$router.replace('/_guider/attend')
+        // this.$router.push({name: "督导端"})
+      }
     },
-    getBtnType:function (value) {
-      if(value===this.current_role){
-        return "info"
+    getBtnType: function (value) {
+      if (value === this.current_role) {
+        return 'info'
       }
     }
   },
