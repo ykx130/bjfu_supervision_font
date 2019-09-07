@@ -33,9 +33,13 @@ export default {
     },
     setUserInfo (state, resData) {
       state.userInfo = resData
-      state.access = resData.role_names
+      state.access = [resData.role_names[1]]
       state.userId = resData.id
       state.userName = resData.username
+      // state.current_rolename=resData.role_names[1]
+    },
+    setCurrentAccess(state,status){
+      state.access=[status]
     }
   },
   actions: {
@@ -91,6 +95,9 @@ export default {
     },
     userInfo: state => {
       return state.userInfo
+    },
+    current_rolename: state => {
+      return state.current_rolename
     }
   }
 }
