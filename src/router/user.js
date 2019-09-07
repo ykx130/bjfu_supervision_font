@@ -23,7 +23,7 @@ export default{
       name: '督导管理',
       path: 'teachers', // xzl
       meta: {
-        access: ['管理员', '学院领导', '大组长', '小组长']
+        access: ['管理员', '大组长', '小组长']
       },
       component: resolve => require(['Views/UserTeacherManagerList/index'], resolve)
     },
