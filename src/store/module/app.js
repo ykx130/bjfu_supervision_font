@@ -44,18 +44,18 @@ export default {
       state.breadCrumbList = getBreadCrumbList(route, state.homeRoute)
     },
     setTagNavList (state, list) {
-      let tagList = []
-      if (list) {
-        tagList = [...list]
-      } else tagList = getTagNavListFromLocalstorage() || []
-      if (tagList[0] && tagList[0].name !== homeName) tagList.shift()
-      let homeTagIndex = tagList.findIndex(item => item.name === homeName)
-      if (homeTagIndex > 0) {
-        let homeTag = tagList.splice(homeTagIndex, 1)[0]
-        tagList.unshift(homeTag)
-      }
-      state.tagNavList = tagList
-      setTagNavListInLocalstorage([...tagList])
+      // let tagList = []
+      // if (list) {
+      //   tagList = [...list]
+      // } else tagList = getTagNavListFromLocalstorage() || []
+      // if (tagList[0] && tagList[0].name !== homeName) tagList.shift()
+      // let homeTagIndex = tagList.findIndex(item => item.name === homeName)
+      // if (homeTagIndex > 0) {
+      //   let homeTag = tagList.splice(homeTagIndex, 1)[0]
+      //   tagList.unshift(homeTag)
+      // }
+      // state.tagNavList = tagList
+      // setTagNavListInLocalstorage([...tagList])
     },
     closeTag (state, route) {
       let tag = state.tagNavList.filter(item => routeEqual(item, route))

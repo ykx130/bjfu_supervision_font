@@ -1,14 +1,13 @@
 import Vue from 'vue'
+var bus = new Vue()
+
 export function requestSuccessFunc (requestObj) {
   console.info('requestInterceptorFunc', `url: ${requestObj.url}`, requestObj)
   // 自定义请求拦截逻辑，可以处理权限，请求发送监控等
   // ...
-
-
   return requestObj
 }
 
-var bus = new Vue()
 export function requestFailFunc (requestError) {
   // 自定义发送请求失败逻辑，断网，请求发送监控等
   // ...

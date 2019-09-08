@@ -103,19 +103,24 @@ export const getTagNavListFromLocalstorage = () => {
  * @description 用于找到路由列表中name为home的对象
  */
 export const getHomeRoute = (routers, homeName = 'home') => {
-  let i = -1
-  let len = routers.length
-  let homeRoute = {}
-  while (++i < len) {
-    let item = routers[i]
-    if (item.children && item.children.length) {
-      let res = getHomeRoute(item.children, homeName)
-      if (res.name) return res
-    } else {
-      if (item.name === homeName) homeRoute = item
+  if (routers) {
+    let i = -1
+    let len = routers.length
+    let homeRoute = {}
+    while (++i < len) {
+      let item = routers[i]
+      if (item.children && item.children.length) {
+        let res = getHomeRoute(item.children, homeName)
+        if (res.name) return res
+      } else {
+        if (item.name === homeName) homeRoute = item
+      }
     }
+    return homeRoute
+  } else {
+    return {}
   }
-  return homeRoute
+
 }
 
 /**
