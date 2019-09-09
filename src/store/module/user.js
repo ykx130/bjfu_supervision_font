@@ -34,16 +34,49 @@ export default {
     },
     setUserInfo (state, resData) {
       state.userInfo = resData
-      if(resData.role_names.length===1)
-        {state.access=resData.role_names[0]}
-      else{
-        state.access = [resData.role_names[1]]
-      }
       state.userId = resData.id
       state.userName = resData.username
     },
     setCurrentAccess(state,status){
       state.access=[status]
+    },
+    judgeSuperAccess(state,resData){
+      let arr= ['管理员', '大组长', '院级领导', '小组长', '督导', '教师']
+      for(let i=0;i<5;i++){
+        if(resData.role_names.indexOf(arr[i])){
+          state.access=[arr[i]]
+          break
+        }
+        else {
+          state.access=[]
+        }
+      }
+      // if(resData.role_names.indexOf('管理员')){
+      //   state.access=['管理员']
+      // }
+      // else if(resData.role_names.indexOf('大组长'))
+      // {
+      //   state.access=['大组长']
+      // }
+      // else if(resData.role_names.indexOf('小组长'))
+      // {
+      //   state.access=['小组长']
+      // }
+      // else if(resData.role_names.indexOf('学院领导'))
+      // {
+      //   state.access=['学院领导']
+      // }
+      // else if(resData.role_names.indexOf('督导'))
+      // {
+      //   state.access=['督导']
+      // }
+      // else if(resData.role_names.indexOf('教师'))
+      // {
+      //   state.access=['教师']
+      // }
+      // else (resData.role_names.length=0)
+      // {
+      // }
     }
   },
   actions: {
@@ -69,6 +102,7 @@ export default {
         logoutUser(state.token).then(() => {
           commit('setAccess', [])
           commit('setUserInfo', { role_names: [], id: 0, userName: '' })
+          commit('judgeSuperAccess', { role_names: [], id: 0, userName: '' })
           resolve()
         }).catch(err => {
           reject(err)
@@ -85,6 +119,7 @@ export default {
           currentUser().then(res => {
             const data = res.data
             commit('setUserInfo', data.current_user)
+            commit('judgeSuperAccess', data.current_user)
             resolve(data)
           }).catch(err => {
 
@@ -101,11 +136,11 @@ export default {
       return state.userInfo
     },
     current_rolename: state => {
-      if(JSON.stringify(state.access)==='{}'){
+      if(state.access.length===0){
         return ''
       }
       else{
-        return state.access
+        return state.access[0]
       }
 
     }
