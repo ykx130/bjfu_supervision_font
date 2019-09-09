@@ -9,7 +9,8 @@ export default {
     access: [],
     hasGetInfo: false,
     userInfo: {},
-    guiderInfo: {}
+    guiderInfo: {},
+    current_rolename:""
   },
   mutations: {
     setAvator (state, avatorPath) {
@@ -33,10 +34,13 @@ export default {
     },
     setUserInfo (state, resData) {
       state.userInfo = resData
-      state.access = [resData.role_names[1]]
+      if(resData.role_names.length===1)
+        {state.access=resData.role_names[0]}
+      else{
+        state.access = [resData.role_names[1]]
+      }
       state.userId = resData.id
       state.userName = resData.username
-      // state.current_rolename=resData.role_names[1]
     },
     setCurrentAccess(state,status){
       state.access=[status]
@@ -97,7 +101,13 @@ export default {
       return state.userInfo
     },
     current_rolename: state => {
-      return state.current_rolename
+      if(JSON.stringify(state.access)==='{}'){
+        return ''
+      }
+      else{
+        return state.access
+      }
+
     }
   }
 }

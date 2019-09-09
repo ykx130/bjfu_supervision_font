@@ -70,7 +70,7 @@
 
             <MenuItem name="my_form" v-role="['督导','管理员']">
               <Icon type="ios-paper"/>
-              已做评价
+              我的评价
             </MenuItem>
             <MenuItem name="lesson_form" v-role="['督导','管理员']">
               <Icon type="ios-list-box-outline" />
@@ -98,7 +98,7 @@
           <!--<error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount" style="float: right; margin-right: 10px;color:#E6EFFA"></error-store>-->
           <fullscreen v-model="isFullscreen" style="margin-right: 10px; float: right;color:#E6EFFA"/>
           <div style="margin-right: 100px;float: right">
-            <span style="font-size:small;color: #FFFFFF">当前身份：</span>
+<!--            <span style="font-size:small;color: #FFFFFF">当前身份：</span>-->
             <ButtonGroup style="margin-top: 3px"size="large">
               <Button v-for="(value,index) in this.roles" v-if="value!=='教师'" :key="value"  @click="handleClickToAdmin(value)" :type="getBtnType(value)">{{value}}</Button>
             </ButtonGroup>
@@ -230,7 +230,6 @@ export default {
       } else {
         this.setCurrentAccess(value)
         this.$router.replace('/_guider/attend')
-        // this.$router.push({name: "督导端"})
       }
     },
     getBtnType: function (value) {
