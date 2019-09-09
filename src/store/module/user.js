@@ -43,7 +43,7 @@ export default {
     judgeSuperAccess(state,resData){
       let arr= ['管理员', '大组长', '院级领导', '小组长', '督导', '教师']
       for(let i=0;i<5;i++){
-        if(resData.role_names.indexOf(arr[i])){
+        if(resData.role_names.indexOf(arr[i])>-1){
           state.access=[arr[i]]
           break
         }
@@ -51,32 +51,6 @@ export default {
           state.access=[]
         }
       }
-      // if(resData.role_names.indexOf('管理员')){
-      //   state.access=['管理员']
-      // }
-      // else if(resData.role_names.indexOf('大组长'))
-      // {
-      //   state.access=['大组长']
-      // }
-      // else if(resData.role_names.indexOf('小组长'))
-      // {
-      //   state.access=['小组长']
-      // }
-      // else if(resData.role_names.indexOf('学院领导'))
-      // {
-      //   state.access=['学院领导']
-      // }
-      // else if(resData.role_names.indexOf('督导'))
-      // {
-      //   state.access=['督导']
-      // }
-      // else if(resData.role_names.indexOf('教师'))
-      // {
-      //   state.access=['教师']
-      // }
-      // else (resData.role_names.length=0)
-      // {
-      // }
     }
   },
   actions: {

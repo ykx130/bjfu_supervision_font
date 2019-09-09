@@ -54,7 +54,7 @@ import { getNewTagList, getNextRoute, routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo.png'
 import maxLogo from '@/assets/images/logo.png'
 import './main.less'
-import mapState from '@/mixins/UserMixin'
+import UserMixin from '@/mixins/UserMixin'
 export default {
   name: 'Main',
   components: {
@@ -67,7 +67,7 @@ export default {
     User,
     userNotices
   },
-  mixins:[mapState],
+  mixins:[UserMixin],
   data () {
     return {
       collapsed: false,
