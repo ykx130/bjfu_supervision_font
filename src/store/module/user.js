@@ -9,7 +9,8 @@ export default {
     access: [],
     hasGetInfo: false,
     userInfo: {},
-    guiderInfo: {}
+    guiderInfo: {},
+    current_rolename:""
   },
   mutations: {
     setAvator (state, avatorPath) {
@@ -33,13 +34,23 @@ export default {
     },
     setUserInfo (state, resData) {
       state.userInfo = resData
-      state.access = [resData.role_names[1]]
       state.userId = resData.id
       state.userName = resData.username
-      // state.current_rolename=resData.role_names[1]
     },
     setCurrentAccess(state,status){
       state.access=[status]
+    },
+    judgeSuperAccess(state,resData){
+      let arr= ['管理员', '大组长', '院级领导', '小组长', '督导', '教师']
+      for(let i=0;i<5;i++){
+        if(resData.role_names.indexOf(arr[i])>-1){
+          state.access=[arr[i]]
+          break
+        }
+        else {
+          state.access=[]
+        }
+      }
     }
   },
   actions: {
@@ -65,6 +76,7 @@ export default {
         logoutUser(state.token).then(() => {
           commit('setAccess', [])
           commit('setUserInfo', { role_names: [], id: 0, userName: '' })
+          commit('judgeSuperAccess', { role_names: [], id: 0, userName: '' })
           resolve()
         }).catch(err => {
           reject(err)
@@ -81,6 +93,7 @@ export default {
           currentUser().then(res => {
             const data = res.data
             commit('setUserInfo', data.current_user)
+            commit('judgeSuperAccess', data.current_user)
             resolve(data)
           }).catch(err => {
 
@@ -97,7 +110,13 @@ export default {
       return state.userInfo
     },
     current_rolename: state => {
-      return state.current_rolename
+      if(state.access.length===0){
+        return ''
+      }
+      else{
+        return state.access[0]
+      }
+
     }
   }
 }
