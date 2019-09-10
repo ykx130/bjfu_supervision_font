@@ -5,27 +5,28 @@
     <br>
     <Form :model="user" ref="current_user" :rules="userValidate" style="width: 50%">
       <Row>
-        <Col span="8">
-          <FormItem prop="id" label="督导ID">
+        <Col span="8" v-if="user.guider">
+          <FormItem prop="id" label="用户名" >
             <Input type="text" style="width: 300px;" v-model="user.id" :disabled="true"></Input>
           </FormItem>
         </Col>
-        <Col span="8" offset="8">
+        <Col span="8" offset="8" v-if="user.guider">
+          <FormItem prop="group" label="组别">
+            <Input type="text" style="width: 300px;" v-model="user.guider.group_name" :disabled="true"></Input>
+          </FormItem>
+        </Col>
+
+      </Row>
+      <br>
+      <Row>
+        <Col span="8" >
           <FormItem prop="username" label="姓名">
             <Input type="text" style="width: 300px;" v-model="user.username" :disabled="true"></Input>
           </FormItem>
         </Col>
-      </Row>
-      <br>
-      <Row>
-        <Col span="8">
+        <Col span="8"offset="8">
           <FormItem prop="sex" label="性别">
             <Input type="text" style="width: 300px;" v-model="user.sex"></Input>
-          </FormItem>
-        </Col>
-        <Col span="8" offset="8">
-          <FormItem prop="unit" label="所属机构">
-            <Input type="text" style="width: 300px;" v-model="user.unit" disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>
@@ -37,23 +38,25 @@
           </FormItem>
         </Col>
         <Col span="8" offset="8">
+          <FormItem prop="unit" label="所属机构">
+            <Input type="text" style="width: 300px;" v-model="user.unit" disabled="true"></Input>
+          </FormItem>
+        </Col>
+
+      </Row>
+      <br>
+      <Row>
+        <Col span="8" >
           <FormItem prop="email" label="邮箱">
             <Input type="email" style="width: 300px;" v-model="user.email"></Input>
           </FormItem>
         </Col>
-      </Row>
-      <br>
-      <Row>
-        <Col span="8">
+        <Col span="8"offset="8">
           <FormItem prop="phone" label="电话号码">
             <Input type="text" style="width: 300px;" v-model="user.phone"></Input>
           </FormItem>
         </Col>
-        <Col span="8" offset="8">
-          <FormItem prop="group" label="组别">
-            <Input type="text" style="width: 300px;" v-model="user.guider.group_name" :disabled="true"></Input>
-          </FormItem>
-        </Col>
+
       </Row>
       <br>
       <Row>
@@ -70,28 +73,29 @@
       </Row>
       <br>
       <Row>
-        <Col span="8">
+        <Col span="8"v-if="user.guider">
           <FormItem prop="term" label="开始学期">
             <Input type="text" style="width: 300px;" v-model="user.guider.term" :disabled="true"></Input>
           </FormItem>
         </Col>
-        <Col span="8" offset="8">
+        <Col span="8" offset="8" v-if="user.guider">
           <FormItem prop="term" label="结束学期">
             <Input type="text" style="width: 300px;" v-model="user.guider.term" :disabled="true"></Input>
           </FormItem>
         </Col>
       </Row>
       <Row>
-        <Col span="8">
-          <FormItem prop="work_state" label="督导类型">
-            <Input type="text" style="width: 300px;" v-model="user.guider.work_state" :disabled="true"></Input>
-          </FormItem>
-        </Col>
-        <Col span="8" offset="8">
+        <Col span="8" >
           <FormItem prop="skill" label="专业领域">
             <Input type="text" style="width: 300px;" v-model="user.skill"></Input>
           </FormItem>
         </Col>
+        <Col span="8" offset="8" v-if="user.guider">
+          <FormItem prop="work_state" label="督导类型" >
+            <Input type="text" style="width: 300px;" v-model="user.guider.work_state" :disabled="true"></Input>
+          </FormItem>
+        </Col>
+
       </Row>
       <br>
       <br>

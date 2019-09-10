@@ -146,7 +146,7 @@ export default {
               min: rule.min,
               max: rule.max })
             } else if (rule.type === 'code') {
-              this.ruleValidate[item.item_name].push({ validator: new Function('rule', 'value', 'callback', rule.code), message: '此选项必填', trigger: 'blur', item_name: item.item_name, values: this.values })
+              this.ruleValidate[item.item_name].push({ validator: new Function('rule', 'value', 'callback', rule.code), message: '请检查条件是否满足！', trigger: 'blur', item_name: item.item_name, values: this.values })
             }
           })
         }

@@ -17,7 +17,14 @@
           <language v-if="$config.useI18n" @on-lang-change="setLocal" style="margin-right: 10px;" :lang="local"/>
           <error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount"></error-store>
           <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
-          <span style="margin-right: 10px;float: right;cursor:pointer" @click="handleClickToGuider"> 切换到督导端 </span>
+          <div style="margin-right: 100px">
+            <span style="font-size: small">当前身份：</span>
+          <ButtonGroup style="margin-top: 14px;float: right"  size="large">
+<!--            <Button  type="info">{{current_role}}</Button>-->
+            <Button v-for="(value,index) in this.roles" v-if="(value!=='教师')" :key="value"  @click="handleClickToGuider(value)" :type="getBtnType(value)">{{value}}</Button>
+
+          </ButtonGroup>
+          </div>
         </header-bar>
       </Header>
       <Content class="main-content-con">
@@ -47,6 +54,7 @@ import { getNewTagList, getNextRoute, routeEqual } from '@/libs/util'
 import minLogo from '@/assets/images/logo.png'
 import maxLogo from '@/assets/images/logo.png'
 import './main.less'
+import UserMixin from '@/mixins/UserMixin'
 export default {
   name: 'Main',
   components: {
@@ -59,12 +67,14 @@ export default {
     User,
     userNotices
   },
+  mixins:[UserMixin],
   data () {
     return {
       collapsed: false,
       minLogo,
       maxLogo,
       isFullscreen: false
+
     }
   },
   computed: {
@@ -98,7 +108,8 @@ export default {
       'setBreadCrumb',
       'setTagNavList',
       'addTag',
-      'setLocal'
+      'setLocal',
+      'setCurrentAccess'
     ]),
     ...mapActions([
       'handleLogin'
@@ -138,8 +149,20 @@ export default {
     handleClick (item) {
       this.turnToPage(item)
     },
-    handleClickToGuider(){
-      this.$router.push({name:"督导端"})
+    handleClickToGuider(value){
+      if(value!=="督导"){
+        this.$router.push({ name: 'home' })
+        this.setCurrentAccess(value)
+      }
+      else {
+        this.$router.push({name: "督导端"})
+        this.setCurrentAccess(value)
+      }
+    },
+    getBtnType:function (value) {
+      if(value===this.current_role){
+        return "info"
+      }
     }
   },
   watch: {
@@ -174,3 +197,17 @@ export default {
   }
 }
 </script>
+<style>
+  .start
+  {
+    cursor: pointer;
+  }
+
+  .end
+  {
+    cursor: pointer;
+    color: #fff;
+    background: #b1b0b0;
+    border: none;
+  }
+</style>

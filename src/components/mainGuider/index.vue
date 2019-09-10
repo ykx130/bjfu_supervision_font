@@ -47,47 +47,47 @@
       <Header>
         <Menu mode="horizontal" theme="primary" :active-name="activity_name" @on-select="onMenuSelect">
           <div class="layout-nav">
-            <Submenu name="3" v-role="['督导','管理员']">
-              <template slot="title">
-                <Icon type="ios-stats" />
-                我要填写评价
-              </template>
-              <MenuItem name="notice_lesson" >
-                <Icon type="ios-paper"/>
-                根据学期重点关注
-              </MenuItem>
-              <MenuItem name="lesson_model" v-role="['督导','管理员']">
-                <Icon type="ios-keypad"/>
-                根据好评课堂
-              </MenuItem>
-              <MenuItem name="lesson_form" v-role="['督导','管理员']">
-                <Icon type="ios-construct"/>
-                根据课程表
-              </MenuItem>
-              <MenuItem name="judge" v-role="['督导','管理员']">
-                <Icon type="ios-paper"/>
-                直接填评价表
-              </MenuItem>
-            </Submenu>
+<!--            <Submenu name="3" v-role="['督导','管理员']">-->
+<!--              <template slot="title">-->
+<!--                <Icon type="ios-stats" />-->
+<!--                我要填写评价-->
+<!--              </template>-->
 
-
-            <MenuItem name="my_form" v-role="['督导','管理员']">
-              <Icon type="ios-construct"/>
-              已做评价
+<!--            </Submenu>-->
+            <MenuItem name="notice_lesson" v-role="['督导','管理员']">
+              <Icon type="ios-bookmarks-outline" />
+              重点关注
+            </MenuItem>
+            <MenuItem name="lesson_model" v-role="['督导','管理员']">
+              <Icon type="ios-happy-outline" />
+              好评课堂
             </MenuItem>
 
-            <MenuItem name="leader_lookup" v-role="['督导','管理员']">
-              <Icon type="ios-construct"/>
-              学院教学院长
+            <MenuItem name="judge" v-role="['督导','管理员']">
+              <Icon type="ios-book-outline" />
+              自主听课
+            </MenuItem>
+
+            <MenuItem name="my_form" v-role="['督导','管理员']">
+              <Icon type="ios-paper"/>
+              我的评价
+            </MenuItem>
+            <MenuItem name="lesson_form" v-role="['督导','管理员']">
+              <Icon type="ios-list-box-outline" />
+              课程表
             </MenuItem>
 
             <MenuItem name="attend">
               <Icon type="ios-people"/>
               活动报名
             </MenuItem>
-            <MenuItem name="consult_apply">
+            <MenuItem name="consult_apply" >
               <Icon type="ios-construct"/>
               咨询申请
+            </MenuItem>
+            <MenuItem name="leader_lookup" v-role="['督导','管理员']">
+              <Icon type="ios-body"/>
+              学院教学院长
             </MenuItem>
           </div>
 
@@ -97,8 +97,14 @@
                     style="margin-right: 10px; float: right;color:#E6EFFA" :lang="local"/>
           <!--<error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount" style="float: right; margin-right: 10px;color:#E6EFFA"></error-store>-->
           <fullscreen v-model="isFullscreen" style="margin-right: 10px; float: right;color:#E6EFFA"/>
-          <span @click="handleClickToAdmin" style="margin-right: 10px; float: right;color:#E6EFFA;cursor:pointer"
-                v-role="['管理员', '学院领导', '小组长', '大组长']"> 切换到管理员端 </span>
+          <div style="margin-right: 100px;float: right">
+<!--            <span style="font-size:small;color: #FFFFFF">当前身份：</span>-->
+            <ButtonGroup style="margin-top: 3px"size="large">
+              <Button v-for="(value,index) in this.roles" v-if="value!=='教师'" :key="value"  @click="handleClickToAdmin(value)" :type="getBtnType(value)">{{value}}</Button>
+            </ButtonGroup>
+          </div>
+<!--          <span @click="handleClickToAdmin" style="margin-right: 10px; float: right;color:#E6EFFA;cursor:pointer"-->
+<!--                v-role="['管理员', '学院领导', '小组长', '大组长']"> 切换到管理员端 </span>-->
         </Menu>
 
       </Header>
@@ -117,9 +123,11 @@ import Language from '_c/mainGuider/components/language'
 import userNotices from '_c/user_notices'
 import ErrorStore from '_c/mainGuider/components/error-store'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
+import mapState from '@/mixins/UserMixin'
 
 export default {
   name: 'mainGuider',
+  mixins: [mapState],
   components: {
     Fullscreen,
     // HeaderBar,
@@ -136,7 +144,8 @@ export default {
       // minLogo,
       // maxLogo,
       isFullscreen: false,
-      activity_name: 'consult_apply'
+      // activity_name: 'consult_apply'
+      activity_name: 'attend'
     }
   },
   computed: {
@@ -189,7 +198,8 @@ export default {
       'setBreadCrumb',
       'setTagNavList',
       'addTag',
-      'setLocal'
+      'setLocal',
+      'setCurrentAccess'
     ]),
     ...mapActions([
       'handleLogin'
@@ -212,8 +222,20 @@ export default {
         query
       })
     },
-    handleClickToAdmin: function () {
-      this.$router.push({ name: 'home' })
+    handleClickToAdmin (value) {
+      // this.$router.push({ name: 'home' })
+      if (value !== '督导') {
+        this.setCurrentAccess(value)
+        this.$router.push({ name: 'home' })
+      } else {
+        this.setCurrentAccess(value)
+        this.$router.replace('/_guider/attend')
+      }
+    },
+    getBtnType: function (value) {
+      if (value === this.current_role) {
+        return 'info'
+      }
     }
   },
   watch: {
@@ -223,7 +245,8 @@ export default {
   },
   mounted () {
     if (this.$route.path === '/_guider') {
-      this.$router.replace('/_guider/consult_apply')
+      this.$router.replace('/_guider/attend')
+      // this.$router.replace('/_guider/consult_apply')
     }
     console.log(this)
     this.highlightMenu()
