@@ -24,6 +24,11 @@
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
+      <FormItem prop="group_name" label="分配督导小组">
+        <Select v-model="lesson.group_name" >
+          <Option v-for="item in groups" :value="item.group_name" :key="item.group_name">{{ item.group_name }}</Option>
+        </Select>
+      </FormItem>
       <span>好评状态:</span>
       <FormItem prop="lesson_state">
         <Select v-model="lesson.status" style="width:100%">

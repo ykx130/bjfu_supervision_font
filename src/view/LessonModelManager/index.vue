@@ -131,6 +131,15 @@ export default {
             return h('span', params.row.lesson_class )
           }
         },
+
+        {
+          title: '分配组别',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.group_name }</span>
+          )
+          }
+        },
         {
           title: '好评状态',
           width:120,
@@ -215,7 +224,9 @@ export default {
       this.fetchData()
     },
     onModelLessonAddOK(lesson) {
-      postModelLesson({'lesson_id': lesson.lesson_id,
+      postModelLesson({
+        'lesson_id': lesson.lesson_id,
+        'group_name': lesson.group_name
       }).then((resp)=>{
         if (resp.code === 200){
           this.$Message.success("添加成功！")
