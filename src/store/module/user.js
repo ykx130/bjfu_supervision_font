@@ -10,7 +10,6 @@ export default {
     hasGetInfo: false,
     userInfo: {},
     guiderInfo: {},
-    current_rolename:""
   },
   mutations: {
     setAvator (state, avatorPath) {
@@ -114,6 +113,7 @@ export default {
         return ''
       }
       else{
+        debugger
         return state.access[0]
       }
 
