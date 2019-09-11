@@ -21,7 +21,8 @@
             <span style="font-size: small">当前身份：</span>
           <ButtonGroup style="margin-top: 14px;float: right"  size="large">
 <!--            <Button  type="info">{{current_role}}</Button>-->
-            <Button v-for="(value,index) in this.roles" v-if="(value!=='教师')" :key="value"  @click="handleClickToGuider(value)" :type="getBtnType(value)">{{value}}</Button>
+<!--            <Button v-for="(value,index) in this.roles" v-if="(value!=='教师')" :key="value"  @click="handleClickToGuider(value)" :type="getBtnType(value)">{{value}}</Button>-->
+                <Button v-for="(value,index) in this.roles"  :key="value"  @click="handleClickToGuider(value)" :type="getBtnType(value)">{{value}}</Button>
 
           </ButtonGroup>
           </div>
@@ -150,12 +151,16 @@ export default {
       this.turnToPage(item)
     },
     handleClickToGuider(value){
-      if(value!=="督导"){
-        this.$router.push({ name: 'home' })
+      if(value==="督导"){
+        this.$router.push({name: "督导端"})
+        this.setCurrentAccess(value)
+      }
+      else if(value==="教师"){
+        this.$router.push({name: "督导端"})
         this.setCurrentAccess(value)
       }
       else {
-        this.$router.push({name: "督导端"})
+        this.$router.push({ name: 'home',query:{time:new Date().getTime()}})
         this.setCurrentAccess(value)
       }
     },

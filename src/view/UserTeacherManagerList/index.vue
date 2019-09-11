@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <h1>督导管理</h1>
+    <h1>督导用户列表</h1>
     <br>
     <Tabs @on-click="onTypeTabClick" v-role ="['管理员']">
       <TabPane label="全部" name="全部"></TabPane>

@@ -20,7 +20,7 @@ export default{
       component: resolve => require(['Views/UserManager/index'], resolve)
     },
     {
-      name: '督导管理',
+      name: '督导用户列表',
       path: 'teachers', // xzl
       meta: {
         access: ['管理员', '大组长', '小组长']
