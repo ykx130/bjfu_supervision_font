@@ -34,7 +34,7 @@ export const putModelLesson = (params) => {
 export const putNoticeLesson = (params) => {
   let id=params.id
   params.id=undefined
-  return axios.put('/api/notice_lessons' + id, params)
+  return axios.put('/api/notice_lessons/' + id, params)
 }
 
 export const postLesson = (params) => {

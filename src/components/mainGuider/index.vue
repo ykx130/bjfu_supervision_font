@@ -81,7 +81,7 @@
               <Icon type="ios-people"/>
               活动报名
             </MenuItem>
-            <MenuItem name="consult_apply" >
+            <MenuItem name="consult_apply" v-role="['教师']">
               <Icon type="ios-construct"/>
               咨询申请
             </MenuItem>
@@ -100,7 +100,7 @@
           <div style="margin-right: 100px;float: right">
 <!--            <span style="font-size:small;color: #FFFFFF">当前身份：</span>-->
             <ButtonGroup style="margin-top: 3px"size="large">
-              <Button v-for="(value,index) in this.roles" v-if="value!=='教师'" :key="value"  @click="handleClickToAdmin(value)" :type="getBtnType(value)">{{value}}</Button>
+              <Button v-for="(value,index) in this.roles"  :key="value"  @click="handleClickToAdmin(value)" :type="getBtnType(value)">{{value}}</Button>
             </ButtonGroup>
           </div>
 <!--          <span @click="handleClickToAdmin" style="margin-right: 10px; float: right;color:#E6EFFA;cursor:pointer"-->
@@ -229,7 +229,7 @@ export default {
         this.$router.push({ name: 'home' })
       } else {
         this.setCurrentAccess(value)
-        this.$router.replace('/_guider/attend')
+        this.$router.push({name:'guider_active_attend' ,query:{time:new Date().getTime()}})
       }
     },
     getBtnType: function (value) {

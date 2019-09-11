@@ -18,11 +18,11 @@
       <FormItem >
         <Button @click="onExportExcel" icon="ios-cloud-download-outline" type="primary" >导出</Button>
       </FormItem>
-      <FormItem >
+      <FormItem v-role ="['管理员']">
         <Upload :action="uploadModelLessonApi"
                 :on-success="handleImportExcelSucc"
                 name="filename">
-          <Button  icon="ios-cloud-upload-outline" type="primary" >导入</Button>
+          <Button  icon="ios-cloud-upload-outline" type="primary"  >导入</Button>
         </Upload>
       </FormItem>
     </Form>
@@ -48,7 +48,7 @@
       <Page  style="float: right;" :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
     </Row>
 
-    <Button type="primary" @click="showAddModelLesson=true">导入为好评课</Button>
+    <Button type="primary" @click="showAddModelLesson=true" v-role="['管理员']">导入为好评课</Button>
   </Card>
 </template>
 
@@ -61,8 +61,9 @@ import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 import ModelJudge from './components/ModelJudge'
-
+import UserMixin from'@/mixins/UserMixin'
 export default {
+  mixins:[UserMixin],
   components: { ModelJudge, LessonJudge, LessonProfileModal, FloatBar,ModelLessonAdd },
   data: function () {
     return {
@@ -128,6 +129,15 @@ export default {
           title: '上课班级',
           render: function (h, params) {
             return h('span', params.row.lesson_class )
+          }
+        },
+
+        {
+          title: '分配组别',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.group_name }</span>
+          )
           }
         },
         {
@@ -214,7 +224,9 @@ export default {
       this.fetchData()
     },
     onModelLessonAddOK(lesson) {
-      postModelLesson({'lesson_id': lesson.lesson_id,
+      postModelLesson({
+        'lesson_id': lesson.lesson_id,
+        'group_name': lesson.group_name
       }).then((resp)=>{
         if (resp.code === 200){
           this.$Message.success("添加成功！")
@@ -252,6 +264,19 @@ export default {
       } else {
         this.$Message.success({ content: '导入成功' })
       }
+    },
+    itemShow(columns)
+    {
+      if(this.current_role!=='管理员'){
+        for(let i=0;i<columns.length;i++){
+          if(columns[i]['title']==='锁定状态'){
+            columns.splice(i,1)
+          }
+          if (columns[i]['title']==='操作'){
+            columns.splice(i,1)
+          }
+            }
+      }
     }
   },
   mounted: function () {
@@ -265,6 +290,7 @@ export default {
         })
       })
     })
+    this.itemShow(this.columns)
   }
 }
 </script>

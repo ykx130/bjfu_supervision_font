@@ -2,10 +2,16 @@
   <Modal
     :value="show"
     title="Title"
+    :loading="loading"
     @on-ok="handleOK"
     @on-cancel="handleCancel">
-    <Form :model="lesson">
-      <FormItem prop="lesson_attention_reason" label="课程名字">
+    <Form :model="lesson" ref="model_lesson" :rules="ruleValidate">
+      <FormItem prop="group_name" label="分配督导小组">
+        <Select v-model="lesson.group_name" >
+          <Option v-for="item in groups" :value="item.group_name" :key="item.group_name">{{ item.group_name }}</Option>
+        </Select>
+      </FormItem>
+      <FormItem prop="lesson_id" label="课程名字">
         <Select v-model="lesson.lesson_id"
                 @on-query-change="onLessonQueryChange"
                 clearable
@@ -28,13 +34,20 @@ export default {
   name: 'AddModelLesson',
   props: {
     show: Boolean,
-    term: String
+    term: String,
+    onCancel: Function,
+    onOK: Function
   },
   data: function () {
     return {
       lessons: [],
       lesson: {},
-      lesson_name_like: ''
+      lesson_name_like: '',
+      loading: true,
+      ruleValidate:{
+        group_name:[{ required: true, message: '请分配该课程的组别', trigger: 'blur' }],
+        lesson_id:[{ required: true, message: '课程名不能为空', trigger: 'blur' }]
+      }
     }
   },
   watch: {
@@ -52,17 +65,38 @@ export default {
         })
       })
     },
+    validate: function (f) {
+      return this.$refs.model_lesson.validate(f)
+    },
+    changeLoading: function() {
+      setTimeout(()=>{
+        this.loading = false;
+        this.$nextTick(()=>{
+          this.loading = true
+        })
+      }, 500)
+    },
     onLessonQueryChange: function (value) {
       if (!(value.startsWith("'") && value.endsWith("'"))) {
         this.lesson_name_like = value
         this.fetchLesson()
       }
     },
-    onSelectedLessonChange: function(lesson_id) {
+    onSelectedLessonChange: function(lesson_id,group_name) {
       this.lesson = this.lessons[lesson_id]
+      this.lesson=this.lessons[group_name]
     },
     handleOK: function () {
-      this.$emit('onOK', this.lesson)
+      this.$refs.model_lesson.validate((valid) => {
+        this.changeLoading()
+        if (valid) {
+          this.$emit('onOK', {...this.lesson}, valid)
+        } else {
+          this.$Message.error('信息填写错误请检查!')
+        }
+      })
+      // this.changeLoading()
+      // this.$emit('onOK', this.lesson)
     },
     handleCancel: function () {
       this.$emit('onCancel')

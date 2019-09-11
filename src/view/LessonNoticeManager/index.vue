@@ -18,7 +18,7 @@
       <FormItem >
         <Button @click="onExportExcel" icon="ios-cloud-download-outline" type="primary" >导出</Button>
       </FormItem>
-      <FormItem >
+      <FormItem v-role ="['管理员']" >
         <Upload :action="uploadNoticeLessonApi"
                 :on-success="handleImportExcelSucc"
                 :show-upload-list="false"
@@ -59,8 +59,11 @@ import { queryTerms, getCurrentTerms } from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
+import UserMixin from'@/mixins/UserMixin'
+
 
 export default {
+  mixins:[UserMixin],
   components: { LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal },
   data: function () {
     return {
@@ -259,8 +262,20 @@ export default {
       } else {
         this.$Message.success({ content: '导入成功' })
       }
-    }
-  },
+    },
+    itemShow(columns)
+    {
+      if(this.current_role!=='管理员'){
+        for(let i=0;i<columns.length;i++){
+          if(columns[i]['title']==='锁定状态'){
+            columns.splice(i,1)
+          }
+          if (columns[i]['title']==='操作'){
+            columns.splice(i,1)
+          }
+        }
+      }
+  }},
   mounted: function () {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
@@ -272,6 +287,8 @@ export default {
         this.total = resp.data.total
       })
     })
+    this.itemShow(this.columns)
+
   }
 }
 </script>

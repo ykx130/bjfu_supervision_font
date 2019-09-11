@@ -66,9 +66,10 @@ export default{
       component: resolve => require(['Views/FormManager/index'], resolve)
     },
     {
-      name: '各组评价情况查看',
+      name: '评价情况查看',
       path: 'lesson_records', // xzl
       meta: {
+        access: ['管理员','大组长','小组长'],
 
       },
       component: resolve => require(['Views/GroupLessonList/index'], resolve)

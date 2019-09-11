@@ -106,6 +106,9 @@ export default {
           'names': res[key]
         })
       })
+      letter_names = letter_names.sort((a,b)=>{
+        return a.ckey < b.ckey ? -1 :1
+      })
       return letter_names
     }
   },

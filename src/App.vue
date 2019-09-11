@@ -1,12 +1,27 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view v-if="show"/>
   </div>
 </template>
 
 <script>
 export default {
   name: 'App',
+  data: function() {
+    return {
+      show: true
+    }
+  },
+  watch: {
+    '$route':{
+      handler: function () {
+        this.show=false
+        this.$nextTick(()=>{
+          this.show = true
+        })
+      }
+    }
+  },
   methods: {
     registEvent: function () {
       this.$bus.$on('global.message.warning', function (arg) {
