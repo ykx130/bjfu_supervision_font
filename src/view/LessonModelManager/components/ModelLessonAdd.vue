@@ -28,7 +28,7 @@
 
 <script>
 import { queryGroups } from '../../../service/api/user'
-import {queryLessons} from '../../../service/api/lesson'
+import { queryLessons } from '../../../service/api/lesson'
 import { lessonLevel, lessonWatchReason } from '../marcos'
 export default {
   name: 'AddModelLesson',
@@ -44,9 +44,10 @@ export default {
       lesson: {},
       lesson_name_like: '',
       loading: true,
-      ruleValidate:{
-        group_name:[{ required: true, message: '请分配该课程的组别', trigger: 'blur' }],
-        lesson_id:[{ required: true, message: '课程名不能为空', trigger: 'blur' }]
+      groups: [],
+      ruleValidate: {
+        group_name: [{ required: true, message: '请分配该课程的组别', trigger: 'blur' }],
+        lesson_id: [{ required: true, message: '课程名不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -68,10 +69,10 @@ export default {
     validate: function (f) {
       return this.$refs.model_lesson.validate(f)
     },
-    changeLoading: function() {
-      setTimeout(()=>{
-        this.loading = false;
-        this.$nextTick(()=>{
+    changeLoading: function () {
+      setTimeout(() => {
+        this.loading = false
+        this.$nextTick(() => {
           this.loading = true
         })
       }, 500)
@@ -82,15 +83,15 @@ export default {
         this.fetchLesson()
       }
     },
-    onSelectedLessonChange: function(lesson_id,group_name) {
+    onSelectedLessonChange: function (lesson_id, group_name) {
       this.lesson = this.lessons[lesson_id]
-      this.lesson=this.lessons[group_name]
+      this.lesson = this.lessons[group_name]
     },
     handleOK: function () {
       this.$refs.model_lesson.validate((valid) => {
         this.changeLoading()
         if (valid) {
-          this.$emit('onOK', {...this.lesson}, valid)
+          this.$emit('onOK', { ...this.lesson }, valid)
         } else {
           this.$Message.error('信息填写错误请检查!')
         }

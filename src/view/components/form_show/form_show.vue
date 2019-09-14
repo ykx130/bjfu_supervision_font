@@ -6,13 +6,13 @@
     <Form :model="values" ref="ruleform">
       <template v-for="it in items">
         <template v-if="it.item_type === 'sub_title_block'">
-          <div v-show="it.payload.page === current_page">
-              <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold"
+          <div v-show="it.payload.page === current_page" style="margin-top: 1px">
+              <span style="height: 50px;line-height: 50px;margin-left: 20px;font-weight: bold"
                     v-if="it.item_name=== 'sub_title_block_start'">{{ it.payload.title }}</span>
 
             <template v-if="it.item_name=== 'sub_title_block_end'">
               <FormItem>
-                <divider></divider>
+                <divider style="margin-bottom: 0px"></divider>
               </FormItem>
             </template>
           </div>

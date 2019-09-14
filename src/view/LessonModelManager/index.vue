@@ -42,7 +42,13 @@
     >
 
     </ModelLessonAdd>
-
+    <LessonGroupAssign
+        :show="showLessonAssign"
+        @onOK="onAssignLessonOK"
+        @onCancel="showLessonAssign=false"
+        :lesson_id="this.selected_lesson_id"
+    >
+    </LessonGroupAssign>
     <Table  border stripe :columns="columns" :data="data"></Table>
     <Row >
       <Page  style="float: right;" :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
@@ -55,16 +61,17 @@
 <script>
 import LessonProfileModal from './components/LessonProfileModal'
 import ModelLessonAdd from './components/ModelLessonAdd'
-import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel, putModelLesson , postModelLesson} from '@/service/api/lesson'
+import LessonGroupAssign from './components/LessonGroupAssign'
+import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel, putModelLesson, postModelLesson } from '@/service/api/lesson'
 import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 import ModelJudge from './components/ModelJudge'
-import UserMixin from'@/mixins/UserMixin'
+import UserMixin from '@/mixins/UserMixin'
 export default {
-  mixins:[UserMixin],
-  components: { ModelJudge, LessonJudge, LessonProfileModal, FloatBar,ModelLessonAdd },
+  mixins: [UserMixin],
+  components: { LessonGroupAssign, ModelJudge, LessonJudge, LessonProfileModal, FloatBar, ModelLessonAdd },
   data: function () {
     return {
       showAddModelLesson: false,
@@ -79,6 +86,7 @@ export default {
       selected_lesson_ids: [],
       selected_lesson_id: 0, // 选中编辑的课程ids
       showLessonProfileModal: false, // 展示编辑弹窗
+      showLessonAssign: false,
       pages: {
         _page: 1,
         _per_page: 10
@@ -122,27 +130,26 @@ export default {
         {
           title: '上课学院',
           render: function (h, params) {
-            return h('span', params.row.lesson_unit )
+            return h('span', params.row.lesson_unit)
           }
         },
         {
           title: '上课班级',
           render: function (h, params) {
-            return h('span', params.row.lesson_class )
+            return h('span', params.row.lesson_class)
           }
         },
-
         {
           title: '分配组别',
           render: function (h, params) {
             return (
               <span>{ params.row.group_name }</span>
-          )
+            )
           }
         },
         {
           title: '好评状态',
-          width:120,
+          width: 120,
           render: (h, params) => {
             if (params.row.status === '推荐为好评课') {
               return h('Tag', { props: { color: 'red' } }, '推荐为好评课')
@@ -168,13 +175,12 @@ export default {
           }
         },
         {
-          title: '锁定状态',
+          title: '分配督导',
           render: function (h, params) {
-              if (params.row.is_lock) {
-                return h('Tag', { props: { color: 'red' } }, '锁定')
-              } else {
-                return h('Tag', { props: { color: 'blue' } }, '非锁定')
-              }
+            let tags = params.row.guiders.map((item) => {
+              return h('Tag', item)
+            })
+            return h('span', tags)
           }
         },
         {
@@ -196,7 +202,22 @@ export default {
                     this.showLessonProfileModal = true
                   }
                 }
-              }, '查看')
+              }, '查看'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '2px'
+                },
+                on: {
+                  click: () => {
+                    this.selected_lesson_id = params.row.id
+                    this.showLessonAssign = true
+                  }
+                }
+              }, '分配')
             ])
           }
         }
@@ -223,13 +244,13 @@ export default {
       this.pages._page = 1
       this.fetchData()
     },
-    onModelLessonAddOK(lesson) {
+    onModelLessonAddOK (lesson) {
       postModelLesson({
         'lesson_id': lesson.lesson_id,
         'group_name': lesson.group_name
-      }).then((resp)=>{
-        if (resp.code === 200){
-          this.$Message.success("添加成功！")
+      }).then((resp) => {
+        if (resp.code === 200) {
+          this.$Message.success('添加成功！')
         }
         this.fetchData()
       })
@@ -249,6 +270,15 @@ export default {
     onProfileModalCancel () {
       this.showLessonProfileModal = false
     },
+    onAssignLessonOK (lesson) {
+      putModelLesson(lesson).then((resp) => {
+        if (resp.code === 200) {
+          this.$Message.success('添加成功！')
+        }
+        this.fetchData()
+      })
+      this.showLessonAssign = false
+    },
     onExportExcel: function () {
       exporModelLessonExcel().then((resp) => {
         if (resp.data.code === 200) {
@@ -265,17 +295,16 @@ export default {
         this.$Message.success({ content: '导入成功' })
       }
     },
-    itemShow(columns)
-    {
-      if(this.current_role!=='管理员'){
-        for(let i=0;i<columns.length;i++){
-          if(columns[i]['title']==='锁定状态'){
-            columns.splice(i,1)
+    itemShow (columns) {
+      if (this.current_role !== '管理员') {
+        for (let i = 0; i < columns.length; i++) {
+          if (columns[i]['title'] === '分配督导') {
+            columns.splice(i, 1)
           }
-          if (columns[i]['title']==='操作'){
-            columns.splice(i,1)
+          if (columns[i]['title'] === '操作') {
+            columns.splice(i, 1)
           }
-            }
+        }
       }
     }
   },

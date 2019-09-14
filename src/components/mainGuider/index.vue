@@ -145,7 +145,7 @@ export default {
       // maxLogo,
       isFullscreen: false,
       // activity_name: 'consult_apply'
-      activity_name: 'attend'
+      activity_name: 'my_form'
     }
   },
   computed: {
@@ -229,7 +229,7 @@ export default {
         this.$router.push({ name: 'home' })
       } else {
         this.setCurrentAccess(value)
-        this.$router.push({name:'guider_active_attend' ,query:{time:new Date().getTime()}})
+        this.$router.push({ name: '督导我的提交', query: { time: new Date().getTime() } })
       }
     },
     getBtnType: function (value) {
@@ -245,7 +245,7 @@ export default {
   },
   mounted () {
     if (this.$route.path === '/_guider') {
-      this.$router.replace('/_guider/attend')
+      this.$router.replace('/_guider/my_form')
       // this.$router.replace('/_guider/consult_apply')
     }
     console.log(this)
