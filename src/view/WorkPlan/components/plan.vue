@@ -1,11 +1,11 @@
 <template>
   <div style="text-align: center">
     <Row>
-      <Col :span="20" offset="2">
+      <Col style="position:relative;padding-left: 100px" :span="20" >
         <Table stripe :columns="columns" :data="work_plans"></Table>
       </Col>
     </Row>
-    <div style="float: right;padding-top: 100px">
+    <div style="position:relative;padding-top: 100px">
       <Button type="primary" @click="handlePlanAdd(term.name)">新增</Button>
     </div>
     <planModify :plan="select_plan"

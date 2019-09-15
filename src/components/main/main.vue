@@ -156,7 +156,8 @@ export default {
         this.setCurrentAccess(value)
       }
       else if(value==="教师"){
-        this.$router.push({name: "督导端"})
+        // this.$router.push({name: "督导端"})
+        this.$router.push({ name: 'guider_active_attend', query: { time: new Date().getTime() } })
         this.setCurrentAccess(value)
       }
       else {
