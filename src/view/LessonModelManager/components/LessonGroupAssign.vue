@@ -5,10 +5,20 @@
     @on-ok="handleOK"
     @on-cancel="handleCancel"
     @on-visible-change="onShowChange">
-    <Select v-model="guiders" multiple style="width:260px" >
-      <Option v-for="item in Supervisors" v-if="item.group_name===lesson.group_name" :value="item.user.name" :key="item.user.name">{{ item.user.name }}</Option>
+    <Select :value="flat_lessons_guiders"
+            multiple
+            filterable
+            remote
+            label-in-value
+            :loading="false"
+            style="width:260px"
+            @on-query-change="onGuiderQueryChange"
+            @on-change="onGuiderSelectChange"
+            :disabled="guider_disable || disabled"
+    >
+      <Option v-for="(item,key) in Supervisors" v-if="item.group_name===lesson.group_name" :value="item.username" :key="item.username">{{ "'" + item.user.name + "'" }}</Option>
     </Select>
-
+<!--    v-model="guiders"-->
   </Modal>
 </template>
 
@@ -23,7 +33,11 @@ export default {
     show: Boolean,
     onCancel: Function,
     onOK: Function,
-    lesson_id: Number
+    lesson_id: Number,
+    disabled: {
+      type: Boolean,
+      default: false
+    }
   },
   data: function () {
     return {
@@ -33,13 +47,25 @@ export default {
         guiders: []
       },
       guiders: [],
-      Supervisors: [] // 所有的督导
+      guider_name_like:'',
+      user_name_like: '',
+      guider_disable: false,
+      select_guider:{},
+      Supervisors: {} // 督导
+    }
+  },
+
+  computed: {
+    flat_lessons_guiders: function () {
+      return this.lesson.guiders.map((item)=>{
+        return item.username
+      })
     }
   },
   methods: {
     handleOK: function () {
-      this.lesson.guiders = this.guiders
-      console.log(JSON.stringify(this.lesson.guiders))
+      // console.log(JSON.stringify(this.Supervisors))
+
       this.$emit('onOK', this.lesson)
     },
     handleCancel: function () {
@@ -52,8 +78,33 @@ export default {
           updateWithinField(this.lesson, resp.data.model_lesson)
         })
         // console.log(this.lesson)
-        console.log(this.Supervisors)
+        // console.log(this.Supervisors)
       }
+    },
+    onGuiderSelectChange: function (value) {
+      if (value) {
+        this.lesson.guiders = value.map((item)=>{
+          return {'name':item.label, 'username': item.value}
+        })
+      }
+    },
+    onGuiderQueryChange: function (value) {
+      if (!(value.startsWith("'") && value.endsWith("'"))) {
+        this.guider_name_like = value
+        this.fetchUser()
+      }
+    },
+    fetchUser: function () {
+      this.Supervisors = {}
+      return querySupervisors({username_like: this.guider_name_like }).then((resp) => {
+        resp.data.supervisors.map((item) => {
+          this.$set(this.Supervisors, item.username, item)
+          console.log(this.Supervisors)
+          console.log(this.guider_name_like)
+
+        })
+      })
+
     }
   },
   mounted: function () {

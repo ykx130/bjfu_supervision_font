@@ -145,20 +145,20 @@ export default {
         state: [{ required: true, message: 'the state can not be empty', trigger: 'change' }],
         status: [{ required: true, message: 'the status can not be empty', trigger: 'change' }],
         email: [{ required: true, message: 'the email can not be empty', trigger: 'blur' },
-          { type: 'email', message: 'Invalid email format', trigger: 'blur' }],
-        phone: [{ required: true, message: 'the phone can not be empty', trigger: 'blur' },
-          {
-            validator (rule, value, callback) {
-              if (!value) {
-                return callback(new Error('the phone can not be empty'))
-              } else if (!/^[1][34578][0-9]{9}$/.test(value)) {
-                callback('手机号格式不正确')
-              } else {
-                callback()
-              }
-            }
-          }
-        ]
+          { type: 'email', message: 'Invalid email format', trigger: 'blur' }]
+        // phone: [{ required: true, message: 'the phone can not be empty', trigger: 'blur' },
+        //   {
+        //     validator (rule, value, callback) {
+        //       if (!value) {
+        //         return callback(new Error('the phone can not be empty'))
+        //       } else if (!/^[1][34578][0-9]{9}$/.test(value)) {
+        //         callback('手机号格式不正确')
+        //       } else {
+        //         callback()
+        //       }
+        //     }
+        //   }
+        // ]
       }
     }
   },

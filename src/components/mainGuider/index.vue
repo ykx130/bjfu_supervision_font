@@ -247,11 +247,13 @@ export default {
     }
   },
   mounted () {
+    if(this.current_role==='大组长'||this.current_role==='小组长'||this.current_role==='管理员'||this.current_role==='学院领导'){
+      this.$router.push({ name: 'home' })
+    }
     if (this.$route.path === '/_guider') {
       this.$router.replace('/_guider/my_form')
       // this.$router.replace('/_guider/consult_apply')
     }
-    console.log(this)
     this.highlightMenu()
     /**
        * @description 初始化设置面包屑导航和标签导航

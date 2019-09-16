@@ -67,22 +67,27 @@ import { getFormMeta, postForm } from '../../service/api/dqs'
 import { getLesson, updateModelLessonsVote, postModelLessonsVote } from '../../service/api/lesson'
 import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
 import FormShow from '@/view/components/form_show/form_show.vue'
-
+import UserMixin from '@/mixins/UserMixin.js'
 export default {
   components: {
     Lesson, FormShow
   },
+  mixins: [ UserMixin ],
   name: 'FormFill',
   watch: {
     'meta.lesson': {
       deep: true,
       handler: function () {
-        if ((this.meta.lesson.lesson_model === '推荐为好评课' || this.meta.lesson.lesson_model === '待商榷') && (!this.meta.lesson.is_lock)) {
-          this.show_recommend = true
-        } else {
-          this.show_recommend = false
-          this.recommend_model = 0
-        }
+        for(let i=0;i<20;i++){
+          if((this.meta.lesson.lesson_model === '推荐为好评课' || this.meta.lesson.lesson_model === '待商榷')&&this.userInfo.userName===this.meta.lesson.guiders[i]['username'])
+          {
+            this.show_recommend = true
+            break
+          }
+          else {
+            this.show_recommend = false
+            this.recommend_model = 0
+          }}
       },
       immediate: true
     }
