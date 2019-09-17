@@ -17,8 +17,8 @@
       <br/>
       <divider orientation="left">问卷内容</divider>
       <FormShow v-model="form_values" :pages="form_meta.pages" :items="form_meta.items" :disabled="false" ref="form_info">
-        <div>
-          <div v-show="show_recommend">
+        <div slot-scope="Page">
+          <div v-show="show_recommend" v-if="Page.current_page==='评价表正面'">
             <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
             <FormItem>
               <Row>
