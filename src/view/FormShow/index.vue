@@ -19,7 +19,7 @@
 
           <FormShow v-model="form_values" :pages="form.pages" :items="form.values" :disabled="disabled" ref="form_info">
             <div slot-scope="Page">
-              <div v-if="Page.current_page==='评价表正面'">
+              <div v-show="form.model_lesson.is_model_lesson" v-if="Page.current_page==='评价表正面'">
                 <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
                 <FormItem>
                   <Row>
