@@ -77,7 +77,7 @@
               课程表
             </MenuItem>
 
-            <MenuItem name="attend">
+            <MenuItem name="attend" v-role="['教师']">
               <Icon type="ios-people"/>
               活动报名
             </MenuItem>
