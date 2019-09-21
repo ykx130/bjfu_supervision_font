@@ -45,7 +45,8 @@ export default {
   data: function () {
     return {
       query: {
-        group_name: '第一组'
+        group_name: '第一组',
+        term: ''
       }, // 查询用的参数
       total: 0, // 总数量
       terms: [],
@@ -149,7 +150,7 @@ export default {
       this.fetchData()
     },
     onExportExcel: function () {
-      exporLessonRecordExcel().then((resp) => {
+      exporLessonRecordExcel(this.query).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '导出成功' })
           window.open('/api/' + resp.data.filename)
@@ -160,20 +161,22 @@ export default {
   mounted: function () {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
-    })
 
-    getCurrentTerms().then((resp) => {
-      this.query.term = resp.data.term.name
-      queryGroups().then((resp) => {
-        this.groups = resp.data.groups
-        this.query.group_name = this.groups[0].name
-        // this.group_name = this.groups[0].name;
-        queryGroupLesson(this.query).then((resp) => {
-          this.data = resp.data.lesson_records
-          this.total = resp.data.total
+      getCurrentTerms().then((resp) => {
+        this.query.term = resp.data.term.name
+        queryGroups().then((resp) => {
+          this.groups = resp.data.groups
+          this.query.group_name = this.groups[0].group_name
+          // this.group_name = this.groups[0].name;
+          queryGroupLesson(this.query).then((resp) => {
+            this.data = resp.data.lesson_records
+            this.total = resp.data.total
+          })
         })
       })
     })
+
+
   }
 }
 </script>

@@ -17,8 +17,8 @@
       <br/>
       <divider orientation="left">问卷内容</divider>
       <FormShow v-model="form_values" :pages="form_meta.pages" :items="form_meta.items" :disabled="false" ref="form_info">
-        <div>
-          <div v-show="show_recommend">
+        <div slot-scope="Page">
+          <div v-show="show_recommend" v-if="Page.current_page==='评价表正面'">
             <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
             <FormItem>
               <Row>
@@ -67,22 +67,27 @@ import { getFormMeta, postForm } from '../../service/api/dqs'
 import { getLesson, updateModelLessonsVote, postModelLessonsVote } from '../../service/api/lesson'
 import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
 import FormShow from '@/view/components/form_show/form_show.vue'
-
+import UserMixin from '@/mixins/UserMixin.js'
 export default {
   components: {
     Lesson, FormShow
   },
+  mixins: [ UserMixin ],
   name: 'FormFill',
   watch: {
     'meta.lesson': {
       deep: true,
       handler: function () {
-        if ((this.meta.lesson.lesson_model === '推荐为好评课' || this.meta.lesson.lesson_model === '待商榷') && (!this.meta.lesson.is_lock)) {
-          this.show_recommend = true
-        } else {
-          this.show_recommend = false
-          this.recommend_model = 0
-        }
+        for(let i=0;i<20;i++){
+          if((this.meta.lesson.lesson_model === '推荐为好评课' || this.meta.lesson.lesson_model === '待商榷')&&this.userInfo.userName===this.meta.lesson.guiders[i]['username'])
+          {
+            this.show_recommend = true
+            break
+          }
+          else {
+            this.show_recommend = false
+            this.recommend_model = 0
+          }}
       },
       immediate: true
     }

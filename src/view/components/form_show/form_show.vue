@@ -69,7 +69,8 @@
         </template>
 
       </template>
-      <slot v-if="((!pages) ||current_page === pages[pages.length - 1])"></slot>
+      <slot :current_page="current_page" ></slot>
+<!--      v-if="((!pages) ||current_page === pages[0])"-->
     </Form>
   </div>
 </template>

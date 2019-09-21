@@ -1,4 +1,4 @@
-<template>
+<template >
   <Card>
     <BackTop></BackTop>
     <div style="overflow: hidden;overflow-x: hidden">
@@ -18,8 +18,8 @@
         <div>
 
           <FormShow v-model="form_values" :pages="form.pages" :items="form.values" :disabled="disabled" ref="form_info">
-            <div>
-              <div v-show="!form.model_lesson.is_model_lesson">
+            <div slot-scope="Page">
+              <div v-show="form.model_lesson.is_model_lesson" v-if="Page.current_page==='评价表正面'">
                 <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
                 <FormItem>
                   <Row>

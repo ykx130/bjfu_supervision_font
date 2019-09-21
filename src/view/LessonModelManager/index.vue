@@ -178,7 +178,7 @@ export default {
           title: '分配督导',
           render: function (h, params) {
             let tags = params.row.guiders.map((item) => {
-              return h('Tag', item)
+              return h('Tag', item.name)
             })
             return h('span', tags)
           }
