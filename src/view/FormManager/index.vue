@@ -32,7 +32,9 @@
       <FormItem>
         <Button type="primary" style="margin-left: 20px;width: 80px" @click=" onSearch">查询</Button>
       </FormItem>
+      <Button @click="export_option_visible=true" icon="ios-cloud-download-outline" type="primary" label="导出" v-role="['管理员']">导出</Button>
     </Form>
+    <FormExportChoose :show="export_option_visible" @onConfirm="onExportExcel" @onCancel="()=>{ this.export_option_visible=false}"></FormExportChoose>
 
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
@@ -44,11 +46,13 @@
 </template>
 
 <script>
-import { queryForms, putForm } from '../../service/api/dqs'
+import { queryForms, putForm ,exporFormsExcel} from '../../service/api/dqs'
 import { updateWithinField } from 'Libs/tools'
 import { getCurrentTerms, queryTerms } from '@/service/api/term'
 import { queryGroups } from '@/service/api/user'
+import  FormExportChoose from './components/form_export_choose'
 export default {
+  components: {FormExportChoose},
   data: function () {
     return {
       query: {
@@ -64,6 +68,8 @@ export default {
       total: 0,
       terms: [],
       groups: [],
+      export_option_visible:false,
+      mate_name:'',
       pages: {
         _page: 1,
         _per_page: 10
@@ -238,6 +244,19 @@ export default {
       // 查询变化 当点提交查询条件生效
       this.pages._page = 1
       this.fetchData()
+    },
+    onExportExcel: function (form_choose) {
+      exporFormsExcel({
+        'term': this.query.meta.term,
+        'bind_meta_name':form_choose
+      }).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '导出成功' })
+          window.open('/api/' + resp.data.filename)
+        }
+      })
+      this.export_option_visible=false
+
     }
   },
   mounted: function () {
