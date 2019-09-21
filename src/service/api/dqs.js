@@ -53,3 +53,6 @@ export const getLessons = (params) => {
 export const getGraph = params => {
   return axios.get(`/api/graph/form/${params.meta}/map`)
 }
+export const exporFormsExcel = (params) => {
+  return axios.post(`/api/form/excel/export`, params)
+}

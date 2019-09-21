@@ -47,10 +47,6 @@ export default {
         }
       ],
       selected: '',
-      props: {
-        onOk: Function,
-        onCancel: Function
-      }
     }
   },
   methods: {
