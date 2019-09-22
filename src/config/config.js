@@ -19,7 +19,7 @@ export const ROUTER_DEFAULT_CONFIG = {
 }
 
 export const AXIOS_DEFAULT_CONFIG = {
-  timeout: 2000000,
+  timeout: 200000000  ,
   maxContentLength: 2000,
   headers: {},
   withCredentials: true, // 允许携带cookie

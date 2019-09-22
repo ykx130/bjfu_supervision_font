@@ -33,7 +33,9 @@ export default {
   data: function () {
     return {
       data: [],
-      query: {},
+      query: {
+        _sort: 'order'
+      },
       term: '',
       terms: []
     }

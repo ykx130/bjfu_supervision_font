@@ -78,16 +78,14 @@ export default {
     'meta.lesson': {
       deep: true,
       handler: function () {
-        for(let i=0;i<20;i++){
-          if((this.meta.lesson.lesson_model === '推荐为好评课' || this.meta.lesson.lesson_model === '待商榷')&&this.userInfo.userName===this.meta.lesson.guiders[i]['username'])
+          if((this.meta.lesson.lesson_model === '推荐为好评课' || this.meta.lesson.lesson_model === '待商榷')&&this.meta.lesson.guiders.includes(this.userInfo.userName))
           {
             this.show_recommend = true
-            break
           }
           else {
             this.show_recommend = false
             this.recommend_model = 0
-          }}
+          }
       },
       immediate: true
     }
