@@ -7,7 +7,7 @@
       <Row>
         <Col span="8" v-if="user.guider">
           <FormItem prop="id" label="用户名" >
-            <Input type="text" style="width: 300px;" v-model="user.id" :disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.username" :disabled="true"></Input>
           </FormItem>
         </Col>
         <Col span="8" offset="8" v-if="user.guider">
@@ -21,7 +21,7 @@
       <Row>
         <Col span="8" >
           <FormItem prop="username" label="姓名">
-            <Input type="text" style="width: 300px;" v-model="user.username" :disabled="true"></Input>
+            <Input type="text" style="width: 300px;" v-model="user.name" :disabled="true"></Input>
           </FormItem>
         </Col>
         <Col span="8"offset="8">
