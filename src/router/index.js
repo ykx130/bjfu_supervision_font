@@ -31,6 +31,7 @@ router.beforeEach((to, from, next) => {
   // const token = getToken()
 
   if (to.name !== LOGIN_PAGE_NAME) {
+    console.log(store.state.user)
     if (store.state.user.userInfo.username) {
       if (to.name === 'home') {
         if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader || store.state.user.userInfo.guider.is_grouper || store.state.user.userInfo.guider.is_main_grouper) {
@@ -43,7 +44,11 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       store.dispatch('getUserInfo').then((resp) => {
-        next()
+        if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader || store.state.user.userInfo.guider.is_grouper || store.state.user.userInfo.guider.is_main_grouper) {
+          next()
+        } else {
+          next({ name: '督导端' })
+        }
       }).catch(() => {
         next({ name: 'login' })
       })
