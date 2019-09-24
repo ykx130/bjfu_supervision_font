@@ -36,7 +36,9 @@ export default {
   components: { lesson_grid, TeacherSelector },
   data () {
     return {
-      query: {},
+      query: {
+        term: undefined
+      },
       rules: {
         term: [{ required: true, message: '学期不能为空', trigger: 'blur' }],
         lesson_teacher_name: [{ required: true, message: '教师名字不能为空', trigger: 'blur' }]
@@ -233,6 +235,7 @@ export default {
           }
         })
       })
+      console.log(res)
       return res
     },
     pullLessons: function () {
@@ -352,10 +355,11 @@ export default {
   mounted: function () {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
+      getCurrentTerms().then((termResp) => {
+        this.query.term = termResp.data.term.name
+      })
     })
-    getCurrentTerms().then((termResp) => {
-      this.query.term = termResp.data.term.name
-    })
+
   }
 }
 </script>

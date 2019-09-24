@@ -42,7 +42,9 @@ export default {
         term: [{ required: true, message: '学期不能为空', trigger: 'blur' }],
         lesson_teacher_name: [{ required: true, message: '教师名字不能为空', trigger: 'blur' }]
       },
-      query: {},
+      query: {
+        term: undefined
+      },
       terms: [],
       term: '',
       columns: [
