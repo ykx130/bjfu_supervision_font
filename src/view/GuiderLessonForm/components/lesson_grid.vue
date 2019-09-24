@@ -51,8 +51,8 @@ export default {
       }
       lesson.week = week.concat()
       week = []
-      console.log('LESSoon', lesson)
     })
+    console.log('LESSoon', lesson)
   },
   methods: {
     judge: function (lesson_id, term) {

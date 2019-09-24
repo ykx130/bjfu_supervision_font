@@ -346,7 +346,6 @@ export default {
     },
     onTermChange: function (value) {
       this.term = value
-      this.$router.push({ name: this.$route.name, query: { term: this.term } })
     }
 
   },
