@@ -27,41 +27,43 @@
 </template>
 
 <script>
-    export default {
-      name: "lesson_grid",
-      props: {
-        someLesson: Array
-      },
-      mounted: function () {
-        let week = [];
-        this.someLesson.forEach((lesson) => {
-          if (lesson.lesson_week.length === 1) {
-            week.push(lesson.lesson_week[0]);
-            week.push(lesson.lesson_week[0]);  //推两个进去
-          }
-          if (lesson.lesson_week.length > 1) {
-            week.push(lesson.lesson_week[0]);
-            for (let index = 1; index < lesson.lesson_week.length; index++) {
-              if (lesson.lesson_week[index] - lesson.lesson_week[index - 1] !== 1) {
-                week.push(lesson.lesson_week[index - 1]);
-                week.push(lesson.lesson_week[index]);
-              }
-            }
-            week.push(lesson.lesson_week[lesson.lesson_week.length - 1]);
-          }
-          lesson.week = week.concat();
-          week = [];
-        });
-      },
-      methods:{ 
-        judge: function (lesson_id, term) {
-          this.$router.push({name:'guider_form_choose', query: {
-            'lesson_id': lesson_id,
-              'term': this.$route.query.term
-            }})
-        }
+export default {
+  name: 'lesson_grid',
+  props: {
+    someLesson: Array
+  },
+  mounted: function () {
+    let week = []
+    this.someLesson.forEach((lesson) => {
+      if (lesson.lesson_week.length === 1) {
+        week.push(lesson.lesson_week[0])
+        week.push(lesson.lesson_week[0]) // 推两个进去
       }
+      if (lesson.lesson_week.length > 1) {
+        week.push(lesson.lesson_week[0])
+        for (let index = 1; index < lesson.lesson_week.length; index++) {
+          if (lesson.lesson_week[index] - lesson.lesson_week[index - 1] !== 1) {
+            week.push(lesson.lesson_week[index - 1])
+            week.push(lesson.lesson_week[index])
+          }
+        }
+        week.push(lesson.lesson_week[lesson.lesson_week.length - 1])
+      }
+      lesson.week = week.concat()
+      week = []
+      console.log('LESSoon', lesson)
+    })
+  },
+  methods: {
+    judge: function (lesson_id, term) {
+      this.$router.push({ name: 'guider_form_choose',
+        query: {
+          'lesson_id': lesson_id,
+          'term': this.$route.query.term
+        } })
     }
+  }
+}
 </script>
 
 <style scoped>
