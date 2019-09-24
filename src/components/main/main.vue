@@ -68,7 +68,7 @@ export default {
     User,
     userNotices
   },
-  mixins:[UserMixin],
+  mixins: [UserMixin],
   data () {
     return {
       collapsed: false,
@@ -150,24 +150,22 @@ export default {
     handleClick (item) {
       this.turnToPage(item)
     },
-    handleClickToGuider(value){
-      if(value==="督导"){
-        this.$router.push({name: "督导端"})
+    handleClickToGuider (value) {
+      if (value === '督导') {
+        this.$router.push({ name: '督导端' })
         this.setCurrentAccess(value)
-      }
-      else if(value==="教师"){
+      } else if (value === '教师') {
         // this.$router.push({name: "督导端"})
         this.$router.push({ name: 'guider_active_attend', query: { time: new Date().getTime() } })
         this.setCurrentAccess(value)
-      }
-      else {
-        this.$router.push({ name: 'home',query:{time:new Date().getTime()}})
+      } else {
+        this.$router.push({ name: 'home', query: { time: new Date().getTime() } })
         this.setCurrentAccess(value)
       }
     },
-    getBtnType:function (value) {
-      if(value===this.current_role){
-        return "info"
+    getBtnType: function (value) {
+      if (value === this.current_role) {
+        return 'info'
       }
     }
   },
@@ -196,9 +194,9 @@ export default {
     this.setLocal(this.$i18n.locale)
     // 如果当前打开页面不在标签栏中，跳到homeName页
     if (!this.tagNavList.find(item => item.name === this.$route.name)) {
-      this.$router.push({
-        name: this.$config.homeName
-      })
+      // this.$router.push({
+      //   name: this.$config.homeName
+      // })
     }
   }
 }
