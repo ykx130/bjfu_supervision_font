@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view v-if="show"/>
+    <router-view />
   </div>
 </template>
 
@@ -15,10 +15,7 @@ export default {
   watch: {
     '$route':{
       handler: function () {
-        this.show=false
-        this.$nextTick(()=>{
-          this.show = true
-        })
+
       }
     }
   },

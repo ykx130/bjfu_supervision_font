@@ -34,7 +34,7 @@
             <tags-nav :value="$route" @input="handleClick" :list="tagNavList" @on-close="handleCloseTag"/>
           </div>
           <Content class="content-wrapper">
-              <router-view/>
+              <router-view v-if="show"/>
           </Content>
         </Layout>
       </Content>
@@ -74,7 +74,8 @@ export default {
       collapsed: false,
       minLogo,
       maxLogo,
-      isFullscreen: false
+      isFullscreen: false,
+      show: true
 
     }
   },
@@ -172,6 +173,10 @@ export default {
   watch: {
     '$route' (newRoute) {
       const { name, query, params, meta } = newRoute
+      this.show=false
+      this.$nextTick(()=>{
+        this.show = true
+      })
       this.addTag({
         route: { name, query, params, meta },
         type: 'push'
