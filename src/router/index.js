@@ -1,3 +1,10 @@
+/*
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-24 17:34:12
+ * @LastEditTime: 2019-09-24 17:34:12
+ * @LastEditors: your name
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 import routes from './routers'
@@ -31,7 +38,6 @@ router.beforeEach((to, from, next) => {
   // const token = getToken()
 
   if (to.name !== LOGIN_PAGE_NAME) {
-    console.log(store.state.user)
     if (store.state.user.userInfo.username) {
       if (to.name === 'home') {
         if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader || store.state.user.userInfo.guider.is_grouper || store.state.user.userInfo.guider.is_main_grouper) {

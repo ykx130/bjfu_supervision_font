@@ -1,25 +1,17 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-24 16:58:48
+ * @LastEditTime: 2019-09-24 18:40:41
+ * @LastEditors: Please set LastEditors
+ -->
 <template>
   <div>
     <div v-if="someLesson" v-for="lesson in someLesson">
-      <p>{{ lesson.lesson_name }},{{ lesson.lesson_class }}班,
-        <span v-for="(value, index) in lesson.week" v-if="index % 2 === 0">
-          <span v-if="index !== lesson.week.length - 2">
-            <span v-if="lesson.week[index] === lesson.week[index + 1]">
-              {{ lesson.week[index] }},
-            </span>
-            <span v-else>
-              {{ lesson.week[index] }}-{{ lesson.week[index + 1] }},
-            </span>
-          </span>
-          <span v-if="index === lesson.week.length-2">
-            <span v-if="lesson.week[index] === lesson.week[index + 1]">
-              {{ lesson.week[index] }}
-            </span>
-            <span v-else>
-              {{ lesson.week[index] }}-{{ lesson.week[index + 1] }}
-            </span>
-          </span>
-        </span>周</p>
+      <p>
+        {{ lesson.lesson_name }},{{ lesson.lesson_class }}班,
+        <span>{{ getLessonWeekShow(lesson.lesson_week)}}</span>周
+      </p>
       <Button type="text" @click="judge(lesson.lesson_id, lesson.term)" style="color: #348EED">评价</Button>
       <span>-------</span>
     </div>
@@ -32,40 +24,66 @@ export default {
   props: {
     someLesson: Array
   },
+
+  watch: {
+    someLesson: {
+      deep: true,
+      handler: function () {
+        this.updateGrid()
+      }
+    }
+  },
+
+  data: function () {
+    return {
+      weeks: {}
+    }
+  },
+
   mounted: function () {
-    let week = []
-    this.someLesson.forEach((lesson) => {
-      if (lesson.lesson_week.length === 1) {
-        week.push(lesson.lesson_week[0])
-        week.push(lesson.lesson_week[0]) // 推两个进去
-      }
-      if (lesson.lesson_week.length > 1) {
-        week.push(lesson.lesson_week[0])
-        for (let index = 1; index < lesson.lesson_week.length; index++) {
-          if (lesson.lesson_week[index] - lesson.lesson_week[index - 1] !== 1) {
-            week.push(lesson.lesson_week[index - 1])
-            week.push(lesson.lesson_week[index])
-          }
-        }
-        week.push(lesson.lesson_week[lesson.lesson_week.length - 1])
-      }
-      lesson.week = week.concat()
-      week = []
-    })
-    console.log('LESSoon', lesson)
+    this.updateGrid()
   },
   methods: {
     judge: function (lesson_id, term) {
-      this.$router.push({ name: 'guider_form_choose',
+      this.$router.push({
+        name: 'guider_form_choose',
         query: {
-          'lesson_id': lesson_id,
-          'term': this.$route.query.term
-        } })
+          lesson_id: lesson_id,
+          term: this.$route.query.term
+        }
+      })
+    },
+    getLessonWeekShow: function (weeks) {
+      // 获取一个周列表的显示
+      let res = ''
+      let pre = []
+      for (let idx in weeks) {
+        if (pre.length) {
+          if (parseInt(weeks[idx]) !== parseInt(pre[pre.length - 1]) + 1) {
+            if (pre.length === 1) {
+              res = res + pre[0] + ','
+            } else {
+              res = res + pre[0] + '-' + pre[pre.length - 1] + ','
+            }
+            pre = []
+          }
+          pre.push(weeks[idx])
+        } else {
+          pre.push(weeks[idx])
+        }
+      }
+      if (pre.length) {
+        if (pre.length === 1) {
+          res = res + pre[0] + ','
+        } else {
+          res = res + pre[0] + '-' + pre[pre.length - 1] + ','
+        }
+      }
+      return res
     }
   }
 }
 </script>
 
 <style scoped>
-
 </style>

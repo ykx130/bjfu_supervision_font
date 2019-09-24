@@ -1,17 +1,29 @@
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-09-24 17:11:09
+ * @LastEditTime: 2019-09-24 17:11:09
+ * @LastEditors: your name
+ -->
 <template>
   <div>
     <Card>
       <Row>
         <Form :label-width="80" ref="form" :model="query" inline required :rules="rules">
-        <FormItem label="学期：" prop="term" v-role ="['管理员']">
-          <Select v-model="query.term" style="width:200px">
-            <Option v-for="item in terms" :value="item.name" :key="item.name" @on-change="onTermChange">{{ item.name }}</Option>
-          </Select>
-        </FormItem>
-          <FormItem label="教师名字：" :label-width="100"  prop="lesson_teacher_name" >
-              <TeacherSelector :term="query.term"  v-model="query.lesson_teacher_name"></TeacherSelector>
+          <FormItem label="学期：" prop="term" v-role="['管理员']">
+            <Select v-model="query.term" style="width:200px">
+              <Option
+                v-for="item in terms"
+                :value="item.name"
+                :key="item.name"
+                @on-change="onTermChange"
+              >{{ item.name }}</Option>
+            </Select>
           </FormItem>
-          <FormItem >
+          <FormItem label="教师名字：" :label-width="100" prop="lesson_teacher_name">
+            <TeacherSelector :term="query.term" v-model="query.lesson_teacher_name"></TeacherSelector>
+          </FormItem>
+          <FormItem>
             <Button type="primary" @click="onSearch">查看</Button>
           </FormItem>
         </Form>
@@ -19,10 +31,10 @@
     </Card>
 
     <div style="padding-top: 15px"></div>
-  <card>
-    <h1>课程表</h1>
-     <Table stripe border :columns="columns" :data="data"></Table>
-  </card>
+    <card>
+      <h1>课程表</h1>
+      <Table stripe border :columns="columns" :data="data"></Table>
+    </card>
   </div>
 </template>
 
@@ -41,7 +53,9 @@ export default {
       },
       rules: {
         term: [{ required: true, message: '学期不能为空', trigger: 'blur' }],
-        lesson_teacher_name: [{ required: true, message: '教师名字不能为空', trigger: 'blur' }]
+        lesson_teacher_name: [
+          { required: true, message: '教师名字不能为空', trigger: 'blur' }
+        ]
       },
       terms: [],
       term: '',
@@ -201,41 +215,42 @@ export default {
   methods: {
     preProcess: function (lessons) {
       let res = []
-      lessons.forEach((lesson) => {
-        lesson.lesson_cases.forEach((lesson_case) => {
-          let same_case = res.findIndex((ele) => {
-            return ele.id === lesson.id &&
-                  ele.lesson_weekday === lesson_case.lesson_weekday &&
-                  ele.lesson_time === lesson_case.lesson_time
+      lessons.forEach(lesson => {
+        lesson.lesson_cases.forEach(lesson_case => {
+          let same_case = res.findIndex(ele => {
+            return (
+              ele.id === lesson.id &&
+              ele.lesson_weekday === lesson_case.lesson_weekday &&
+              ele.lesson_time === lesson_case.lesson_time
+            )
           })
           if (same_case > -1) {
             res[same_case].lesson_week.push(lesson_case.lesson_week)
           } else {
             res.push({
-              'id': lesson.id,
-              'lesson_attribute': lesson.lesson_attribute,
-              'lesson_class': lesson.lesson_class,
-              'lesson_grade': lesson.lesson_grade,
-              'lesson_id': lesson.lesson_id,
-              'lesson_level': lesson.lesson_level,
-              'lesson_name': lesson.lesson_name,
-              'lesson_semester': lesson.lesson_semester,
-              'lesson_state': lesson.lesson_state,
-              'lesson_teacher_id': lesson.lesson_teacher_id,
-              'lesson_teacher_name': lesson.lesson_teacher_name,
-              'lesson_teacher_unit': lesson.lesson_teacher_unit,
-              'lesson_type': lesson.lesson_type,
-              'lesson_unit': lesson.lesson_unit,
-              'lesson_year': lesson.lesson_year,
-              'lesson_weekday': lesson_case.lesson_weekday,
-              'lesson_time': lesson_case.lesson_time,
-              'lesson_week': [lesson_case.lesson_week],
-              'week': []
+              id: lesson.id,
+              lesson_attribute: lesson.lesson_attribute,
+              lesson_class: lesson.lesson_class,
+              lesson_grade: lesson.lesson_grade,
+              lesson_id: lesson.lesson_id,
+              lesson_level: lesson.lesson_level,
+              lesson_name: lesson.lesson_name,
+              lesson_semester: lesson.lesson_semester,
+              lesson_state: lesson.lesson_state,
+              lesson_teacher_id: lesson.lesson_teacher_id,
+              lesson_teacher_name: lesson.lesson_teacher_name,
+              lesson_teacher_unit: lesson.lesson_teacher_unit,
+              lesson_type: lesson.lesson_type,
+              lesson_unit: lesson.lesson_unit,
+              lesson_year: lesson.lesson_year,
+              lesson_weekday: lesson_case.lesson_weekday,
+              lesson_time: lesson_case.lesson_time,
+              lesson_week: [lesson_case.lesson_week],
+              week: []
             })
           }
         })
       })
-      console.log(res)
       return res
     },
     pullLessons: function () {
@@ -312,10 +327,10 @@ export default {
           7: []
         }
       ]
-      getLessons(this.query).then((resp) => {
+      getLessons(this.query).then(resp => {
         this.lessons = resp.data.lessons
         let allLessons = this.preProcess(this.lessons)
-        allLessons.forEach((lesson) => {
+        allLessons.forEach(lesson => {
           if (lesson.lesson_time.indexOf('0102') > -1) {
             this.data[0][lesson.lesson_weekday].push(lesson)
           }
@@ -341,7 +356,7 @@ export default {
       })
     },
     onSearch: function () {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(valid => {
         if (valid) {
           this.pullLessons()
         }
@@ -350,20 +365,17 @@ export default {
     onTermChange: function (value) {
       this.term = value
     }
-
   },
   mounted: function () {
-    queryTerms().then((resp) => {
+    queryTerms().then(resp => {
       this.terms = resp.data.terms
-      getCurrentTerms().then((termResp) => {
+      getCurrentTerms().then(termResp => {
         this.query.term = termResp.data.term.name
       })
     })
-
   }
 }
 </script>
 
 <style scoped>
-
 </style>
