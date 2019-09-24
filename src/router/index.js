@@ -32,7 +32,7 @@ router.beforeEach((to, from, next) => {
 
   if (to.name !== LOGIN_PAGE_NAME) {
     if (store.state.user.userInfo.username) {
-      if (to.name === '_home') {
+      if (to.name === 'home') {
         if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader || store.state.user.userInfo.guider.is_grouper || store.state.user.userInfo.guider.is_main_grouper) {
           next()
         } else {
