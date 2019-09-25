@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabs v-model="current_page">
+    <Tabs :value="current_page">
       <TabPane v-for="(item) in  pages" :label="item" :name="item" :key="item"></TabPane>
     </Tabs>
     <Form :model="values" ref="ruleform">
@@ -82,12 +82,15 @@ export default {
     values: Object,
     disabled: Boolean,
     items: Array,
-    pages: Array
+    pages: Array,
+    judgePage: Function
   },
   data: function () {
     return {
       ruleValidate: {},
-      current_page: '评价表正面'
+      current_page: '评价表正面',
+      prePages:true,
+      nextPages:true
     }
   },
   model: {
@@ -116,6 +119,37 @@ export default {
     validate: function (f) {
       return this.$refs.ruleform.validate(f)
     },
+    nextPage:function(){
+      let i=this.pages.indexOf(this.current_page)
+      if(i<this.pages.length-1) {
+        this.current_page = this.pages[i+1]
+      }
+      this.judgeCurrentPage()
+
+    },
+    prePage:function(){
+      let i=this.pages.indexOf(this.current_page)
+      if(i>0) {
+        this.current_page = this.pages[i-1]
+      }
+      this.judgeCurrentPage()
+    },
+    judgeCurrentPage:function(){
+      let i=this.pages.indexOf(this.current_page)
+      if(i===0){
+        this.prePages=false
+      }
+      else {
+        this.prePages=true
+      }
+      if(i===this.pages.length-1){
+        this.nextPages=false
+      }
+      else{
+        this.nextPages=true
+      }
+      this.$emit('judgePage', [this.prePages,this.nextPages]);
+      },
     fillValidateRule: function () {
       this.items.map((item) => {
         if (item.type === 'form_item' && item.payload.rules) {
