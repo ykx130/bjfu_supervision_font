@@ -17,7 +17,7 @@
         <divider orientation="left">问卷内容</divider>
         <div>
 
-          <FormShow v-model="form_values" :pages="form.pages" :items="form.values" :disabled="disabled" ref="form_info">
+          <FormShow v-model="form_values" :pages="form.pages" :items="form.values" :disabled="disabled" ref="form_info" @judgePage="judgePage">
             <div slot-scope="Page">
               <div v-show="form.model_lesson.is_model_lesson" v-if="Page.current_page==='评价表正面'">
                 <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
@@ -64,6 +64,14 @@
       <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="form.status==='已完成'">保存</Button>
       <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled">提交</Button>
       <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
+      <Button style="margin-left: 28px" @click="prePage" v-show="pageshow[0]">
+        <Icon type="ios-arrow-back"></Icon>
+        上一页
+      </Button>
+      <Button  style="margin-left: 28px" @click="nextPage" v-show="pageshow[1]">
+        下一页
+        <Icon type="ios-arrow-forward"></Icon>
+      </Button>
 
       <div style="overflow: hidden">
           <div v-if="form.status === '已完成'" class="form-status" style="background-color: #cce5ff"><p> {{ form.status }} </p></div>
@@ -117,7 +125,8 @@ export default {
           { required: false }
         ]
       },
-      ruleValidate: {}
+      ruleValidate: {},
+      pageshow:[false,true]
     }
   },
   mounted () {
@@ -153,6 +162,15 @@ export default {
           }
         })
       })
+    },
+    nextPage:function(){
+      this.$refs.form_info.nextPage()
+    },
+    prePage:function(){
+      this.$refs.form_info.prePage()
+    },
+    judgePage:function(pageShow){
+      this.pageshow=pageShow
     },
     back () {
       this.$router.back()
