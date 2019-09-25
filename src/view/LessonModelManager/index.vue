@@ -4,7 +4,7 @@
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="课程名字：" prop="lesson_name">
-        <Input style="width: 180px" v-model="query.lesson_name_like" placeholder="请输入用户名字">
+        <Input style="width: 180px" v-model="query.lesson_name_like" placeholder="请输入课程名字">
         </Input>
       </FormItem>
       <FormItem label="学期：" prop="term" v-role ="['管理员']">

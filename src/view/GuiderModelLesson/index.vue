@@ -2,32 +2,32 @@
   <Card>
     <h1>好评课堂</h1>
     <br>
-    <Form :label-width="80" :model="query" inline>
-      <FormItem label="课程名字：" prop="lesson_name">
-        <Input style="width: 180px" v-model="query.lesson_name_like" placeholder="请输入用户名字">
-        </Input>
-      </FormItem>
-      <FormItem label="学期：" prop="term" v-role ="['管理员']">
-        <Select v-model="query.term" style="width:200px">
-          <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
-        </Select>
-      </FormItem>
-      <FormItem >
-        <Button type="primary" @click=" onSearch">查询</Button>
-      </FormItem>
-      <!--
-      <FormItem >
-        <Button @click="onExportExcel" icon="ios-cloud-download-outline" type="primary" >导出</Button>
-      </FormItem>
-      <FormItem >
-        <Upload :action="uploadModelLessonApi"
-                :on-success="handleImportExcelSucc"
-                name="filename">
-          <Button  icon="ios-cloud-upload-outline" type="primary" >导入</Button>
-        </Upload>
-      </FormItem>
-      -->
-    </Form>
+<!--    <Form :label-width="80" :model="query" inline>-->
+<!--      <FormItem label="课程名字：" prop="lesson_name">-->
+<!--        <Input style="width: 180px" v-model="query.lesson_name_like" placeholder="请输入课程名字">-->
+<!--        </Input>-->
+<!--      </FormItem>-->
+<!--      <FormItem label="学期：" prop="term" v-role ="['管理员']">-->
+<!--        <Select v-model="query.term" style="width:200px">-->
+<!--          <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>-->
+<!--        </Select>-->
+<!--      </FormItem>-->
+<!--      <FormItem >-->
+<!--        <Button type="primary" @click=" onSearch">查询</Button>-->
+<!--      </FormItem>-->
+<!--      &lt;!&ndash;-->
+<!--      <FormItem >-->
+<!--        <Button @click="onExportExcel" icon="ios-cloud-download-outline" type="primary" >导出</Button>-->
+<!--      </FormItem>-->
+<!--      <FormItem >-->
+<!--        <Upload :action="uploadModelLessonApi"-->
+<!--                :on-success="handleImportExcelSucc"-->
+<!--                name="filename">-->
+<!--          <Button  icon="ios-cloud-upload-outline" type="primary" >导入</Button>-->
+<!--        </Upload>-->
+<!--      </FormItem>-->
+<!--      &ndash;&gt;-->
+<!--    </Form>-->
 
     <LessonProfileModal
       :show="showLessonProfileModal"
