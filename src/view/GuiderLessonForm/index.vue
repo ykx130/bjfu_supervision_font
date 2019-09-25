@@ -54,7 +54,7 @@ export default {
       rules: {
         term: [{ required: true, message: '学期不能为空', trigger: 'blur' }],
         lesson_teacher_name: [
-          { required: true, message: '教师名字不能为空', trigger: 'blur' }
+          { required: true, message: '教师名字不能为空', trigger: 'change' }
         ]
       },
       terms: [],
