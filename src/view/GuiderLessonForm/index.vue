@@ -245,6 +245,7 @@ export default {
               lesson_year: lesson.lesson_year,
               lesson_weekday: lesson_case.lesson_weekday,
               lesson_time: lesson_case.lesson_time,
+              lesson_room: lesson_case.lesson_room,
               lesson_week: [lesson_case.lesson_week],
               week: []
             })

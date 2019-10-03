@@ -289,7 +289,7 @@ export default {
     },
     handleImportExcelSucc: function (response, file, fileList) {
       if (response.code !== 200) {
-        this.$Message.warning({ content: '部分导出失败' })
+        this.$Message.warning({ content: '部分导入失败' })
         window.open('/api/' + response.fail_excel_path)
       } else {
         this.$Message.success({ content: '导入成功' })
