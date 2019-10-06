@@ -188,7 +188,7 @@ export default {
           7: []
         },
         {
-          period: '10-11',
+          period: '10',
           1: [],
           2: [],
           3: [],
@@ -198,7 +198,17 @@ export default {
           7: []
         },
         {
-          period: '12',
+          period: '11-12',
+          1: [],
+          2: [],
+          3: [],
+          4: [],
+          5: [],
+          6: [],
+          7: []
+        },
+        {
+          period: '13',
           1: [],
           2: [],
           3: [],
@@ -226,6 +236,7 @@ export default {
           })
           if (same_case > -1) {
             res[same_case].lesson_week.push(lesson_case.lesson_week)
+            res[same_case].lesson_room.includes(lesson_case.lesson_room)
           } else {
             res.push({
               id: lesson.id,
@@ -245,12 +256,18 @@ export default {
               lesson_year: lesson.lesson_year,
               lesson_weekday: lesson_case.lesson_weekday,
               lesson_time: lesson_case.lesson_time,
-              lesson_room: lesson_case.lesson_room,
+              lesson_room: [lesson_case.lesson_room],
               lesson_week: [lesson_case.lesson_week],
               week: []
             })
           }
         })
+      })
+      res.forEach(room=>
+      {
+        if(room.lesson_room[0]===''){
+          room.lesson_room[0]='未知地点'
+        }
       })
       return res
     },
@@ -308,7 +325,7 @@ export default {
           7: []
         },
         {
-          period: '10-11',
+          period: '10',
           1: [],
           2: [],
           3: [],
@@ -318,7 +335,17 @@ export default {
           7: []
         },
         {
-          period: '12',
+          period: '11-12',
+          1: [],
+          2: [],
+          3: [],
+          4: [],
+          5: [],
+          6: [],
+          7: []
+        },
+        {
+          period: '13',
           1: [],
           2: [],
           3: [],
