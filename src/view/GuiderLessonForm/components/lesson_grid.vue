@@ -9,7 +9,7 @@
   <div>
     <div v-if="someLesson" v-for="lesson in someLesson">
       <p>
-        {{ lesson.lesson_name }},{{ lesson.lesson_class }}班,{{lesson.lesson_room}},
+        {{ lesson.lesson_name }},{{ lesson.lesson_class }}班,{{lesson.lesson_room.toString()}},
         <span>{{ getLessonWeekShow(lesson.lesson_week)}}</span>周
       </p>
       <Button type="text" @click="judge(lesson.lesson_id, lesson.term)" style="color: #348EED">评价</Button>
@@ -27,10 +27,10 @@ export default {
 
   watch: {
     someLesson: {
-      deep: true,
-      handler: function () {
-        this.updateGrid()
-      }
+      deep: true
+      // handler: function () {
+      //   this.updateGrid()
+      // }
     }
   },
 
@@ -40,9 +40,9 @@ export default {
     }
   },
 
-  mounted: function () {
-    this.updateGrid()
-  },
+  // mounted: function () {
+  //   this.updateGrid()
+  // },
   methods: {
     judge: function (lesson_id, term) {
       this.$router.push({
