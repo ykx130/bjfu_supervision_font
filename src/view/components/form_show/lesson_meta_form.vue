@@ -65,7 +65,7 @@
 
     <Form :model="value">
       <Row>
-        <Col :sm="24" :md="12" :lg="6">
+        <Col :sm="24" :md="8" :lg="4">
           <table class="table-border meta-table">
             <tbody>
             <tr>
@@ -97,7 +97,7 @@
             </tbody>
           </table>
         </Col>
-        <Col :sm="24" :md="12" :lg="6">
+        <Col :sm="24" :md="8" :lg="4">
           <table class="table-border meta-table">
             <tbody>
             <tr>
@@ -113,7 +113,8 @@
             </tbody>
           </table>
         </Col>
-        <Col :sm="24" :md="12" :lg="6">
+
+        <Col :sm="24" :md="8" :lg="4">
           <table class="table-border meta-table">
             <tbody>
             <tr>
@@ -129,7 +130,7 @@
             </tbody>
           </table>
         </Col>
-        <Col :sm="24" :md="12" :lg="6">
+        <Col :sm="24" :md="8" :lg="4">
           <table class="table-border meta-table">
             <tbody>
             <tr>
@@ -153,7 +154,7 @@
             </tbody>
           </table>
         </Col>
-        <Col :sm="24" :md="12" :lg="6">
+        <Col :sm="24" :md="8" :lg="4">
           <table class="table-border meta-table">
             <tbody>
             <tr>
@@ -169,7 +170,7 @@
             </tbody>
           </table>
         </Col>
-        <Col :sm="24" :md="12" :lg="6">
+        <Col :sm="24" :md="8" :lg="4">
           <table class="table-border meta-table">
             <tbody>
             <tr>
@@ -520,6 +521,9 @@
 
   .meta-table {
     width: 100%;
+    td {
+      height: 30px;
+    }
   }
 
   .inline-form-item {
