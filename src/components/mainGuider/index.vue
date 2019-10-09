@@ -315,7 +315,9 @@ export default {
     this.setLocal(this.$i18n.locale)
     // 如果当前打开页面不在标签栏中，跳到homeName页
     this.mobile_res = window.matchMedia('(max-width: 900px)')
+    this.handleMobile(this.mobile_res)
     this.mobile_res.addListener(this.handleMobile)
+
   },
 
   destroyed () {
