@@ -26,67 +26,67 @@
 </template>
 
 <script>
-import { getCurrentTerms, queryTerms } from "@/service/api/term";
-import { queryFormMetas } from "../../service/api/dqs";
-import { queryWorkPlanDetail } from "@/service/api/work_plan";
-import form_meta_card from "Views/components/form_meta_card/form_meta_card";
+import { getCurrentTerms, queryTerms } from '@/service/api/term'
+import { queryFormMetas } from '../../service/api/dqs'
+import { queryWorkPlanDetail } from '@/service/api/work_plan'
+import form_meta_card from 'Views/components/form_meta_card/form_meta_card'
 export default {
   components: { form_meta_card },
-  name: "index.vue",
-  data: function() {
+  name: 'index.vue',
+  data: function () {
     return {
       data: [],
       query: {
-        _sort: "order"
+        _sort: 'order'
       },
-      term: "",
+      term: '',
       terms: []
-    };
+    }
   },
   methods: {
-    onCardClick: function(name, version) {
+    onCardClick: function (name, version) {
       this.$router.push({
-        name: "guider_form_fill",
+        name: 'guider_form_fill',
         params: {
           name: name,
           version: version
         },
         query: this.$route.query
-      });
+      })
     },
-    onSearch(query) {
+    onSearch (query) {
       // 查询变化 当点提交查询条件生效
       queryWorkPlanDetail(this.term).then(resp => {
         this.data = resp.data.work_plans.map(item => {
-          return item.form_meta;
-        });
-      });
+          return item.form_meta
+        })
+      })
     }
   },
-  mounted: function() {
+  mounted: function () {
     queryTerms().then(resp => {
-      this.terms = resp.data.terms;
+      this.terms = resp.data.terms
 
       if (this.$route.query.term) {
-        this.term = this.$route.query.term;
+        this.term = this.$route.query.term
         queryWorkPlanDetail(this.term).then(resp => {
           this.data = resp.data.work_plans.map(item => {
-            return item.form_meta;
-          });
-        });
+            return item.form_meta
+          })
+        })
       } else {
         getCurrentTerms().then(termResp => {
-          this.term = termResp.data.term.name;
+          this.term = termResp.data.term.name
           queryWorkPlanDetail(this.term).then(resp => {
             this.data = resp.data.work_plans.map(item => {
-              return item.form_meta;
-            });
-          });
-        });
+              return item.form_meta
+            })
+          })
+        })
       }
-    });
+    })
   }
-};
+}
 </script>
 
 <style scoped>

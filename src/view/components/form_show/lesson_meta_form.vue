@@ -2,7 +2,7 @@
  * @Description: In User Settings Edit
  * @Author: your name
  * @Date: 2019-09-21 10:05:09
- * @LastEditTime: 2019-10-09 14:51:17
+ * @LastEditTime: 2019-10-09 18:40:00
  * @LastEditors: Please set LastEditors
  -->
 <template>
@@ -118,7 +118,7 @@
               </FormItem>
             </td>
             <td>
-              <FormItem :required="true" class="table-form-item" prop="lesson.lesson_rooms">
+              <FormItem :required="true" class="table-form-item" prop="lesson.lesson_room">
                 <Input v-model="value.lesson.lesson_room" :disabled="disabled"></Input>
               </FormItem>
             </td>
