@@ -47,48 +47,90 @@
       <Header>
         <Menu mode="horizontal" theme="primary" :active-name="activity_name" @on-select="onMenuSelect">
           <div class="layout-nav">
-<!--            <Submenu name="3" v-role="['督导','管理员']">-->
-<!--              <template slot="title">-->
-<!--                <Icon type="ios-stats" />-->
-<!--                我要填写评价-->
-<!--              </template>-->
+            <!--            <Submenu name="3" v-role="['督导','管理员']">-->
+            <!--              <template slot="title">-->
+            <!--                <Icon type="ios-stats" />-->
+            <!--                我要填写评价-->
+            <!--              </template>-->
 
-<!--            </Submenu>-->
-            <MenuItem name="notice_lesson" v-role="['督导','管理员']">
-              <Icon type="ios-bookmarks-outline" />
-              重点关注
-            </MenuItem>
-            <MenuItem name="lesson_model" v-role="['督导','管理员']">
-              <Icon type="ios-happy-outline" />
-              好评课堂
-            </MenuItem>
+            <!--            </Submenu>-->
 
-            <MenuItem name="judge" v-role="['督导','管理员']">
-              <Icon type="ios-book-outline" />
-              自主听课
-            </MenuItem>
+            <div v-if="is_mobile">
+              <Submenu name="3">
+                <template slot="title">
+                  <Icon type="ios-stats"/>
+                  菜单栏
+                </template>
+                <MenuItem name="notice_lesson" v-role="['督导','管理员']">
+                  <Icon type="ios-bookmarks-outline"/>
+                  重点关注
+                </MenuItem>
+                <MenuItem name="lesson_model" v-role="['督导','管理员']">
+                  <Icon type="ios-happy-outline"/>
+                  好评课堂
+                </MenuItem>
+                <MenuItem name="judge" v-role="['督导','管理员']">
+                  <Icon type="ios-book-outline"/>
+                  自主听课
+                </MenuItem>
+                <MenuItem name="my_form" v-role="['督导','管理员']">
+                  <Icon type="ios-paper"/>
+                  我的评价
+                </MenuItem>
+                <MenuItem name="lesson_form" v-role="['督导','管理员']">
+                  <Icon type="ios-list-box-outline"/>
+                  课程表
+                </MenuItem>
 
-            <MenuItem name="my_form" v-role="['督导','管理员']">
-              <Icon type="ios-paper"/>
-              我的评价
-            </MenuItem>
-            <MenuItem name="lesson_form" v-role="['督导','管理员']">
-              <Icon type="ios-list-box-outline" />
-              课程表
-            </MenuItem>
+                <MenuItem name="attend" v-role="['教师']">
+                  <Icon type="ios-people"/>
+                  活动报名
+                </MenuItem>
+                <MenuItem name="consult_apply" v-role="['教师']">
+                  <Icon type="ios-construct"/>
+                  咨询申请
+                </MenuItem>
+                <MenuItem name="leader_lookup" v-role="['督导','管理员']">
+                  <Icon type="ios-body"/>
+                  学院教学院长
+                </MenuItem>
+              </Submenu>
+            </div>
+            <div v-else>
+              <MenuItem name="notice_lesson" v-role="['督导','管理员']">
+                <Icon type="ios-bookmarks-outline"/>
+                重点关注
+              </MenuItem>
+              <MenuItem name="lesson_model" v-role="['督导','管理员']">
+                <Icon type="ios-happy-outline"/>
+                好评课堂
+              </MenuItem>
+              <MenuItem name="judge" v-role="['督导','管理员']">
+                <Icon type="ios-book-outline"/>
+                自主听课
+              </MenuItem>
+              <MenuItem name="my_form" v-role="['督导','管理员']">
+                <Icon type="ios-paper"/>
+                我的评价
+              </MenuItem>
+              <MenuItem name="lesson_form" v-role="['督导','管理员']">
+                <Icon type="ios-list-box-outline"/>
+                课程表
+              </MenuItem>
+              <MenuItem name="attend" v-role="['教师']">
+                <Icon type="ios-people"/>
+                活动报名
+              </MenuItem>
+              <MenuItem name="consult_apply" v-role="['教师']">
+                <Icon type="ios-construct"/>
+                咨询申请
+              </MenuItem>
+              <MenuItem name="leader_lookup" v-role="['督导','管理员']">
+                <Icon type="ios-body"/>
+                学院教学院长
+              </MenuItem>
+            </div>
 
-            <MenuItem name="attend" v-role="['教师']">
-              <Icon type="ios-people"/>
-              活动报名
-            </MenuItem>
-            <MenuItem name="consult_apply" v-role="['教师']">
-              <Icon type="ios-construct"/>
-              咨询申请
-            </MenuItem>
-            <MenuItem name="leader_lookup" v-role="['督导','管理员']">
-              <Icon type="ios-body"/>
-              学院教学院长
-            </MenuItem>
           </div>
 
           <user :user-avator="userAvator" style="float: right; margin-right: 40px"/>
@@ -98,13 +140,15 @@
           <!--<error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount" style="float: right; margin-right: 10px;color:#E6EFFA"></error-store>-->
           <fullscreen v-model="isFullscreen" style="margin-right: 10px; float: right;color:#E6EFFA"/>
           <div style="margin-right: 100px;float: right">
-<!--            <span style="font-size:small;color: #FFFFFF">当前身份：</span>-->
-            <ButtonGroup style="margin-top: 3px"size="large">
-              <Button v-for="(value,index) in this.roles"  :key="value"  @click="handleClickToAdmin(value)" :type="getBtnType(value)">{{value}}</Button>
+            <!--            <span style="font-size:small;color: #FFFFFF">当前身份：</span>-->
+            <ButtonGroup style="margin-top: 3px" size="large">
+              <Button v-for="(value,index) in this.roles" :key="value" @click="handleClickToAdmin(value)"
+                      :type="getBtnType(value)">{{value}}
+              </Button>
             </ButtonGroup>
           </div>
-<!--          <span @click="handleClickToAdmin" style="margin-right: 10px; float: right;color:#E6EFFA;cursor:pointer"-->
-<!--                v-role="['管理员', '学院领导', '小组长', '大组长']"> 切换到管理员端 </span>-->
+          <!--          <span @click="handleClickToAdmin" style="margin-right: 10px; float: right;color:#E6EFFA;cursor:pointer"-->
+          <!--                v-role="['管理员', '学院领导', '小组长', '大组长']"> 切换到管理员端 </span>-->
         </Menu>
 
       </Header>
@@ -145,7 +189,9 @@ export default {
       // maxLogo,
       isFullscreen: false,
       // activity_name: 'consult_apply'
-      activity_name: 'my_form'
+      activity_name: 'my_form',
+      mobile_res: undefined,
+      is_mobile: false
     }
   },
   computed: {
@@ -226,11 +272,10 @@ export default {
       if (value === '督导') {
         this.setCurrentAccess(value)
         this.$router.push({ name: '督导我的提交', query: { time: new Date().getTime() } })
-
-      } else if(value==='教师'){
+      } else if (value === '教师') {
         this.setCurrentAccess(value)
         this.$router.push({ name: 'guider_active_attend', query: { time: new Date().getTime() } })
-      }else {
+      } else {
         this.setCurrentAccess(value)
         this.$router.push({ name: 'home' })
       }
@@ -238,6 +283,13 @@ export default {
     getBtnType: function (value) {
       if (value === this.current_role) {
         return 'info'
+      }
+    },
+    handleMobile: function (x) {
+      if (x.matches) {
+        this.is_mobile = true
+      } else {
+        this.is_mobile = false
       }
     }
   },
@@ -247,7 +299,7 @@ export default {
     }
   },
   mounted () {
-    if(this.current_role==='大组长'||this.current_role==='小组长'||this.current_role==='管理员'||this.current_role==='学院领导'){
+    if (this.current_role === '大组长' || this.current_role === '小组长' || this.current_role === '管理员' || this.current_role === '学院领导') {
       this.$router.push({ name: 'home' })
     }
     if (this.$route.path === '/_guider') {
@@ -262,6 +314,12 @@ export default {
     // 设置初始语言
     this.setLocal(this.$i18n.locale)
     // 如果当前打开页面不在标签栏中，跳到homeName页
+    this.mobile_res = window.matchMedia('(max-width: 900px)')
+    this.mobile_res.addListener(this.handleMobile)
+  },
+
+  destroyed () {
+    this.mobile_res = undefined
   }
 }
 </script>
