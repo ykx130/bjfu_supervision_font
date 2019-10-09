@@ -179,7 +179,7 @@
             <tr>
               <td>
                 <FormItem :required="true" class="table-form-item" prop="lesson.lesson_times">
-                  <Select v-model="value.lesson.lesson_times" multiple :disabled="disabled">
+                  <Select v-model="value.lesson.lesson_times" multiple :disabled="disabled" :max-tag-count="1">
                     <Option
                       v-for="item in lesson_times"
                       :value="item.value"
