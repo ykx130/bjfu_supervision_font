@@ -11,8 +11,6 @@
       :model="value"
       :rules="rules"
       ref="lesson_info_form"
-      :label-width="80"
-      label-position="left"
     >
       <Row :gutter="16">
         <Col :sm="24" :md="12" :lg="6">
@@ -61,9 +59,7 @@
           </FormItem>
         </Col>
       </Row>
-    </Form>
 
-    <Form :model="value">
       <Row>
         <Col :sm="24" :md="8" :lg="4">
           <table class="table-border meta-table">
@@ -122,7 +118,7 @@
             </tr>
             <tr>
               <td>
-                <FormItem :required="true" class="table-form-item" prop="lesson.lesson_class">
+                <FormItem :required="true" class="table-form-item" prop="lesson.lesson_class" >
                   <Input v-model="value.lesson.lesson_class" :disabled="disabled"></Input>
                 </FormItem>
               </td>
@@ -192,7 +188,6 @@
             </tr>
             </tbody>
           </table>
-
         </Col>
       </Row>
 
@@ -243,7 +238,15 @@
             {required: true, message: "日期不能为空", trigger: "blur"}
           ],
           "lesson.lesson_times": [
-            {required: true, message: "节次不能为空", trigger: "blur"}
+            {
+              validator (rule, value, callback) {
+                if (value.length <= 0) {
+                  return callback(new Error('课程节次不能为空'))
+                } else {
+                  callback()
+                }
+              }
+            }
           ]
         }
       };
