@@ -71,7 +71,7 @@ export default {
   mixins: [UserMixin],
   data () {
     return {
-      collapsed: false,
+      collapsed: true,
       minLogo,
       maxLogo,
       isFullscreen: false,
@@ -173,8 +173,8 @@ export default {
   watch: {
     '$route' (newRoute) {
       const { name, query, params, meta } = newRoute
-      this.show=false
-      this.$nextTick(()=>{
+      this.show = false
+      this.$nextTick(() => {
         this.show = true
       })
       this.addTag({
