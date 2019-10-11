@@ -113,6 +113,11 @@ export default {
         this.fillValidateRule()
         console.log(this.ruleValidate)
       }
+    },
+    current_page:{
+      handler:function(val){
+        this.judgeCurrentPage()
+      }
     }
   },
   methods: {
@@ -124,15 +129,14 @@ export default {
       if(i<this.pages.length-1) {
         this.current_page = this.pages[i+1]
       }
-      this.judgeCurrentPage()
-
+      // this.judgeCurrentPage()
     },
     prePage:function(){
       let i=this.pages.indexOf(this.current_page)
       if(i>0) {
         this.current_page = this.pages[i-1]
       }
-      this.judgeCurrentPage()
+      // this.judgeCurrentPage()
     },
     judgeCurrentPage:function(){
       let i=this.pages.indexOf(this.current_page)
