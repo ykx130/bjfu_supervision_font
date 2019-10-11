@@ -112,7 +112,7 @@ export default {
         meta: { term: undefined }
       },
       pages: {
-        _per_page: 30,
+        _per_page: 5,
         _page: 1
       }
     }
@@ -129,7 +129,9 @@ export default {
       this.pages._page = 1
       this.fetchForms()
     },
-    onPageChange () {
+    onPageChange (page) {
+      this.pages._page = page
+
       this.fetchForms()
     },
     handleChangeClick (form) {
