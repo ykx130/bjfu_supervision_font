@@ -6,7 +6,7 @@
         <h1 style="text-align: center;color: #468847;background-color: #dff0d8;    border-color: #d6e9c6;">{{ form.bind_meta_name }}</h1>
         <br/>
         <div>
-          <Lesson v-model="form.meta" :disabled="false"></Lesson>
+          <Lesson v-model="form.meta" :disabled="form.status==='已完成'"></Lesson>
         </div>
         <br/>
       <Alert type="error" v-html="form.toptip">
