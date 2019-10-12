@@ -293,8 +293,8 @@
             } else {
               getCurrentTerms().then(resp => {
                 this.value.term = resp.data.term.name;
-                console.log(this.value.lesson.lesson_id)
                 this.$nextTick(()=>{
+                  console.log(this.value.lesson.lesson_id)
                   if (this.value.lesson.lesson_id) {
                     getLesson(this.value.lesson.lesson_id).then(resp => {
                       // 读取课程
