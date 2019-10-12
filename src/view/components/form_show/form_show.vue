@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabs :value="current_page">
+    <Tabs v-model="current_page">
       <TabPane v-for="(item) in  pages" :label="item" :name="item" :key="item"></TabPane>
     </Tabs>
     <Form :model="values" ref="ruleform">
