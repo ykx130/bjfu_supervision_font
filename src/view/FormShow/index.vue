@@ -9,11 +9,8 @@
           <Lesson v-model="form.meta" :disabled="true"></Lesson>
         </div>
         <br/>
-        <Alert type="error">
-          <strong>注：</strong><br>
-          （1）“教师授课情况总体评价”为“非常满意”，需满足如下条件：8项评价中，非常满意≥5，其中标★项目评价必须为非常满意；且没有“存在不足”及以下。<br>
-          （2）“教师授课情况总体评价”为“存在明显不足”，需满足如下条件：8项评价中，存在明显不足≥3。
-        </Alert>
+      <Alert type="error" v-html="form.toptip">
+      </Alert>
         <divider orientation="left">问卷内容</divider>
         <div>
 
