@@ -191,6 +191,7 @@ export default {
         bind_meta_version: this.form_meta.version,
         meta: this.meta,
         status: status,
+        toptip:this.form_meta.toptip,
         pages: this.form_meta.pages,
         values: this.formValue2Items()
       };
