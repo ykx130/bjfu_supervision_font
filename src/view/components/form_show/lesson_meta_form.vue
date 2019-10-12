@@ -269,61 +269,57 @@
     },
     mounted() {
       // 处理当前用户
-      if (!this.currentUser.role_names.includes("管理员")) {
-        this.disabled_term = true;
-        this.guider_disable = true;
-      }
-      queryTerms()
-        .then(resp => {
-          this.terms = resp.data.terms;
-        })
-        .then(() => {
-          let lesson_id = this.$route.query.lesson_id;
-          if (lesson_id) {
-            // 课程表跳转
-            getLesson(lesson_id).then(resp => {
-              // 读取课程
-              this.selected_lesson = resp.data.lesson;
-              // 处理case
-              this.lessons[this.selected_lesson.lesson_id] = this.selected_lesson;
-              this.onSelectedLessonChange(this.selected_lesson.lesson_id);
-              this.lesson_times = [];
-              this.value.term = this.selected_lesson.term;
-              // 处理表单的附加值
+        if (!this.currentUser.role_names.includes("管理员")) {
+          this.disabled_term = true;
+          this.guider_disable = true;
+        }
+        queryTerms()
+          .then(resp => {
+            this.terms = resp.data.terms;
+          })
+          .then(() => {
+            let lesson_id = this.$route.query.lesson_id;
+            if (lesson_id) {
+              // 课程表跳转
+              getLesson(lesson_id).then(resp => {
+                // 处理case
+                let selected_lesson = resp.data.lesson;
+                // 处理case
+                this.lessons[selected_lesson.lesson_id] = selected_lesson;
+                this.onSelectedLessonChange(selected_lesson.lesson_id);
+                this.lesson_times = [];
+                this.value.term = this.selected_lesson.term;
+              });
+            } else {
+              getCurrentTerms().then(resp => {
+                this.value.term = resp.data.term.name;
+                this.$nextTick(()=>{
+                  console.log(this.value.lesson.lesson_id)
+                  if (this.value.lesson.lesson_id) {
+                    getLesson(this.value.lesson.lesson_id).then(resp => {
+                      // 读取课程
+                      let selected_lesson = resp.data.lesson;
+                      // 处理case
+                      this.lessons[selected_lesson.lesson_id] = selected_lesson;
+                      this.onSelectedLessonChange(selected_lesson.lesson_id);
+                      // 处理表单的附加值
 
-              this.fetchUser();
-            });
-          } else {
-            getCurrentTerms().then(resp => {
-              this.value.term = resp.data.term.name;
-              if (this.lesson_disabled || this.disabled) {
-                this.selected_lesson = this.value.lesson;
-                this.$set(
-                  this.lessons,
-                  this.selected_lesson.lesson_id,
-                  this.selected_lesson
-                );
-                this.lesson_times = this.value.lesson.lesson_times.map(item => {
-                  return {
-                    label: `第${item}节`,
-                    value: item
-                  };
-                });
-              } else {
-                this.fetchLesson();
-              }
-
-              if (this.guider_disable || this.disabled) {
-                this.$set(this.users, this.value.guider, {
-                  username: this.value.guider,
-                  name: this.value.guider_name
-                });
-              } else {
-                this.fetchUser();
-              }
-            });
-          }
-        });
+                    });
+                  } else {
+                    this.fetchLesson();
+                  }
+                })
+                if (this.guider_disable || this.disabled) {
+                  this.$set(this.users, this.value.guider, {
+                    username: this.value.guider,
+                    name: this.value.guider_name
+                  });
+                } else {
+                  this.fetchUser();
+                }
+              });
+            }
+          });
       if (
         this.currentUser.guider &&
         !this.currentUser.role_names.includes("管理员")
@@ -423,6 +419,7 @@
           this.selected_lesson = {lesson_cases: []};
         } // 查看选的那个
         this.value.lesson = {
+          ...this.value.lesson,
           lesson_id: this.selected_lesson.lesson_id,
           raw_lesson_id: this.selected_lesson.raw_lesson_id,
           lesson_name: this.selected_lesson.lesson_name,
@@ -437,9 +434,8 @@
           lesson_level: this.selected_lesson.lesson_level,
           lesson_model: this.selected_lesson.lesson_model,
           is_lock: this.selected_lesson.is_lock,
-          guiders: this.selected_lesson.guiders
+          guiders: this.selected_lesson.guiders,
         };
-        this.onSelectedLessonCaseChange(undefined);
       },
 
       onSelectedLessonCaseChange: function (value) {
@@ -450,6 +446,7 @@
             return item.lesson_date === value;
           });
           if (flag !== -1) {
+            // 上课时间选中
             this.lesson_times = transTimeToSelectedData(
               this.selected_lesson.lesson_cases[flag].lesson_time
             );
@@ -468,6 +465,7 @@
               : []
           };
         } else {
+          // 没找到不选
           this.lesson_times = [];
           this.selected_lesson_case = {};
           this.value.lesson = {
