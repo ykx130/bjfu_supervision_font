@@ -53,7 +53,7 @@ export default {
       nc: undefined,
       disable_login: true,
       form: {
-        userName: 'super_admin',
+        userName: '',
         password: '',
       }
     }
