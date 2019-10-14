@@ -196,6 +196,10 @@ export default {
                 style: {
                   marginRight: '2px'
                 },
+                directives: [{
+                  name: 'role',
+                  value: ['管理员']
+                }],
                 on: {
                   click: () => {
                     this.selected_lesson_id = params.row.id
@@ -296,7 +300,7 @@ export default {
       }
     },
     itemShow (columns) {
-      if (this.current_role !== '管理员') {
+      if (this.current_role !== '管理员'&& this.current_role !== '小组长') {
         for (let i = 0; i < columns.length; i++) {
           if (columns[i]['title'] === '分配督导') {
             columns.splice(i, 1)
