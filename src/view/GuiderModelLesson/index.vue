@@ -101,7 +101,7 @@ export default {
         {
           title: '好评状态',
           render: (h, params) => {
-            if (params.row.status === 1) {
+            if (params.row.status === '推荐为好评课') {
               return h('Tag', { props: { color: 'red' } }, '推荐为好评课')
             } else {
               return h('Tag', { props: { color: 'blue' } }, '待商榷')
