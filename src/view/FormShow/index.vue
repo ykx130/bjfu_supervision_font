@@ -23,15 +23,15 @@
                     <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：是否推荐为好评课?</span>
                   </Row>
                   <Row>
-                    <RadioGroup v-model="form.model_lesson.recommend" >
+                    <RadioGroup v-model="form.model_lesson.recommend"  >
                       <Radio
                         :label="1"
                         v-bind:style="{ fontSize:'15px',marginLeft:'25px' }"
-                        disabled
+                        :disabled="form.status==='已完成'"
                       >推荐</Radio>
                       <Radio :label="0"
                              v-bind:style="{ fontSize:'15px',marginLeft:'25px' }"
-                             disabled
+                             :disabled="form.status==='已完成'"
                       >不推荐</Radio>
                     </RadioGroup>
                   </Row>
@@ -45,7 +45,7 @@
                   </Row>
                   <Row>
                     <Input type="textarea"
-                           disabled
+                           :disabled="form.status==='已完成'"
                            v-model="form.model_lesson.recommend_reason"
                            placeholder="Satisfation about teachers..."
                            v-bind:style="{marginLeft:'25px',width:'65%'}"></Input>
@@ -141,7 +141,8 @@ export default {
     produceFrom (status) {
       let form = {
         status: status,
-        values: this.formValue2Items()
+        values: this.formValue2Items(),
+        model_lesson : this.form.model_lesson
       }
       return form
     },

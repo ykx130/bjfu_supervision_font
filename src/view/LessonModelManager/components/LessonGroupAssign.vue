@@ -96,11 +96,9 @@ export default {
     },
     fetchUser: function () {
       this.Supervisors = {}
-      return querySupervisors({username_like: this.guider_name_like }).then((resp) => {
+      return querySupervisors({name_like: this.guider_name_like }).then((resp) => {
         resp.data.supervisors.map((item) => {
           this.$set(this.Supervisors, item.username, item)
-          console.log(this.Supervisors)
-          console.log(this.guider_name_like)
 
         })
       })
