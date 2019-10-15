@@ -103,9 +103,10 @@ export default {
       deep: true,
       handler: function() {
         if (
-          (this.meta.lesson.lesson_model === "推荐为好评课" ||
-            this.meta.lesson.lesson_model === "待商榷") &&
-          this.meta.lesson.guiders.includes(this.userInfo.userName)
+          (this.meta.lesson.lesson_model === "推荐课" ||
+            this.meta.lesson.lesson_model === "待商榷") && this.meta.lesson.guiders.some((element) =>{
+            return element["username"] =this.userInfo.userName;
+          })
         ) {
           this.show_recommend = true;
         } else {

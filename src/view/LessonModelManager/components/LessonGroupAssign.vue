@@ -8,15 +8,13 @@
     <Select :value="flat_lessons_guiders"
             multiple
             filterable
-            remote
             label-in-value
-            :loading="false"
+            :loading="on_gudier_search_loading"
             style="width:260px"
-            @on-query-change="onGuiderQueryChange"
             @on-change="onGuiderSelectChange"
             :disabled="guider_disable || disabled"
     >
-      <Option v-for="(item,key) in Supervisors" v-if="item.group_name===lesson.group_name" :value="item.username" :key="item.username">{{ "'" + item.user.name + "'" }}</Option>
+      <Option v-for="(item,key) in Supervisors":value="item.username" :key="item.username">{{ "'" + item.user.name + "'" }}</Option>
     </Select>
 <!--    v-model="guiders"-->
   </Modal>
@@ -50,8 +48,17 @@ export default {
       guider_name_like:'',
       user_name_like: '',
       guider_disable: false,
-      select_guider:{},
-      Supervisors: {} // 督导
+      select_guiders:[],
+      Supervisors: {}, // 督导,
+      on_gudier_search_loading: false
+    }
+  },
+  watch: {
+    'lesson.group_name' : {
+      deep: true,
+      handler: function () {
+        this.fetchUser()
+      }
     }
   },
 
@@ -62,7 +69,7 @@ export default {
       })
     }
   },
-  methods: {
+    methods: {
     handleOK: function () {
       // console.log(JSON.stringify(this.Supervisors))
 
@@ -82,35 +89,32 @@ export default {
       }
     },
     onGuiderSelectChange: function (value) {
-      if (value) {
-        this.lesson.guiders = value.map((item)=>{
-          return {'name':item.label, 'username': item.value}
-        })
-      }
+      this.lesson.guiders = value.map((item)=>{
+        return {'name':item.label, 'username': item.value}
+      })
     },
     onGuiderQueryChange: function (value) {
-      if (!(value.startsWith("'") && value.endsWith("'"))) {
+      if (value !== '') {
+        this.on_gudier_search_loading = true
         this.guider_name_like = value
-        this.fetchUser()
+        this.fetchUser().then(()=>{
+          this.on_gudier_search_loading = false
+        })
       }
+
     },
     fetchUser: function () {
       this.Supervisors = {}
-      return querySupervisors({username_like: this.guider_name_like }).then((resp) => {
+      return querySupervisors({name_like: this.guider_name_like, group_name:this.lesson.group_name, _per_page: 1000 }).then((resp) => {
         resp.data.supervisors.map((item) => {
-          this.$set(this.Supervisors, item.username, item)
-          console.log(this.Supervisors)
-          console.log(this.guider_name_like)
-
+          this.Supervisors = resp.data.supervisors
         })
       })
 
     }
   },
   mounted: function () {
-    querySupervisors().then((resp) => {
-      this.Supervisors = resp.data.supervisors
-    })
+
   }
 }
 </script>

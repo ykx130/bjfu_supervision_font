@@ -23,6 +23,9 @@
           <template slot-scope="{ row }" slot="lesson_name">
             <span>{{row.meta.lesson.lesson_name}} </span>
           </template>
+          <template slot-scope="{ row }" slot="teacher_name">
+            <span>{{row.meta.lesson.lesson_teacher_name}} </span>
+          </template>
           <template slot-scope="{ row }" slot="lesson_date">
             <span>{{row.meta.lesson.lesson_date}} </span>
           </template>
@@ -80,6 +83,10 @@ export default {
       {
         title: '听课课程',
         slot: 'lesson_name'
+      },
+        {
+        title: '上课教师',
+        slot: 'teacher_name'
       },
       {
         title: '听课日期',

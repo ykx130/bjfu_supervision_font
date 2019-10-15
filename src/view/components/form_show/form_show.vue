@@ -22,7 +22,6 @@
           <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name"  v-show="it.payload.page === current_page">
             <Row>
               <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
-              <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
             </Row>
             <Row>
               <RadioGroup v-model="values[it.item_name]">
@@ -41,7 +40,6 @@
           <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name" v-show="it.payload.page === current_page">
             <Row>
               <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
-              <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
             </Row>
             <Row>
               <CheckboxGroup v-model="values[it.item_name]">
@@ -59,7 +57,6 @@
           <FormItem :rules="ruleValidate[it.item_name]" :prop="it.item_name" v-show="it.payload.page === current_page">
             <Row>
               <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
-              <span v-bind:style="{marginLeft:'0px',fontSize:'15px' }">【{{ it.extra }} 权重：{{it.weight}} 】</span>
             </Row>
             <Row>
               <Input type="textarea" placeholder="Satisfation about teachers..." v-model="values[it.item_name]"
