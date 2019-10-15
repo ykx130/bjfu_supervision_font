@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { getLessons } from '@/service/api/dqs'
+import { getLessonsWithCases } from '@/service/api/dqs'
 import lesson_grid from './components/lesson_grid'
 import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import TeacherSelector from '@/view/components/teacher_selector'
@@ -242,17 +242,16 @@ export default {
               'lesson_year': lesson.lesson_year,
               'lesson_weekday': lesson_case.lesson_weekday,
               'lesson_time': lesson_case.lesson_time,
-              'lesson_room':[lesson_case.lesson_room],
+              'lesson_room': [lesson_case.lesson_room],
               'lesson_week': [lesson_case.lesson_week],
               'week': []
             })
           }
         })
       })
-      res.forEach(room=>
-      {
-        if(room.lesson_room[0]===''){
-          room.lesson_room[0]='未知地点'
+      res.forEach(room => {
+        if (room.lesson_room[0] === '') {
+          room.lesson_room[0] = '未知地点'
         }
       })
       return res
@@ -341,7 +340,7 @@ export default {
           7: []
         }
       ]
-      getLessons(this.query).then((resp) => {
+      getLessonsWithCases(this.query).then((resp) => {
         this.lessons = resp.data.lessons
         let allLessons = this.preProcess(this.lessons)
         allLessons.forEach((lesson) => {

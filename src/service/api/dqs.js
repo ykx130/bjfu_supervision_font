@@ -46,7 +46,7 @@ export const putForm = (id, params) => {
 }
 
 /* 获得一个lesson的form_meta */
-export const getLessons = (params) => {
+export const getLessonsWithCases = (params) => {
   return axios.get('/api/lessons_with_case', { params: params })
 }
 

@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { getLessons } from '../../service/api/dqs'
+import { getLessonsWithCases } from '../../service/api/dqs'
 import lesson_grid from './components/lesson_grid'
 import { queryTerms, getCurrentTerms } from '../../service/api/term'
 import TeacherSelector from '@/view/components/teacher_selector'
@@ -263,10 +263,9 @@ export default {
           }
         })
       })
-      res.forEach(room=>
-      {
-        if(room.lesson_room[0]===''){
-          room.lesson_room[0]='未知地点'
+      res.forEach(room => {
+        if (room.lesson_room[0] === '') {
+          room.lesson_room[0] = '未知地点'
         }
       })
       return res
@@ -355,7 +354,7 @@ export default {
           7: []
         }
       ]
-      getLessons(this.query).then(resp => {
+      getLessonsWithCases(this.query).then(resp => {
         this.lessons = resp.data.lessons
         let allLessons = this.preProcess(this.lessons)
         allLessons.forEach(lesson => {
