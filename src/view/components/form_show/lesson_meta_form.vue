@@ -140,7 +140,7 @@
                     type="date"
                     :value="value.lesson.lesson_date"
                     format="yyyy-MM-dd"
-                    @on-change="onSelectedLessonCaseChange"
+                    @on-change="(v)=>{onSelectedLessonCaseChange(v, true)}"
                     :options="getLessonDatePickerOption()"
                     :disabled="disabled"
                   ></DatePicker>
@@ -410,13 +410,14 @@
               }
             );
             if (!assign_case_date) {
+              this.value.lesson.lesson_times = []
               if (this.allow_select_data.length > 0) {
-                this.onSelectedLessonCaseChange(this.allow_select_data[0]);
+                this.onSelectedLessonCaseChange(this.allow_select_data[0], true);
               } else {
-                this.onSelectedLessonCaseChange(undefined);
+                this.onSelectedLessonCaseChange(undefined, true);
               }
             } else {
-              this.onSelectedLessonCaseChange(assign_case_date)
+              this.onSelectedLessonCaseChange(assign_case_date, false)
             }
           });
         } else {
@@ -442,8 +443,10 @@
         };
       },
 
-      onSelectedLessonCaseChange: function (value) {
-        debugger
+      onSelectedLessonCaseChange: function (value, clear) {
+        if (clear){
+          this.value.lesson.lesson_times = []
+        }
         if (value) {
           /* 选择的课程case变化 根据时间 */
           this.value.lesson.lesson_date = value;
