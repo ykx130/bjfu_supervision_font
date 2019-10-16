@@ -265,6 +265,20 @@
         handler: function (val, oldVal) {
           this.$emit("input", this.value);
         }
+      },
+      'value.lesson.lesson_id' : {
+        handler: function (val, oldVal) {
+          if (this.value.lesson.lesson_id) {
+            getLesson(this.value.lesson.lesson_id).then(resp => {
+              // 读取课程
+              let selected_lesson = resp.data.lesson;
+              // 处理case
+              this.lessons[selected_lesson.lesson_id] = selected_lesson;
+              this.onSelectedLessonChange(selected_lesson.lesson_id, this.value.lesson.lesson_date);
+              // 处理表的附加值
+            });
+          }
+        }
       }
     },
     mounted() {
@@ -280,35 +294,11 @@
           .then(() => {
             let lesson_id = this.$route.query.lesson_id;
             if (lesson_id) {
-              // 课程表跳转
-              getLesson(lesson_id).then(resp => {
-                // 处理case
-                let selected_lesson = resp.data.lesson;
-                // 处理case
-                this.lessons[selected_lesson.lesson_id] = selected_lesson;
-                this.onSelectedLessonChange(selected_lesson.lesson_id, undefined);
-                this.lesson_times = [];
-                this.value.term = this.selected_lesson.term;
-              });
+              this.value.lesson.lesson_id = lesson_id
             } else {
               getCurrentTerms().then(resp => {
                 this.value.term = resp.data.term.name;
-                this.$nextTick(()=>{
-                  console.log(this.value.lesson.lesson_id)
-                  if (this.value.lesson.lesson_id) {
-                    getLesson(this.value.lesson.lesson_id).then(resp => {
-                      // 读取课程
-                      let selected_lesson = resp.data.lesson;
-                      // 处理case
-                      this.lessons[selected_lesson.lesson_id] = selected_lesson;
-                      this.onSelectedLessonChange(selected_lesson.lesson_id, this.value.lesson.lesson_date);
-                      // 处理表的附加值
-
-                    });
-                  } else {
-                    this.fetchLesson();
-                  }
-                })
+                this.fetchLesson();
                 if (this.guider_disable || this.disabled) {
                   this.$set(this.users, this.value.guider, {
                     username: this.value.guider,
