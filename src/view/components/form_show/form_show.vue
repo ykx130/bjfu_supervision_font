@@ -42,7 +42,7 @@
               <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
             </Row>
             <Row>
-              <CheckboxGroup v-model="values[it.item_name]">
+              <CheckboxGroup :value="values[it.item_name]" @on-change="(v)=>{onCheckBoxChange(it.item_name, v)}">
                 <Checkbox v-for="op in it.payload.options" :label="op.label"
                           :key="op.label + op.value"
                           v-bind:style="{ fontSize:'15px',marginLeft:'25px' }" :disabled="disabled">
@@ -118,6 +118,10 @@ export default {
     }
   },
   methods: {
+    onCheckBoxChange(item_name, value) {
+
+      this.values[item_name] = value
+    },
     validate: function (f) {
       return this.$refs.ruleform.validate(f)
     },
