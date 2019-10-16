@@ -76,7 +76,7 @@
                     @on-query-change="onLessonQueryChange"
                     clearable
                     :label="value.lesson.lesson_name"
-                    @on-change="onSelectedLessonChange"
+                    @on-change="(v)=>{onSelectedLessonChange(v, undefined)}"
                     :disabled="disabled"
                     filterable
                   >
@@ -286,7 +286,7 @@
                 let selected_lesson = resp.data.lesson;
                 // 处理case
                 this.lessons[selected_lesson.lesson_id] = selected_lesson;
-                this.onSelectedLessonChange(selected_lesson.lesson_id);
+                this.onSelectedLessonChange(selected_lesson.lesson_id, undefined);
                 this.lesson_times = [];
                 this.value.term = this.selected_lesson.term;
               });
@@ -301,8 +301,8 @@
                       let selected_lesson = resp.data.lesson;
                       // 处理case
                       this.lessons[selected_lesson.lesson_id] = selected_lesson;
-                      this.onSelectedLessonChange(selected_lesson.lesson_id);
-                      // 处理表单的附加值
+                      this.onSelectedLessonChange(selected_lesson.lesson_id, this.value.lesson.lesson_date);
+                      // 处理表的附加值
 
                     });
                   } else {
@@ -397,7 +397,7 @@
         this.fetchUser();
       },
 
-      onSelectedLessonChange: function (lesson_id) {
+      onSelectedLessonChange: function (lesson_id, assign_case_date) {
         /* 选择的课程发生变化 */
         if (lesson_id) {
           this.selected_lesson = this.lessons[lesson_id];
@@ -409,10 +409,14 @@
                 return item.lesson_date;
               }
             );
-            if (this.allow_select_data.length > 0) {
-              this.onSelectedLessonCaseChange(this.allow_select_data[0]);
+            if (!assign_case_date) {
+              if (this.allow_select_data.length > 0) {
+                this.onSelectedLessonCaseChange(this.allow_select_data[0]);
+              } else {
+                this.onSelectedLessonCaseChange(undefined);
+              }
             } else {
-              this.onSelectedLessonCaseChange(undefined);
+              this.onSelectedLessonCaseChange(assign_case_date)
             }
           });
         } else {
@@ -439,6 +443,7 @@
       },
 
       onSelectedLessonCaseChange: function (value) {
+        debugger
         if (value) {
           /* 选择的课程case变化 根据时间 */
           this.value.lesson.lesson_date = value;
