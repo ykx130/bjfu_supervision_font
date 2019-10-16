@@ -141,6 +141,7 @@ export default {
     produceFrom (status) {
       let form = {
         status: status,
+        meta: this.form.meta,
         values: this.formValue2Items(),
         model_lesson : this.form.model_lesson
       }
