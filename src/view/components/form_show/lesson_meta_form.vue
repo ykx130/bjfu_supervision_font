@@ -21,10 +21,11 @@
         <Col :sm="24" :md="12" :lg="6">
           <FormItem label="听课督导" :required="true">
             <Select
-              v-model="value.guider"
+              :value="value.guider"
               filterable
               clearable
               remote
+              :label="value.guider"
               :loading="false"
               @on-query-change="onGuiderQueryChange"
               @on-change="onGuiderSelectChange"
@@ -279,7 +280,7 @@
             });
           }
         }
-      }
+      },
     },
     mounted() {
       // 处理当前用户
@@ -368,6 +369,7 @@
       },
 
       onGuiderSelectChange: function (value) {
+        this.value.guider = value
         if (value) {
           this.select_guider = this.users[value];
           if (this.select_guider) {
