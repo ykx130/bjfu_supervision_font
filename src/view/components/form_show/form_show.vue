@@ -42,13 +42,13 @@
               <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：{{it.title}}</span>
             </Row>
             <Row>
-              <CheckboxGroup :value="values[it.item_name]" @on-change="(v)=>{onCheckBoxChange(it.item_name, v)}">
                 <Checkbox v-for="op in it.payload.options" :label="op.label"
                           :key="op.label + op.value"
+                          :value="values[it.item_name].includes(op.label)"
+                          @on-change="(v)=>{onCheckBoxChange(it.item_name, op.label, v)}"
                           v-bind:style="{ fontSize:'15px',marginLeft:'25px' }" :disabled="disabled">
                   <span>{{op.label}}</span>
                 </Checkbox>
-              </CheckboxGroup>
             </Row>
           </FormItem>
         </template>
@@ -118,9 +118,14 @@ export default {
     }
   },
   methods: {
-    onCheckBoxChange(item_name, value) {
+    onCheckBoxChange(item_name, label, value) {
 
-      this.values[item_name] = value
+      if (value) {
+        this.values[item_name].push(label)
+      } else {
+        let i = this.values[item_name].indexOf(label)
+        this.values[item_name].splice(i, 1  )
+      }
     },
     validate: function (f) {
       return this.$refs.ruleform.validate(f)
