@@ -14,6 +14,15 @@
           >{{ item.name }}</Option>
         </Select>
       </FormItem>
+      <FormItem prop="lesson_attribute" label="课程属性">
+        <Select v-model="plan.lesson_attribute"  @on-change="handleMetaChange" >
+          <Option v-for="item in attributes"
+                  :value="item"
+                  :key="item"
+          >{{ item }}</Option>
+        </Select>
+      </FormItem>
+
     </Form>
   </Modal>
 </template>
@@ -32,7 +41,8 @@ export default {
     return {
       plan: {},
       form_metas: [],
-      meta_versions: []
+      meta_versions: [],
+      attributes: ['普通课', '实验课', '体育课']
     }
   },
   watch: {
