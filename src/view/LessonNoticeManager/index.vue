@@ -60,6 +60,7 @@ import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 import UserMixin from'@/mixins/UserMixin'
+import {deleteNoticeLesson} from "../../service/api/lesson";
 
 
 export default {
@@ -190,7 +191,35 @@ export default {
                     this.showLessonProfileModal = true
                   }
                 }
-              }, '查看')
+              }, '查看'),
+              h('Button', {
+                props: {
+                  type: 'error',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '2px'
+                },
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: '是否确认删除?',
+                      onOk: () => {
+                        deleteNoticeLesson(params.row.id).then((res) => {
+                          this.fetchData()
+                          if (res.data.code === 200) {
+                            this.$Message.success('删除成功！')
+                          } else {
+                            this.$Message.error('删除失败！')
+                          }
+                        })
+                      },
+                      onCancel:()=>{}
+                    })
+
+                  }
+                }
+              }, '删除')
             ])
           }
         }
@@ -226,6 +255,16 @@ export default {
         }
         this.showLessonProfileModal = false
         this.pages._page = 1
+      })
+    },
+    OnDelete(lesson_id){
+      deleteNoticeLesson(lesson_id).then((res)=>{
+        this.fetchData()
+        if (res.data.code === 200) {
+          this.$Message.success('删除成功！')
+        } else {
+          this.$Message.error('删除失败！')
+        }
       })
     },
     onProfileModalCancel () {

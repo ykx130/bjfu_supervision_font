@@ -92,13 +92,14 @@ export default {
               },
               on: {
                 click: () => {
-                  this.$Modal.warning({
+                  this.$Modal.confirm({
                     title: '是否确认删除?',
                     onOk: () => {
                       deleteWorkPlan(params.row.id).then(() => {
                         this.fetchData()
                       })
-                    }
+                    },
+                    onCancel:()=>{}
                   })
                 }
               }
