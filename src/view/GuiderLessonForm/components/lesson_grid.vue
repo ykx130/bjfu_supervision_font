@@ -12,14 +12,16 @@
         {{ lesson.lesson_name }},{{ lesson.lesson_class }}班,{{lesson.lesson_room.toString()}},
         <span>{{ getLessonWeekShow(lesson.lesson_week)}}</span>周
       </p>
-      <Button type="text" @click="judge(lesson.lesson_id, lesson.term)" style="color: #348EED">评价</Button>
+      <Button type="text" @click="formjudge(lesson.lesson_id, lesson.term, lesson.lesson_attribute)" style="color: #348EED">评价</Button>
       <span>-------</span>
     </div>
   </div>
 </template>
 
 <script>
+import FormMixin from '@/mixins/FormMixin.js'
 export default {
+  mixins: [FormMixin],
   name: 'lesson_grid',
   props: {
     someLesson: Array

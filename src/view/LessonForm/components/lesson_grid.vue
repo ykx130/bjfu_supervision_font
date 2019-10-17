@@ -12,7 +12,7 @@
         {{ lesson.lesson_name }},{{ lesson.lesson_class }}班,{{ lesson.lesson_room.toString()}},
         <span>{{ getLessonWeekShow(lesson.lesson_week)}}</span>周
       </p>
-      <Button type="text" @click="judge(lesson.lesson_id, lesson.term)" style="color: #348EED">评价</Button>
+<!--      <Button type="text" @click="judge(lesson.lesson_id, lesson.term)" style="color: #348EED">评价</Button>-->
       <span>-------</span>
     </div>
   </div>
@@ -27,7 +27,7 @@ export default {
 
   watch: {
     someLesson: {
-      deep: true,
+      deep: true
       // handler: function () {
       //   this.updateGrid()
       // }

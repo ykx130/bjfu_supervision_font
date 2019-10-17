@@ -10,8 +10,8 @@
     </div>
     <planModify :plan="select_plan"
                 :show="show_plan_modify_modal"
-                @onCancel="show_plan_modify_modal = false"
-                @noOK="handlePlanModifyOK"
+                @onModifyCancel="show_plan_modify_modal = false"
+                @noModifyOK="handlePlanModifyOK"
     ></planModify>
     <PlanAddModal  :term_name="term"
                    :show="show_plan_add_modal"
@@ -40,6 +40,9 @@ export default {
       columns: [{
         title: '计划评价体系名',
         key: 'form_meta_name'
+      }, {
+        title: '课程属性',
+        key: 'lesson_attribute'
       },
       // {
       //   title: '使用状态',
@@ -125,6 +128,7 @@ export default {
       putWorkPlan(plan.id, plan).then((resp) => {
         this.fetchData()
       })
+      this.show_plan_modify_modal = false
     }
   },
 

@@ -17,6 +17,17 @@
           >{{ item.name }}</Option>
         </Select>
       </FormItem>
+      <FormItem prop="lesson_attribute" label="课程属性">
+        <Select :lable="plan.lesson_attribute"
+                v-model="plan.lesson_attribute"
+                @on-change="handleMetaChange"
+                >
+          <Option v-for="item in attributes"
+                  :value="item"
+                  :key="item"
+          >{{ item }}</Option>
+        </Select>
+      </FormItem>
 
     </Form>
   </Modal>
@@ -28,15 +39,17 @@ import { updateWithinField } from 'Libs/tools'
 export default {
   name: 'PlanProfile',
   props: {
-    show: Boolean,
-    onCancel: Function,
-    onOK: Function,
+    show: {
+      type: Boolean,
+      default: false
+    },
     plan: { type: Object, default: {} }
   },
   data: function () {
     return {
       form_metas: [],
-      meta_versions: []
+      meta_versions: [],
+      attributes: ['普通课', '实验课', '体育课']
     }
   },
   methods: {
@@ -58,10 +71,11 @@ export default {
       })
     },
     handleOK: function () {
-      this.$emit('onOK', this.plan)
+      console.log(this.plan)
+      this.$emit('noModifyOK', this.plan)
     },
     handleCancel: function () {
-      this.$emit('onCancel')
+      this.$emit('onModifyCancel')
     },
     onShowChange: function (show) {
     }

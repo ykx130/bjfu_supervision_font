@@ -61,9 +61,11 @@ import { queryTerms, getCurrentTerms } from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
+import FormMixin from '@/mixins/FormMixin.js'
 
 export default {
   components: { LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal },
+  mixins: [FormMixin],
   data: function () {
     return {
       uploadNoticeLessonApi: uploadNoticeLessonApi,
@@ -115,13 +117,13 @@ export default {
         {
           title: '上课学院',
           render: function (h, params) {
-            return h('span', params.row.lesson_unit )
+            return h('span', params.row.lesson_unit)
           }
         },
         {
           title: '上课班级',
           render: function (h, params) {
-            return h('span', params.row.lesson_class )
+            return h('span', params.row.lesson_class)
           }
         },
         {
@@ -175,7 +177,8 @@ export default {
                   click: () => {
                     this.selected_lesson_id = params.row.id,
                     this.showLessonProfileModal = false,
-                    this.judge(params.row.lesson_id, params.row.terms)
+                    // this.judge(params.row.lesson_id, params.row.terms)
+                    this.formjudge(params.row.lesson_id, params.row.terms, params.row.lesson_attribute)
                   }
                 }
               }, '进行评价')
@@ -250,13 +253,6 @@ export default {
       } else {
         this.$Message.success({ content: '导入成功' })
       }
-    },
-    judge: function (lesson_id, term) {
-      this.$router.push({ name: 'guider_form_choose',
-        query: {
-          'lesson_id': lesson_id,
-          'term': this.$route.query.terms
-        } })
     }
   },
   mounted: function () {
