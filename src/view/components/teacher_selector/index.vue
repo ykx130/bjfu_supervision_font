@@ -10,10 +10,10 @@
               <div v-if="!letter_names_list.length">
                 {{empty_text}}
               </div>
-              <Row v-for="item in letter_names_list">
+              <Row v-for="item in letter_names_list" :key="item.ckey">
                 <ul>
                   <label>{{item.ckey}}</label>
-                  <li v-for="name in item.names" @click="handleNameSelect(name)" style="list-style: none">{{ name }}
+                  <li v-for="name in item.names"  :key ="name" @click="handleNameSelect(name)" style="list-style: none">{{ name }}
                   </li>
                 </ul>
               </Row>
@@ -23,11 +23,11 @@
             <div class="section_title">学院</div>
             <ul>
               <template v-for="unit in unit_list">
-                <li @click="select_unit = unit" v-if="select_unit === unit" class="underline selected_item"
+                <li @click="()=>{handleUnitClick(unit)}" v-if="select_unit === unit" class="underline selected_item"
                     style="list-style: none;line-height: 25px">
                   {{unit}}
                 </li>
-                <li @click="select_unit = unit" v-else class="underline " style="list-style: none;line-height: 25px">
+                <li @click="()=>{handleUnitClick(unit)}"  v-else class="underline " style="list-style: none;line-height: 25px">
                   {{unit}}
                 </li>
               </template>
@@ -72,6 +72,7 @@ export default {
   },
   watch: {
     select_unit: function () {
+      this.$emit('onUnitChange', this.select_unit)
       this.fetchUserAndLetter()
     },
     term:  function () {
@@ -113,6 +114,9 @@ export default {
     }
   },
   methods: {
+    handleUnitClick(unit) {
+      this.select_unit = unit
+    },
     handleInputChange (value) {
       this.$emit('input', value)
     },

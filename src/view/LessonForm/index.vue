@@ -9,7 +9,7 @@
           </Select>
         </FormItem>
           <FormItem label="教师名字：" :label-width="100" prop="lesson_teacher_name">
-            <TeacherSelector :term="term" v-model="query.lesson_teacher_name"></TeacherSelector>
+            <TeacherSelector @onUnitChange="handleUnitChange" :term="term" v-model="query.lesson_teacher_name"></TeacherSelector>
           </FormItem>
           <FormItem >
             <Button type="primary" @click="onSearch">查看</Button>
@@ -176,7 +176,7 @@ export default {
           7: []
         },
         {
-          period: '10',
+          period: '10-11',
           1: [],
           2: [],
           3: [],
@@ -186,7 +186,7 @@ export default {
           7: []
         },
         {
-          period: '11-12',
+          period: '12',
           1: [],
           2: [],
           3: [],
@@ -211,6 +211,10 @@ export default {
   },
   computed: {},
   methods: {
+    handleUnitChange: function (unit) {
+      // 课程教师学院变化
+      this.query.lesson_teacher_unit = unit
+    },
     preProcess: function (lessons) {
       let res = []
       lessons.forEach((lesson) => {
@@ -310,7 +314,7 @@ export default {
           7: []
         },
         {
-          period: '10',
+          period: '10-11',
           1: [],
           2: [],
           3: [],
@@ -320,7 +324,7 @@ export default {
           7: []
         },
         {
-          period: '11-12',
+          period: '12',
           1: [],
           2: [],
           3: [],
@@ -359,10 +363,10 @@ export default {
           if (lesson.lesson_time.indexOf('0809') > -1) {
             this.data[4][lesson.lesson_weekday].push(lesson)
           }
-          if (lesson.lesson_time.indexOf('10') > -1) {
+          if (lesson.lesson_time.indexOf('1011') > -1) {
             this.data[5][lesson.lesson_weekday].push(lesson)
           }
-          if (lesson.lesson_time.indexOf('1112') > -1) {
+          if (lesson.lesson_time.indexOf('12') > -1) {
             this.data[6][lesson.lesson_weekday].push(lesson)
           }
           if (lesson.lesson_time.indexOf('13') > -1) {
