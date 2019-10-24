@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { queryForms, putForm ,exporFormsExcel} from '../../service/api/dqs'
+import { queryForms, putForm ,exporFormsExcel,deleteForm} from '../../service/api/dqs'
 import { updateWithinField } from 'Libs/tools'
 import { getCurrentTerms, queryTerms } from '@/service/api/term'
 import { queryGroups } from '@/service/api/user'
@@ -149,6 +149,7 @@ export default {
         },
         {
           title: '状态',
+          width:'100px',
           render: (h, params) => {
             if (params.row.status === '待提交') {
               return h('Tag', { props: { color: 'red' } }, params.row.status)
@@ -162,6 +163,7 @@ export default {
         {
           title: '操作',
           align: 'center',
+          width:'200px',
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -201,7 +203,38 @@ export default {
                     })
                   }
                 }
-              }, '打回')
+              }, '打回'),
+              h('Button', {
+                props: {
+                  type: 'error',
+                  size: 'small',
+                  disabled: !(params.row.status === '已完成')
+                },
+                style: {
+                  marginRight: '4px'
+                },
+                directives: [{
+                  name: 'role',
+                  value: ['管理员']
+                }],
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: '确认删除问卷?',
+                      onOk: () => {
+                        deleteForm(params.row._id).then((res) => {
+                          this.fetchData()
+                          if (res.data.code === 200) {
+                            this.$Message.success('删除成功！')
+                          } else {
+                            this.$Message.error('删除失败！')
+                          }
+                        })
+                      }
+                    })
+                  }
+                }
+              }, '删除')
             ])
           }
         }

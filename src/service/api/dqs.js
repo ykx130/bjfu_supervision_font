@@ -44,7 +44,9 @@ export const queryForms = (params) => {
 export const putForm = (id, params) => {
   return axios.put('/api/forms/' + id, params)
 }
-
+export const deleteForm = (id) => {
+  return axios.delete(`/api/forms/${id}`)
+}
 /* 获得一个lesson的form_meta */
 export const getLessonsWithCases = (params) => {
   return axios.get('/api/lessons_with_case', { params: params })
