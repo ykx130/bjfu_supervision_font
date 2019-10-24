@@ -53,6 +53,7 @@
           </template>
           <template slot-scope="{ row, index }" slot="action">
             <Button type="primary" size="small" @click="handleChangeWatch(row)">查看</Button>
+            <Button type="error" size="small" @click="handleChangeDelete(row)" :disabled="row.status==='已完成'">删除</Button>
           </template>
         </Table>
         <div style="margin: 10px;overflow: hidden">
@@ -67,7 +68,7 @@
 </template>
 
 <script>
-import { queryMyForms } from '../../service/api/dqs'
+import { queryMyForms,deleteForm } from '../../service/api/dqs'
 import { getCurrentTerms, queryTerms } from '../../service/api/term'
 import font_image from '@/view/components/form_meta_card/font_image.vue'
 
@@ -146,6 +147,22 @@ export default {
     },
     handleChangeWatch (form) {
       this.$router.push({ path: `/_guider/judge/form_show/${form._id}` })
+    },
+    handleChangeDelete(form){
+      this.$Modal.confirm({
+        title: '是否确认删除?',
+        onOk: () => {
+          deleteForm(form._id).then((res) => {
+            this.fetchForms()
+            if (res.data.code === 200) {
+              this.$Message.success('删除成功！')
+            } else {
+              this.$Message.error('删除失败！')
+            }
+          })
+        },
+        onCancel:()=>{}
+      })
     }
   },
   created: function () {
