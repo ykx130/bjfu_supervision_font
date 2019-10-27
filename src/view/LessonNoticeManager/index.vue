@@ -28,12 +28,6 @@
       </FormItem>
     </Form>
 
-    <LessonProfileModal
-      :show="showLessonProfileModal"
-      @onOK="onProfileModalOK"
-      @onCancel="onProfileModalCancel"
-      :lesson_id="this.selected_lesson_id"
-    ></LessonProfileModal>
 
     <BatchLessonWatchModal
       :show="showBatchLessonWatchModal"
@@ -60,7 +54,7 @@ import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 import UserMixin from'@/mixins/UserMixin'
-import {deleteNoticeLesson} from "../../service/api/lesson";
+import {deleteNoticeLesson, filter_permission} from "../../service/api/lesson";
 
 
 export default {
@@ -78,7 +72,6 @@ export default {
       terms: [],
       selected_lesson_ids: [],
       selected_lesson_id: '', // 选中编辑的课程ids
-      showLessonProfileModal: false, // 展示编辑弹窗
       showBatchLessonWatchModal: false,
       pages: {
         _page: 1,
@@ -98,131 +91,25 @@ export default {
           render: (h, params) => {
             return h(LessonJudge, {
               props: {
-                lesson_id: params.row.lesson_id
+                lesson_teacher_name: params.row.lesson_teacher_name
               }
             })
           }
         },
         {
-          title: '课程名字',
+          title: '教师名字',
           render: function (h, params) {
             return (
-              <span>{ params.row.lesson_name }</span>
+              <span>{ params.row.lesson_teacher_name }</span>
             )
-          }
-        },
-        {
-          title: '课程属性',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.lesson_attribute }</span>
-            )
-          }
-        },
-        {
-          title: '上课教师',
-          render: function (h, params) {
-            return h('span', params.row.lesson_teacher_name)
           }
         },
         {
           title: '上课学院',
           render: function (h, params) {
-            return h('span', params.row.lesson_unit )
+            return h('span', params.row.lesson_teacher_unit )
           }
         },
-        {
-          title: '上课班级',
-          render: function (h, params) {
-            return h('span', params.row.lesson_class )
-          }
-        },
-
-        {
-          title: '分配组别',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.group_name }</span>
-            )
-          }
-        },
-        {
-          title: '关注原因',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.lesson_attention_reason }</span>
-            )
-          }
-        },
-        {
-          title: '课程状态',
-          render: (h, params) => {
-            if (params.row.lesson_state === '未完成') {
-              return h('Tag', { props: { color: 'red' } }, params.row.lesson_state)
-            } else {
-              return h('Tag', { props: { color: 'blue' } }, params.row.lesson_state)
-            }
-          }
-        },
-        {
-          title: '评价次数',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.notices }</span>
-            )
-          }
-        },
-        {
-          title: '操作',
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '2px'
-                },
-                on: {
-                  click: () => {
-                    this.selected_lesson_id = params.row.id
-                    this.showLessonProfileModal = true
-                  }
-                }
-              }, '查看'),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '2px'
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '是否确认删除?',
-                      onOk: () => {
-                        deleteNoticeLesson(params.row.id).then((res) => {
-                          this.fetchData()
-                          if (res.data.code === 200) {
-                            this.$Message.success('删除成功！')
-                          } else {
-                            this.$Message.error('删除失败！')
-                          }
-                        })
-                      },
-                      onCancel:()=>{}
-                    })
-
-                  }
-                }
-              }, '删除')
-            ])
-          }
-        }
       ]
     }
   },
@@ -230,10 +117,9 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      return queryNoticeLessons(args).then((resp) => {
-        this.selected_lesson_ids = []
-        this.data = resp.data.notice_lessons
-        this.total = resp.data.total
+      return filter_permission(args).then((res)=>{
+        this.data=res.data.teachers
+        this.total = res.data.total
       })
     },
     onPageChange (page) {
@@ -245,30 +131,6 @@ export default {
       // 查询变化
       this.pages._page = 1
       this.fetchData()
-    },
-    onProfileModalOK (lesson) {
-      // 更新框确定 关闭
-      putNoticeLesson(lesson).then((resp) => {
-        if (resp.data.code === 200) {
-          this.$Message.success({ content: '更新成功' })
-          this.fetchData()
-        }
-        this.showLessonProfileModal = false
-        this.pages._page = 1
-      })
-    },
-    OnDelete(lesson_id){
-      deleteNoticeLesson(lesson_id).then((res)=>{
-        this.fetchData()
-        if (res.data.code === 200) {
-          this.$Message.success('删除成功！')
-        } else {
-          this.$Message.error('删除失败！')
-        }
-      })
-    },
-    onProfileModalCancel () {
-      this.showLessonProfileModal = false
     },
     onBatchRemoveModalOK (lesson) {
       this.showBatchLessonWatchModal = false
@@ -321,9 +183,10 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryNoticeLessons({ ...this.pages, ...this.query }).then((resp) => {
-        this.data = resp.data.notice_lessons
-        this.total = resp.data.total
+      filter_permission({ ...this.pages, ...this.query }).then((res)=>{
+        console.log(this.data)
+        this.data=res.data.teachers
+        this.total = res.data.total
       })
     })
     this.itemShow(this.columns)
