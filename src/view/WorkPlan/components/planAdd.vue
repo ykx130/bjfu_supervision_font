@@ -42,7 +42,7 @@ export default {
       plan: {},
       form_metas: [],
       meta_versions: [],
-      attributes: ['普通课', '实验课', '体育课']
+      attributes: ['普通课', '实验课', '体育课','实习']
     }
   },
   watch: {

@@ -145,6 +145,7 @@
                     @on-change="(v)=>{onSelectedLessonCaseChange(v, true)}"
                     :options="getLessonDatePickerOption()"
                     :disabled="disabled"
+                    placement="bottom"
                   ></DatePicker>
                 </FormItem>
               </td>
