@@ -57,7 +57,7 @@ import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 import UserMixin from '@/mixins/UserMixin'
-import { deleteNoticeLesson, filter_permission } from '../../service/api/lesson'
+import { deleteNoticeLesson, queryNoticeTeacher } from '../../service/api/lesson'
 
 export default {
   mixins: [UserMixin],
@@ -119,7 +119,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      return filter_permission(args).then((res) => {
+      return queryNoticeTeacher(args).then((res) => {
         this.data = res.data.teachers
         this.total = res.data.total
       })
@@ -184,7 +184,7 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      filter_permission({ ...this.pages, ...this.query }).then((res) => {
+      queryNoticeTeacher({ ...this.pages, ...this.query }).then((res) => {
         this.data = res.data.teachers
         this.total = res.data.total
       })

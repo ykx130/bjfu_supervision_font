@@ -51,7 +51,7 @@ export const exporNoticeLessonExcel = (params) => {
 export  const  deleteNoticeLesson=(id)=>{
   return axios.delete(`/api/notice_lessons/${id}`)
 }
-export  const  filter_permission=(params)=>{
+export  const  queryNoticeTeacher=(params)=>{
   return axios.get('/api/notice_lessons/teachers',{ params: params })
 }
 export const queryModelLessons = (params) => {
