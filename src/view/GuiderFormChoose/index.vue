@@ -16,9 +16,9 @@
     <Row :gutter="16" class="form_content">
       <Col span="6" v-for="meta in data" style="margin-bottom: 30px">
         <form_meta_card
-          :key="meta._id"
+          :key="meta.id"
           :meta="meta"
-          @click.native="onCardClick(meta.name, meta.version)"
+          @click.native="onCardClick(meta.form_meta.name, meta.form_meta.version)"
         ></form_meta_card>
       </Col>
     </Row>
@@ -70,17 +70,13 @@ export default {
       if (this.$route.query.term) {
         this.term = this.$route.query.term
         queryWorkPlanDetail(this.term).then(resp => {
-          this.data = resp.data.work_plans.map(item => {
-            return item.form_meta
-          })
+          this.data = resp.data.work_plans
         })
       } else {
         getCurrentTerms().then(termResp => {
           this.term = termResp.data.term.name
           queryWorkPlanDetail(this.term).then(resp => {
-            this.data = resp.data.work_plans.map(item => {
-              return item.form_meta
-            })
+            this.data = resp.data.work_plans
           })
         })
       }

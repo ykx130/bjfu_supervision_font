@@ -1,13 +1,13 @@
 <template>
     <Card style="height: 160px">
       <Row type="flex" justify="center" align="middle">
-        <Col :span="6" offset="1"><font_image :size="16" :text="meta.name.substring(0,2)"></font_image></Col>
-        <Col :span="16"><p class="meta-name">{{ meta.name }}</p></Col>
+        <Col :span="6" offset="1"><font_image :size="16" :text="meta.form_meta.name.substring(0,2)"></font_image></Col>
+        <Col :span="16"><p class="meta-name">{{ meta.form_meta.name }}</p></Col>
       </Row>
       <Row>
         <!--<Col :span="24" style="text-align: left; padding-left: 32%"><p class="normal_font">版本： {{meta.version}} </p></Col>-->
         <Col :span="24" style="text-align: left; padding-left: 32%"><p class="normal_font">适用课程： {{meta.lesson_attribute}} </p></Col>
-        <Col :span="24" style="text-align: left; padding-left: 32%"><p class="normal_font">创建日期： {{meta.meta.created_at}} </p></Col>
+        <Col :span="24" style="text-align: left; padding-left: 32%"><p class="normal_font">创建日期： {{meta.form_meta.meta.created_at}} </p></Col>
       </Row>
     </Card>
 </template>
