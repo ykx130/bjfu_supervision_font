@@ -7,6 +7,10 @@
         <Input style="width: 180px" v-model="query.lesson_name_like" placeholder="请输入课程名字">
         </Input>
       </FormItem>
+      <FormItem label="教师姓名：" prop="lesson_teacher_name">
+        <Input style="width: 180px" v-model="query.lesson_teacher_name_like" placeholder="请输入教师姓名">
+        </Input>
+      </FormItem>
       <FormItem label="学期：" prop="term" v-role ="['管理员']">
         <Select v-model="query.term" style="width:200px">
           <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
@@ -30,12 +34,12 @@
       -->
     </Form>
 
-    <LessonProfileModal
-      :show="showLessonProfileModal"
-      @onOK="onProfileModalOK"
-      @onCancel="onProfileModalCancel"
-      :lesson_id="this.selected_lesson_id"
-    ></LessonProfileModal>
+<!--    <LessonProfileModal-->
+<!--      :show="showLessonProfileModal"-->
+<!--      @onOK="onProfileModalOK"-->
+<!--      @onCancel="onProfileModalCancel"-->
+<!--      :lesson_id="this.selected_lesson_id"-->
+<!--    ></LessonProfileModal>-->
 
     <BatchLessonWatchModal
       :show="showBatchLessonWatchModal"
@@ -62,6 +66,7 @@ import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 import FormMixin from '@/mixins/FormMixin.js'
+import { filter_permission } from '../../service/api/lesson'
 
 export default {
   components: { LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal },
@@ -85,104 +90,30 @@ export default {
         _per_page: 10
       }, // 分页
       columns: [
-
-        // {
-        //   type: 'selection',
-        //   width: 60,
-        //   align: 'center'
-        // },
-
         {
-          title: '课程名字',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.lesson_name }</span>
-            )
+          type: 'expand',
+          title: '评价',
+          width: 70,
+          render: (h, params) => {
+            return h(LessonJudge, {
+              props: {
+                lesson_teacher_id: params.row.lesson_teacher_id
+              }
+            })
           }
         },
         {
-          title: '课程属性',
+          title: '教师名字',
           render: function (h, params) {
             return (
-              <span>{ params.row.lesson_attribute }</span>
+              <span>{ params.row.lesson_teacher_name }</span>
             )
-          }
-        },
-        {
-          title: '上课教师',
-          render: function (h, params) {
-            return h('span', params.row.lesson_teacher_name)
           }
         },
         {
           title: '上课学院',
           render: function (h, params) {
-            return h('span', params.row.lesson_unit)
-          }
-        },
-        {
-          title: '上课班级',
-          render: function (h, params) {
-            return h('span', params.row.lesson_class)
-          }
-        },
-        {
-          title: '分配组别',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.group_name }</span>
-            )
-          }
-        },
-        {
-          title: '关注原因',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.lesson_attention_reason }</span>
-            )
-          }
-        },
-        {
-          title: '课程状态',
-          render: (h, params) => {
-            if (params.row.lesson_state === '未完成') {
-              return h('Tag', { props: { color: 'red' } }, params.row.lesson_state)
-            } else {
-              return h('Tag', { props: { color: 'blue' } }, params.row.lesson_state)
-            }
-          }
-        },
-        {
-          title: '评价次数',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.notices }</span>
-            )
-          }
-        },
-        {
-          title: '操作',
-          align: 'center',
-          render: (h, params) => {
-            return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                style: {
-                  marginRight: '2px'
-                },
-                on: {
-                  click: () => {
-                    this.selected_lesson_id = params.row.id,
-                    this.showLessonProfileModal = false,
-                    // this.judge(params.row.lesson_id, params.row.terms)
-                    this.formjudge(params.row.lesson_id, params.row.terms, params.row.lesson_attribute)
-                  }
-                }
-              }, '进行评价')
-            ])
+            return h('span', params.row.lesson_teacher_unit)
           }
         }
       ]
@@ -192,11 +123,15 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      return queryNoticeLessons(args).then((resp) => {
-        this.selected_lesson_ids = []
-        this.data = resp.data.notice_lessons
-        this.total = resp.data.total
+      return filter_permission(args).then((res) => {
+        this.data = res.data.teachers
+        this.total = res.data.total
       })
+      // return queryNoticeLessons(args).then((resp) => {
+      //   this.selected_lesson_ids = []
+      //   this.data = resp.data.notice_lessons
+      //   this.total = resp.data.total
+      // })
     },
     onPageChange (page) {
       // 分页变化
@@ -207,20 +142,6 @@ export default {
       // 查询变化
       this.pages._page = 1
       this.fetchData()
-    },
-    onProfileModalOK (lesson) {
-      // 更新框确定 关闭
-      putNoticeLesson(lesson).then((resp) => {
-        if (resp.data.code === 200) {
-          this.$Message.success({ content: '更新成功' })
-          this.fetchData()
-        }
-        this.showLessonProfileModal = false
-        this.pages._page = 1
-      })
-    },
-    onProfileModalCancel () {
-      this.showLessonProfileModal = false
     },
     onBatchRemoveModalOK (lesson) {
       this.showBatchLessonWatchModal = false
@@ -237,22 +158,6 @@ export default {
     onBatchWatchClick: function () {
       // 批量关注触发
       this.showBatchLessonWatchModal = true
-    },
-    onExportExcel: function () {
-      exporNoticeLessonExcel().then((resp) => {
-        if (resp.data.code === 200) {
-          this.$Message.success({ content: '导出成功' })
-          window.open('/api/' + resp.data.filename)
-        }
-      })
-    },
-    handleImportExcelSucc: function (response, file, fileList) {
-      if (response.code !== 200) {
-        this.$Message.warning({ content: '部分导出失败' })
-        window.open('/api/' + response.fail_excel_path)
-      } else {
-        this.$Message.success({ content: '导入成功' })
-      }
     }
   },
   mounted: function () {
@@ -261,10 +166,14 @@ export default {
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      queryNoticeLessons({ ...this.pages, ...this.query }).then((resp) => {
-        this.data = resp.data.notice_lessons
-        this.total = resp.data.total
+      filter_permission({ ...this.pages, ...this.query }).then((res) => {
+        this.data = res.data.teachers
+        this.total = res.data.total
       })
+      // queryNoticeLessons({ ...this.pages, ...this.query }).then((resp) => {
+      //   this.data = resp.data.notice_lessons
+      //   this.total = resp.data.total
+      // })
     })
   }
 

@@ -3,6 +3,10 @@
     <h1>关注课程</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
+      <FormItem label="教师名字：" prop="lesson_teacher_name">
+        <Input style="width: 180px" v-model="query.lesson_teacher_name_like" placeholder="请输入教师姓名">
+        </Input>
+      </FormItem>
       <FormItem label="课程名字：" prop="lesson_name">
         <Input style="width: 180px" v-model="query.lesson_name_like" placeholder="请输入课程名字">
         </Input>
@@ -28,7 +32,6 @@
       </FormItem>
     </Form>
 
-
     <BatchLessonWatchModal
       :show="showBatchLessonWatchModal"
       @onOK="onBatchRemoveModalOK"
@@ -53,18 +56,17 @@ import { queryTerms, getCurrentTerms } from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
-import UserMixin from'@/mixins/UserMixin'
-import {deleteNoticeLesson, filter_permission} from "../../service/api/lesson";
-
+import UserMixin from '@/mixins/UserMixin'
+import { deleteNoticeLesson, filter_permission } from '../../service/api/lesson'
 
 export default {
-  mixins:[UserMixin],
+  mixins: [UserMixin],
   components: { LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal: BatchLessonRemoveModal },
   data: function () {
     return {
       uploadNoticeLessonApi: uploadNoticeLessonApi,
       query: {
-        lesson_name_like: undefined,
+        lesson_teacher_name_like: undefined,
         term: undefined
       }, // 查询用的参数
       total: 0, // 总数量
@@ -91,7 +93,7 @@ export default {
           render: (h, params) => {
             return h(LessonJudge, {
               props: {
-                lesson_teacher_name: params.row.lesson_teacher_name
+                lesson_teacher_id: params.row.lesson_teacher_id
               }
             })
           }
@@ -107,9 +109,9 @@ export default {
         {
           title: '上课学院',
           render: function (h, params) {
-            return h('span', params.row.lesson_teacher_unit )
+            return h('span', params.row.lesson_teacher_unit)
           }
-        },
+        }
       ]
     }
   },
@@ -117,8 +119,8 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      return filter_permission(args).then((res)=>{
-        this.data=res.data.teachers
+      return filter_permission(args).then((res) => {
+        this.data = res.data.teachers
         this.total = res.data.total
       })
     },
@@ -164,33 +166,30 @@ export default {
         this.$Message.success({ content: '导入成功' })
       }
     },
-    itemShow(columns)
-    {
-      if(this.current_role!=='管理员'){
-        for(let i=0;i<columns.length;i++){
-          if(columns[i]['title']==='锁定状态'){
-            columns.splice(i,1)
+    itemShow (columns) {
+      if (this.current_role !== '管理员') {
+        for (let i = 0; i < columns.length; i++) {
+          if (columns[i]['title'] === '锁定状态') {
+            columns.splice(i, 1)
           }
-          if (columns[i]['title']==='操作'){
-            columns.splice(i,1)
+          if (columns[i]['title'] === '操作') {
+            columns.splice(i, 1)
           }
         }
       }
-  }},
+    } },
   mounted: function () {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
     })
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
-      filter_permission({ ...this.pages, ...this.query }).then((res)=>{
-        console.log(this.data)
-        this.data=res.data.teachers
+      filter_permission({ ...this.pages, ...this.query }).then((res) => {
+        this.data = res.data.teachers
         this.total = res.data.total
       })
     })
     this.itemShow(this.columns)
-
   }
 }
 </script>

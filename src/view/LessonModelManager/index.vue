@@ -6,6 +6,9 @@
       <FormItem label="课程名字：" prop="lesson_name">
         <Input style="width: 180px" v-model="query.lesson_name_like" placeholder="请输入课程名字">
         </Input>
+      </FormItem> <FormItem label="教师姓名：" prop="lesson_teacher_name">
+        <Input style="width: 180px" v-model="query.lesson_teacher_name_like" placeholder="请输入教师姓名">
+        </Input>
       </FormItem>
       <FormItem label="学期：" prop="term" v-role ="['管理员']">
         <Select v-model="query.term" style="width:200px">
@@ -300,7 +303,7 @@ export default {
       }
     },
     itemShow (columns) {
-      if (this.current_role !== '管理员'&& this.current_role !== '小组长') {
+      if (this.current_role !== '管理员' && this.current_role !== '小组长') {
         for (let i = 0; i < columns.length; i++) {
           if (columns[i]['title'] === '分配督导') {
             columns.splice(i, 1)
