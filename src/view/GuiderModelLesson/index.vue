@@ -6,6 +6,9 @@
       <FormItem label="课程名字：" prop="lesson_name">
         <Input style="width: 180px" v-model="query.lesson_name_like" placeholder="请输入课程名字">
         </Input>
+      </FormItem><FormItem label="教师姓名：" prop="lesson_teacher_name">
+        <Input style="width: 180px" v-model="query.lesson_teacher_name_like" placeholder="请输入教师姓名">
+        </Input>
       </FormItem>
       <FormItem label="学期：" prop="term" v-role ="['管理员']">
         <Select v-model="query.term" style="width:200px">
