@@ -75,6 +75,7 @@
                     v-model="value.lesson.lesson_id"
                     :remote="true"
                     @on-query-change="onLessonQueryChange"
+                    @on-clear="onLessonClear"
                     clearable
                     :label="value.lesson.lesson_name"
                     @on-change="(v)=>{onSelectedLessonChange(v, undefined)}"
@@ -177,12 +178,25 @@
               <td>
                 <FormItem :required="true" class="table-form-item" prop="lesson.lesson_times">
                   <Select v-model="value.lesson.lesson_times" multiple :disabled="disabled" :max-tag-count="1">
-                    <Option
-                      v-for="item in lesson_times"
-                      :value="item.value"
-                      :key="item.value + item.key"
-                    >{{ item.label }}
-                    </Option>
+                    <OptionGroup label="建议选择">
+                      <Option
+                        v-for="item in lesson_times"
+                        :value="item.value"
+                        :key="item.value + item.key"
+                      >{{ item.label }}
+                      </Option>
+                    </OptionGroup>
+                    <OptionGroup label="其他可选">
+                      <Option
+                        v-for="item in ALL_CASES"
+                        v-if="!lesson_times.map((i)=>{
+                          return i.value
+                        }).includes(item.value)"
+                        :value="item.value"
+                        :key="item.value + item.key"
+                      >{{ item.label }}
+                      </Option>
+                    </OptionGroup>
                   </Select>
                 </FormItem>
               </td>
@@ -196,311 +210,322 @@
   </div>
 </template>
 <script>
-  import {queryLessons, getLesson, queryLessonCase} from "@/service/api/lesson";
-  import {querySupervisors} from "@/service/api/user";
-  import {dateToString} from "Libs/tools";
-  import {queryTerms, getCurrentTerms} from "@/service/api/term";
-  import {transTimeToSelectedData} from "Libs/tools";
+import { queryLessons, getLesson, queryLessonCase } from '@/service/api/lesson'
+import { querySupervisors } from '@/service/api/user'
+import { dateToString } from 'Libs/tools'
+import { queryTerms, getCurrentTerms } from '@/service/api/term'
+import { transTimeToSelectedData } from 'Libs/tools'
 
-  export default {
-    props: {
-      value: {
-        default: {lesson: {}}
-      },
-      input: Function,
-      disabled: {
-        type: Boolean,
-        default: false
-      }
+export default {
+  props: {
+    value: {
+      default: { lesson: {} }
     },
-    data() {
-      return {
-        lessons: {},
-        users: {},
-        lesson_times: [],
-        allow_select_data: [],
-        terms: [],
-        selected_lesson: {lesson_cases: []},
-        select_guider: {},
-        selected_lesson_case: {},
-        lesson_disabled: false, // 禁用课程的表单,
-        guider_disable: false,
-        guider_name_like: "",
-        user_name_like: "",
-        disabled_term: true,
-        rules: {
-          "lesson.content": [
-            {required: true, message: "请输入章节名称", trigger: "blur"}
-          ],
-          "lesson.lesson_class": [
-            {required: true, message: "班级不能为空", trigger: "blur"}
-          ],
-          "lesson.lesson_date": [
-            {required: true, message: "日期不能为空", trigger: "blur"}
-          ],
-          "lesson.lesson_times": [
-            {
-              validator (rule, value, callback) {
-                if (value.length <= 0) {
-                  return callback(new Error('课程节次不能为空'))
-                } else {
-                  callback()
-                }
+    input: Function,
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    return {
+      ALL_CASE_STR: '01020304050607080919111213',
+      lessons: {},
+      users: {},
+      lesson_times: [],
+      allow_select_data: [],
+      terms: [],
+      selected_lesson: { lesson_cases: [] },
+      select_guider: {},
+      selected_lesson_case: {},
+      lesson_disabled: false, // 禁用课程的表单,
+      guider_disable: false,
+      guider_name_like: '',
+      user_name_like: '',
+      disabled_term: true,
+      rules: {
+        'lesson.content': [
+          { required: true, message: '请输入章节名称', trigger: 'blur' }
+        ],
+        'lesson.lesson_class': [
+          { required: true, message: '班级不能为空', trigger: 'blur' }
+        ],
+        'lesson.lesson_date': [
+          { required: true, message: '日期不能为空', trigger: 'blur' }
+        ],
+        'lesson.lesson_times': [
+          {
+            validator (rule, value, callback) {
+              if (value.length <= 0) {
+                return callback(new Error('课程节次不能为空'))
+              } else {
+                callback()
               }
             }
-          ]
-        }
-      };
+          }
+        ]
+      }
+    }
+  },
+  computed: {
+    currentUser: function () {
+      return this.$store.getters.userInfo
     },
-    computed: {
-      currentUser: function () {
-        return this.$store.getters.userInfo;
-      },
-      lessonInfoForm: function () {
-        return this.$refs.lesson_info_form;
+    lessonInfoForm: function () {
+      return this.$refs.lesson_info_form
+    },
+    ALL_CASES: function () {
+      return transTimeToSelectedData(this.ALL_CASE_STR)
+    }
+  },
+  watch: {
+    value: {
+      deep: true,
+      handler: function (val, oldVal) {
+        this.$emit('input', this.value)
       }
     },
-    watch: {
-      value: {
-        deep: true,
-        handler: function (val, oldVal) {
-          this.$emit("input", this.value);
+    'value.lesson.lesson_id': {
+      handler: function (val, oldVal) {
+        if (this.value.lesson.lesson_id) {
+          getLesson(this.value.lesson.lesson_id).then(resp => {
+            // 读取课程
+            let selected_lesson = resp.data.lesson
+            // 处理case
+            this.lessons[selected_lesson.lesson_id] = selected_lesson
+            this.onSelectedLessonChange(selected_lesson.lesson_id, this.value.lesson.lesson_date)
+            // 处理表的附加值
+          })
         }
-      },
-      'value.lesson.lesson_id' : {
-        handler: function (val, oldVal) {
-          if (this.value.lesson.lesson_id) {
+      }
+    }
+  },
+  mounted () {
+    // 处理当前用户
+    if (!this.currentUser.role_names.includes('管理员')) {
+      this.disabled_term = true
+      this.guider_disable = true
+    }
+    queryTerms()
+      .then(resp => {
+        this.terms = resp.data.terms
+      })
+      .then(() => {
+        let lesson_id = this.$route.query.lesson_id
+        getCurrentTerms().then(resp => {
+          this.value.term = resp.data.term.name
+          if (lesson_id) {
+            this.value.lesson.lesson_id = lesson_id
             getLesson(this.value.lesson.lesson_id).then(resp => {
               // 读取课程
-              let selected_lesson = resp.data.lesson;
+              let selected_lesson = resp.data.lesson
               // 处理case
-              this.lessons[selected_lesson.lesson_id] = selected_lesson;
-              this.onSelectedLessonChange(selected_lesson.lesson_id, this.value.lesson.lesson_date);
+              this.lessons[selected_lesson.lesson_id] = selected_lesson
+              this.onSelectedLessonChange(selected_lesson.lesson_id, this.value.lesson.lesson_date)
               // 处理表的附加值
-            });
+            })
+          } else {
+            this.fetchLesson()
           }
-        }
-      },
+          if (this.guider_disable || this.disabled) {
+            this.$set(this.users, this.value.guider, {
+              username: this.value.guider,
+              name: this.value.guider_name
+            })
+          } else {
+            this.fetchUser()
+          }
+        })
+      })
+    if (
+      this.currentUser.guider &&
+        !this.currentUser.role_names.includes('管理员')
+    ) {
+      this.value.guider = this.currentUser.username
+      this.value.guider_name = this.currentUser.name
+      this.value.guider_group = this.currentUser.guider.group_name
+    }
+  },
+  methods: {
+    // 获取所有用户
+    validate: function (f) {
+      return this.lessonInfoForm.validate(f)
     },
-    mounted() {
-      // 处理当前用户
-        if (!this.currentUser.role_names.includes("管理员")) {
-          this.disabled_term = true;
-          this.guider_disable = true;
-        }
-        queryTerms()
-          .then(resp => {
-            this.terms = resp.data.terms;
-          })
-          .then(() => {
-            let lesson_id = this.$route.query.lesson_id;
-              getCurrentTerms().then(resp => {
-                this.value.term = resp.data.term.name;
-                if (lesson_id) {
-                  this.value.lesson.lesson_id = lesson_id
-                  getLesson(this.value.lesson.lesson_id).then(resp => {
-                    // 读取课程
-                    let selected_lesson = resp.data.lesson;
-                    // 处理case
-                    this.lessons[selected_lesson.lesson_id] = selected_lesson;
-                    this.onSelectedLessonChange(selected_lesson.lesson_id, this.value.lesson.lesson_date);
-                    // 处理表的附加值
-                  });
-                } else {
-                  this.fetchLesson();
-                }
-                if (this.guider_disable || this.disabled) {
-                  this.$set(this.users, this.value.guider, {
-                    username: this.value.guider,
-                    name: this.value.guider_name
-                  });
-                } else {
-                  this.fetchUser();
-                }
-              });
-          });
-      if (
-        this.currentUser.guider &&
-        !this.currentUser.role_names.includes("管理员")
-      ) {
-        this.value.guider = this.currentUser.username;
-        this.value.guider_name = this.currentUser.name;
-        this.value.guider_group = this.currentUser.guider.group_name;
+    fetchUser: function () {
+      this.users = {}
+      return querySupervisors({
+        term: this.value.term,
+        username_like: this.guider_name_like
+      }).then(resp => {
+        resp.data.supervisors.map(item => {
+          this.$set(this.users, item.username, item)
+        })
+      })
+    },
+
+    // 获取所有课程
+    fetchLesson: function () {
+      this.lessons = {}
+      return queryLessons({
+        term: this.value.term,
+        lesson_or_teacher_name_or: this.lesson_name_like
+      }).then(resp => {
+        resp.data.lessons.map(item => {
+          this.$set(this.lessons, item.lesson_id, item)
+        })
+      })
+    },
+
+    restValue: function () {
+      this.value.lesson = {}
+    },
+
+    onGuiderQueryChange: function (value) {
+      if (!(value.startsWith("'") && value.endsWith("'"))) {
+        this.guider_name_like = value
+        this.fetchUser()
       }
     },
-    methods: {
-      // 获取所有用户
-      validate: function (f) {
-        return this.lessonInfoForm.validate(f);
-      },
-      fetchUser: function () {
-        this.users = {};
-        return querySupervisors({
-          term: this.value.term,
-          username_like: this.guider_name_like
-        }).then(resp => {
-          resp.data.supervisors.map(item => {
-            this.$set(this.users, item.username, item);
-          });
-        });
-      },
 
-      // 获取所有课程
-      fetchLesson: function () {
-        this.lessons = {};
-        return queryLessons({
-          term: this.value.term,
-          lesson_or_teacher_name_or: this.lesson_name_like
-        }).then(resp => {
-          resp.data.lessons.map(item => {
-            this.$set(this.lessons, item.lesson_id, item);
-          });
-        });
-      },
+    onLessonQueryChange: function (value) {
+      if (!(value.startsWith("'") && value.endsWith("'"))) {
+        this.lesson_name_like = value
+        this.fetchLesson()
+      }
+    },
 
-      restValue: function () {
-        this.value.lesson = {};
-      },
-
-      onGuiderQueryChange: function (value) {
-        if (!(value.startsWith("'") && value.endsWith("'"))) {
-          this.guider_name_like = value;
-          this.fetchUser();
+    onGuiderSelectChange: function (value) {
+      this.value.guider = value
+      if (value) {
+        this.select_guider = this.users[value]
+        if (this.select_guider) {
+          this.value.guider_name = this.select_guider.user.name
+          this.value.guider_group = this.select_guider.group_name
         }
-      },
+      } else {
+        this.value.guider_name = undefined
+        this.value.guider_group = undefined
+      }
+    },
 
-      onLessonQueryChange: function (value) {
-        if (!(value.startsWith("'") && value.endsWith("'"))) {
-          this.lesson_name_like = value;
-          this.fetchLesson();
-        }
-      },
+    onTermSelectChange: function (value) {
+      this.fetchLesson().then(() => {
+        this.restValue()
+      })
+      this.fetchUser()
+    },
 
-      onGuiderSelectChange: function (value) {
-        this.value.guider = value
-        if (value) {
-          this.select_guider = this.users[value];
-          if (this.select_guider) {
-            this.value.guider_name = this.select_guider.user.name;
-            this.value.guider_group = this.select_guider.group_name;
-          }
-        } else {
-          this.value.guider_name = undefined;
-          this.value.guider_group = undefined;
-        }
-      },
-
-      onTermSelectChange: function (value) {
-        this.fetchLesson().then(() => {
-          this.restValue();
-        });
-        this.fetchUser();
-      },
-
-      onSelectedLessonChange: function (lesson_id, assign_case_date) {
-        /* 选择的课程发生变化 */
-        if (lesson_id) {
-          this.selected_lesson = this.lessons[lesson_id];
-          this.selected_lesson.lesson_cases = [];
-          queryLessonCase({lesson_id: this.selected_lesson.id}).then(resp => {
-            this.selected_lesson.lesson_cases = resp.data.lesson_cases;
-            this.allow_select_data = this.selected_lesson.lesson_cases.map(
-              item => {
-                return item.lesson_date;
-              }
-            );
-            if (!assign_case_date) {
-              this.value.lesson.lesson_times = []
-              if (this.allow_select_data.length > 0) {
-                this.onSelectedLessonCaseChange(this.allow_select_data[0], true);
-              } else {
-                this.onSelectedLessonCaseChange(undefined, true);
-              }
-            } else {
-              this.onSelectedLessonCaseChange(assign_case_date, false)
+    onSelectedLessonChange: function (lesson_id, assign_case_date) {
+      /* 选择的课程发生变化 */
+      if (lesson_id) {
+        this.selected_lesson = this.lessons[lesson_id]
+        this.selected_lesson.lesson_cases = []
+        queryLessonCase({ lesson_id: this.selected_lesson.id }).then(resp => {
+          this.selected_lesson.lesson_cases = resp.data.lesson_cases
+          this.allow_select_data = this.selected_lesson.lesson_cases.map(
+            item => {
+              return item.lesson_date
             }
-          });
+          )
+          if (!assign_case_date) {
+            this.value.lesson.lesson_times = []
+            if (this.allow_select_data.length > 0) {
+              this.onSelectedLessonCaseChange(this.allow_select_data[0], true)
+            } else {
+              this.onSelectedLessonCaseChange(undefined, true)
+            }
+          } else {
+            this.onSelectedLessonCaseChange(assign_case_date, false)
+          }
+        })
+      } else {
+        this.selected_lesson = { lesson_cases: [] }
+      } // 查看选的那个
+      this.value.lesson = {
+        ...this.value.lesson,
+        lesson_id: this.selected_lesson.lesson_id,
+        raw_lesson_id: this.selected_lesson.raw_lesson_id,
+        lesson_name: this.selected_lesson.lesson_name,
+        lesson_teacher_name: this.selected_lesson.lesson_teacher_name,
+        lesson_class: this.selected_lesson.lesson_class,
+        lesson_teacher_unit: this.selected_lesson.lesson_teacher_unit,
+        lesson_unit: this.selected_lesson.lesson_unit,
+        lesson_attribute: this.selected_lesson.lesson_attribute,
+        group_name: this.selected_lesson.group_name,
+        lesson_year: this.selected_lesson.lesson_year,
+        lesson_semester: this.selected_lesson.lesson_semester,
+        lesson_level: this.selected_lesson.lesson_level,
+        lesson_model: this.selected_lesson.lesson_model,
+        is_lock: this.selected_lesson.is_lock,
+        guiders: this.selected_lesson.guiders
+      }
+    },
+    onLessonClear: function () {
+      this.selected_lesson = { lesson_cases: [] }
+      this.value.lesson = { lesson_times: [] }
+    },
+    onSelectedLessonCaseChange: function (value, clear) {
+      if (clear) {
+        this.value.lesson.lesson_times = []
+      }
+      if (value) {
+        /* 选择的课程case变化 根据时间 */
+        this.value.lesson.lesson_date = value
+        let flag = this.selected_lesson.lesson_cases.findIndex(item => {
+          return item.lesson_date === value
+        })
+        if (flag !== -1) {
+          // 上课时间选中
+          this.lesson_times = transTimeToSelectedData(
+            this.selected_lesson.lesson_cases[flag].lesson_time
+          )
+          this.selected_lesson_case = this.selected_lesson.lesson_cases[flag]
         } else {
-          this.selected_lesson = {lesson_cases: []};
-        } // 查看选的那个
+          this.lesson_times = []
+          this.selected_lesson_case = {}
+        }
+
         this.value.lesson = {
           ...this.value.lesson,
-          lesson_id: this.selected_lesson.lesson_id,
-          raw_lesson_id: this.selected_lesson.raw_lesson_id,
-          lesson_name: this.selected_lesson.lesson_name,
-          lesson_teacher_name: this.selected_lesson.lesson_teacher_name,
-          lesson_class: this.selected_lesson.lesson_class,
-          lesson_teacher_unit: this.selected_lesson.lesson_teacher_unit,
-          lesson_unit: this.selected_lesson.lesson_unit,
-          lesson_attribute: this.selected_lesson.lesson_attribute,
-          group_name: this.selected_lesson.group_name,
-          lesson_year: this.selected_lesson.lesson_year,
-          lesson_semester: this.selected_lesson.lesson_semester,
-          lesson_level: this.selected_lesson.lesson_level,
-          lesson_model: this.selected_lesson.lesson_model,
-          is_lock: this.selected_lesson.is_lock,
-          guiders: this.selected_lesson.guiders,
-        };
-      },
-
-      onSelectedLessonCaseChange: function (value, clear) {
-        if (clear){
-          this.value.lesson.lesson_times = []
+          lesson_date: value,
+          lesson_room: this.selected_lesson_case.lesson_room,
+          lesson_times: this.value.lesson.lesson_times
+            ? this.value.lesson.lesson_times
+            : []
         }
-        if (value) {
-          /* 选择的课程case变化 根据时间 */
-          this.value.lesson.lesson_date = value;
-          let flag = this.selected_lesson.lesson_cases.findIndex(item => {
-            return item.lesson_date === value;
-          });
-          if (flag !== -1) {
-            // 上课时间选中
-            this.lesson_times = transTimeToSelectedData(
-              this.selected_lesson.lesson_cases[flag].lesson_time
-            );
-            this.selected_lesson_case = this.selected_lesson.lesson_cases[flag];
-          } else {
-            this.lesson_times = [];
-            this.selected_lesson_case = {};
-          }
-
-          this.value.lesson = {
-            ...this.value.lesson,
-            lesson_date: value,
-            lesson_room: this.selected_lesson_case.lesson_room,
-            lesson_times: this.value.lesson.lesson_times
-              ? this.value.lesson.lesson_times
-              : []
-          };
-        } else {
-          // 没找到不选
-          this.lesson_times = [];
-          this.selected_lesson_case = {};
-          this.value.lesson = {
-            ...this.value.lesson,
-            lesson_date: undefined,
-            lesson_room: undefined,
-            lesson_times: []
-          };
+      } else {
+        // 没找到不选
+        this.lesson_times = []
+        this.selected_lesson_case = {}
+        this.value.lesson = {
+          ...this.value.lesson,
+          lesson_date: undefined,
+          lesson_room: undefined,
+          lesson_times: []
         }
-      },
-
-      getLessonDatePickerOption: function () {
-        let self = this;
-        return {
-          disabledDate(value) {
-            let d = dateToString(value, "yyyy-MM-dd");
-            let flag = self.allow_select_data.findIndex(item => {
-              return item === d;
-            });
-            return flag === -1;
-          }
-        };
       }
     },
-    created() {
+
+    getLessonDatePickerOption: function () {
+      let self = this
+      return {
+        disabledDate (value) {
+          if (self.allow_select_data.length) {
+            let d = dateToString(value, 'yyyy-MM-dd')
+            let flag = self.allow_select_data.findIndex(item => {
+              return item === d
+            })
+            return flag === -1
+          } else {
+            return false
+          }
+        }
+      }
     }
-  };
+  },
+  created () {
+  }
+}
 </script>
 
 <style scoped lang="less">
