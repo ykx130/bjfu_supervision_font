@@ -6,7 +6,7 @@
       </Row>
       <Row>
         <!--<Col :span="24" style="text-align: left; padding-left: 32%"><p class="normal_font">版本： {{meta.version}} </p></Col>-->
-        <Col :span="24" style="text-align: left; padding-left: 32%"><p class="normal_font">适用课程： {{meta.meta.lesson_attribute}} </p></Col>
+        <Col :span="24" style="text-align: left; padding-left: 32%"><p class="normal_font">适用课程： {{meta.lesson_attribute}} </p></Col>
         <Col :span="24" style="text-align: left; padding-left: 32%"><p class="normal_font">创建日期： {{meta.meta.created_at}} </p></Col>
       </Row>
     </Card>
