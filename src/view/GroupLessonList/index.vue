@@ -58,7 +58,15 @@ export default {
       }, // 分页
       columns: [
         {
-          title: '用户名称',
+          title: '用户姓名',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.name }</span>
+          )
+          }
+        },
+        {
+          title: '用户id',
           render: function (h, params) {
             return (
               <span>{ params.row.username }</span>
