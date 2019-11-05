@@ -6,80 +6,91 @@
  * @LastEditors: Please set LastEditors
  -->
 <template>
-  <Card>
-    <BackTop></BackTop>
-    <div>
-      <h1
-        style="text-align: center;color: #468847;background-color: #dff0d8;    border-color: #d6e9c6;"
-      >{{ form_meta.name }}</h1>
-      <br />
-      <!--<divider orientation="left">课程信息</divider>-->
+  <div>
+    <BackTop :height="100" >
+      <div class="top">返回顶端</div>
+    </BackTop>
+    <Card>
       <div>
-        <Lesson v-model="meta" ref="lesson_info"></Lesson>
-      </div>
-      <br />
-      <Alert type="error" v-html="form_meta.toptip">
-      </Alert>
-      <br />
-      <divider orientation="left">问卷内容</divider>
-      <FormShow
-        v-model="form_values"
-        :pages="form_meta.pages"
-        :items="form_meta.items"
-        :disabled="false"
-        ref="form_info"
-        @judgePage="judgePage"
-      >
-        <div slot-scope="Page">
-          <div v-show="show_recommend" v-if="Page.current_page==='评价表正面'">
+        <h1
+          style="text-align: center;color: #468847;background-color: #dff0d8;    border-color: #d6e9c6;"
+        >{{ form_meta.name }}</h1>
+        <br />
+        <!--<divider orientation="left">课程信息</divider>-->
+        <div>
+          <Lesson v-model="meta" ref="lesson_info"></Lesson>
+        </div>
+        <br />
+        <Alert type="error" v-html="form_meta.toptip">
+        </Alert>
+        <br />
+        <divider orientation="left">问卷内容</divider>
+        <FormShow
+          class="form_wrapper"
+          v-model="form_values"
+          :pages="form_meta.pages"
+          :items="form_meta.items"
+          :disabled="false"
+          ref="form_info"
+          @judgePage="judgePage"
+        >
+          <div slot-scope="Page">
+            <div v-show="show_recommend" v-if="Page.current_page==='评价表正面'">
             <span
               style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold"
             >必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
-            <FormItem>
-              <Row>
-                <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：是否推荐为好评课?</span>
-              </Row>
-              <Row>
-                <RadioGroup v-model="recommend_model">
-                  <Radio :label="1" v-bind:style="{ fontSize:'15px',marginLeft:'25px' }">推荐</Radio>
-                  <Radio :label="0" v-bind:style="{ fontSize:'15px',marginLeft:'25px' }">不推荐</Radio>
-                </RadioGroup>
-              </Row>
-            </FormItem>
+              <FormItem>
+                <Row>
+                  <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：是否推荐为好评课?</span>
+                </Row>
+                <Row>
+                  <RadioGroup v-model="recommend_model">
+                    <Radio :label="1" v-bind:style="{ fontSize:'15px',marginLeft:'25px' }">推荐</Radio>
+                    <Radio :label="0" v-bind:style="{ fontSize:'15px',marginLeft:'25px' }">不推荐</Radio>
+                  </RadioGroup>
+                </Row>
+              </FormItem>
 
-            <span
-              style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold"
-            >（若选择为“推荐为好评课堂，请写出推荐理由； 若选择“待定，还需进一步完善”，请写出意见及建议。)</span>
+              <span
+                style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold"
+              >（若选择为“推荐为好评课堂，请写出推荐理由； 若选择“待定，还需进一步完善”，请写出意见及建议。)</span>
 
-            <FormItem>
-              <Row>
-                <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：结论及意见</span>
-              </Row>
-              <Row>
-                <Input
-                  type="textarea"
-                  v-model="recommend_reason"
-                  placeholder="Satisfation about teachers..."
-                  v-bind:style="{marginLeft:'25px',width:'65%'}"
-                ></Input>
-              </Row>
-            </FormItem>
+              <FormItem>
+                <Row>
+                  <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：结论及意见</span>
+                </Row>
+                <Row>
+                  <Input
+                    type="textarea"
+                    v-model="recommend_reason"
+                    placeholder="Satisfation about teachers..."
+                    v-bind:style="{marginLeft:'25px',width:'65%'}"
+                  ></Input>
+                </Row>
+              </FormItem>
+            </div>
           </div>
-        </div>
-      </FormShow>
-      <Button type="primary" style="margin-left: 20px" @click="handleSave">保存</Button>
-      <Button type="primary" style="margin-left: 20px" @click="handleSubmit">提交</Button>
-      <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
-      <Button style="margin-left: 28px" @click="prePage" v-show="pageshow[0]">
-        <Icon type="ios-arrow-back"></Icon>上一页
-      </Button>
-      <Button style="margin-left: 28px" @click="nextPage" v-show="pageshow[1]">
-        下一页
-        <Icon type="ios-arrow-forward"></Icon>
-      </Button>
-      <!--{{ruleValidate}}-->
-    </div>
-  </Card>
+        </FormShow>
+        <Button type="primary" style="margin-left: 20px" @click="handleSave" v-show="pageshow[0]">保存</Button>
+        <Button type="primary" style="margin-left: 20px" @click="handleSubmit"v-show="pageshow[0]">提交</Button>
+        <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
+        <Button style="margin-left: 28px" @click="prePage" v-show="pageshow[0]">
+          <Icon type="ios-arrow-back"></Icon>上一页
+        </Button>
+        <Button type="primary" style="margin-left: 28px" @click="nextPage" v-show="pageshow[1]">
+          填写完成请继续填写下一页
+          <Icon type="ios-arrow-forward"></Icon>
+        </Button>
+        <!--{{ruleValidate}}-->
+      </div>
+
+    </Card>
+    <ABackTop :height="100" :bottom="80" :right="50" container=".form_wrapper">
+      <div class="top">返回顶端</div>
+    </ABackTop>
+  </div>
+
+
 </template>
 <script>
 import { getFormMeta, postForm } from "../../service/api/dqs";
@@ -91,10 +102,13 @@ import {
 import Lesson from "@/view/components/form_show/lesson_meta_form.vue";
 import FormShow from "@/view/components/form_show/form_show.vue";
 import UserMixin from "@/mixins/UserMixin.js";
+import ABackTop from '../../components/a-back-top'
+
 export default {
   components: {
     Lesson,
-    FormShow
+    FormShow,
+    ABackTop
   },
   mixins: [UserMixin],
   name: "FormFill",
@@ -253,4 +267,11 @@ export default {
 </script>
 
 <style lang="less">
+  .top{
+    padding: 10px;
+    background: rgba(0, 153, 229, .7);
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+  }
 </style>

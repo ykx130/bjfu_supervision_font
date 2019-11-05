@@ -35,6 +35,9 @@
           </div>
           <Content class="content-wrapper">
               <router-view v-if="show"/>
+            <ABackTop :height="100" :bottom="80" :right="50" container=".content-wrapper">
+              <div class="top">返回顶端</div>
+            </ABackTop>
           </Content>
         </Layout>
       </Content>
@@ -56,6 +59,7 @@ import minLogo from '@/assets/images/logo.png'
 import maxLogo from '@/assets/images/logo.png'
 import './main.less'
 import UserMixin from '@/mixins/UserMixin'
+import ABackTop from '../a-back-top'
 export default {
   name: 'Main',
   components: {
@@ -66,7 +70,8 @@ export default {
     Fullscreen,
     ErrorStore,
     User,
-    userNotices
+    userNotices,
+    ABackTop
   },
   mixins: [UserMixin],
   data () {
@@ -207,6 +212,13 @@ export default {
 }
 </script>
 <style>
+  .top{
+    padding: 10px;
+    background: rgba(0, 153, 229, .7);
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+  }
   .start
   {
     cursor: pointer;
