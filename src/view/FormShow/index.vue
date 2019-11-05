@@ -58,15 +58,15 @@
           </FormShow>
 
       </div>
-      <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="form.status==='已完成'">保存</Button>
-      <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled">提交</Button>
+      <Button type="primary" style="margin-left: 20px" @click="handleSave" :disabled="form.status==='已完成'" v-show="pageshow[0]">保存</Button>
+      <Button type="primary" style="margin-left: 20px" @click="handleSubmit" :disabled="disabled" v-show="pageshow[0]">提交</Button>
       <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
       <Button style="margin-left: 28px" @click="prePage" v-show="pageshow[0]">
         <Icon type="ios-arrow-back"></Icon>
         上一页
       </Button>
-      <Button  style="margin-left: 28px" @click="nextPage" v-show="pageshow[1]">
-        下一页
+      <Button type="primary"  style="margin-left: 28px" @click="nextPage" v-show="pageshow[1]">
+        填写完成请继续填写下一页
         <Icon type="ios-arrow-forward"></Icon>
       </Button>
 

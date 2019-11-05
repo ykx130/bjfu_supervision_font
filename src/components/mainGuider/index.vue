@@ -154,6 +154,9 @@
       </Header>
       <Content class="content-wrapper">
         <router-view/>
+        <ABackTop :height="100" :bottom="80" :right="50" container=".content-wrapper">
+          <div class="top">返回顶端</div>
+        </ABackTop>
       </Content>
       <Footer class="layout-footer-center">2011-2016 &copy; BJFU-SUPERVIERSION</Footer>
     </Layout>
@@ -168,6 +171,7 @@ import userNotices from '_c/user_notices'
 import ErrorStore from '_c/mainGuider/components/error-store'
 import { mapMutations, mapActions, mapGetters } from 'vuex'
 import mapState from '@/mixins/UserMixin'
+import ABackTop from '../a-back-top'
 
 export default {
   name: 'mainGuider',
@@ -180,7 +184,8 @@ export default {
     // Fullscreen,
     ErrorStore,
     User,
-    userNotices
+    userNotices,
+    ABackTop
   },
   data () {
     return {
@@ -325,3 +330,12 @@ export default {
   }
 }
 </script>
+<style>
+  .top{
+    padding: 10px;
+    background: rgba(0, 153, 229, .7);
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+  }
+</style>
