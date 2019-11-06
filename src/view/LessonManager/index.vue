@@ -55,11 +55,11 @@ import { queryLessons, putLesson } from '../../service/api/lesson'
 import { queryTerms, getCurrentTerms } from '../../service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
-import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
+import LessonJudgeForms from 'Views/components/lesson_judge/lesson_judge_forms'
 import TeacherSelector from '@/view/components/teacher_selector'
 
 export default {
-  components: { LessonJudge, LessonProfileModal, FloatBar, BatchLessonWatchModal, TeacherSelector },
+  components: { LessonJudgeForms, LessonProfileModal, FloatBar, BatchLessonWatchModal, TeacherSelector },
   data: function () {
     return {
       query: {
@@ -85,7 +85,7 @@ export default {
           title: '评价',
           width: 70,
           render: (h, params) => {
-            return h(LessonJudge, {
+            return h(LessonJudgeForms, {
               props: {
                 lesson_id: params.row.lesson_id
               }

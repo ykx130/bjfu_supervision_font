@@ -1,15 +1,13 @@
 <template>
   <Card>
-    <Table :show-header="true" :data="data" :columns="columns"></Table>
+    <Table :show-header="false" :data="data" :columns="columns"></Table>
   </Card>
 </template>
 
 <script>
-
   import { queryForms } from '@/service/api/dqs'
-
   export default {
-    name: "model_judge",
+    name: "lesson_judge_forms",
     props: {
       lesson_id: String,
     },
@@ -18,23 +16,15 @@
         data:[],
         columns: [
           {
-            title: '上课班级',
+            title: '课程名字',
             render: function (h, params) {
               return (
-                <span>{ params.row.meta.lesson.lesson_class }</span>
+                <span>{ params.row.meta.lesson.lesson_name }</span>
             )
             }
           },
           {
-            title: '上课地点',
-            render: function (h, params) {
-              return (
-                <span>{ params.row.meta.lesson.lesson_room }</span>
-            )
-            }
-          },
-          {
-            title: '任课教师',
+            title: '上课教师',
             render: function (h, params) {
               return (
                 <span>{ params.row.meta.lesson.lesson_teacher_name }</span>
@@ -42,15 +32,31 @@
             }
           },
           {
-            title: '听课时间',
+            title: '课程属性',
             render: function (h, params) {
               return (
-                <span>{ params.row.meta.lesson.lesson_date }</span>
+                <span>{ params.row.meta.lesson.lesson_attribute }</span>
             )
             }
           },
           {
-            title: '督导姓名',
+            title: '课程等级',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.meta.lesson.lesson_level }</span>
+            )
+            }
+          },
+          {
+            title: '班级',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.meta.lesson.lesson_class }</span>
+            )
+            }
+          },
+          {
+            title: '听课督导',
             render: function (h, params) {
               return (
                 <span>{ params.row.meta.guider_name }</span>
@@ -58,12 +64,30 @@
             }
           },
           {
-            title: '好评状态',
+            title: '督导所在小组',
             render: function (h, params) {
-              if (params.row.model_lesson.recommend) {
-                return h('Tag', { props: { color: 'blue' } }, '推荐')
-              } else {
-                return h('Tag', { props: { color: 'red' } },'待商榷')
+              return (
+                <span>{ params.row.meta.guider_group }</span>
+            )
+            }
+          },
+          {
+            title: '创建时间',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.meta.created_at }</span>
+            )
+            }
+          },
+          {
+            title: '状态',
+            render: (h, params) => {
+              if (params.row.status === '待提交'){
+                return h('Tag', { props: {color:"red"}}, params.row.status)
+              } else if (params.row.status === '已完成') {
+                return h('Tag', { props: {color:"blue"}}, params.row.status)
+              }  else {
+                return h('Tag',{}, params.row.status)
               }
             }
           },
@@ -93,17 +117,15 @@
       }
     },
     methods: {
-
     },
     mounted: function () {
-      queryForms({meta:{lesson:{lesson_id: this.lesson_id}}, status:"已完成"}).then((resp)=>{
+      debugger
+      queryForms({meta:{lesson:{lesson_id: this.lesson_id}}}).then((resp)=>{
         this.data = resp.data.forms
       })
     }
-
   }
 </script>
 
 <style scoped>
-
 </style>
