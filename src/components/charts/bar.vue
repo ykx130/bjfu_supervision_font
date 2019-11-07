@@ -19,13 +19,15 @@ export default {
       dom: null
     }
   },
-  watch: {
+  watch:{
     value: {
-      deep: true,
+      deep:true,
       handler: function () {
         let xAxisData = Object.keys(this.value)
         let seriesData = Object.values(this.value)
         let option = {
+          legend: {},
+          tooltip: {},
           title: {
             text: this.text,
             subtext: this.subtext,
@@ -34,7 +36,7 @@ export default {
           xAxis: {
             type: 'category',
             data: xAxisData,
-            axisLabel: {
+            axisLabel:{
               interval: 0
             }
           },
@@ -43,7 +45,13 @@ export default {
           },
           series: [{
             data: seriesData,
-            type: 'bar'
+            type: 'bar',
+            label: {
+              normal: {
+                show: true,
+                position: 'top'
+              }
+            },
           }]
         }
         this.dom.setOption(option)
@@ -68,7 +76,7 @@ export default {
         xAxis: {
           type: 'category',
           data: xAxisData,
-          axisLabel: {
+          axisLabel:{
             interval: 0
           }
         },
