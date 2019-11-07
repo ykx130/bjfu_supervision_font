@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <Table :show-header="true" :data="data" :columns="columns"></Table>
+    <Table :show-header="false" :data="data" :columns="columns"></Table>
   </Card>
 </template>
 

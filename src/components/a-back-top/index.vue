@@ -76,6 +76,7 @@
     },
     methods: {
       handleScroll () {
+        console.log(this.containerEle.scrollTop)
         this.backTop = this.containerEle.scrollTop >= this.height
       },
       back () {
