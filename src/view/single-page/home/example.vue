@@ -5,7 +5,7 @@
 <script>
 import echarts from 'echarts'
 import { on, off } from '@/libs/tools'
-import {queryPagedata} from '../../../service/api/page_data'
+import { queryPagedata } from '../../../service/api/page_data'
 
 export default {
   name: 'serviceRequests',
@@ -23,7 +23,7 @@ export default {
     }
   },
   mounted () {
-    const option = {
+    let option = {
       tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -44,7 +44,10 @@ export default {
         {
           type: 'category',
           boundaryGap: false,
-          data:this.units
+          data: this.units,
+          axisLabel: {
+            interval: 0
+          }
         }
       ],
       yAxis: [
@@ -57,9 +60,9 @@ export default {
           name: '提交数量',
           type: 'line',
           stack: '总量',
-          areaStyle: {normal: {
+          areaStyle: { normal: {
             color: '#2d8cf0'
-          }},
+          } },
           data: []
         }
       ]
@@ -70,8 +73,8 @@ export default {
       on(window, 'resize', this.resize)
     })
     queryPagedata().then((resp) => {
-      for(let u in this.units){
-        option.series[0].data = resp.data.data['sys:form_num'][this.units[u]];
+      for (let u in this.units) {
+        option.series[0].data = resp.data.data['sys:form_num'][this.units[u]]
       }
     })
   },
