@@ -19,9 +19,9 @@ export default {
       dom: null
     }
   },
-  watch:{
+  watch: {
     value: {
-      deep:true,
+      deep: true,
       handler: function () {
         let xAxisData = Object.keys(this.value)
         let seriesData = Object.values(this.value)
@@ -33,7 +33,10 @@ export default {
           },
           xAxis: {
             type: 'category',
-            data: xAxisData
+            data: xAxisData,
+            axisLabel: {
+              interval: 0
+            }
           },
           yAxis: {
             type: 'value'
@@ -64,7 +67,10 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: xAxisData
+          data: xAxisData,
+          axisLabel: {
+            interval: 0
+          }
         },
         yAxis: {
           type: 'value'
