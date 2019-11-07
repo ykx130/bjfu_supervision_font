@@ -56,8 +56,7 @@ export default {
         { title: '关注课程总数', icon: 'md-share', count: 0, color: '#ed3f14' },
       ],
       pieData: [
-        {value: 12, name: '总体好评'},
-        {value: 32, name: '总体一般'},
+
       ],
       barData: {}
     }
@@ -69,6 +68,9 @@ export default {
       this.inforCardData[2].count = resp.data.data['sys:wait_submitted_form'];
       this.inforCardData[3].count = resp.data.data['sys:notice_lesson_num'];
       this.barData = resp.data.data['sys:form_num']
+      this.pieData= [{name:'总体一般', value: resp.data.data['sys:form_just_num']},
+        {name:'总体好评', value: resp.data.data['sys:form_statisfy_num']},
+        {name:'总体较差', value: resp.data.data['sys:form_unsatisfy_num']}]
     })
   }
 }
