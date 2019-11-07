@@ -51,8 +51,8 @@ export default {
     return {
       inforCardData: [
         { title: '在职督导', icon: 'md-person-add', count: 0, color: '#2d8cf0' },
-        { title: '提交问卷', icon: 'md-locate', count: 0, color: '#19be6b' },
-        { title: '待提交问卷', icon: 'md-help-circle', count: 0, color: '#ff9900' },
+        { title: '提交评价表', icon: 'md-locate', count: 0, color: '#19be6b' },
+        { title: '待提评价表', icon: 'md-help-circle', count: 0, color: '#ff9900' },
         { title: '关注课程总数', icon: 'md-share', count: 0, color: '#ed3f14' },
       ],
       pieData: [
