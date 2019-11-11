@@ -78,7 +78,7 @@
                     @on-clear="onLessonClear"
                     clearable
                     :label="value.lesson.lesson_name"
-                    @on-change="(v)=>{onSelectedLessonChange(v, undefined)}"
+                    @on-change="(v)=>{onSelectedLessonChange(v, undefined, true)}"
                     :disabled="disabled"
                     filterable
                   >
@@ -294,7 +294,7 @@ export default {
             let selected_lesson = resp.data.lesson
             // 处理case
             this.lessons[selected_lesson.lesson_id] = selected_lesson
-            this.onSelectedLessonChange(selected_lesson.lesson_id, this.value.lesson.lesson_date)
+            this.onSelectedLessonChange(selected_lesson.lesson_id, this.value.lesson.lesson_date, false)
             // 处理表的附加值
           })
         }
@@ -322,7 +322,7 @@ export default {
               let selected_lesson = resp.data.lesson
               // 处理case
               this.lessons[selected_lesson.lesson_id] = selected_lesson
-              this.onSelectedLessonChange(selected_lesson.lesson_id, this.value.lesson.lesson_date)
+              this.onSelectedLessonChange(selected_lesson.lesson_id, this.value.lesson.lesson_date, false)
               // 处理表的附加值
             })
           } else {
@@ -416,27 +416,32 @@ export default {
       this.fetchUser()
     },
 
-    onSelectedLessonChange: function (lesson_id, assign_case_date) {
-      /* 选择的课程发生变化 */
+    onSelectedLessonChange: function (lesson_id, assign_case_date, clear_case) {
+      /* 选择的课程发生变化 assing_case_date*/
       if (lesson_id) {
         this.selected_lesson = this.lessons[lesson_id]
         this.selected_lesson.lesson_cases = []
         queryLessonCase({ lesson_id: this.selected_lesson.id }).then(resp => {
+          // 拿到所有case
           this.selected_lesson.lesson_cases = resp.data.lesson_cases
           this.allow_select_data = this.selected_lesson.lesson_cases.map(
             item => {
               return item.lesson_date
             }
           )
+
+
+          // 判断是否有指定的日期
           if (!assign_case_date) {
             this.value.lesson.lesson_times = []
             if (this.allow_select_data.length > 0) {
-              this.onSelectedLessonCaseChange(this.allow_select_data[0], true)
+              this.onSelectedLessonCaseChange(this.allow_select_data[0], clear_case)
             } else {
-              this.onSelectedLessonCaseChange(undefined, true)
+              this.onSelectedLessonCaseChange(undefined, clear_case)
             }
           } else {
-            this.onSelectedLessonCaseChange(assign_case_date, false)
+            // 如果有，不清空
+            this.onSelectedLessonCaseChange(assign_case_date, clear_case)
           }
         })
       } else {
@@ -466,43 +471,45 @@ export default {
       this.value.lesson = { lesson_times: [] }
     },
     onSelectedLessonCaseChange: function (value, clear) {
-      if (clear) {
+      if (!clear) {
+        // 如果不清 什么都不做
+      } else {
+        // 如果清除 ，按逻辑来
         this.value.lesson.lesson_times = []
-      }
-      if (value) {
-        /* 选择的课程case变化 根据时间 */
-        this.value.lesson.lesson_date = value
-        let flag = this.selected_lesson.lesson_cases.findIndex(item => {
-          return item.lesson_date === value
-        })
-        if (flag !== -1) {
-          // 上课时间选中
-          this.lesson_times = transTimeToSelectedData(
-            this.selected_lesson.lesson_cases[flag].lesson_time
-          )
-          this.selected_lesson_case = this.selected_lesson.lesson_cases[flag]
+        if (value) {
+          /* 选择的课程case变化 根据时间 */
+          this.value.lesson.lesson_date = value
+          let flag = this.selected_lesson.lesson_cases.findIndex(item => {
+            return item.lesson_date === value
+          })
+          if (flag !== -1) {
+            // 上课时间选中
+            this.lesson_times = transTimeToSelectedData(
+              this.selected_lesson.lesson_cases[flag].lesson_time
+            )
+            this.selected_lesson_case = this.selected_lesson.lesson_cases[flag]
+          } else {
+            this.lesson_times = []
+            this.selected_lesson_case = {}
+          }
+          this.value.lesson = {
+            ...this.value.lesson,
+            lesson_date: value,
+            lesson_room: this.selected_lesson_case.lesson_room,
+            lesson_times: this.value.lesson.lesson_times
+              ? this.value.lesson.lesson_times
+              : []
+          }
         } else {
+          // 没找到不选
           this.lesson_times = []
           this.selected_lesson_case = {}
-        }
-
-        this.value.lesson = {
-          ...this.value.lesson,
-          lesson_date: value,
-          lesson_room: this.selected_lesson_case.lesson_room,
-          lesson_times: this.value.lesson.lesson_times
-            ? this.value.lesson.lesson_times
-            : []
-        }
-      } else {
-        // 没找到不选
-        this.lesson_times = []
-        this.selected_lesson_case = {}
-        this.value.lesson = {
-          ...this.value.lesson,
-          lesson_date: undefined,
-          lesson_room: undefined,
-          lesson_times: []
+          this.value.lesson = {
+            ...this.value.lesson,
+            lesson_date: undefined,
+            lesson_room: undefined,
+            lesson_times: []
+          }
         }
       }
     },
