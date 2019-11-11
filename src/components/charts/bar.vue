@@ -26,6 +26,8 @@ export default {
         let xAxisData = Object.keys(this.value)
         let seriesData = Object.values(this.value)
         let option = {
+          legend: {},
+          tooltip: {},
           title: {
             text: this.text,
             subtext: this.subtext,
@@ -33,14 +35,23 @@ export default {
           },
           xAxis: {
             type: 'category',
-            data: xAxisData
+            data: xAxisData,
+            axisLabel:{
+              interval: 0
+            }
           },
           yAxis: {
             type: 'value'
           },
           series: [{
             data: seriesData,
-            type: 'bar'
+            type: 'bar',
+            label: {
+              normal: {
+                show: true,
+                position: 'top'
+              }
+            },
           }]
         }
         this.dom.setOption(option)
@@ -64,7 +75,10 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: xAxisData
+          data: xAxisData,
+          axisLabel:{
+            interval: 0
+          }
         },
         yAxis: {
           type: 'value'
