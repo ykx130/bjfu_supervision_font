@@ -37,7 +37,7 @@ export default {
       state.userName = resData.username
     },
     setCurrentAccess(state,status){
-      state.access=[status]
+      state.access= [status]
     },
     judgeSuperAccess(state,resData){
       let arr= ['管理员', '大组长', '学院领导', '小组长', '督导', '教师']

@@ -9,11 +9,14 @@
   <div>
     <div v-if="someLesson" v-for="lesson in someLesson">
       <p>
-        {{ lesson.lesson_name }},{{ lesson.lesson_class }}班,{{lesson.lesson_room.toString()}},
-        <span>{{ getLessonWeekShow(lesson.lesson_week)}}</span>周
+        {{ lesson.lesson_name }}
       </p>
+      <p>{{ lesson.lesson_class }}班</p>
+      <p>{{lesson.lesson_room.toString()}}</p>
+      <p><span>{{ getLessonWeekShow(lesson.lesson_week)}}</span>周</p>
+      <p><span>-------</span>
       <Button type="text" @click="formjudge(lesson.lesson_id, lesson.term, lesson.lesson_attribute)" style="color: #348EED">评价</Button>
-      <span>-------</span>
+      <span>-------</span></p>
     </div>
   </div>
 </template>
