@@ -274,14 +274,12 @@ export default {
       })
     },
     handleClickToAdmin (value) {
+      this.setCurrentAccess(value)
       if (value === '督导') {
-        this.setCurrentAccess(value)
         this.$router.push({ name: '督导我的提交', query: { time: new Date().getTime() } })
       } else if (value === '教师') {
-        this.setCurrentAccess(value)
         this.$router.push({ name: 'guider_active_attend', query: { time: new Date().getTime() } })
       } else {
-        this.setCurrentAccess(value)
         this.$router.push({ name: 'home' })
       }
     },
