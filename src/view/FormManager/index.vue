@@ -208,7 +208,7 @@ export default {
                 props: {
                   type: 'error',
                   size: 'small',
-                  disabled: !(params.row.status === '已完成')
+                  disabled: (params.row.status === '已完成')
                 },
                 style: {
                   marginRight: '4px'
