@@ -280,7 +280,7 @@ export default {
     },
     onExportExcel: function (form_choose) {
       exporFormsExcel({
-        'term': this.query.meta.term,
+        'meta.term':this.query.meta.term,
         'bind_meta_name':form_choose
       }).then((resp) => {
         if (resp.data.code === 200) {
