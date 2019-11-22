@@ -96,6 +96,41 @@ export default {
               <span>{ params.row.has_submitted }</span>
             )
           }
+        },{
+          title: '完成总课时',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.finish_total_times }</span>
+            )
+          }
+        },{
+          title: '只听一节课',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.finish_1_times }</span>
+            )
+          }
+        },{
+          title: '连续完成2课时',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.finish_2_times }</span>
+            )
+          }
+        },{
+          title: '连续完成3课时',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.finish_3_times }</span>
+            )
+          }
+        },{
+          title: '连续完成4课时',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.finish_4_times }</span>
+            )
+          }
         },
         {
           title: '提交总次数',
