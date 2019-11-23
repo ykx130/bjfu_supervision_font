@@ -14,9 +14,9 @@
         </span>
       </Input>
     </FormItem>
-    <FormItem prop="code" style="display: flex;">
-      <div id="your-dom-id" class="nc-container"></div> <!--No-Captcha渲染的位置，其中 class 中必须包含 nc-container-->
-    </FormItem>
+    <!-- <FormItem prop="code" style="display: flex;">
+      <div id="your-dom-id" class="nc-container"></div> 
+    </FormItem> -->
     <FormItem>
       <Button :disabled="disable_login" @click="handleSubmit" type="primary" long>登录</Button>
     </FormItem>
@@ -45,13 +45,13 @@ export default {
     }
   },
   mounted: function () {
-    this.refreshCaptcha()
+    //this.refreshCaptcha()
   },
   data () {
     return {
       captcha_url: '',
       nc: undefined,
-      disable_login: true,
+      disable_login: false,
       form: {
         userName: '',
         password: '',

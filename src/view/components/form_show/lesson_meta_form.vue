@@ -230,7 +230,7 @@ export default {
   },
   data () {
     return {
-      ALL_CASE_STR: '01020304050607080919111213',
+      ALL_CASE_STR: '01020304050607080910111213',
       lessons: {},
       users: {},
       lesson_times: [],
