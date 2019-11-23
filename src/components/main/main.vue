@@ -18,13 +18,16 @@
           <error-store v-if="$config.plugin['error-store'] && $config.plugin['error-store'].showInHeader" :has-read="hasReadErrorPage" :count="errorCount"></error-store>
           <fullscreen v-model="isFullscreen" style="margin-right: 10px;"/>
           <div style="margin-right: 100px">
-            <span style="font-size: small">当前身份：</span>
+<!--            <span style="font-size: small">当前身份：</span>-->
           <ButtonGroup style="margin-top: 14px;float: right"  size="large">
 <!--            <Button  type="info">{{current_role}}</Button>-->
 <!--            <Button v-for="(value,index) in this.roles" v-if="(value!=='教师')" :key="value"  @click="handleClickToGuider(value)" :type="getBtnType(value)">{{value}}</Button>-->
                 <Button v-for="(value,index) in this.roles"  :key="value"  @click="handleClickToGuider(value)" :type="getBtnType(value)">{{value}}</Button>
 
           </ButtonGroup>
+            <span style="margin-right: 30px;font-size: medium" >
+              {{this.userInfo.userInfo.name}}老师,您好!
+            </span>
           </div>
         </header-bar>
       </Header>
