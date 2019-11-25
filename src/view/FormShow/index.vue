@@ -6,7 +6,7 @@
         <h1 style="text-align: center;color: #468847;background-color: #dff0d8;    border-color: #d6e9c6;">{{ form.bind_meta_name }}</h1>
         <br/>
         <div>
-          <Lesson v-model="form.meta" :disabled="form.status==='已完成'"></Lesson>
+          <Lesson v-model="form.meta" ref="lesson_info" :disabled="form.status==='已完成'"></Lesson>
         </div>
         <br/>
       <Alert type="error" v-html="form.toptip">
@@ -89,6 +89,9 @@ export default {
   computed: {
     currentUser: function () {
       return this.$store.getters.userInfo
+    },
+    lessonInfo: function() {
+      return this.$refs.lesson_info;
     },
     formInfo :function () {
       return this.$refs.form_info
@@ -175,28 +178,47 @@ export default {
       this.$router.back()
     },
     handleSubmit () {
-      this.formInfo.validate((valid) => {
-            if (valid) {
-              let form = this.produceFrom('已完成')
-              putForm(this.form_id, form).then((resp) => {
-                if (resp.data.code === 200) {
-                  this.$Message.success({ content: '新建成功' })
-                  this.back()
-                }
-              })
-            } else {
-              this.$Message.warning("检查问卷信息是否填写完整")
-            }
-          })
+      this.lessonInfo.validate(valid_lesson => {
+          if (valid_lesson) {
+            this.formInfo.validate((valid) => {
+              if (valid) {
+                let form = this.produceFrom('已完成')
+                putForm(this.form_id, form).then((resp) => {
+                  if (resp.data.code === 200) {
+                    this.$Message.success({ content: '新建成功' })
+                    this.back()
+                  }
+                })
+              } else {
+                this.$Modal.warning({
+                  title:"检查问卷信息是否填写完整",
+                  content:"（1）教师授课情况“总体评价”为“非常满意”，需同时满足三个条件：①6个项目中，评价等级为“非常满意”的项目数≥4；②标★项目的评价等级必须为非常满意；③没有项目的评价等级为“存在不足”及以下。\n" +
+                    "（2）教师授课情况“总体评价”为“存在明显不足”，需满足的条件：6个项目中，评价等级为“存在明显不足”的项目数≥3。"
+                })
+              }
+            })
+          } else {
+            this.$Modal.warning({
+              title:"检查课程信息是否填写完整",
+            });
+          }
+      });
+
     },
     handleSave () {
-      let form = this.produceFrom('草稿')
-      putForm(this.form_id, form).then((resp) => {
-        if (resp.data.code === 200) {
-          this.$Message.success({ content: '新建成功' })
-          this.back()
+      this.lessonInfo.validate(valid_lesson => {
+        if (valid_lesson) {
+          let form = this.produceFrom('草稿')
+          putForm(this.form_id, form).then((resp) => {
+            if (resp.data.code === 200) {
+              this.$Message.success({ content: '新建成功' })
+              this.back()
+            }
+          })
+        }else {
+          this.$Modal.warning({ title:"检查课程信息是否填写完整"});
         }
-      })
+      });
     },
     handleCancel () {
       this.back()

@@ -72,7 +72,7 @@
           </div>
         </FormShow>
         <Button type="primary" style="margin-left: 20px" @click="handleSave" v-show="pageshow[0]">保存</Button>
-        <Button type="primary" style="margin-left: 20px" @click="handleSubmit"v-show="pageshow[0]">提交</Button>
+        <Button type="primary" style="margin-left: 20px" @click="handleSubmit" v-show="pageshow[0]">提交</Button>
         <Button type="warning" style="margin-left: 28px" @click="handleCancel">取消</Button>
         <Button style="margin-left: 28px" @click="prePage" v-show="pageshow[0]">
           <Icon type="ios-arrow-back"></Icon>上一页
@@ -235,11 +235,18 @@ export default {
                 }
               });
             } else {
-              this.$Message.warning("检查问卷信息是否填写完整");
+              this.$Modal.warning({
+                title:"检查问卷信息是否填写完整",
+                content:"（1）教师授课情况“总体评价”为“非常满意”，需同时满足三个条件：①6个项目中，评价等级为“非常满意”的项目数≥4；②标★项目的评价等级必须为非常满意；③没有项目的评价等级为“存在不足”及以下。\n" +
+                  "（2）教师授课情况“总体评价”为“存在明显不足”，需满足的条件：6个项目中，评价等级为“存在明显不足”的项目数≥3。"
+              });
             }
           });
         } else {
-          this.$Message.warning("检查课程信息是否填写完整");
+          this.$Modal.warning({
+            title:"检查课程信息是否填写完整",
+
+          });
         }
       });
     },
@@ -255,7 +262,7 @@ export default {
             }
           });
         } else {
-          this.$Message.warning("检查课程信息是否填写完整");
+          this.$Modal.warning({ title:"检查课程信息是否填写完整"});
         }
       });
     },
