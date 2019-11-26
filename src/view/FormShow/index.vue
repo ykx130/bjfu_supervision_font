@@ -37,7 +37,7 @@
                   </Row>
                 </FormItem>
 
-                <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">（若选择为“推荐为好评课堂，请写出推荐理由； 若选择“待定，还需进一步完善”，请写出意见及建议。)</span>
+                <span style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold">（若选择为“推荐为好评课堂，请写出推荐理由； 若选择“不推荐”，请写出意见及建议。)</span>
 
                 <FormItem>
                   <Row>
