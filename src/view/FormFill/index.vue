@@ -123,6 +123,7 @@ export default {
           })
         ) {
           this.show_recommend = true;
+          this.recommend_model = 1;
         } else {
           this.show_recommend = false;
           this.recommend_model = 0;
