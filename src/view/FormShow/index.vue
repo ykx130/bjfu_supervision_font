@@ -6,7 +6,7 @@
         <h1 style="text-align: center;color: #468847;background-color: #dff0d8;    border-color: #d6e9c6;">{{ form.bind_meta_name }}</h1>
         <br/>
         <div>
-          <Lesson v-model="form.meta" ref="lesson_info" :disabled="form.status==='已完成'"></Lesson>
+          <Lesson v-model="form.meta" ref="lesson_info" @input="Lessonchange" :disabled="form.status==='已完成'"></Lesson>
         </div>
         <br/>
       <Alert type="error" v-html="form.toptip">
@@ -81,11 +81,13 @@
 import { getForm, postForm, putForm } from '../../service/api/dqs'
 import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
 import FormShow from '@/view/components/form_show/form_show.vue'
+import UserMixin from "@/mixins/UserMixin.js";
 import { getLesson, updateModelLessonsVote, postModelLessonsVote } from '../../service/api/lesson'
 export default {
   components: {
     Lesson, FormShow
   },
+  mixins: [UserMixin],
   computed: {
     currentUser: function () {
       return this.$store.getters.userInfo
@@ -98,6 +100,26 @@ export default {
     }
   },
   watch: {
+    "form.meta":{
+      deep: true,
+      handler: function () {
+        if (
+          (this.form.meta.lesson.lesson_model === "推荐为好评课" ||
+            this.form.meta.lesson.lesson_model === "待商榷") && this.form.meta.lesson.guiders.some((element) =>{
+            return element["username"] ===this.userInfo.userName;
+          })
+        ) {
+          this.form.model_lesson.is_model_lesson=true;
+          this.form.model_lesson.show_recommend = true;
+        } else {
+          this.form.model_lesson.is_model_lesson=false;
+          this.form.model_lesson.show_recommend = false;
+          this.form.model_lesson.recommend = 0;
+        }
+        console.log(this.form)
+      },
+      immediate: true
+    }
   },
   data () {
     return {
@@ -133,6 +155,9 @@ export default {
     this.fetchForm()
   },
   methods: {
+    Lessonchange(value){
+      this.form.meta=value
+    },
     formValue2Items () {
       this.form.values.map((item, index) => {
         if (item.type === 'form_item') {
