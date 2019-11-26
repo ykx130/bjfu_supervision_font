@@ -32,7 +32,7 @@
       <FormItem>
         <Button type="primary" style="margin-left: 20px;width: 80px" @click=" onSearch">查询</Button>
       </FormItem>
-      <Button @click="export_option_visible=true" icon="ios-cloud-download-outline" type="primary" label="导出" v-role="['管理员']">导出</Button>
+      <Button @click="export_option_visible=true" icon="ios-cloud-download-outline" type="primary" label="导出" v-role="['管理员','小组长']">导出</Button>
     </Form>
     <FormExportChoose :show="export_option_visible" @onConfirm="onExportExcel" @onCancel="()=>{ this.export_option_visible=false}"></FormExportChoose>
 
@@ -51,19 +51,24 @@ import { updateWithinField } from 'Libs/tools'
 import { getCurrentTerms, queryTerms } from '@/service/api/term'
 import { queryGroups } from '@/service/api/user'
 import FormExportChoose from './components/form_export_choose'
+import UserMixin from '@/mixins/UserMixin.js'
+
 export default {
   components: { FormExportChoose },
+  mixins: [UserMixin],
   data: function () {
     return {
       query: {
         bind_meta_name: undefined,
         meta: {
           create_by: undefined,
+          guider_group:undefined,
           lesson: {
             lesson_teacher_name: undefined
           }
         },
-        status: undefined
+        status: undefined,
+
       },
       total: 0,
       terms: [],
@@ -279,10 +284,14 @@ export default {
       this.fetchData()
     },
     onExportExcel: function (form_choose) {
+      if(this.current_role==='小组长'){
+        this.query.meta.guider_group=this.userInfo.userInfo.guider.group_name
+      }
       exporFormsExcel({
         'meta.term': this.query.meta.term,
         'bind_meta_name': form_choose,
-        'status': '已完成'
+        'status': '已完成',
+        'meta.guider_group':this.query.meta.guider_group
       }).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '导出成功' })
