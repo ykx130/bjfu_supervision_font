@@ -38,7 +38,7 @@
             <div v-show="show_recommend" v-if="Page.current_page==='评价表正面'">
             <span
               style="height: 80px;line-height: 80px;margin-left: 20px;font-weight: bold"
-            >必填* (备注：该课堂在“好评课堂”可参评名单中)</span>
+            >必填* (备注：该课堂在“好评课堂”入围名单中)</span>
               <FormItem>
                 <Row>
                   <span v-bind:style="{marginLeft:'25px',fontSize:'15px' }">Q：是否推荐为好评课?</span>
