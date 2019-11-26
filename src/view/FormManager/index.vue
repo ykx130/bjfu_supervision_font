@@ -46,13 +46,13 @@
 </template>
 
 <script>
-import { queryForms, putForm ,exporFormsExcel,deleteForm} from '../../service/api/dqs'
+import { queryForms, putForm, exporFormsExcel, deleteForm } from '../../service/api/dqs'
 import { updateWithinField } from 'Libs/tools'
 import { getCurrentTerms, queryTerms } from '@/service/api/term'
 import { queryGroups } from '@/service/api/user'
-import  FormExportChoose from './components/form_export_choose'
+import FormExportChoose from './components/form_export_choose'
 export default {
-  components: {FormExportChoose},
+  components: { FormExportChoose },
   data: function () {
     return {
       query: {
@@ -68,8 +68,8 @@ export default {
       total: 0,
       terms: [],
       groups: [],
-      export_option_visible:false,
-      mate_name:'',
+      export_option_visible: false,
+      mate_name: '',
       pages: {
         _page: 1,
         _per_page: 10
@@ -149,7 +149,7 @@ export default {
         },
         {
           title: '状态',
-          width:'100px',
+          width: '100px',
           render: (h, params) => {
             if (params.row.status === '待提交') {
               return h('Tag', { props: { color: 'red' } }, params.row.status)
@@ -163,7 +163,7 @@ export default {
         {
           title: '操作',
           align: 'center',
-          width:'200px',
+          width: '200px',
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -280,16 +280,16 @@ export default {
     },
     onExportExcel: function (form_choose) {
       exporFormsExcel({
-        'meta.term':this.query.meta.term,
-        'bind_meta_name':form_choose
+        'meta.term': this.query.meta.term,
+        'bind_meta_name': form_choose,
+        'status': '已完成'
       }).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '导出成功' })
           window.open('/api/' + resp.data.filename)
         }
       })
-      this.export_option_visible=false
-
+      this.export_option_visible = false
     }
   },
   mounted: function () {
