@@ -204,6 +204,6 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+  @import './form_show.less';
 </style>
