@@ -181,7 +181,10 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$router.push({ path: `/dqs/form_show/${params.row._id}` })
+                    const {href}=this.$router.resolve({
+                      path: `/dqs/form_show/${params.row._id}`
+                    });
+                    window.open(href,'_blank')
                   }
                 }
               }, '查看'),
