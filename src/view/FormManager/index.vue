@@ -15,8 +15,8 @@
       </FormItem>
 
       <FormItem label="组别：" prop="meta.guider_group">
-        <Select v-model="query.meta.term" style="width:200px" clearable	>
-          <Option v-for="item in groups" :value="item.name" :key="item.name">{{ item.name }}</Option>
+        <Select v-model="query.meta.guider_group" style="width:200px" 	>
+          <Option v-for="item in groups" :value="item.group_name" :key="item.group_name">{{ item.group_name }}</Option>
         </Select>
       </FormItem>
 
