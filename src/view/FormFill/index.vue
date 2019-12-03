@@ -123,10 +123,8 @@ export default {
           })
         ) {
           this.show_recommend = true;
-          this.recommend_model = 1;
         } else {
           this.show_recommend = false;
-          this.recommend_model = 0;
         }
       },
       immediate: true
@@ -151,7 +149,7 @@ export default {
       },
       form_values: {},
       meta: { lesson: {} },
-      recommend_model: 0,
+      recommend_model: undefined,
       recommend_reason: "",
       show_recommend: false,
       pageshow: [false, true]
