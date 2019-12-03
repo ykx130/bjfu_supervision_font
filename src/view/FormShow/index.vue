@@ -105,9 +105,9 @@ export default {
       handler: function () {
         if (
           (this.form.meta.lesson.lesson_model === "推荐为好评课" ||
-            this.form.meta.lesson.lesson_model === "待商榷") && this.form.meta.lesson.guiders.some((element) =>{
+            this.form.meta.lesson.lesson_model === "待商榷") && (this.form.meta.lesson.guiders.some((element) =>{
             return element["username"] ===this.userInfo.userName;
-          })
+          })||this.current_role==='管理员'||this.current_role==='小组长')
         ) {
           this.form.model_lesson.is_model_lesson=true;
           this.form.model_lesson.show_recommend = true;
@@ -116,7 +116,6 @@ export default {
           this.form.model_lesson.show_recommend = false;
           this.form.model_lesson.recommend = 0;
         }
-        console.log(this.form)
       },
       immediate: true
     }
