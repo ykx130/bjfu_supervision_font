@@ -13,13 +13,13 @@
       ref="lesson_info_form"
     >
       <Row :gutter="16">
-        <Col :sm="24" :md="12" :lg="6">
+        <Col :sm="24" :md="12" :lg="4">
           <FormItem label="章节目录" :required="true" prop="lesson.content">
             <Input v-model="value.lesson.content" class="inline-form-item" :disabled="disabled"></Input>
           </FormItem>
         </Col>
-        <Col :sm="24" :md="12" :lg="6">
-          <FormItem label="听课督导" :required="true">
+        <Col :sm="24" :md="12" :lg="4">
+          <FormItem label="督导工号" :required="true" v-role="['管理员','大组长','小组长','督导']">
             <Select
               :value="value.guider"
               filterable
@@ -41,7 +41,27 @@
             </Select>
           </FormItem>
         </Col>
-        <Col :sm="24" :md="12" :lg="6">
+        <Col :sm="24" :md="12" :lg="4">
+          <FormItem label="督导姓名" v-role="['管理员','大组长','小组长','督导']">
+            <Select
+              :value="value.guider_name"
+              :placement="'bottom'"
+              :label="value.guider_name"
+              @on-change="onGuiderSelectChange"
+              @on-query-change="onGuiderQueryChange"
+              class="inline-form-item"
+              :disabled="disabled || guider_disable"
+            >
+              <Option
+                v-for="(item, key) in users"
+                :value="item.name"
+                :key="item.name + item.id"
+              >{{item.name}}
+              </Option>
+            </Select>
+          </FormItem>
+        </Col>
+        <Col :sm="24" :md="12" :lg="4">
           <FormItem label="听课学期">
             <Select
               :placement="'bottom'"
@@ -54,7 +74,7 @@
             </Select>
           </FormItem>
         </Col>
-        <Col :sm="24" :md="12" :lg="6">
+        <Col :sm="24" :md="12" :lg="4">
           <FormItem label="听课级别" prop="lesson.lesson_level">
             <Input v-model="value.lesson.lesson_level" disabled class="inline-form-item"></Input>
           </FormItem>
