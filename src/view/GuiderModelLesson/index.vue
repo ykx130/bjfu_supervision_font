@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <h1>好评课堂(可参评名单)</h1>
+    <h1>好评课堂(入围名单)</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="课程名字：" prop="lesson_name">
