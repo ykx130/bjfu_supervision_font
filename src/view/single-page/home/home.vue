@@ -63,11 +63,17 @@ export default {
   },
   mounted: function () {
     queryPagedata().then((resp) => {
+      var formsumsort = Object.keys(resp.data.data['sys:form_num']).sort(function(a,b){ return resp.data.data['sys:form_num'][b]-resp.data.data['sys:form_num'][a]; });
+      var form_sum={};
+      for(var key in formsumsort){
+        form_sum[formsumsort[key]]=resp.data.data['sys:form_num'][formsumsort[key]]
+      }
       this.inforCardData[0].count = resp.data.data['sys:guider_num'];
       this.inforCardData[1].count = resp.data.data['sys:submitted_form'];
       this.inforCardData[2].count = resp.data.data['sys:wait_submitted_form'];
       this.inforCardData[3].count = resp.data.data['sys:notice_lesson_num'];
-      this.barData = resp.data.data['sys:form_num']
+      this.barData =form_sum
+      // this.barData = resp.data.data['sys:form_num']
       this.pieData= [{name:'总体一般', value: resp.data.data['sys:form_just_num']},
         {name:'总体好评', value: resp.data.data['sys:form_statisfy_num']},
         {name:'总体较差', value: resp.data.data['sys:form_unsatisfy_num']}]
