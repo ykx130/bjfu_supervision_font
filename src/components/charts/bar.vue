@@ -37,7 +37,8 @@ export default {
             type: 'category',
             data: xAxisData,
             axisLabel:{
-              interval: 0
+              interval: 0,
+              rotate: 10
             }
           },
           yAxis: {
