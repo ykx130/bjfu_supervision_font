@@ -223,21 +223,26 @@ export default {
           this.formInfo.validate(valid => {
             console.log(this.form_values);
             if (valid) {
-              let form = this.produceFrom("已完成");
-              if (this.show_recommend) {
-                postModelLessonsVote({ lesson_id: form.meta.lesson.lesson_id });
-              }
-              postForm(form).then(resp => {
-                if (resp.data.code === 200) {
-                  this.$Message.success("添加成功！");
-                  this.back();
+              if(this.show_recommend){
+                if(this.recommend_model===undefined||this.recommend_reason===""){
+                  this.$Modal.warning({
+                    title:"检查好评课堂问题是否填写完整:",
+                    content:"请选择是否推荐为好评课,并填写推荐理由或意见及建议!"
+                  });
                 }
-              });
+              }else{
+                let form = this.produceFrom("已完成");
+                postForm(form).then(resp => {
+                  if (resp.data.code === 200) {
+                    this.$Message.success("添加成功！");
+                    this.back();
+                  }
+                });
+              }
             } else {
               this.$Modal.warning({
                 title:"检查问卷信息是否填写完整",
-                content:"（1）教师授课情况“总体评价”为“非常满意”，需同时满足三个条件：①6个项目中，评价等级为“非常满意”的项目数≥4；②标★项目的评价等级必须为非常满意；③没有项目的评价等级为“存在不足”及以下。\n" +
-                  "（2）教师授课情况“总体评价”为“存在明显不足”，需满足的条件：6个项目中，评价等级为“存在明显不足”的项目数≥3。"
+                content:this.form_meta.toptip
               });
             }
           });
