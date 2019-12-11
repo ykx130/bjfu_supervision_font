@@ -223,8 +223,7 @@ export default {
           this.formInfo.validate(valid => {
             console.log(this.form_values);
             if (valid) {
-              if(this.show_recommend){
-                if(this.recommend_model===undefined||this.recommend_reason===""){
+              if(this.show_recommend&&(this.recommend_model===undefined||this.recommend_reason==="")){
                   this.$Modal.warning({
                     title:"检查好评课堂问题是否填写完整:",
                     content:"请选择是否推荐为好评课,并填写推荐理由或意见及建议!"
@@ -238,16 +237,7 @@ export default {
                     }
                   });
                 }
-              }else{
-                let form = this.produceFrom("已完成");
-                postForm(form).then(resp => {
-                  if (resp.data.code === 200) {
-                    this.$Message.success("添加成功！");
-                    this.back();
-                  }
-                });
-              }
-            } else {
+              } else {
               this.$Modal.warning({
                 title:"检查问卷信息是否填写完整",
                 content:this.form_meta.toptip

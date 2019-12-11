@@ -198,7 +198,7 @@
             <tr>
               <td>
                 <FormItem :required="true" class="table-form-item" prop="lesson.lesson_times">
-                  <Select v-model="value.lesson.lesson_times" multiple :disabled="disabled" :max-tag-count="1">
+                  <Select v-model="value.lesson.lesson_times" multiple :disabled="disabled" >
                     <OptionGroup label="建议选择">
                       <Option
                         v-for="item in lesson_times"
@@ -580,7 +580,9 @@ export default {
       margin-bottom: 3px;
     }
   }
-
+  .ivu-form-item-content{
+    margin-right: -20px
+  }
   .meta-table {
     width: 100%;
     td {

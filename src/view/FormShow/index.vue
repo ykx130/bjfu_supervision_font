@@ -206,8 +206,7 @@ export default {
           if (valid_lesson) {
             this.formInfo.validate((valid) => {
               if (valid) {
-                if(this.form.model_lesson.is_model_lesson){
-                  if(this.form.model_lesson.recommend===undefined||this.form.model_lesson.recommend_reason===""){
+                if(this.form.model_lesson.is_model_lesson&&(this.form.model_lesson.recommend===undefined||this.form.model_lesson.recommend_reason==="")){
                     this.$Modal.warning({
                       title:"检查好评课堂问题是否填写完整:",
                       content:"请选择是否推荐为好评课,并填写推荐理由或意见及建议!"
@@ -221,15 +220,6 @@ export default {
                       }
                     });
                   }
-                }else{
-                  let form = this.produceFrom("已完成");
-                  postForm(form).then(resp => {
-                    if (resp.data.code === 200) {
-                      this.$Message.success("新建成功！");
-                      this.back();
-                    }
-                  });
-                }
               } else {
                 this.$Modal.warning({
                   title:"检查问卷信息是否填写完整",
