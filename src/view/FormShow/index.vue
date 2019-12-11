@@ -213,7 +213,7 @@ export default {
                     });
                   }else{
                     let form = this.produceFrom("已完成");
-                    postForm(form).then(resp => {
+                    putForm(this.form_id, form).then((resp) => {
                       if (resp.data.code === 200) {
                         this.$Message.success("新建成功！");
                         this.back();
