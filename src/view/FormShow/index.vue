@@ -212,6 +212,14 @@ export default {
                       title:"检查好评课堂问题是否填写完整:",
                       content:"请选择是否推荐为好评课,并填写推荐理由或意见及建议!"
                     });
+                  }else{
+                    let form = this.produceFrom("已完成");
+                    postForm(form).then(resp => {
+                      if (resp.data.code === 200) {
+                        this.$Message.success("新建成功！");
+                        this.back();
+                      }
+                    });
                   }
                 }else{
                   let form = this.produceFrom("已完成");
