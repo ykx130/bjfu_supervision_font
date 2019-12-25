@@ -32,7 +32,7 @@
         <Page :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
       </div>
     </div>
-    <Button type="primary" @click="()=>{this.showTemplateAddModal=true}" >
+    <Button type="primary" @click="()=>{this.showTemplateAddModal=true}" v-role="['管理员']">
       新增
     </Button>
   </Card>

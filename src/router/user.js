@@ -15,7 +15,7 @@ export default{
       name: '用户管理',
       path: 'guiders', // xzl
       meta: {
-        access: ['管理员', '学院领导']
+        access: ['管理员', '学院领导','校级管理员']
       },
       component: resolve => require(['Views/UserManager/index'], resolve)
     },
@@ -23,7 +23,7 @@ export default{
       name: '督导用户列表',
       path: 'teachers', // xzl
       meta: {
-        access: ['管理员', '大组长', '小组长']
+        access: ['管理员', '大组长', '小组长','校级管理员']
       },
       component: resolve => require(['Views/UserTeacherManagerList/index'], resolve)
     },
@@ -31,7 +31,7 @@ export default{
       name: '学院负责人',
       path: 'supers', // xzl
       meta: {
-        access: ['管理员']
+        access: ['管理员','校级管理员']
       },
       component: resolve => require(['Views/UserSuperManager/index'], resolve)
     },

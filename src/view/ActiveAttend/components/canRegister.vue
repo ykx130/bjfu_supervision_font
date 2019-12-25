@@ -128,6 +128,10 @@ export default {
                 style: {
                   marginRight: '2px'
                 },
+                directives: [{
+                  name: 'role',
+                  value: ['管理员']
+                }],
                 on: {
                   click: () => {
                     this.selected_activity_id = params.row.activity.id

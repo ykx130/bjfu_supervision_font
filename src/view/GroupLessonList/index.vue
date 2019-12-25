@@ -214,6 +214,7 @@ export default {
           queryGroupLesson(this.query).then((resp) => {
             this.data = resp.data.lesson_records
             this.total = resp.data.total
+            console.log(this.query)
           })
         })
       })

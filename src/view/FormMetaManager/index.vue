@@ -90,6 +90,10 @@ export default {
                   type: 'error',
                   size: 'small'
                 },
+                directives: [{
+                  name: 'role',
+                  value: ['管理员']
+                }],
                 style: {
                   marginRight: '5px'
                 },

@@ -17,7 +17,7 @@ export default{
       meta: {
         icon: 'arrow-graph-up-right',
         title: '课程管理',
-        access: ['管理员']
+        access: ['管理员','校级管理员']
       },
       component: resolve => require(['Views/LessonManager/index'], resolve)
     },
