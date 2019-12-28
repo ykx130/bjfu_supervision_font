@@ -17,7 +17,7 @@ export default{
       meta: {
         icon: 'arrow-graph-up-right',
         title: '评价体系管理',
-        access: ['管理员']
+        access: ['管理员','校级管理员']
       },
       component: resolve => require(['Views/FormMetaManager/index'], resolve)
     },
@@ -27,7 +27,7 @@ export default{
       meta: {
         icon: 'arrow-graph-up-right',
         title: '评价体系创建',
-        access: ['管理员']
+        access: ['管理员','校级管理员']
 
       },
       component: resolve => require(['Views/FormMetaCreater/index'], resolve)
@@ -69,7 +69,7 @@ export default{
       name: '评价情况查看',
       path: 'lesson_records', // xzl
       meta: {
-        access: ['管理员','大组长','小组长'],
+        access: ['管理员','大组长','小组长','校级管理员'],
 
       },
       component: resolve => require(['Views/GroupLessonList/index'], resolve)
@@ -78,7 +78,7 @@ export default{
       name: '问卷数据分析',
       path: 'form_sa', // xzl
       meta: {
-        access: ['管理员'],
+        access: ['管理员','校级管理员'],
         title: '评价结果预览'
       },
       component: resolve => require(['Views/FormStatic/index'], resolve)
@@ -96,7 +96,7 @@ export default{
       path: '/work_pan', // 问卷选择
       name: 'work_pan',
       meta: {
-        access: ['管理员'],
+        access: ['管理员','校级管理员'],
         title: '工作计划制定'
       },
       component: resolve => require(['Views/WorkPlan/index'], resolve)

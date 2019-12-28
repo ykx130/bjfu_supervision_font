@@ -8,7 +8,7 @@ export default{
   meta: {
     icon: 'ios-book',
     title: '教学质量分析',
-    access: ['管理员']
+    access: ['管理员','校级管理员']
 
   },
   component: Main,
@@ -19,7 +19,7 @@ export default{
       meta: {
         icon: 'arrow-graph-up-right',
         title: '报告模板管理',
-        access: ['管理员']
+        access: ['管理员','校级管理员']
       },
       component: resolve => require(['Views/TemplateManager/index'], resolve)
     },
@@ -29,7 +29,7 @@ export default{
       meta: {
         icon: 'arrow-graph-up-right',
         title: '教学质量报告导出',
-        access: ['管理员']
+        access: ['管理员','校级管理员']
       },
       component: resolve => require(['Views/ReportExporter/index'], resolve)
     }

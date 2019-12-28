@@ -44,7 +44,7 @@ export default [
         name: 'home',
         meta: {
           title: '首页',
-          access: ['管理员', '学院领导', '大组长', '小组长'],
+          access: ['管理员', '学院领导', '大组长', '小组长','校级管理员'],
           notCache: true,
           icon: 'md-home'
         },

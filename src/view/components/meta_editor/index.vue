@@ -126,7 +126,7 @@
           <div>
             <Button class="form-buttons" @click="block_visible = true">追加样式</Button>
             <Button class="form-buttons" @click="item_visible = true">追加题目</Button>
-            <Button type="primary" @click="submitForm()" class="form-buttons">点击提交</Button>
+            <Button type="primary" @click="submitForm()" class="form-buttons" :disabled="this.current_role!=='管理员'">点击提交</Button>
           </div>
           <!--Modal start-->
           <AddItem :show="item_visible" @onOk="appendNewItemBlock" @onCancel="()=>{this.item_visible=false}"></AddItem>
@@ -175,10 +175,12 @@ import {
 import AddItem from './components/add_item'
 import AddBlock from './components/add_block'
 import AddPage from './components/add_page'
+import UserMixin from '@/mixins/UserMixin.js'
 
 import draggable from 'vuedraggable'
 export default {
   name: 'form_meta_editor',
+  mixins: [UserMixin],
   components: {
     AddPage,
     AddItem,

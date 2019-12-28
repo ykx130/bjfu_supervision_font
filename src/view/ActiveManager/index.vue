@@ -34,7 +34,7 @@
     </div>
 
     <float_bar>
-      <Button type="primary" @click="showActiveAddModal=true">新增</Button>
+      <Button type="primary" @click="showActiveAddModal=true" v-role="['管理员']">新增</Button>
     </float_bar>
     <!--{{this.showActiveAddModal}}-->
   </Card>
@@ -125,6 +125,10 @@ export default {
                   type: 'error',
                   size: 'small'
                 },
+                directives: [{
+                  name: 'role',
+                  value: ['管理员']
+                }],
                 style: {
                   marginRight: '2px'
                 },

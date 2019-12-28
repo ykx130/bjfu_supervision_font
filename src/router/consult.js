@@ -9,7 +9,7 @@ export default
   meta: {
     icon: 'md-person',
     title: '咨询中心',
-    access: ['管理员']
+    access: ['管理员','校级管理员']
   },
   component: Main,
   children: [

@@ -6,7 +6,7 @@
       </Col>
     </Row>
     <div style="position:relative;padding-top: 100px">
-      <Button type="primary" @click="handlePlanAdd(term.name)">新增</Button>
+      <Button type="primary" @click="handlePlanAdd(term.name)" v-role="['管理员']">新增</Button>
     </div>
     <planModify :plan="select_plan"
                 :show="show_plan_modify_modal"
@@ -25,9 +25,11 @@
 import planModify from './planModify'
 import PlanAddModal from './planAdd'
 import { postWorkPlan, queryWorkPlan, putWorkPlan, deleteWorkPlan } from '@/service/api/work_plan'
+import UserMixin from "@/mixins/UserMixin.js"
 export default {
   components: { planModify, PlanAddModal },
   name: 'plan',
+  mixins: [UserMixin],
   props: {
     term: String
   },
@@ -70,7 +72,8 @@ export default {
             h('Button', {
               props: {
                 type: 'primary',
-                size: 'small'
+                size: 'small',
+                disabled:this.current_role!=='管理员'
               },
               style: {
                 marginRight: '5px'
@@ -85,7 +88,8 @@ export default {
             h('Button', {
               props: {
                 type: 'error',
-                size: 'small'
+                size: 'small',
+                disabled:this.current_role!=='管理员'
               },
               style: {
                 marginRight: '5px'

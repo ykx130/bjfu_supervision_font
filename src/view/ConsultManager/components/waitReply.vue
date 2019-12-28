@@ -112,6 +112,10 @@ export default {
           align: 'center',
           render: (h, params) => {
             return h('a', {
+              directives: [{
+                name: 'role',
+                value: ['管理员']
+              }],
               on: {
                 click: () => {
                   this.selected_consult_id = params.row.id

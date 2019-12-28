@@ -11,10 +11,10 @@
 
     <Table @on-selection-change="selectConsultTypes" border stripe :columns="columns" :data="data"></Table>
 
-    <Button type="primary" @click="()=>{this.showConsultTypeAddModal=true}" >
+    <Button type="primary" @click="()=>{this.showConsultTypeAddModal=true}" v-role="['管理员']">
       新增
     </Button>
-    <Button type="error" style="width: 55px" v-on:click="deleteNewBlock(item)">
+    <Button type="error" style="width: 55px" v-on:click="deleteNewBlock(item)" v-role="['管理员']">
       删除
     </Button>
 

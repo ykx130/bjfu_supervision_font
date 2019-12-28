@@ -10,7 +10,7 @@ export default
   meta: {
     icon: 'ios-outlet',
     title: '活动中心',
-    access: ['管理员']
+    access: ['管理员','校级管理员']
   },
   children: [
     {

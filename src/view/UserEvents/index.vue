@@ -23,7 +23,7 @@
           <Table stripe :columns="columns" :data="data" style="width: 720px; margin-left: 20px; margin-top: 20px"></Table>
         </div>
         <div>
-          <Button type="primary" @click="addEvents">新增</Button>
+          <Button type="primary" @click="addEvents" v-role="['管理员']">新增</Button>
         </div>
       </Col>
     <EventAddModal

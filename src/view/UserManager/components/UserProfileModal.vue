@@ -2,11 +2,12 @@
   <Modal
     :value="show"
     title="查看"
+    width="650"
     :loading="loading"
     @on-ok="handleSubmit"
     @on-cancel="handleCancel"
     @on-visible-change="onShowChange">
-    <Form :model="user" ref="user_form" :rules="ruleValidate">
+    <Form :model="user" ref="user_form" :rules="ruleValidate" >
       <Row :gutter="16">
         <Col span="12">
         <FormItem prop="username">
@@ -145,7 +146,7 @@ export default {
         state: '',
         prorank: ''
       },
-      roles: ['管理员', '学院领导'],
+      roles: ['管理员', '学院领导','校级管理员'],
       groups: [],
       sexList: sexList,
       unitList: unitlist,
@@ -247,5 +248,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .ivu-modal-content{
+    width:650px
+  }
 </style>

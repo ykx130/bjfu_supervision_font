@@ -305,7 +305,7 @@ export default {
     }
   },
   mounted () {
-    if (this.current_role === '大组长' || this.current_role === '小组长' || this.current_role === '管理员' || this.current_role === '学院领导') {
+    if (this.current_role === '大组长' || this.current_role === '小组长' || this.current_role === '管理员' || this.current_role === '学院领导' ||this.current_role==='校级管理员') {
       this.$router.push({ name: 'home' })
     }
     if (this.$route.path === '/_guider') {
