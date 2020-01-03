@@ -46,7 +46,7 @@
           </FormItem>
         </Row>
         <FormItem>
-            <Button type="primary" @click="onUpdateActive">提交</Button>
+            <Button type="primary" @click="onUpdateActive" v-role="['管理员']">提交</Button>
         </FormItem>
       </Form>
     </Card>
@@ -66,7 +66,7 @@
     <Card shadow>
       <p slot="title">参与人员</p>
       <Table border stripe :columns="columns" :data="data"></Table>
-      <Button type="primary" @click="onAddNewActiveUser" >新增参与人员</Button>
+      <Button type="primary" @click="onAddNewActiveUser"  v-role="['管理员']">新增参与人员</Button>
     </Card>
   </div>
 </template>
@@ -167,6 +167,10 @@ export default {
                   type: 'primary',
                   size: 'small'
                 },
+                directives: [{
+                  name: 'role',
+                  value: ['管理员']
+                }],
                 style: {
                   marginRight: '2px'
                 },
