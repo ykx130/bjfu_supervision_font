@@ -32,7 +32,7 @@
       <FormItem>
         <Button type="primary" style="margin-left: 20px;width: 80px" @click=" onSearch">查询</Button>
       </FormItem>
-      <Button @click="export_option_visible=true" icon="ios-cloud-download-outline" type="primary" label="导出" v-role="['管理员','小组长']">导出</Button>
+      <Button @click="export_option_visible=true" icon="ios-cloud-download-outline" type="primary" label="导出" v-role="['管理员','大组长','小组长']">导出</Button>
     </Form>
     <FormExportChoose :show="export_option_visible" @onConfirm="onExportExcel" @onCancel="()=>{ this.export_option_visible=false}"></FormExportChoose>
 
