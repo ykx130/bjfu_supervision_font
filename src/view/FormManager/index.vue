@@ -112,6 +112,14 @@ export default {
             )
           }
         },
+          {
+          title: '关注原因',
+          render: function (h, params) {
+            return (
+              <span>{ params.row.meta.lesson.lesson_attention_reason }</span>
+            )
+          }
+        },
         {
           title: '班级',
           render: function (h, params) {
