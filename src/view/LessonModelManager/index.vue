@@ -52,12 +52,21 @@
         :lesson_id="this.selected_lesson_id"
     >
     </LessonGroupAssign>
+    <OtherModelShow
+            :show="showOtherModelLesson"
+            @onClosed="showOtherModelLesson=false"
+
+    >
+    </OtherModelShow>
     <Table  border stripe :columns="columns" :data="data"></Table>
     <Row >
       <Page  style="float: right;" :total="total" show-total :page-size="pages._per_page" :current="pages._page" @on-change="onPageChange"></Page>
     </Row>
 
     <Button type="primary" @click="showAddModelLesson=true" v-role="['管理员']">导入为好评课</Button>
+
+    <Button type="primary" @click="showOtherModelLesson=true" style="margin-left: 20px;">查看未开课好评课</Button>
+
   </Card>
 </template>
 
@@ -65,6 +74,7 @@
 import LessonProfileModal from './components/LessonProfileModal'
 import ModelLessonAdd from './components/ModelLessonAdd'
 import LessonGroupAssign from './components/LessonGroupAssign'
+import OtherModelShow from './components/OtherModelShow'
 import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel, putModelLesson, postModelLesson } from '@/service/api/lesson'
 import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
@@ -74,10 +84,11 @@ import ModelJudge from './components/ModelJudge'
 import UserMixin from '@/mixins/UserMixin'
 export default {
   mixins: [UserMixin],
-  components: { LessonGroupAssign, ModelJudge, LessonJudge, LessonProfileModal, FloatBar, ModelLessonAdd },
+  components: { LessonGroupAssign, ModelJudge, LessonJudge, LessonProfileModal, FloatBar, ModelLessonAdd ,OtherModelShow},
   data: function () {
     return {
       showAddModelLesson: false,
+      showOtherModelLesson:false,
       uploadModelLessonApi: uploadModelLessonApi,
       query: {
         lesson_name: undefined,
