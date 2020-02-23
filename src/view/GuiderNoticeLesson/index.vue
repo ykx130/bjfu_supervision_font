@@ -115,7 +115,21 @@ export default {
           render: function (h, params) {
             return h('span', params.row.lesson_teacher_unit)
           }
-        }
+        },
+        {
+          title: '分配组别',
+          render: function (h, params) {
+            return (
+                    <span>{ params.row.group_name }</span>
+          )
+          }
+        },
+        {
+          title: '关注原因',
+          render: function (h, params) {
+            return h('span', params.row.lesson_attention_reason)
+          }
+        },
       ]
     }
   },

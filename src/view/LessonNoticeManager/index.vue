@@ -31,6 +31,12 @@
         </Upload>
       </FormItem>
     </Form>
+    <LessonProfileModal
+            :show="showLessonProfileModal"
+            @onOK="onProfileModalOK"
+            @onCancel="onProfileModalCancel"
+            :lesson_teacher_id="this.selected_lesson_id"
+    ></LessonProfileModal>
 
     <BatchLessonWatchModal
       :show="showBatchLessonWatchModal"
@@ -57,7 +63,7 @@ import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 import UserMixin from '@/mixins/UserMixin'
-import { deleteNoticeLesson, queryNoticeTeacher } from '../../service/api/lesson'
+import { deleteNoticeLesson, queryNoticeTeacher} from '../../service/api/lesson'
 
 export default {
   mixins: [UserMixin],
@@ -72,6 +78,7 @@ export default {
       total: 0, // 总数量
       data: [], // 数据
       terms: [],
+      showLessonProfileModal:false,
       selected_lesson_ids: [],
       selected_lesson_id: '', // 选中编辑的课程ids
       showBatchLessonWatchModal: false,
@@ -111,6 +118,78 @@ export default {
           render: function (h, params) {
             return h('span', params.row.lesson_teacher_unit)
           }
+        },
+        {
+          title: '分配组别',
+          render: function (h, params) {
+            return (
+                    <span>{ params.row.group_name }</span>
+          )
+          }
+        },
+        {
+          title: '关注原因',
+          render: function (h, params) {
+            return h('span', params.row.lesson_attention_reason)
+          }
+        },
+        {
+          title: '操作',
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                directives: [{
+                  name: 'role',
+                  value: ['管理员']
+                }],
+                style: {
+                  marginRight: '2px'
+                },
+                on: {
+                  click: () => {
+                    this.selected_lesson_id = params.row.lesson_teacher_id
+                    this.showLessonProfileModal = true
+                  }
+                }
+              }, '查看'),
+              h('Button', {
+                props: {
+                  type: 'error',
+                  size: 'small'
+                },
+                directives: [{
+                  name: 'role',
+                  value: ['管理员']
+                }],
+                style: {
+                  marginRight: '2px'
+                },
+                on: {
+                  click: () => {
+                    this.$Modal.confirm({
+                      title: '是否确认删除?',
+                      onOk: () => {
+                        deleteNoticeLesson(params.row.lesson_teacher_id).then((res) => {
+                          this.fetchData()
+                          if (res.data.code === 200) {
+                            this.$Message.success('删除成功！')
+                          } else {
+                            this.$Message.error('删除失败！')
+                          }
+                        })
+                      },
+                      onCancel: () => {}
+                    })
+                  }
+                }
+              }, '删除')
+            ])
+          }
         }
       ]
     }
@@ -128,6 +207,19 @@ export default {
       // 分页变化
       this.pages._page = page
       this.fetchData()
+    },
+    onProfileModalOK (lesson) {
+      // 更新框确定 关闭
+      putNoticeLesson(lesson).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({ content: '更新成功' })
+          this.fetchData()
+        }
+        this.showLessonProfileModal = false
+      })
+    },
+    onProfileModalCancel () {
+      this.showLessonProfileModal = false
     },
     onSearch () {
       // 查询变化
