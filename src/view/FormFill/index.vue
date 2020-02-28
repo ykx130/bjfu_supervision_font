@@ -221,7 +221,6 @@ export default {
       this.lessonInfo.validate(valid_lesson => {
         if (valid_lesson) {
           this.formInfo.validate(valid => {
-            console.log(this.form_values);
             if (valid) {
               if(this.show_recommend&&(this.recommend_model===undefined||this.recommend_reason==="")){
                   this.$Modal.warning({
