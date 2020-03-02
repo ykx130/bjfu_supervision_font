@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { getNoticeLesson } from '../../../service/api/lesson'
+import { getNoticeLesson ,getLesson} from '../../../service/api/lesson'
 import { updateWithinField } from 'Libs/tools'
 import { queryGroups } from '../../../service/api/user'
 import { lessonLevel, lessonWatchReason } from '../marcos'
@@ -88,7 +88,7 @@ export default {
     onShowChange: function (show) {
       if (show) {
         // 显示的时候拉数据
-        getNoticeLesson(this.lesson_id).then((resp) => {
+        getLesson(this.lesson_id).then((resp) => {
           updateWithinField(this.lesson, resp.data.notice_lesson)
         })
       }

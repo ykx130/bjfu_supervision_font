@@ -204,7 +204,7 @@ export default {
     handleSubmit () {
       this.lessonInfo.validate(valid_lesson => {
           if (valid_lesson) {
-            this.formInfo.validate((valid) => {
+            this.formInfo.validate(valid => {
               if (valid) {
                 if(this.form.model_lesson.is_model_lesson&&(this.form.model_lesson.recommend===undefined||this.form.model_lesson.recommend_reason==="")){
                     this.$Modal.warning({
@@ -274,3 +274,4 @@ export default {
     opacity:0.5;
   }
 </style>
+

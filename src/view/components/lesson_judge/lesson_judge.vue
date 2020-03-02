@@ -1,19 +1,14 @@
 <template>
   <Card>
     <Table :show-header="true" :data="data" :columns="columns"></Table>
-    <LessonProfileModal
-      :show="showLessonProfileModal"
-      @onOK="onProfileModalOK"
-      @onCancel="onProfileModalCancel"
-      :lesson_id="this.selected_lesson_id"
-    ></LessonProfileModal>
+
   </Card>
 </template>
 
 <script>
 import LessonProfileModal from '../../LessonNoticeManager/components/LessonProfileModal'
 import { queryForms } from '@/service/api/dqs'
-import { queryNoticeLessons, deleteNoticeLesson } from '@/service/api/lesson'
+import { queryNoticeLessons, deleteNoticeLesson ,queryLessons} from '@/service/api/lesson'
 import { putNoticeLesson } from '../../../service/api/lesson'
 import FormMixin from '@/mixins/FormMixin.js'
 
@@ -56,14 +51,7 @@ export default {
             )
           }
         },
-        {
-          title: '分配组别',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.group_name }</span>
-            )
-          }
-        },
+
         {
           title: '状态',
           render: (h, params) => {
@@ -84,69 +72,19 @@ export default {
             )
           }
         },
-        {
-          title: '关注原因',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.lesson_attention_reason }</span>
-            )
-          }
-        },
+        // {
+        //   title: '关注原因',
+        //   render: function (h, params) {
+        //     return (
+        //       <span>{ params.row.lesson_attention_reason }</span>
+        //     )
+        //   }
+        // },
         {
           title: '操作',
           align: 'center',
           render: (h, params) => {
             return h('div', [
-              h('Button', {
-                props: {
-                  type: 'primary',
-                  size: 'small'
-                },
-                directives: [{
-                  name: 'role',
-                  value: ['管理员']
-                }],
-                style: {
-                  marginRight: '2px'
-                },
-                on: {
-                  click: () => {
-                    this.selected_lesson_id = params.row.id
-                    this.showLessonProfileModal = true
-                  }
-                }
-              }, '查看'),
-              h('Button', {
-                props: {
-                  type: 'error',
-                  size: 'small'
-                },
-                directives: [{
-                  name: 'role',
-                  value: ['管理员']
-                }],
-                style: {
-                  marginRight: '2px'
-                },
-                on: {
-                  click: () => {
-                    this.$Modal.confirm({
-                      title: '是否确认删除?',
-                      onOk: () => {
-                        deleteNoticeLesson(params.row.id).then((res) => {
-                          this.fetchData()
-                          if (res.data.code === 200) {
-                            this.$Message.success('删除成功！')
-                          } else {
-                            this.$Message.error('删除失败！')
-                          }
-                        })
-                      },
-                      onCancel: () => {}
-                    })
-                  }
-                }
-              }, '删除'),
               h('Button', {
                 props: {
                   type: 'primary',

@@ -6,30 +6,30 @@
     @on-cancel="handleCancel"
     @on-visible-change="onShowChange">
     <Form :model="lesson">
-      <span>课程名字:</span>
+      <span>教师工号:</span>
       <FormItem prop="lesson_name">
-        <Input type="text" disabled v-model="lesson.lesson_name" placeholder="名字" :disabled="true">
+        <Input type="text" disabled v-model="lesson.lesson_teacher_id" placeholder="工号" :disabled="true">
         <Icon type="ios-person-outline" slot="prepend"></Icon>
         </Input>
       </FormItem>
-      <span>课程属性:</span>
-      <FormItem prop="lesson_attribute">
-        <Input type="text" disabled v-model="lesson.lesson_attribute" placeholder="课程属性" :disabled="true">
-        <Icon type="ios-person-outline" slot="prepend"></Icon>
-        </Input>
-      </FormItem>
-      <span>课程状态:</span>
-      <FormItem prop="lesson_state">
-        <Input type="text" disabled v-model="lesson.lesson_state" placeholder="课程状态" :disabled="true">
-        <Icon type="ios-person-outline" slot="prepend"></Icon>
-        </Input>
-      </FormItem>
-      <span>课程级别:</span>
-      <FormItem prop="lesson_level" >
-        <Select disabled v-model="lesson.lesson_level" :disabled="true">
-          <Option v-for="item in lessonLevel" :value="item" :key="item">{{ item }}</Option>
-        </Select>
-      </FormItem>
+<!--      <span>课程属性:</span>-->
+<!--      <FormItem prop="lesson_attribute">-->
+<!--        <Input type="text" disabled v-model="lesson.lesson_attribute" placeholder="课程属性" :disabled="true">-->
+<!--        <Icon type="ios-person-outline" slot="prepend"></Icon>-->
+<!--        </Input>-->
+<!--      </FormItem>-->
+<!--      <span>课程状态:</span>-->
+<!--      <FormItem prop="lesson_state">-->
+<!--        <Input type="text" disabled v-model="lesson.lesson_state" placeholder="课程状态" :disabled="true">-->
+<!--        <Icon type="ios-person-outline" slot="prepend"></Icon>-->
+<!--        </Input>-->
+<!--      </FormItem>-->
+<!--      <span>课程级别:</span>-->
+<!--      <FormItem prop="lesson_level" >-->
+<!--        <Select disabled v-model="lesson.lesson_level" :disabled="true">-->
+<!--          <Option v-for="item in lessonLevel" :value="item" :key="item">{{ item }}</Option>-->
+<!--        </Select>-->
+<!--      </FormItem>-->
       <FormItem prop="group_name">
         <span>分配督导小组:</span>
         <Select v-model="lesson.group_name" >
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { getNoticeLesson } from '../../../service/api/lesson'
+import { getNoticeLesson ,getLesson} from '../../../service/api/lesson'
 import { updateWithinField } from 'Libs/tools'
 import { queryGroups } from '../../../service/api/user'
 import { lessonLevel, lessonWatchReason } from '../marcos'
@@ -58,18 +58,18 @@ export default {
     show: Boolean,
     onCancel: Function,
     onOK: Function,
-    lesson_id: ''
+    lesson_teacher_id: ''
   },
   data: function () {
     return {
       lesson: {
         id: '',
-        lesson_name: '',
-        lesson_attribute: '',
-        lesson_id: '',
-        lesson_state: '',
-        lesson_teacher_name: '',
-        lesson_level: '',
+        // lesson_name: '',
+        // lesson_attribute: '',
+        // lesson_id: '',
+        // lesson_state: '',
+        lesson_teacher_id: '',
+        // lesson_level: '',
         lesson_attention_reason: '',
         group_name: ''
       },
@@ -87,8 +87,9 @@ export default {
     },
     onShowChange: function (show) {
       if (show) {
+        console.log(this.lesson_teacher_id)
         // 显示的时候拉数据
-        getNoticeLesson(this.lesson_id).then((resp) => {
+        getNoticeLesson(this.lesson_teacher_id).then((resp) => {
           updateWithinField(this.lesson, resp.data.notice_lesson)
         })
       }

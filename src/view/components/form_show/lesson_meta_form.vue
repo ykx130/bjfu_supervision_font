@@ -441,7 +441,7 @@ export default {
       if (lesson_id) {
         this.selected_lesson = this.lessons[lesson_id]
         this.selected_lesson.lesson_cases = []
-        queryLessonCase({ lesson_id: this.selected_lesson.id }).then(resp => {
+        queryLessonCase({ lesson_id: this.selected_lesson.id ,term:this.value.term}).then(resp => {
           // 拿到所有case
           this.selected_lesson.lesson_cases = resp.data.lesson_cases
           this.allow_select_data = this.selected_lesson.lesson_cases.map(
