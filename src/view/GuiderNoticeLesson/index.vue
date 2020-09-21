@@ -97,7 +97,8 @@ export default {
           render: (h, params) => {
             return h(LessonJudge, {
               props: {
-                lesson_teacher_id: params.row.lesson_teacher_id
+                lesson_teacher_id: params.row.lesson_teacher_id,
+                term:this.query.term
               }
             })
           }

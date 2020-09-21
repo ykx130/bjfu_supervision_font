@@ -63,7 +63,7 @@ import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'
 import LessonJudge from 'Views/components/lesson_judge/lesson_judge'
 import UserMixin from '@/mixins/UserMixin'
-import { deleteNoticeLesson, queryNoticeTeacher} from '../../service/api/lesson'
+import { deleteNoticeLesson, queryNoticeTeacher } from '../../service/api/lesson'
 
 export default {
   mixins: [UserMixin],
@@ -78,7 +78,7 @@ export default {
       total: 0, // 总数量
       data: [], // 数据
       terms: [],
-      showLessonProfileModal:false,
+      showLessonProfileModal: false,
       selected_lesson_ids: [],
       selected_lesson_id: '', // 选中编辑的课程ids
       showBatchLessonWatchModal: false,
@@ -123,8 +123,8 @@ export default {
           title: '分配组别',
           render: function (h, params) {
             return (
-                    <span>{ params.row.group_name }</span>
-          )
+              <span>{ params.row.group_name }</span>
+            )
           }
         },
         {
@@ -243,7 +243,7 @@ export default {
       this.showBatchLessonWatchModal = true
     },
     onExportExcel: function () {
-      exporNoticeLessonExcel().then((resp) => {
+      exporNoticeLessonExcel({ 'term': this.query.term }).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '导出成功' })
           window.open('/api/' + resp.data.filename)
