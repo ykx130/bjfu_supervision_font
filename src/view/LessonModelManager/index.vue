@@ -84,11 +84,11 @@ import ModelJudge from './components/ModelJudge'
 import UserMixin from '@/mixins/UserMixin'
 export default {
   mixins: [UserMixin],
-  components: { LessonGroupAssign, ModelJudge, LessonJudge, LessonProfileModal, FloatBar, ModelLessonAdd ,OtherModelShow},
+  components: { LessonGroupAssign, ModelJudge, LessonJudge, LessonProfileModal, FloatBar, ModelLessonAdd, OtherModelShow },
   data: function () {
     return {
       showAddModelLesson: false,
-      showOtherModelLesson:false,
+      showOtherModelLesson: false,
       uploadModelLessonApi: uploadModelLessonApi,
       query: {
         lesson_name: undefined,
@@ -298,7 +298,7 @@ export default {
       this.showLessonAssign = false
     },
     onExportExcel: function () {
-      exporModelLessonExcel().then((resp) => {
+      exporModelLessonExcel({ 'term': this.query.term }).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '导出成功' })
           window.open('/api/' + resp.data.filename)
