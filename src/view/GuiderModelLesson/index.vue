@@ -164,7 +164,7 @@ export default {
                   click: () => {
                     this.selected_lesson_id = params.row.id,
                     this.showLessonProfileModal = false,
-                    this.formjudge(params.row.lesson_id, params.row.terms, params.row.lesson_attribute)
+                    this.formjudge(params.row.lesson_id, params.row.term, params.row.lesson_attribute)
                   }
                 }
               }, '进行评价')

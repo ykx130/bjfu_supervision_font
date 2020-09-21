@@ -16,7 +16,8 @@ export default {
   name: 'lesson_judge',
   mixins: [FormMixin],
   props: {
-    lesson_teacher_id: String
+    lesson_teacher_id: String,
+    term:String
   },
   components: { LessonProfileModal },
 
@@ -102,7 +103,7 @@ export default {
                     this.selected_lesson_id = params.row.id,
                     this.showLessonProfileModal = false,
                     // this.judge(params.row.lesson_id, params.row.terms)
-                    this.formjudge(params.row.lesson_id, params.row.terms, params.row.lesson_attribute)
+                    this.formjudge(params.row.lesson_id, this.term, params.row.lesson_attribute)
                   }
                 }
               }, '进行评价')
