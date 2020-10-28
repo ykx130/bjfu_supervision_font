@@ -114,7 +114,7 @@ export default {
         } else {
           this.form.model_lesson.is_model_lesson=false;
           this.form.model_lesson.show_recommend = false;
-          this.form.model_lesson.recommend = 0;
+          this.form.model_lesson.recommend = undefined;
         }
       },
       immediate: true
