@@ -22,7 +22,7 @@
         </Input>
       </FormItem>
       <FormItem>
-        <Button type="primary" @click="onApplyClick" v-role="['管理员']">提交</Button>
+        <Button type="primary" @click="onApplyClick">提交</Button>
       </FormItem>
 
     </Form>

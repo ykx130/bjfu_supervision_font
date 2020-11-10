@@ -40,7 +40,7 @@ router.beforeEach((to, from, next) => {
   if (to.name !== LOGIN_PAGE_NAME) {
     if (store.state.user.userInfo.username) {
       if (to.name === 'home') {
-        if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader|| store.state.user.userInfo.is_reader|| store.state.user.userInfo.guider.is_grouper || store.state.user.userInfo.guider.is_main_grouper ) {
+        if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader|| store.state.user.userInfo.is_reader|| store.state.user.access[0]==='大组长' || store.state.user.access[0]==='小组长' ) {
           next()
         } else {
           next({ name: '督导端' })
@@ -50,7 +50,7 @@ router.beforeEach((to, from, next) => {
       }
     } else {
       store.dispatch('getUserInfo').then((resp) => {
-        if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader ||store.state.user.userInfo.is_reader || store.state.user.userInfo.guider.is_grouper || store.state.user.userInfo.guider.is_main_grouper) {
+        if (store.state.user.userInfo.is_admin || store.state.user.userInfo.is_leader ||store.state.user.userInfo.is_reader || store.state.user.access[0]==='大组长' || store.state.user.access[0]==='小组长') {
           next()
         } else {
           next({ name: '督导端' })

@@ -309,7 +309,13 @@ export default {
       this.$router.push({ name: 'home' })
     }
     if (this.$route.path === '/_guider') {
-      this.$router.replace('/_guider/my_form')
+      if(this.current_role==='督导'){
+        this.$router.replace('/_guider/my_form')
+      }
+      else{
+        this.$router.push({ name: 'guider_active_attend', query: { time: new Date().getTime() } })
+      }
+
       // this.$router.replace('/_guider/consult_apply')
     }
     this.highlightMenu()
