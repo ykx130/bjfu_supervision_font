@@ -301,7 +301,7 @@ export default {
       exporFormsExcel({
         'meta.term': this.query.meta.term,
         'bind_meta_name': form_choose,
-        'status': '已完成',
+        'status': this.query.status,
         'meta.guider_group':this.query.meta.guider_group
       }).then((resp) => {
         if (resp.data.code === 200) {
