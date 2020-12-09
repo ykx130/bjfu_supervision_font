@@ -41,10 +41,19 @@ export const postActiveUser = (active_id, params) => {
 export const postCurrentActiveUser = (active_id) => {
   return axios.post('/api/activities/' + active_id + '/activity_users', {
     state: '已报名',
-    fin_state: '报名已参加'
+    fin_state: '已参加'
   })
 }
 
 export const putActiveUser = (active_id, params) => {
   return axios.put('/api/activities/' + active_id + '/activity_users/' + params.user.username, params)
 }
+
+export const uploadActivitiesApi = '/api/acyivities/excel/import'
+
+
+export const queryTrainActiveUsers = (params) => {
+  return axios.get('/api/activities/activity_users', { params: params })
+}
+
+export const uploadActivityUsersApi='/api/activities/activity_users_excel/import'

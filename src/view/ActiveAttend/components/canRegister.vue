@@ -1,17 +1,17 @@
 <template>
   <div>
-    <h1>活动报名</h1>
+    <h1>培训报名</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
-      <FormItem label="活动名称：" prop="activity">
+      <FormItem label="题目：" prop="activity">
         <AutoComplete v-model="query.name_like" :data="activityName"
                       style="width:180px"
                       @on-search="handleSearchActivateName"></AutoComplete>
       </FormItem>
-      <FormItem label="学期：" :prop="'activity.term'" v-role="['管理员']">
-        <Select v-model="query.term" style="width:200px">
-          <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
-        </Select>
+      <FormItem label="模块：" prop="activity">
+        <AutoComplete v-model="query.title_like" :data="titleName"
+                      style="width:180px"
+                      @on-search="handleSearchModuleName"></AutoComplete>
       </FormItem>
       <FormItem>
         <Button type="primary" @click=" onSearch">查询</Button>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { queryCurrentuserActives, postCurrentActiveUser } from '../../../service/api/actives'
+import {queryCurrentuserActives, postCurrentActiveUser, queryActives} from '../../../service/api/actives'
 import { queryTerms, getCurrentTerms } from '../../../service/api/term'
 import { updateWithinField } from 'Libs/tools'
 
@@ -47,7 +47,9 @@ export default {
         activity: {},
         activity_user: {}
       }], // 数据
+      moduleName: [],
       activityName: [],
+      titleName: [],
       terms: [],
       selected_activity_id: '', // 选中编辑的课程ids
       pages: {
@@ -56,62 +58,80 @@ export default {
       }, // 分页
       columns: [
         {
-          title: '活动名称',
+          title: '题目',
           render: function (h, params) {
             return (
-              < span > {params.row.activity.name
+              < span > {params.row.title
               }<
               /span>
             )
           }
         },
         {
-          title: '活动地点',
+          title: '主讲人',
           render: function (h, params) {
             return (
-              < span > {params.row.activity.place
+              < span > {params.row.presenter
               }<
               /span>
             )
           }
         },
         {
-          title: '活动状态',
+          title: '所属模块',
           render: function (h, params) {
             return (
-              < span > {params.row.activity.state
-              }<
-              /span>
+              < span > {params.row.module} < /span>
             )
           }
         },
         {
-          title: '参加状态',
+          title: '培训时间',
           render: function (h, params) {
             return (
-              < span > {params.row.activity_user.fin_state
-              }<
-              /span>
+              < span > {params.row.start_time} < /span>
             )
           }
         },
         {
-          title: '开始时间',
+          title: '培训地点',
           render: function (h, params) {
             return (
-              < span > {params.row.activity.start_time
-              }<
-              /span>
+              < span > {params.row.place} < /span>
             )
           }
         },
         {
-          title: '结束时间',
+          title: '学时',
           render: function (h, params) {
             return (
-              < span > {params.row.activity.end_time
-              }<
-              /span>
+              < span > {params.row.period} < /span>
+            )
+          }
+        },
+        {
+          title: '主办单位',
+          render: function (h, params) {
+            return (
+              < span > {params.row.organizer} < /span>
+            )
+          }
+        },
+        {
+          title: '是否必修',
+          render: function (h, params) {
+            if (params.row.is_obligatory === false) {
+              return h('Tag', { props: { color: 'grey' } }, '非必修')
+            } else {
+              return h('Tag', { props: { color: 'red' } }, '必修')
+            }
+          }
+        },
+        {
+          title: '状态',
+          render: function (h, params) {
+            return (
+              < span > {params.row.apply_state} < /span>
             )
           }
         },
@@ -123,23 +143,23 @@ export default {
               h('Button', {
                 props: {
                   type: 'primary',
-                  size: 'small'
+                  size: 'small',
+                  disabled: (params.row.apply_state === '活动已结束')
                 },
                 style: {
                   marginRight: '2px'
                 },
                 directives: [{
-                  name: 'role',
-                  value: ['管理员']
+                  name: 'role'
                 }],
                 on: {
                   click: () => {
-                    this.selected_activity_id = params.row.activity.id
+                    this.selected_activity_id = params.row.id
                     this.$Modal.confirm({
                       title: '参加活动',
                       content: '是否参加活动?',
                       onOk: () => {
-                        return postCurrentActiveUser(params.row.activity.id).then((resp) => {
+                        return postCurrentActiveUser(params.row.id).then((resp) => {
                           if (resp.data.code === 200) {
                             this.$Message.success({ content: '报名成功' })
                           }
@@ -165,7 +185,7 @@ export default {
     fetchData () {
       // 数据表发生变化请求数据
       let args = { ...this.query, ...this.pages }
-      return queryCurrentuserActives(args).then((resp) => {
+      return queryActives(args).then((resp) => {
         this.data = resp.data.activities
         this.total = resp.data.total
       })
@@ -181,10 +201,10 @@ export default {
       this.fetchData()
     },
     handleSearchActivateName (value) {
-      queryCurrentuserActives({ name_like: value }).then((resp) => {
+      queryActives({ name_like: value }).then((resp) => {
         this.activityName.splice(0, this.activityName.length)
         resp.data.activities.forEach((activity) => {
-          this.activityName.push(activity.name)
+          this.activityName.push(activity.title)
         })
       })
     }
@@ -195,7 +215,7 @@ export default {
       this.terms = resp.data.terms
       getCurrentTerms().then((termResp) => {
         this.query.term = termResp.data.term.name
-        queryCurrentuserActives({ ...this.query, ...this.pages }).then((resp) => {
+        queryActives({ ...this.query, ...this.pages }).then((resp) => {
           this.data = resp.data.activities
           this.total = resp.data.total
         })
