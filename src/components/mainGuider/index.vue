@@ -84,7 +84,7 @@
 
                 <MenuItem name="attend" v-role="['教师']">
                   <Icon type="ios-people"/>
-                  活动报名
+                  培训报名
                 </MenuItem>
                 <MenuItem name="consult_apply" v-role="['教师']">
                   <Icon type="ios-construct"/>
@@ -93,6 +93,10 @@
                 <MenuItem name="leader_lookup" v-role="['督导','管理员']">
                   <Icon type="ios-body"/>
                   学院教学院长
+                </MenuItem>
+                <MenuItem name="teacher_training" v-role="['教师', '督导','管理员']">
+                  <Icon type="ios-bookmarks-outline" />
+                  教学与发展
                 </MenuItem>
               </Submenu>
             </div>
@@ -119,7 +123,7 @@
               </MenuItem>
               <MenuItem name="attend" v-role="['教师']">
                 <Icon type="ios-people"/>
-                活动报名
+                培训报名
               </MenuItem>
               <MenuItem name="consult_apply" v-role="['教师']">
                 <Icon type="ios-construct"/>
@@ -128,6 +132,10 @@
               <MenuItem name="leader_lookup" v-role="['督导','管理员']">
                 <Icon type="ios-body"/>
                 学院教学院长
+              </MenuItem>
+              <MenuItem name="teacher_training" v-role="['教师', '督导','管理员']">
+                <Icon type="ios-bookmarks-outline" />
+                教学与发展
               </MenuItem>
             </div>
 
@@ -246,6 +254,8 @@ export default {
         this.activity_name = 'consult_apply'
       } else if (path === '/_guider/lesson_form') {
         this.activity_name = 'lesson_form'
+      } else if (path === '/_guider/teacher_training') {
+        this.activity_name = 'teacher_training'
       }
     },
     ...mapMutations([
@@ -305,7 +315,7 @@ export default {
     }
   },
   mounted () {
-    if (this.current_role === '大组长' || this.current_role === '小组长' || this.current_role === '管理员' || this.current_role === '学院领导' ||this.current_role==='校级管理员') {
+    if (this.current_role === '大组长' || this.current_role === '小组长' || this.current_role === '管理员' || this.current_role === '学院领导' || this.current_role === '校级管理员') {
       this.$router.push({ name: 'home' })
     }
     if (this.$route.path === '/_guider') {
@@ -329,7 +339,6 @@ export default {
     this.mobile_res = window.matchMedia('(max-width: 900px)')
     this.handleMobile(this.mobile_res)
     this.mobile_res.addListener(this.handleMobile)
-
   },
 
   destroyed () {

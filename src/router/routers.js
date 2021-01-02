@@ -7,6 +7,7 @@ import lesson from './lesson'
 import consult from './consult'
 import guider from './guider'
 import report from './report'
+import develop from './develop'
 
 /**
  * iview-admin中meta除了原生参数外可配置的参数:
@@ -57,6 +58,7 @@ export default [
   lesson,
   guider,
   actives,
+  develop,
   consult,
   report,
   {

@@ -1,17 +1,19 @@
 <template>
-  <Card>
-    <Tabs @on-click="onTypeTabClick">
-      <TabPane label="可报名" name="可报名"></TabPane>
-      <TabPane label="已报名" name="已报名"></TabPane>
-    </Tabs>
+  <div>
+    <Card>
+      <Tabs @on-click="onTypeTabClick">
+        <TabPane label="可报名" name="可报名"></TabPane>
+        <TabPane label="已报名" name="已报名"></TabPane>
+      </Tabs>
 
-    <template v-if="select_tag==='已报名'">
-      <already-registered ></already-registered>
-    </template>
-    <template v-else-if="select_tag==='可报名'">
-      <can-register ></can-register>
-    </template>
-  </Card>
+      <template v-if="select_tag==='已报名'">
+        <already-registered></already-registered>
+      </template>
+      <template v-else-if="select_tag==='可报名'">
+        <can-register></can-register>
+      </template>
+    </Card>
+  </div>
 </template>
 
 <script>
