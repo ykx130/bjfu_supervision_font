@@ -331,7 +331,7 @@
       //活动的批量导入
       handleImportActivityExcelSucc: function (response, file, fileList) {
         if (response.code !== 200) {
-          this.$Message.warning({ content: '部分导入失败' })
+          this.$Message.warning({ content: '导入失败' })
           window.open('/api/' + response.fail_excel_path)
         } else {
           this.$Message.success({ content: '导入成功' })
@@ -340,11 +340,11 @@
 
       //上传研修计划的附件
       handleImportPlanSucc: function (response, file, fileList) {
-        if (response.code !== 200) {
-          this.$Message.warning({ content: '导入失败' })
-          window.open('/api/' + response.fail_path)
-        } else {
+        if (response.code === 200) {
           this.$Message.success({ content: '导入成功' })
+        } else {
+          this.$Message.warning({ content: '导入失败' })
+
         }
       },
     },
