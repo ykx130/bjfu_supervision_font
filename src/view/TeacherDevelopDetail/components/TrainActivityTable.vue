@@ -195,6 +195,9 @@
           {
             title: '状态',
             align: 'center',
+            sortable: true,
+            key:'fin_state',
+            sortType:"asc",
             width: '100px',
             render: (h, params) => {
               if (params.row.fin_state === '待审核') {
