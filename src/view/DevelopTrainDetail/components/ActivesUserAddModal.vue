@@ -9,7 +9,7 @@
         <FormItem label="参加教师" prop="user.username" >
           <Select v-model="activity_user.user.username" filterable>
             <Option v-for="user in users" :value="user.username" :key="user.username" @on-query-change="onSelectUserChange">
-              {{ user.name }}
+              {{user.name}}
             </Option>
           </Select>
         </FormItem>

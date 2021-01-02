@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import { getActive, queryActiveUsers, putActive, postActiveUser, putActiveUser,uploadActivityUsersApi} from '../../service/api/actives'
+import { getActive, queryActivityUsers, putActive, postActiveUser, putActiveUser,uploadActivityUsersApi} from '../../service/api/actives'
 import {dateToString, updateWithinField} from 'Libs/tools'
 import ActivesUserAddModal from './components/ActivesUserAddModal'
 import ActivesUserUpdateModal from './components/ActivesUserUpdateModal'
@@ -294,7 +294,6 @@ export default {
                   click: () => {
 
                     this.selected_username = params.row.user.username
-                    console.log(this.selected_username)
                     this.selected_activeuser=params.row
                     this.showUpdateActiveUser = true
                   }
@@ -311,9 +310,6 @@ export default {
 
 
     onUpdateActive: function () {
-
-      console.log(1111)
-      console.log(this.activity.attend_num)
       this.$refs.activity_form.validate((valid) => {
 
         this.activity.start_time=dateToString(this.activity.start_time, 'yyyy-MM-dd hh:mm:ss')
@@ -321,18 +317,9 @@ export default {
           if (valid) {
 
             putActive(this.activity).then((resp) => {
-              console.log(2222)
-              console.log(resp)
-
-              console.log(this.activity.attend_num)
               if (resp.data.code === 200) {
                 this.$Message.success({content: '修改成功'})
-                console.log(33333)
-                  console.log(resp)
-                console.log(this.activity.attend_num)
                 getActive(this.activity_id).then((new_resp) => {
-                  console.log(44444)
-                  console.log(new_resp)
                   updateWithinField(this.activity, new_resp.data.activity)
                 })
 
@@ -348,7 +335,7 @@ export default {
       postActiveUser(this.activity_id, active_user).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '添加成功' })
-          queryActiveUsers(this.activity_id).then((new_resp) => {
+          queryActivityUsers({activity_id:this.activity_id,activity_type:'培训'}).then((new_resp) => {
             this.data = new_resp.data.activity_users
             this.total = new_resp.data.total
           })
@@ -361,11 +348,10 @@ export default {
     },
 
     onUpdateActiveUserModalOK: function (active_user) {
-      console.log(active_user)
       putActiveUser(this.activity_id, active_user).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '更新成功' })
-          queryActiveUsers(this.activity_id).then((new_resp) => {
+          queryActivityUsers({activity_id:this.activity_id,activity_type:'培训'}).then((new_resp) => {
             this.data = new_resp.data.activity_users
             this.total = new_resp.data.total
           })
@@ -391,16 +377,11 @@ export default {
   mounted: function () {
     getActive(this.activity_id).then((resp) => {
       this.activity = resp.data.activity
-      console.log(55555555)
-      console.log(this.activity.attend_num)
     })
-    queryActiveUsers(this.activity_id).then((usrresp) => {
+    queryActivityUsers({activity_id:this.activity_id,activity_type:'培训'}).then((usrresp) => {
       this.data = usrresp.data.activity_users
       this.total=usrresp.data.activity_users.length
 
-      console.log(666666)
-      console.log(this.data)
-      console.log(this.total)
 
 
     })

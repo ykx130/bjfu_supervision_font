@@ -6,6 +6,6 @@ export const AttendState = [
 export const FinAttendState = [
 
   '未参加',
-  '已参加'
+  '已完成'
 
 ]

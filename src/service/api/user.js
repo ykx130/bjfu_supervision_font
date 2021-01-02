@@ -69,3 +69,5 @@ export const getCaptcha = () => {
 export const newPassword = (username, params) => {
   return axios.put(`/api/users/${username}/password`, params)
 }
+
+export const uploadUsersApi = '/api/users/excel/import'

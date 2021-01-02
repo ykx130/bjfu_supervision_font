@@ -12,7 +12,7 @@
         <teacher-development-competition/>
       </template>
       <template v-else-if="select_tag==='教师教学发展交流'">
-        <teacher-development-communication/>
+        <teacher-development-exchange/>
       </template>
       <template v-else-if="select_tag==='教师教学发展研究'">
         <teacher-development-research/>
@@ -26,14 +26,14 @@
 
 <script>
 import teacherDevelopmentCompetition from 'Views/TeachingDevelopment/components/teacherDevelopmentCompetition'
-import teacherDevelopmentCommunication from 'Views/TeachingDevelopment/components/teacherDevelopmentCommunication'
+import teacherDevelopmentExchange from 'Views/TeachingDevelopment/components/teacherDevelopmentExchange'
 import teacherDevelopmentResearch from 'Views/TeachingDevelopment/components/teacherDevelopmentResearch'
 import teacherDevelopmentProject from 'Views/TeachingDevelopment/components/teacherDevelopmentProject'
 export default {
   name: 'index',
   components: {
     teacherDevelopmentCompetition,
-    teacherDevelopmentCommunication,
+    teacherDevelopmentExchange,
     teacherDevelopmentResearch,
     teacherDevelopmentProject
   },

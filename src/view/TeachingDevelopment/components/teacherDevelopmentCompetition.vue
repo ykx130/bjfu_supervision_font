@@ -29,71 +29,119 @@
 </template>
 
 <script>
-export default {
-  name: 'teacherDevelopmentCompetition',
-  data () {
-    return {
-      query: {
-        name_like: '',
-        state_like: ''
-      },
-      name: [],
-      stateName: [],
-      pages: {
-        _page: 1,
-        _per_page: 10
-      }, // 分页
-      columns: [
-        {
-          title: '奖项名称'
-        },
-        {
-          title: '获奖时间'
-        },
-        {
-          title: '主办单位'
-        },
-        {
-          title: '级别'
-        },
-        {
-          title: '获奖等级'
-        },
-        {
-          title: '排名'
-        },
-        {
-          title: '附件'
-        },
-        {
-          title: '状态'
-        },
-        {
-          title: '操作'
-        }
-      ]
-    }
-  },
-  methods: {
-    fetchData () {
-      // 数据表发生变化请求数据
-      let args = { ...this.query, ...this.pages }
-      return queryCurrentuserActives(args).then((resp) => {
-        this.data = resp.data.activities
-        this.total = resp.data.total
-      })
-    },
-    onPageChange (page) {
-      // 分页变化
-      this.pages._page = page
-      this.fetchData()
-    },
-    handleSearchName () {},
-    handleSearchStateName () {},
-    onSearch () {}
-  }
+  import {currentUser} from "@/service/api/user";
+  import {queryActivityUsers} from "@/service/api/actives";
 
-}
+  export default {
+    name: 'teacherDevelopmentCompetition',
+    data () {
+      return {
+        query: {
+          //name_like: '',
+          //state_like: ''
+          username:undefined,
+          activity_type:'比赛',
+          state:'已报名'
+        },
+        name: [],
+        stateName: [],
+        total:0,
+        data:[],
+        pages: {
+          _page: 1,
+          _per_page: 10
+        }, // 分页
+        columns: [
+
+          {
+            title: '获奖时间',
+            align: 'center',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.activity.start_time }</span>
+            )
+            }
+          },
+          {
+            title: '主办单位',
+            align: 'center',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.activity.organizer}</span>
+            )
+            }
+          },
+          {
+            title: '级别',
+            align: 'center',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.activity.level }</span>
+            )
+            }
+          },
+          {
+            title: '奖项名称',
+            align: 'center',
+            render: function (h, params) {
+              return (
+                <span>{ params.row.activity.award_name }</span>
+            )
+            }
+          },
+
+          {
+            title: '比赛名次',
+            align: 'center',
+            render: (h, params) => {
+              return(
+                <span>{params.row.fin_state}</span>
+            )
+
+            }
+          },
+          {
+            title: '学期',
+            align: 'center',
+            render: (h, params) => {
+              return(
+                <span>{params.row.activity.term}</span>
+            )
+
+            }
+          }
+        ]
+      }
+    },
+    methods: {
+      fetchData () {
+        // 数据表发生变化请求数据
+        let args = { ...this.query, ...this.pages }
+        return queryActivityUsers(args).then((resp) => {
+          this.data = resp.data.activity_users
+          this.total = resp.data.total
+        })
+      },
+      onPageChange (page) {
+        // 分页变化
+        this.pages._page = page
+        this.fetchData()
+      },
+      handleSearchName () {},
+      handleSearchStateName () {},
+      onSearch () {}
+    },
+    mounted:function () {
+
+      currentUser().then((userResp)=>{
+        this.query.username=userResp.data.current_user.username
+        queryActivityUsers({ ...this.query, ...this.pages }).then((resp) => {
+          this.data = resp.data.activity_users
+          this.total = resp.data.total
+        })
+      })
+    }
+  }
 </script>
 
 <style scoped>
