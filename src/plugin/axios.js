@@ -11,7 +11,8 @@ const RoleMap = {"管理员": 'admin',
   "学院领导": "leader",
   "督导":"guider",
   "教师": "teacher",
-  "校级管理员":"reader"
+  "校级管理员":"reader",
+  "教发管理员":"develop"
 }
 // 注入请求拦截
 axiosInstance

@@ -104,7 +104,7 @@
 <!--          </FormItem>-->
 <!--        </Row>-->
         <FormItem>
-            <Button type="primary" @click="onUpdateActive" v-role="['管理员']">提交</Button>
+            <Button type="primary" @click="onUpdateActive" v-role="['教发管理员']">提交</Button>
         </FormItem>
       </Form>
     </Card>
@@ -130,9 +130,9 @@
       <Table border stripe :columns="columns" :data="data"></Table>
 <Form inline>
   <FormItem>
-      <Button type="primary" @click="showAddActiveUser=true"  v-role="['管理员']">新增参与人员</Button>
+      <Button type="primary" @click="showAddActiveUser=true"  v-role="['教发管理员']">新增参与人员</Button>
   </FormItem>
-      <FormItem v-role ="['管理员']" >
+      <FormItem v-role ="['教发管理员']" >
         <Upload :action="uploadActivityUsersApi"
                 :on-success="handleImportActivityUsersExcelSucc"
                 name="filename"
@@ -285,7 +285,7 @@ export default {
                 },
                 directives: [{
                   name: 'role',
-                  value: ['管理员']
+                  value: ['教发管理员']
                 }],
                 style: {
                   marginRight: '2px'

@@ -7,7 +7,8 @@ export default{
   path: '/dqs',
   meta: {
     icon: 'ios-book',
-    title: '评价管理'
+    title: '评价管理',
+    access: ['管理员','大组长','小组长','校级管理员','学院领导'],
   },
   component: Main,
   children: [

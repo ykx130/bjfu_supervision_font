@@ -34,7 +34,7 @@
             <!--            </Col>-->
           </Row>
         </form-item>
-        <form-item label="参与人数:" prop="all_num" v-role="['管理员']">
+        <form-item label="参与人数:" prop="all_num" v-role="['教发管理员']">
           <Row>
             <Col>
               <InputNumber v-model="activity.all_num"></InputNumber>
@@ -69,7 +69,7 @@
             </Col>
           </Row>
         </form-item>
-        <FormItem label="是否必修" prop="is_obligatory" v-role="['管理员']">
+        <FormItem label="是否必修" prop="is_obligatory" v-role="['教发管理员']">
           <RadioGroup v-model="activity.is_obligatory" >
             <Radio :label='1'>是</Radio>
             <Radio :label='0'>否</Radio>
@@ -80,7 +80,7 @@
           <!--            </Radio>-->
           <!--          </RadioGroup>-->
         </FormItem>
-        <FormItem label="学期：" prop="term" v-role ="['管理员']">
+        <FormItem label="学期：" prop="term" v-role ="['教发管理员']">
           <Select v-model="activity.term" style="width:200px">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
@@ -177,7 +177,7 @@
       handleOK: function () {
         this.changeLoading()
         this.$refs.activity_form.validate((valid) => {
-          if(this.activity.path===''&& this.current_role!=='管理员'){
+          if(this.activity.path===''&& this.current_role!=='教发管理员'){
             valid=false
           }
           console.log(valid)

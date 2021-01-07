@@ -11,7 +11,7 @@
       <FormItem>
         <Button type="primary" @click="showCompetitionAddModal=true">新增比赛</Button>
       </FormItem>
-      <FormItem v-role ="['管理员']">
+      <FormItem v-role ="['教发管理员']">
         <Upload :action="uploadCompetitionUserApi"
                 :on-success="handleImportCompetitionUserExcelSucc"
                 name="filename">
@@ -146,7 +146,7 @@
                   },
                   directives: [{
                     name: 'role',
-                    value: ['管理员']
+                    value: ['教发管理员']
                   }],
                   style: {
                     marginRight: '2px'
@@ -164,7 +164,7 @@
                   },
                   directives: [{
                     name: 'role',
-                    value: ['管理员']
+                    value: ['教发管理员']
                   }],
                   style: {
                     marginRight: '2px'
@@ -184,7 +184,7 @@
                   },
                   directives: [{
                     name: 'role',
-                    value: ['管理员']
+                    value: ['教发管理员']
                   }],
                   style: {
                     marginRight: '2px'

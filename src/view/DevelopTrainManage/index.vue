@@ -33,11 +33,11 @@
 
 
       <FormItem>
-        <Button type="primary" @click="showActiveAddModal=true" v-role="['管理员']">新增</Button>
+        <Button type="primary" @click="showActiveAddModal=true" v-role="['教发管理员']">新增</Button>
       </FormItem>
 
 
-      <FormItem v-role ="['管理员']">
+      <FormItem v-role ="['教发管理员']">
         <Upload :action="uploadActivitiesApi"
                 :on-success="handleImportActivityExcelSucc"
                 name="filename">
@@ -66,7 +66,7 @@
 
     <Form inline>
       <FormItem>
-        <Button type="primary" @click="showActivityPlan=true" v-role="['管理员']">教学研修计划</Button>
+        <Button type="primary" @click="showActivityPlan=true" v-role="['教发管理员']">教学研修计划</Button>
       </FormItem>
       <FormItem>
         <Upload :action="uploadPlanApi"
@@ -229,7 +229,7 @@
                   },
                   directives: [{
                     name: 'role',
-                    value: ['管理员']
+                    value: ['教发管理员']
                   }],
                   style: {
                     marginRight: '2px'
