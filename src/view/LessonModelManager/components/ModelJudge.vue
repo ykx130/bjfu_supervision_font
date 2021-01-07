@@ -11,7 +11,8 @@
   export default {
     name: "model_judge",
     props: {
-      lesson_id: String,
+      lesson_name: String,
+      lesson_teacher_name:String
     },
     data: function () {
       return {
@@ -96,7 +97,7 @@
 
     },
     mounted: function () {
-      queryForms({meta:{lesson:{lesson_id: this.lesson_id}}, status:"已完成"}).then((resp)=>{
+      queryForms({meta:{lesson:{lesson_name: this.lesson_id,lesson_teacher_name:this.lesson_teacher_name}},model_lesson:{is_model_lesson:true}, status:"已完成"}).then((resp)=>{
         this.data = resp.data.forms
       })
     }
