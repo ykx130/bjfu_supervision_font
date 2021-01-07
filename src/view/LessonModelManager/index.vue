@@ -113,7 +113,8 @@ export default {
           render: (h, params) => {
             return h(ModelJudge, {
               props: {
-                lesson_id: params.row.lesson_id
+                lesson_name: params.row.lesson_name,
+                lesson_teacher_name:params.row.lesson_teacher_name
               }
             })
           }
