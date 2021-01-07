@@ -155,7 +155,7 @@
                   },
                   directives: [{
                     name: 'role',
-                    value: ['管理员']
+                    value: ['教发管理员']
                   }],
 
 
@@ -183,7 +183,7 @@
                   },
                   directives: [{
                     name: 'role',
-                    value: ['管理员']
+                    value: ['教发管理员']
                   }],
 
 

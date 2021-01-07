@@ -8,7 +8,8 @@ export default{
   component: Main,
   meta: {
     icon: 'md-chatbubbles',
-    title: '课程中心'
+    title: '课程中心',
+    access: ['管理员','大组长','小组长','校级管理员','学院领导']
   },
   children: [
     {

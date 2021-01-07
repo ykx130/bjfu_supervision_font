@@ -40,7 +40,7 @@ export default {
       state.access= [status]
     },
     judgeSuperAccess(state,resData){
-      let arr= ['管理员','校级管理员', '大组长', '学院领导', '小组长', '督导', '教师']
+      let arr= ['管理员','校级管理员','教发管理员', '大组长', '学院领导', '小组长', '督导', '教师']
       for(let i=0;i<arr.length;i++){
         if(resData.role_names.indexOf(arr[i])>-1){
           state.access=[arr[i]]

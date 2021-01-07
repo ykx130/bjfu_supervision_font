@@ -39,7 +39,7 @@
           </Row>
         </form-item>
 
-        <form-item label="学期：" prop="term" v-role="['管理员']">
+        <form-item label="学期：" prop="term" v-role="['教发管理员']">
           <Select v-model="activity.term" style="width:200px">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
