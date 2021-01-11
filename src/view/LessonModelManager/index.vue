@@ -114,7 +114,8 @@ export default {
             return h(ModelJudge, {
               props: {
                 lesson_name: params.row.lesson_name,
-                lesson_teacher_name:params.row.lesson_teacher_name
+                lesson_teacher_name: params.row.lesson_teacher_name,
+                term: this.query.term
               }
             })
           }

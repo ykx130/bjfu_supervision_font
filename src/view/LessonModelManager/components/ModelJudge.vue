@@ -12,7 +12,8 @@ export default {
   name: 'model_judge',
   props: {
     lesson_name: String,
-    lesson_teacher_name: String
+    lesson_teacher_name: String,
+    term: String
   },
   data: function () {
     return {
@@ -97,7 +98,7 @@ export default {
 
   },
   mounted: function () {
-    queryForms({ meta: { lesson: { lesson_name: this.lesson_name, lesson_teacher_name: this.lesson_teacher_name } }, model_lesson: { is_model_lesson: true }, status: '已完成' }).then((resp) => {
+    queryForms({ meta: { lesson: { lesson_name: this.lesson_name, lesson_teacher_name: this.lesson_teacher_name }, term: this.term }, model_lesson: { is_model_lesson: true }, status: '已完成' }).then((resp) => {
       this.data = resp.data.forms
     })
   }
