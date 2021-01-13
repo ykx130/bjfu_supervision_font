@@ -2,15 +2,13 @@
   <Modal
     :value="show"
     title="增加一个比赛参与者"
-    @on-ok="handleOk"
+    @on-ok="handleOK"
     @on-cancel="handleCancel"
     style="width: 600px;">
     <Form ref="activity_user_form" :model="activity_user" :rules="ruleValidate">
       <FormItem label="参加教师" prop="user.username" >
         <Select v-model="activity_user.user.username" filterable>
-          <Option v-for="user in users" :value="user.username" :key="user.username" @on-query-change="onSelectUserChange">
-            {{user.name}}
-          </Option>
+          <Option v-for="user in users" :value="user.username" :key="user.username" @on-query-change="onSelectUserChange">{{user.name}}</Option>
         </Select>
       </FormItem>
       <FormItem label="比赛名次" prop="fin_state" >
@@ -38,10 +36,10 @@ export default {
     return {
       activity_user: {
         user: {
-          username:''
+          username: ''
         },
-        activity_type:'比赛',
-        state:'已报名'
+        activity_type: '比赛',
+        state: '已报名'
       },
 
       users: [],
@@ -60,14 +58,15 @@ export default {
   },
 
   methods: {
-    handleOk () {
+    handleOK () {
       this.$refs.activity_user_form.validate((valid) => {
         if (valid) {
           this.$Message.success('添加成功！')
 
           this.$emit('onOK', { username: this.activity_user.user.username,
-            state: this.activity_user.state, fin_state: this.activity_user.fin_state ,
-            activity_type:this.activity_user.activity_type})
+            state: this.activity_user.state,
+            fin_state: this.activity_user.fin_state,
+            activity_type: this.activity_user.activity_type })
           this.activity_user = {}
         } else {
           this.$Message.error('请填写完整信息!')

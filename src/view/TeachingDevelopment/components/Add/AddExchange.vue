@@ -58,17 +58,15 @@
 
 <script>
 
-
-
 import { dateToString } from '@/libs/tools'
-import {getCurrentTerms, queryTerms} from "@/service/api/term";
+import { getCurrentTerms, queryTerms } from '@/service/api/term'
 
 export default {
-  name: "AddExchange",
+  name: 'AddExchange',
   props: {
     modal: {
-      type:Boolean,
-      default:false
+      type: Boolean,
+      default: false
     },
     onCancel: Function,
     onOK: Function
@@ -76,7 +74,7 @@ export default {
   data: function () {
     return {
       loading: true,
-      //modal: false,
+      // modal: false,
       // loading: true,
       date: new Date(),
       query: {}, // 查询用的参数
@@ -86,9 +84,9 @@ export default {
       total: 0,
       activity: {
         title: '',
-        invited_university:'',
-        start_time:'',
-        number:0,
+        invited_university: '',
+        start_time: '',
+        number: 0,
         period: 0,
         term: '',
         created_at: '',
@@ -97,18 +95,18 @@ export default {
       },
       addActivity: {},
       ruleValidate: {
-        title: [{required: true, trigger: 'blur', message: '请填写交流题目'}],
-        invited_university: [{required: true, trigger: 'blur', message: '请填写受邀高校名称'}],
-        start_time: [{required:true,type:'date', trigger:'blur',message:'请选择交流时间'}],
-        period: [{required: true, type: 'number', min: 0.001, trigger: 'change',message:'学时必须大于0'}]
+        title: [{ required: true, trigger: 'blur', message: '请填写交流题目' }],
+        invited_university: [{ required: true, trigger: 'blur', message: '请填写受邀高校名称' }],
+        start_time: [{ required: true, type: 'date', trigger: 'blur', message: '请选择交流时间' }],
+        period: [{ required: true, type: 'number', min: 0.001, trigger: 'change', message: '学时必须大于0' }]
       }
     }
   },
   methods: {
-    changeLoading: function() {
-      setTimeout(()=>{
-        this.loading = false;
-        this.$nextTick(()=>{
+    changeLoading: function () {
+      setTimeout(() => {
+        this.loading = false
+        this.$nextTick(() => {
           this.loading = true
         })
       }, 500)
@@ -126,26 +124,23 @@ export default {
           this.addActivity = {
             title: this.activity.title,
             invited_university: this.activity.invited_university,
-            start_time:this.activity.start_time,
-            period: this.activity.period,
+            start_time: this.activity.start_time,
             number: this.activity.number,
             term: this.activity.term,
             created_at: this.activity.created_at,
-            updated_at: this.activity.updated_at,
+            updated_at: this.activity.updated_at
           }
 
-          this.$emit('onOK', this.addActivity)
+          this.$emit('onOK', this.addActivity, this.activity.period)
           this.activity = {}
-
         } else {
           this.$Message.error('请填写完整信息!')
-
         }
       })
     },
     handleCancel: function () {
       this.$emit('onCancel')
-    },
+    }
 
   },
   mounted: function () {

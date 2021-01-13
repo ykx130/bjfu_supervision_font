@@ -18,7 +18,6 @@
       </FormItem>
     </Form>
 
-
     <AddExchange
       :modal="showExchangeAddModal"
       @onOK="onAddModalOK"
@@ -40,30 +39,30 @@
 </template>
 
 <script>
-import {postExchange, postActiveUser, queryActivityUsers, queryExchange, deleteExchange,putExchange} from "@/service/api/actives";
-import {getCurrentTerms, queryTerms} from "@/service/api/term";
-import {currentUser} from "@/service/api/user";
-import float_bar from "_c/float_bar/float_bar";
-import AddExchange from "Views/TeachingDevelopment/components/Add/AddExchange";
-import {State} from "Views/TeacherDevelopDetail/marcos";
+import { postExchange, postActiveUser, queryActivityUsers, queryExchange, deleteExchange, putExchange } from '@/service/api/actives'
+import { getCurrentTerms, queryTerms } from '@/service/api/term'
+import { currentUser } from '@/service/api/user'
+import float_bar from '_c/float_bar/float_bar'
+import AddExchange from 'Views/TeachingDevelopment/components/Add/AddExchange'
+import { State } from 'Views/TeacherDevelopDetail/marcos'
 
 export default {
   name: 'teacherDevelopmentExchange',
-  components: {AddExchange,float_bar},
+  components: { AddExchange, float_bar },
   data () {
     return {
       query: {
-        //term: undefined,
-        username:undefined,
-        state:'已报名',
-        activity_type:'交流',
-        fin_state:'',
+        // term: undefined,
+        username: undefined,
+        state: '已报名',
+        activity_type: '交流',
+        fin_state: ''
       },
-      activity_statuss:State,
-      total:0,
-      showExchangeAddModal:false,
+      activity_statuss: State,
+      total: 0,
+      showExchangeAddModal: false,
       name: [],
-      data:[],
+      data: [],
       pages: {
         _page: 1,
         _per_page: 10
@@ -191,20 +190,21 @@ export default {
       this.fetchData()
     },
 
-    onAddModalOK (activity) {
-      activity.apply_state="待审核活动"
+    onAddModalOK (activity, period) {
+      activity.apply_state = '待审核活动'
       postExchange(activity).then((resp) => {
-        queryExchange({"title": activity.title}).then((newresp) => {
+        queryExchange({ 'title': activity.title }).then((newresp) => {
           this.activity_id = newresp.data.exchanges[0].id
           currentUser().then((usrresp) => {
             postActiveUser(this.activity_id, {
               username: usrresp.data.current_user.username,
-              fin_state: "待审核",
-              state: "已报名",
-              activity_type:"交流"
+              fin_state: '待审核',
+              state: '已报名',
+              activity_type: '交流',
+              score: period
             }).then((esp) => {
               if (esp.data.code === 200) {
-                this.$Message.success({content: '交流项目添加成功'})
+                this.$Message.success({ content: '交流项目添加成功' })
 
                 this.fetchData()
               }
@@ -225,16 +225,16 @@ export default {
       this.fetchData()
     }
   },
-  created() {
-    currentUser().then((userResp)=>{
-      this.query.username=userResp.data.current_user.username
+  created () {
+    currentUser().then((userResp) => {
+      this.query.username = userResp.data.current_user.username
       queryActivityUsers({ ...this.query, ...this.pages }).then((resp) => {
         this.data = resp.data.activity_users
         this.total = resp.data.total
       })
     })
   },
-  mounted:function (){
+  mounted: function () {
 
   }
 }

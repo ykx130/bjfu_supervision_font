@@ -81,8 +81,13 @@
           </FormItem>
         </Col>
       </Row>
-
-
+      <Row  :gutter="16" type="flex" justify="start" align="middle" class="code-row-bg">
+        <Col span="10">
+          <FormItem prop="path" label="图片">
+            <img v-model="active_user.activity.path" :src="'/api'+this.active_user.activity.path" class="avatar">
+          </FormItem>
+        </Col>
+      </Row>
 
     </Form>
   </Modal>
@@ -90,80 +95,83 @@
 
 <script>
 
-  import {prorankList, sexList, stateList, statusList, unitlist, workStatelist} from "Views/UserManager/marcos";
-  import {getUserByName, newPassword, queryGroups} from "@/service/api/user";
-  import {updateWithinField} from "Libs/tools";
-  import {getActiveUser, queryActiveUsers, queryActivityUsers, queryTrainActiveUsers} from "@/service/api/actives";
+import { prorankList, sexList, stateList, statusList, unitlist, workStatelist } from 'Views/UserManager/marcos'
+import { getUserByName, newPassword, queryGroups } from '@/service/api/user'
+import { updateWithinField } from 'Libs/tools'
+import { getActiveUser, queryActiveUsers, queryActivityUsers, queryTrainActiveUsers } from '@/service/api/actives'
 
-  export default {
-    name: "TrainProfileModal",
+export default {
+  name: 'TrainProfileModal',
 
-    props: {
-      show: Boolean,
-      onCancel: Function,
-      onOk: Function,
-      active_id: Number,
-      active_type: String,
-      username: String,
+  props: {
+    show: Boolean,
+    onCancel: Function,
+    onOk: Function,
+    active_id: Number,
+    active_type: String,
+    username: String
+  },
+  data: function () {
+    return {
+      obgatory: -1,
+      active_user: {
+        activity: {
+          title: '',
+          module: '',
+          presenter: '',
+          organizer: '',
+          place: '',
+          term: '',
+          path: '',
+          period: undefined,
+          start_time: undefined
+        },
+        user: {
+          unit: '',
+          name: ''
+        }
+      }
+    }
+  },
+
+  methods: {
+
+    handleCancel: function () {
+      this.$emit('onCancel')
     },
-    data: function () {
-      return {
-        obgatory: -1,
-        active_user: {
-          activity: {
-            title: '',
-            module: '',
-            presenter: '',
-            organizer: '',
-            place: '',
-            term: '',
-            period: undefined,
-            start_time: undefined,
-          },
-          user: {
-            unit: '',
-            name: ''
+    handleOk: function () {
+      this.$emit('onOk')
+    },
+    onShowChange (show) {
+      if (show) {
+        queryActivityUsers({
+          'activity_id': this.active_id,
+          'username': this.username,
+          'activity_type': this.active_type
+        }).then((resp) => {
+          this.active_user = resp.data.activity_users[0]
+          if (this.active_user.activity.is_obligatory === false) {
+            this.obgatory = 0
+          } else {
+            this.obgatory = 1
           }
-        }
+        })
       }
     },
-    //为什么不管点什么，start_time会变成undefined，之前没有吧
-    methods: {
 
-      handleCancel: function () {
-
-        this.$emit('onCancel')
-      },
-      handleOk:function () {
-
-        this.$emit('onOk')
-      },
-      onShowChange(show) {
-        if (show) {
-          queryActivityUsers({
-            'activity_id': this.active_id,
-            'username': this.username,
-            'activity_type': this.active_type
-          }).then((resp) => {
-            this.active_user = resp.data.activity_users[0]
-            if (this.active_user.activity.is_obligatory === false) {
-              this.obgatory = 0
-            } else {
-              this.obgatory = 1
-            }
-          })
-        }
-      },
-
-      mounted: function () {
-
-      }
+    mounted: function () {
 
     }
+
   }
+}
 
 </script>
 
 <style scoped>
-
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>
