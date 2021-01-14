@@ -4,7 +4,7 @@
   :value="show"
   title="教学研修计划文件列表"
   @on-ok="handleOK"
-  @on-cancle="handleCancle">
+  @on-cancel="handleCancel">
     <div v-for="item in files">
     <a @click="downloadPlanFile(item.title)" >{{item.title}}</a>
     </div>
@@ -13,25 +13,25 @@
 </template>
 
 <script>
-import {downloadPlanFiles, queryFiles} from "@/service/api/actives";
+import { downloadPlanFiles, queryFiles } from '@/service/api/actives'
 
 export default {
-name: "DownloadPlanModal",
-  props:{
-    show:{
-      type:Boolean,
-      default:false
+  name: 'DownloadPlanModal',
+  props: {
+    show: {
+      type: Boolean,
+      default: false
     },
-    onCancel:Function,
-    onOK:Function,
+    onCancel: Function,
+    onOK: Function
   },
-  data(){
-  return{
+  data () {
+    return {
 
-    files:[]
-  }
+      files: []
+    }
   },
-  methods:{
+  methods: {
     downloadPlanFile: function (title) {
       downloadPlanFiles(title).then((resp) => {
         console.log(title)
@@ -41,18 +41,17 @@ name: "DownloadPlanModal",
         }
       })
     },
-    handleOK(){
+    handleOK () {
       this.$emit('onOK')
     },
-    handleCancle(){
-      this.$emit('onCancle')
-    },
+    handleCancel () {
+      this.$emit('onCancel')
+    }
   },
-  created() {
-      queryFiles().then((fileResp)=>{
-          this.files=fileResp.data.files
-      })
-
+  created () {
+    queryFiles().then((fileResp) => {
+      this.files = fileResp.data.files
+    })
   }
 
 }
