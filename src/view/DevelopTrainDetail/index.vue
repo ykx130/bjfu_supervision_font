@@ -140,6 +140,9 @@
           <Button  icon="ios-cloud-upload-outline" type="primary"  >批量导入参与人员</Button>
         </Upload>
       </FormItem>
+  <FormItem>
+  <Button @click="onExportExcel" icon="ios-cloud-download-outline" type="primary" label="导出" v-role="['教发管理员']">导出报名名单</Button>
+  </FormItem>
 </Form>
 
     </Card>
@@ -148,7 +151,7 @@
 </template>
 
 <script>
-import { getActive, queryActivityUsers, putActive, postActiveUser, putActiveUser,uploadActivityUsersApi} from '../../service/api/actives'
+import { getActive, queryActivityUsers, putActive, postActiveUser, putActiveUser,uploadActivityUsersApi,exportRegisteredUsersExcel} from '../../service/api/actives'
 import {dateToString, updateWithinField} from 'Libs/tools'
 import ActivesUserAddModal from './components/ActivesUserAddModal'
 import ActivesUserUpdateModal from './components/ActivesUserUpdateModal'
@@ -372,6 +375,17 @@ export default {
           this.$Message.success({ content: '导入成功' })
         }
       },
+
+    //导出报名名单
+    onExportExcel: function () {
+      exportRegisteredUsersExcel({'activity_id':this.activity_id,'activity_type':'培训'}
+      ).then((resp) => {
+        if (resp.data.code === 200) {
+          this.$Message.success({content: '导出成功'})
+          window.open('/api/' + resp.data.filename)
+        }
+      })
+    }
 
   },
   mounted: function () {
