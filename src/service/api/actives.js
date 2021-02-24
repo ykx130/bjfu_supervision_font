@@ -164,3 +164,6 @@ export const uploadCompetitionUserApi = '/api/activities/competition_users_excel
 export const exportRegisteredUsersExcel = (params) => {
   return axios.post('/api/activities/activity_users_excel/export', params)
 }
+
+//上传活动详情附件
+export const uploadFileApi = '/api/activities/file/upload'
