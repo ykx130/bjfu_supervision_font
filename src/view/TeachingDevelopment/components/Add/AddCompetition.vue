@@ -9,17 +9,17 @@
       style="width: 600px;">
       <Form :label-width="100" style="width: 400px" ref="activity_form" :model="activity" :rules="ruleValidate">
 
-        <form-item label="奖项名称:" prop="award_name">
+        <form-item label="比赛名称:" prop="award_name">
           <Row>
             <Col>
-              <Input v-model="activity.award_name" placeholder="奖项名称"></Input>
+              <Input v-model="activity.award_name" placeholder="比赛名称"></Input>
             </Col>
           </Row>
         </form-item>
-        <form-item label="获奖级别:" prop="level">
+        <form-item label="比赛级别:" prop="level">
           <Row>
             <Col>
-              <Input v-model="activity.level" placeholder="获奖级别" style="width:200px" filterable>
+              <Input v-model="activity.level" placeholder="比赛级别" style="width:200px" filterable>
               </Input>
             </Col>
           </Row>
@@ -32,7 +32,7 @@
             </Col>
           </Row>
         </form-item>
-        <FormItem label="获奖时间:" prop="start_time">
+        <FormItem label="比赛时间:" prop="start_time">
           <Row>
             <Col span="11">
               <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="获奖时间" v-model="activity.start_time"></DatePicker>
@@ -46,6 +46,15 @@
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </form-item>
+        <FormItem label="请上传比赛文件" prop="path" v-role="['教发管理员']">
+          <Upload :action="uploadFileApi"
+                  :format="['doc','docx','pdf']"
+                  :on-success="handleImportFileSucc"
+                  name="filename"
+                  style="display: block">
+            <Button  icon="ios-cloud-upload-outline" type="primary" size="small" style="">上传文件</Button>
+          </Upload>
+        </FormItem>
 
       </Form>
     </Modal>
@@ -58,7 +67,7 @@
 
 import { dateToString } from '@/libs/tools'
 import {getCurrentTerms, queryTerms} from "@/service/api/term";
-import {queryCompetition} from "@/service/api/actives";
+import {queryCompetition,uploadFileApi} from "@/service/api/actives";
 import {queryUsers} from "@/service/api/user";
 
 export default {
@@ -73,6 +82,7 @@ export default {
   },
   data: function () {
     return {
+      uploadFileApi:uploadFileApi,
       loading: true,
       //modal: false,
       // loading: true,
@@ -89,6 +99,7 @@ export default {
         organizer:'',
         start_time:'',
         term:'',
+        path:'',
         created_at: '',
         updated_at: '',
       },
@@ -123,7 +134,7 @@ export default {
     handleOK: function () {
       this.changeLoading()
       this.$refs.activity_form.validate((valid) => {
-        console.log(valid)
+
         if (valid) {
           this.activity.start_time = dateToString(this.activity.start_time, 'yyyy-MM-dd hh:mm:ss')
           this.activity.created_at = dateToString(this.date, 'yyyy-MM-dd hh:mm:ss')
@@ -141,6 +152,7 @@ export default {
             term: this.activity.term,
             created_at: this.activity.created_at,
             updated_at: this.activity.updated_at,
+            path:this.activity.path
           }
 
           this.$emit('onOK', this.addActivity)
@@ -154,6 +166,15 @@ export default {
     },
     handleCancel: function () {
       this.$emit('onCancel')
+    },
+    handleImportFileSucc: function (response, file, fileList) {
+      if (response.code === 500) {
+        this.$Message.success({ content: '上传成功' })
+        this.activity.path=response.path
+      } else {
+        this.$Message.warning({ content: '上传失败' })
+        this.activity.path=''
+      }
     },
     onSelectTeacherChange: function (query) {
       this.queryUsers({ name_like: query }).then((resp) => {

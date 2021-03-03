@@ -23,6 +23,14 @@
       @onCancel="onAddModalCancel">
     </ActivesAddModal>
 
+    <TrainEditModal
+      :show="showTrainEditModal"
+      @onOK="onEditModalOK"
+      @onCancel="onEditModalCancel"
+    :active_id="selected_activity_id"
+    :current_username="current_user_username">
+    </TrainEditModal>
+
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
@@ -38,15 +46,17 @@
 </template>
 
 <script>
-import { deleteActive, postActive, postActiveUser, queryActives, queryActivityUsers, queryCurrentuserActives } from '../../../service/api/actives'
+import { deleteActive, putActive, putActiveUser, queryActives,  queryCurrentuserActives,postActiveUser,postActive } from '../../../service/api/actives'
 import { queryTerms, getCurrentTerms } from '../../../service/api/term'
 import ActivesAddModal from 'Views/DevelopTrainManage/components/ActivesAddModal'
 import ActivesUserModifyModal from 'Views/ActiveDetail/components/ActivesUserModifyModal'
 import float_bar from '_c/float_bar/float_bar'
 import { currentUser } from '@/service/api/user'
+
+import TrainEditModal from "Views/ActiveAttend/components/TrainEditModal";
 export default {
   name: 'alreadyRegistered',
-  components: { float_bar, ActivesAddModal, ActivesUserModifyModal },
+  components: {TrainEditModal, float_bar, ActivesAddModal, ActivesUserModifyModal },
   data: function () {
     return {
       query: {
@@ -56,6 +66,7 @@ export default {
         activity_type: '培训'
       }, // 查询用的参数
       showActiveAddModal: false,
+      showTrainEditModal:false,
       total: 0, // 总数量
       // data: [{
       //   activity: {},
@@ -67,7 +78,8 @@ export default {
       terms: [],
       id: Number,
       activityName: [],
-      selected_activity_title: '', // 选中编辑的课程ids
+      selected_activity_id: undefined, // 选中编辑的课程ids
+      current_user_username:'',
       pages: {
         _page: 1,
         _per_page: 10
@@ -142,6 +154,20 @@ export default {
           }
         },
         {
+          title: '活动详情附件',
+          render: (h, params)=>{
+            return h('div',[
+              h('a',{
+                on:{
+                  click:()=>{
+                    this.downloadFile(params.row.activity.path)
+                  }
+                }
+              },params.row.activity.path.slice(-19))
+            ])
+          }
+        },
+        {
           title: '报名状态',
           render: function (h, params) {
             return (
@@ -176,8 +202,8 @@ export default {
                 },
                 on: {
                   click: () => {
-                    // this.selected_activity_title = params.row.activity.title
-                    // this.showActiveAddModal = true
+                    this.selected_activity_id = params.row.activity.id
+                    this.showTrainEditModal = true
                   }
                 }
               }, '编辑'),
@@ -242,17 +268,17 @@ export default {
         })
       })
     },
-    onAddModalOK (activity) {
+    onAddModalOK (activity,picpath) {
       activity.apply_state = '待审核活动'
       postActive(activity).then((resp) => {
         queryActives({ 'title': activity.title }).then((newresp) => {
           this.activity_id = newresp.data.activities[0].id
-          currentUser().then((usrresp) => {
             postActiveUser(this.activity_id, {
-              username: usrresp.data.current_user.username,
+              username: this.current_user_username,
               fin_state: '待审核',
               state: '已报名',
-              activity_type: '培训'
+              activity_type: '培训',
+              picpaths:picpath
             }).then((esp) => {
               if (esp.data.code === 200) {
                 this.$Message.success({ content: '培训项目添加成功' })
@@ -260,7 +286,7 @@ export default {
                 this.fetchData()
               }
             })
-          })
+
           this.showActiveAddModal = false
         })
       })
@@ -268,13 +294,33 @@ export default {
     onAddModalCancel () {
       this.showActiveAddModal = false
     },
-    onModifyModalOK () {
-      this.showActiveModifyModal = false
-      this.fetchData()
+    //编辑成功后，更新activity和active_user并且变为“待审核状态”
+    onEditModalOK(new_active_user){
+      putActive(new_active_user.activity).then((resp1)=>{
+        putActiveUser(new_active_user.activity_id,new_active_user).then((resp2)=>{
+          if(resp1.data.code===200&&resp2.data.code===200){
+            this.$Message.success({ content: '更新并提交成功' })
+            this.fetchData()
+          }
+        })
+      })
+      this.showTrainEditModal=false
     },
-    onModifyModalCancel () {
-      this.showActiveModifyModal = false
+    onEditModalCancel(){
+      this.showTrainEditModal=false
+    },
+
+    downloadFile: function (path) {
+      if(path!==''){
+        this.$Message.success({content:'下载成功'})
+        window.open('/api/' + path)
+      }
     }
+  },
+  created() {
+    currentUser().then((usrresp)=>{
+      this.current_user_username=usrresp.data.current_user.username
+    })
   },
   mounted: function () {
     this.query.state = 'hasAttended'

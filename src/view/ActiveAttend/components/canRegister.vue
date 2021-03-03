@@ -4,7 +4,7 @@
     <br>
     <Form :model="query" inline>
       <FormItem>
-        <Alert>提醒：{{name}} 老师，您好！今年您需要修 {{user_plan_data.require_score}} 学分，
+        <Alert>提醒：{{current_user.name}} 老师，您好！今年您需要修 {{user_plan_data.require_score}} 学分，
           当前您已修得 {{user_plan_data.user_score}} 学分</Alert>
       </FormItem>
       <FormItem :label-width="40">
@@ -18,6 +18,13 @@
       @onOK="onshowPlanModalOK"
       @onCancel="onshowPlanModalCancel">
     </DownloadPlanModal>
+
+    <AddPhoneModal
+      :show="showAddPhoneModal"
+      @onOK="onshowPhoneModalOK"
+      @onCancel="onshowPhoneModalCancel"
+    :user="current_user">
+    </AddPhoneModal>
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
@@ -30,14 +37,21 @@
 </template>
 
 <script>
-import { queryCurrentuserActives, postCurrentActiveUser, queryActives, queryUserPlan } from '../../../service/api/actives'
+import {
+  queryCurrentuserActives,
+  postCurrentActiveUser,
+  queryActives,
+  queryUserPlan,
+  downloadActivityFiles
+} from '../../../service/api/actives'
 import { queryTerms, getCurrentTerms } from '../../../service/api/term'
 import { updateWithinField } from 'Libs/tools'
-import { currentUser } from '@/service/api/user'
+import { currentUser,putUser } from '@/service/api/user'
 import DownloadPlanModal from 'Views/ActiveAttend/components/DownloadPlanModal'
+import AddPhoneModal from "Views/ActiveAttend/components/AddPhoneModal";
 export default {
   name: 'canRegister',
-  components: { DownloadPlanModal },
+  components: { DownloadPlanModal,AddPhoneModal},
   data: function () {
     return {
       query: {
@@ -45,11 +59,13 @@ export default {
         term: undefined
       }, // 查询用的参数
       showDownloadPlanModal: false,
-      name: '',
+      showAddPhoneModal:false,
       user_plan_data: {
         user_score: '',
         require_score: ''
       },
+
+      current_user:{},
       total: 0, // 总数量
       data: [{
         activity: {},
@@ -133,6 +149,20 @@ export default {
           }
         },
         {
+          title: '活动详情附件',
+          render: (h, params)=>{
+            return h('div',[
+              h('a',{
+                on:{
+                  click:()=>{
+                    this.downloadFile(params.row.activity.path)
+            }
+                }
+              },params.row.activity.path.slice(-19))
+            ])
+          }
+        },
+        {
           title: '状态',
           render: function (h, params) {
             return (
@@ -164,14 +194,17 @@ export default {
                     this.$Modal.confirm({
                       title: '参加活动',
                       content: '是否参加活动?',
-                      onOk: () => {
+                      onOk: () =>{
+                        if(this.current_user.phone===''){
+                          this.showAddPhoneModal=true
+                        }else {
                         return postCurrentActiveUser(params.row.activity.id).then((resp) => {
-                          if (resp.data.code === 200) {
-                            this.$Message.success({ content: '报名成功' })
-                          }
-                          return this.fetchData()
-                        })
-                      }
+                              if (resp.data.code === 200) {
+                                this.$Message.success({ content: '报名成功' })
+                              }
+                              return this.fetchData()
+                            })
+                      }}
                     })
                   }
                 }
@@ -219,12 +252,39 @@ export default {
     },
     onshowPlanModalCancel () {
       this.showDownloadPlanModal = false
+    },
+
+    onshowPhoneModalOK(newuser,valid){
+      if(valid) {
+
+        putUser(newuser).then((ures)=>{
+          postCurrentActiveUser(this.selected_activity_id).then((res)=>{
+            if(ures.data.code===200&&res.data.code===200){
+              this.$Message.success({ content: '报名成功' })
+            }
+            this.selected_activity_id=''
+            return this.fetchData()
+          })
+        })
+      }
+      this.showAddPhoneModal=false
+    },
+    onshowPhoneModalCancel(){
+      this.showAddPhoneModal=false
+    },
+
+
+    downloadFile: function (path) {
+      if(path!==''){
+        this.$Message.success({content:'下载成功'})
+        window.open('/api/' + path)
+      }
     }
   },
   created () {
     currentUser().then((userResp) => {
-      this.name = userResp.data.current_user.name
-      queryUserPlan(userResp.data.current_user.username).then((Resp) => {
+      this.current_user=userResp.data.current_user
+      queryUserPlan(this.current_user.username).then((Resp) => {
         this.user_plan_data = Resp.data.user_plan_data
       })
     })
