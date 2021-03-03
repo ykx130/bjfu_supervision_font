@@ -15,6 +15,17 @@
           <Option v-for="item in fin_stateList" :value="item" :key="item">{{ item }}</Option>
         </Select>
       </FormItem>
+<!--      <FormItem label="活动状态：" prop="apply_state" >-->
+<!--        <Select v-model="query.apply_state" clearable style="width:120px">-->
+<!--          <Option v-for="item in apply_stateList" :value="item" :key="item">{{ item }}</Option>-->
+<!--        </Select>-->
+<!--      </FormItem>-->
+
+<!--      <FormItem label="時間查詢：">-->
+<!--        <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" v-model="query_finstate.activity_time_gte"></DatePicker>-->
+<!--        &nbsp;—&nbsp;-->
+<!--        <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" v-model="query_finstate.activity_time_lte"></DatePicker>-->
+<!--      </FormItem>-->
 
       <FormItem>
         <Button type="primary" @click="onSearch">查询</Button>
@@ -27,8 +38,7 @@
       @onOk="onProfileModalOK"
       @onCancel="onProfileModalCancel"
       :active_id="this.selected_activity_id"
-      :username="this.selected_username"
-      :active_type="this.activity_type"
+      :now_username="this.selected_username"
     ></TrainProfileModal>
 
     <Table border stripe :columns="columns" :data="data"></Table>
@@ -46,7 +56,7 @@
 <script>
 
 
-  import {StateList} from "Views/TeacherDevelopDetail/marcos";
+  import {StateList,ApplyStateList} from "Views/TeacherDevelopDetail/marcos";
   import {
     getActive,
     putActive,
@@ -79,18 +89,25 @@
             username:undefined,
           }
         },
+
+        // query_finstate:{
+        //   fin_state_ne:'待修改',
+        //   //activity_time_lte:undefined,
+        //   //activity_time_gte:undefined
+        // },
         selected_activeuser:{},
         users:[],
-        selected_activity_id:0,
-        selected_username:"",
+        selected_activity_id:undefined,
+        selected_username:'',
         showTrainProfileModal:false,
+        imagelist:[],
         activity_type: '培训',
         total:0,
         activity_users:[],
         data: [],
         fin_stateList: StateList,
         unitList:UNIT_LIST,
-
+        apply_stateList:ApplyStateList,
         pages: {
           _page: 1,
           _per_page: 10
@@ -99,7 +116,6 @@
           {
             title: '教师姓名',
             align: 'center',
-            width: '100px',
             render: function (h, params) {
               return (
                 <span>{params.row.user.name}</span>
@@ -109,7 +125,6 @@
           {
             title: '学院',
             align: 'center',
-            width: '100px',
             render: function (h, params) {
               return (
                 <span>{params.row.user.unit}</span>
@@ -119,7 +134,6 @@
           {
             title: '题目',
             align: 'center',
-            width:'170px',
             render: function (h, params) {
               return (
                 <span>{params.row.activity.title}</span>
@@ -147,7 +161,6 @@
           {
             title: '培训时间',
             align: 'center',
-            width: '170px',
             render: function (h, params) {
               return (
                 <span>{params.row.activity.start_time}</span>
@@ -175,7 +188,6 @@
           {
             title: '学时',
             align: 'center',
-            width: '70px',
             render: function (h, params) {
               return (
                 <span>{params.row.activity.period}</span>
@@ -185,7 +197,6 @@
           {
             title: '活动状态',
             align: 'center',
-            width: '120px',
             render: function (h, params) {
               return (
                 <span>{params.row.activity.apply_state}</span>
@@ -198,7 +209,6 @@
             sortable: true,
             key:'fin_state',
             sortType:"asc",
-            width: '100px',
             render: (h, params) => {
               if (params.row.fin_state === '待审核') {
                 return h('Tag', {props: {color: 'red'}}, params.row.fin_state)
@@ -213,7 +223,6 @@
           {
             title: '操作',
             align: 'center',
-            width: '170px',
             render: (h, params) => {
               return h('div', [
                 h('Button', {
@@ -226,8 +235,8 @@
                   },
                   on: {
                     click: () => {
-                      this.selected_activity_id=params.row.activity_id
-                      this.selected_username=params.row.user.username
+                       this.selected_activity_id=params.row.activity_id
+                       this.selected_username=params.row.user.username
                       this.showTrainProfileModal = true
                     }
                   }
@@ -298,6 +307,8 @@
     },
     methods: {
       fetchData () {
+        //this.query_finstate.activity_time_lte=dateToString(this.query_finstate.activity_time_lte, 'yyyy-MM-dd hh:mm:ss')
+        //this.query_finstate.activity_time_gte=dateToString(this.query_finstate.activity_time_gte, 'yyyy-MM-dd hh:mm:ss')
         // 数据表发生变化请求数据
         if(this.query.user.name) {
           queryUsers({'name': this.query.user.name}).then((userresp) => {
@@ -306,7 +317,8 @@
               'username': this.query.user.username,
               'fin_state': this.query.fin_state,
               'activity_type':this.activity_type,
-              'user_unit':this.query.user_unit,
+               'user_unit':this.query.user_unit,
+              fin_state_ne: '待修改',
               ...this.pages
             }).then((newresp) => {
               this.data = newresp.data.activity_users
@@ -316,7 +328,7 @@
           })
         }
         else{
-          queryActivityUsers({'activity_type':this.activity_type,...this.query,...this.pages}).then((newresp)=>{
+          queryActivityUsers({'activity_type':this.activity_type,...this.query,...this.pages,fin_state_ne:'待修改'}).then((newresp)=>{
             this.data=newresp.data.activity_users
             this.total=newresp.data.total
           })
@@ -324,7 +336,7 @@
       },
       putBack(active_user){
         this.activity_id=active_user.activity_id
-        active_user.fin_state='待审核'
+        active_user.fin_state='待修改'
         active_user.activity_type='培训'
         putActiveUser(this.activity_id,active_user).then((resp) => {
           if(resp.data.code===200){
@@ -369,11 +381,15 @@
         this.fetchData()
       }
     },
-    mounted: function () {
-      queryActivityUsers({'activity_type':this.activity_type,...this.pages}).then((userresp) => {
+    created() {
+      //this.query_finstate.activity_time_lte=dateToString(this.query_finstate.activity_time_lte, 'yyyy-MM-dd hh:mm:ss')
+      queryActivityUsers({'activity_type':this.activity_type,...this.pages,fin_state_ne:'待修改'}).then((userresp) => {
         this.data = userresp.data.activity_users
         this.total=userresp.data.total
       })
+    },
+    mounted: function () {
+
     }
   }
 

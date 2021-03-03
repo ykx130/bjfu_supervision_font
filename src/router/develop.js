@@ -42,5 +42,14 @@ export default
       },
       component: resolve => require(['Views/TeacherDevelopDetail/index'], resolve)
     },
+    {
+      name: '教师学分详情',
+      path: 'teacherscores',
+      meta: {
+        icon: 'arrow-graph-up-right',
+        title: '教师学分详情'
+      },
+      component: resolve => require(['Views/TeacherScores/index'], resolve)
+    },
 
   ] }

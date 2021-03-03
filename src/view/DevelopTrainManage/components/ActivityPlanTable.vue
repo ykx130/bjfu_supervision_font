@@ -132,7 +132,7 @@ export default {
         value.$isEdit = false
       })
     }).catch(function (error) {
-      console.log(error)
+
     })
   }
 
