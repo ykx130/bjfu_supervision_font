@@ -92,6 +92,7 @@
               <td>
                 <FormItem :required="true" class="table-form-item">
                   <Select
+                    placeholder="请输入或选择课程"
                     v-model="value.lesson.lesson_id"
                     :remote="true"
                     @on-query-change="onLessonQueryChange"
