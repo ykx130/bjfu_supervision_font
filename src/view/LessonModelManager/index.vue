@@ -163,17 +163,17 @@ export default {
             )
           }
         },
-        {
-          title: '好评状态',
-          width: 120,
-          render: (h, params) => {
-            if (params.row.status === '推荐为好评课') {
-              return h('Tag', { props: { color: 'red' } }, '推荐为好评课')
-            } else {
-              return h('Tag', { props: { color: 'blue' } }, '待商榷')
-            }
-          }
-        },
+        // {
+        //   title: '好评状态',
+        //   width: 120,
+        //   render: (h, params) => {
+        //     if (params.row.status === '推荐为好评课') {
+        //       return h('Tag', { props: { color: 'red' } }, '推荐为好评课')
+        //     } else {
+        //       return h('Tag', { props: { color: 'blue' } }, '待商榷')
+        //     }
+        //   }
+        // },
         {
           title: '推荐次数',
           render: function (h, params) {
