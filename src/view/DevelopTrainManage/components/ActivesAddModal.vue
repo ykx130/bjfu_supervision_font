@@ -54,7 +54,7 @@
 <!--          </Row>-->
 <!--        </form-item>-->
         <FormItem label="所属模块:" prop="module">
-          <Cascader :data="ModuleCascader" v-model="activity.modulelist"></Cascader>
+          <Cascader :data="ModuleCascader" v-model="activity.modulelist" ></Cascader>
         </FormItem>
         <form-item label="培训地点:" prop="place">
           <Row>
@@ -79,8 +79,7 @@
         </form-item>
         <FormItem label="是否必修" prop="is_obligatory" v-role="['教发管理员']">
           <RadioGroup v-model="activity.is_obligatory" >
-            <Radio :label='1'>是</Radio>
-            <Radio :label='0'>否</Radio>
+            <Radio v-for="item in isMajorList" :label="item.value" :key="item.value">{{item.label}}</Radio>
           </RadioGroup>
           <!--          <RadioGroup v-model="activity.is_obligatory" >-->
           <!--            <Radio v-for="item in activity.List" :label="item.value" :key="item.value">-->
@@ -116,26 +115,8 @@
             <img :src="showImageUrl" v-if="visible" style="width: 100%" />
           </Modal>
 
-<!--          <Upload :action="uploadPictureApi"-->
-<!--                  :on-success="handleImportPicSucc"-->
-<!--                  name="filename"-->
-<!--                  style="display: block">-->
-<!--            <Button  icon="ios-cloud-upload-outline" type="primary" size="small" style="">上传图片</Button>-->
-<!--          </Upload>-->
         </FormItem>
 
-<!--        <FormItem label="请上传相关图片" prop="path" v-role="['教师']">-->
-<!--          <Upload :action="uploadPictureApi"-->
-<!--                  :format="['jpg','png','jpeg']"-->
-<!--                  :on-success="handleImportPictureSucc"-->
-<!--                  name="filename"-->
-<!--                  style="display: block">-->
-<!--            <Button  icon="ios-cloud-upload-outline" type="primary" size="small" style="">上传图片</Button>-->
-<!--          </Upload>-->
-<!--        </FormItem>-->
-<!--        <FormItem v-role="['教师']">-->
-<!--          (图片类型为：jpg,png,jpeg，图片大小)-->
-<!--        </FormItem>-->
 
         <FormItem label="请上传活动文件" prop="path" v-role="['教发管理员']">
           <Upload :action="uploadFileApi"
@@ -155,7 +136,7 @@
   import { queryUsers } from '../../../service/api/user'
   import { queryTerms, getCurrentTerms } from '../../../service/api/term'
   import { queryActives,uploadPictureApi,uploadFileApi } from '../../../service/api/actives'
-  import {ModuleList} from '../marcos'
+  import {isMajor, ModuleList} from '../marcos'
   import { dateToString } from '@/libs/tools'
   import UserMixin from "@/mixins/UserMixin";
   export default {
@@ -173,6 +154,7 @@
       return {
         uploadPictureApi:uploadPictureApi,
         uploadFileApi:uploadFileApi,
+        isMajorList: isMajor,
         loading: true,
         //modal: false,
         // loading: true,
@@ -211,12 +193,11 @@
         ruleValidate: {
           title: [{required: true, trigger: 'blur', message: '请填写活动名称'}],
           presenter: [{required: true, trigger: 'blur', message: '请填写主讲人姓名'}],
-
-          start_time: [{required:true,type:'date', trigger:'blur',message:'请选择培训时间'}],
+          start_time: [{required:true,type:'date', trigger:'change',message:'请选择培训时间'}],
           all_num: [{required: true, type: 'number', min: 1, trigger: 'change', message: '参与人数必须大于等于1'}],
           place: [{required: true, trigger: 'blur', message: '请填写培训地点'}],
           organizer: [{required: true, trigger: 'blur', message: '请填写主办单位'}],
-          modulelist: [{trigger: 'blur', message: '请填写所属模块'}],
+          modulelist: [{trigger: 'change', message: '请填写所属模块'}],
           term: [{required: true, trigger: 'change', message: '请选择学期'}],
           period: [{required: true, type: 'number', min: 0.001, trigger: 'change',message:'学时必须大于0'}],
           is_obligatory:[{required:true}]

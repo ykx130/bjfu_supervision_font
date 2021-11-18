@@ -167,3 +167,21 @@ export const exportRegisteredUsersExcel = (params) => {
 
 //上传活动详情附件
 export const uploadFileApi = '/api/activities/file/upload'
+
+//增删改  培训模块
+export const getActivityModule = (id) => {
+  return axios.get('/api/activity_module/' + id)
+}
+
+export const queryActivityModules = (params) => {
+  return axios.get('/api/activity_modules', params)
+}
+export const insertActivityModule = (params) => {
+  return axios.post('/api/insert_activity_module', params)
+}
+export const putActivityModule = (id, params) => {
+  return axios.put('/api/update_activity_module/' + id, params)
+}
+export const deleteActivityModule = (id) => {
+  return axios.delete('/api/delete_activity_module/' + id)
+}
