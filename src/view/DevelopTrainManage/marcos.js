@@ -203,3 +203,13 @@ export const ModuleList = [{
     ]
   },
 ]
+export const isMajor = [
+  {
+    value: 1,
+    label: '必修',
+  },
+  {
+    value: 0,
+    label: '选修'
+  }
+]

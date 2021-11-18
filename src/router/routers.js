@@ -57,8 +57,8 @@ export default [
   user,
   lesson,
   guider,
-  actives,
-  develop,
+  // actives,发展中心以前的版本
+  develop,//教师发展中心
   consult,
   report,
   {
