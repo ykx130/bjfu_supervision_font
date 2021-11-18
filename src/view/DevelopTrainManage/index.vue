@@ -3,7 +3,7 @@
     <!--<h>hi{{this.total}}!!!</h>-->
     <h1>培训管理</h1>
     <br>
-    <Form :label-width="80" :model="query" inline>
+    <Form :label-width="70" :model="query" inline>
 
       <FormItem label="题目：" prop="title">
         <AutoComplete v-model="query.title_like" :data="activityName " clearable
@@ -19,27 +19,26 @@
         </Input>
       </FormItem>
 
+
       <FormItem label="学期：" >
         <Select v-model="query.term" style="width:160px">
           <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
         </Select>
       </FormItem>
 
-      <FormItem>
-        <Button type="primary" @click="onSearch">查询</Button>
-      </FormItem>
+        <FormItem>
+          <Button type="primary" @click="onSearch" >查询</Button>
+          <Button type="primary" @click="showActiveAddModal=true" v-role="['教发管理员']" style="margin-left: 40px">新增</Button>
+        </FormItem>
 
-      <FormItem>
-        <Button type="primary" @click="showActiveAddModal=true" v-role="['教发管理员']">新增</Button>
-      </FormItem>
-
-      <FormItem v-role ="['教发管理员']">
+        <FormItem style="margin-left: -40px">
         <Upload :action="uploadActivitiesApi"
                 :on-success="handleImportActivityExcelSucc"
                 name="filename">
-          <Button  icon="ios-cloud-upload-outline" type="primary"  >批量导入</Button>
+          <Button  icon="ios-cloud-upload-outline" type="primary"   v-role="['教发管理员']" >批量导入</Button>
         </Upload>
-      </FormItem>
+        </FormItem>
+
 
     </Form>
 
@@ -65,9 +64,12 @@
         <Upload :action="uploadPlanApi"
                 :on-success="handleImportPlanSucc"
                 name="filename"
-                style="display: inline ;margin-left: 75px">
+                style="display: inline ;margin-left: 20px">
           <Button  icon="ios-cloud-upload-outline" type="primary">上传研修计划附件</Button>
         </Upload>
+      </FormItem>
+      <FormItem>
+        <Button type="primary" @click="showModule=true" v-role="['教发管理员']" style="margin-left: 20px">培训模块</Button>
       </FormItem>
     </Form>
     <ActivityPlanTable
@@ -75,6 +77,11 @@
       @onOK="onActivityPlanOK"
       @onCancel="onActivityPlanCancel">
     </ActivityPlanTable>
+    <ActivityModuleModal
+    :show="showModule"
+    @onOK="onActivityModuleOK"
+    @onCancel="onActivityModuleCancel">
+    </ActivityModuleModal>
   </Card>
 </template>
 
@@ -93,9 +100,10 @@ import {
 import { queryTerms, getCurrentTerms } from '../../service/api/term'
 import Float_bar from '_c/float_bar/float_bar'
 import { dateToString, updateWithinField } from 'Libs/tools'
+import ActivityModuleModal from "Views/DevelopTrainManage/components/ActivityModuleModal";
 
 export default {
-  components: { ActivityPlanTable, Float_bar, ActivesAddModal, updateWithinField },
+  components: {ActivityModuleModal, ActivityPlanTable, Float_bar, ActivesAddModal, updateWithinField },
 
   data: function () {
     return {
@@ -115,6 +123,7 @@ export default {
       showActivityProfileModal: false, // 展示编辑弹窗
       showActiveAddModal: false,
       showActivityPlan: false,
+      showModule: false,
       pages: {
         _page: 1,
         _per_page: 10,
@@ -190,6 +199,20 @@ export default {
           }
         },
         {
+          title: '活动详情附件',
+          render: (h, params)=>{
+            return h('div',[
+              h('a',{
+                on:{
+                  click:()=>{
+                    this.downloadFile(params.row.path)
+                  }
+                }
+              },params.row.path.slice(-19))
+            ])
+          }
+        },
+        {
           title: '操作',
           align: 'center',
           width: '130px',
@@ -249,7 +272,7 @@ export default {
 
         this.total = resp.data.total
         this.activityName = []
-        console.log(resp)
+
 
         this.data.forEach((activity) => {
           this.date = dateToString(this.now, 'yyyy-MM-dd hh:mm:ss')
@@ -262,6 +285,13 @@ export default {
 
         // this.total=this.data.length
       })
+    },
+
+    downloadFile: function (path) {
+      if(path!==''){
+        this.$Message.success({content:'下载成功'})
+        window.open('/api/' + path)
+      }
     },
 
     filterMethod (value, option) {
@@ -314,6 +344,12 @@ export default {
     },
     onActivityPlanCancel () {
       this.showActivityPlan = false
+    },
+    onActivityModuleOK  () {
+      this.showModule = false
+    },
+    onActivityModuleCancel () {
+      this.showModule = false
     },
     // 活动的批量导入
     handleImportActivityExcelSucc: function (response, file, fileList) {
