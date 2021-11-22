@@ -106,6 +106,7 @@ export default {
     onOK: Function,
     active_id:Number,
     current_username: String,
+    activity_user: Object,
  },
   data(){
     return{
@@ -200,9 +201,8 @@ export default {
           this.activity.start_time = dateToString(this.activity.start_time, 'yyyy-MM-dd hh:mm:ss')
           this.active_user.activity_time=this.activity.start_time
           this.active_user.fin_state='待审核'
-          this.active_user.username = this.current_username
           updateWithinField(this.active_user.activity,this.activity)
-          console.log(this.active_user)
+          console.log('编辑的user',this.active_user)
           this.$emit('onOK',{...this.active_user})
         }else {
           this.$Message.error('请填写完整信息!')
@@ -213,15 +213,23 @@ export default {
     handleCancel: function () {
       this.$emit('onCancel')
     },
+    // onShowChange: function (show) {
+    //   if (show) {
+    //     // 显示的时候拉数据
+    //    queryActivityUsers({'activity_type':'培训','activity_id':this.active_id,'username':this.current_username}).then((resp) => {
+    //       /* 用于更新src_obj的字典用另一个 */
+    //      updateWithinField(this.activity, resp.data.activity_users[0].activity)
+    //      updateWithinField(this.active_user,resp.data.activity_users[0])
+    //      this.imageUrlList=resp.data.activity_users[0].picpaths
+    //     })
+    //   }
+    // },
+
     onShowChange: function (show) {
       if (show) {
-        // 显示的时候拉数据
-       queryActivityUsers({'activity_type':'培训','activity_id':this.active_id,'username':this.current_username}).then((resp) => {
-          /* 用于更新src_obj的字典用另一个 */
-         updateWithinField(this.activity, resp.data.activity_users[0].activity)
-         updateWithinField(this.active_user,resp.data.activity_users[0])
-         this.imageUrlList=resp.data.activity_users[0].picpaths
-        })
+        updateWithinField(this.active_user,this.activity_user)
+        updateWithinField(this.activity, this.activity_user.activity)
+        this.imageUrlList=this.activity_user.picpaths
       }
     },
   }
