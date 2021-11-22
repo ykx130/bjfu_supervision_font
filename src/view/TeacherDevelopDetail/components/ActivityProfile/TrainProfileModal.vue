@@ -82,9 +82,9 @@
       </Row>
 
       <FormItem label="活动图片：" prop="image">
-        <div style="width: 500px;height: 80px" >
-        <div class="demo-upload-list" v-for="(item,index) in imageUrlList" :key="index" >
-          <img :src="'/api'+item"  />
+        <div style="width: 500px;height: 100px" >
+        <div class="demo-upload-list" v-for="(item,index) in active_user.picpaths" :key="index" >
+          <img :src="'/api/static/images/'+item"  />
           <div class="demo-upload-list-cover">
             <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
           </div>
@@ -108,7 +108,7 @@
 import { prorankList, sexList, stateList, statusList, unitlist, workStatelist } from 'Views/UserManager/marcos'
 import { getUserByName, newPassword, queryGroups } from '@/service/api/user'
 import { updateWithinField } from 'Libs/tools'
-import { getActiveUser, queryActiveUsers, queryActivityUsers, uploadNotApi} from '@/service/api/actives'
+import { getActiveUser, queryActiveUsers, queryActivityUsers} from '@/service/api/actives'
 
 export default {
   name: 'TrainProfileModal',
@@ -122,8 +122,7 @@ export default {
   },
   data: function () {
     return {
-      uploadNotApi:uploadNotApi,
-      imageUrlList:[],
+
       showImageUrl:'',
       visible:false,
 
@@ -144,7 +143,7 @@ export default {
         activity_id:undefined,
         activity_time: undefined,
         fin_state: '',
-        picpaths: '',
+        picpaths: [],
         state:'',
         user: {
           id: undefined,
@@ -177,7 +176,7 @@ export default {
       this.$emit('onOk')
     },
     handleView (imageUrl) {
-      this.showImageUrl = '/api'+imageUrl
+      this.showImageUrl = '/api/static/images/'+imageUrl
       this.visible = true
     },
     onShowChange (show) {
@@ -185,11 +184,6 @@ export default {
         queryActivityUsers({'activity_type':'培训','activity_id':this.active_id,'username':this.now_username}).then((resp) => {
           /* 用于更新src_obj的字典用另一个 */
           updateWithinField(this.active_user, resp.data.activity_users[0])
-          if(resp.data.activity_users[0].picpaths===null){
-            this.imageUrlList=[""]
-          }else{
-            this.imageUrlList=resp.data.activity_users[0].picpaths.split(',')
-          }
         })
       }
     },
@@ -210,7 +204,7 @@ export default {
   display: block;
 }
 .demo-upload-list {
-  display: inline-block;width: 60px;height: 60px;text-align: center;line-height: 60px;
+  display: inline-block;width: 100px;height: 100px;text-align: center;line-height: 100px;
   border: 1px solid transparent;border-radius: 4px;overflow: hidden;background: #fff;
   position: relative;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);margin-right: 4px;
 }

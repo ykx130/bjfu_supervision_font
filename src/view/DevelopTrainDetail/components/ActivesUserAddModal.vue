@@ -6,11 +6,9 @@
       @on-cancel="handleCancel"
       style="width: 600px;">
       <Form ref="activity_user_form" :model="activity_user" :rules="ruleValidate">
-        <FormItem label="参加教师" prop="user.username" >
-          <Select v-model="activity_user.user.username" filterable>
-            <Option v-for="user in users" :value="user.username" :key="user.username" @on-query-change="onSelectUserChange">
-              {{user.name}}
-            </Option>
+        <FormItem label="参加教师" prop="username" >
+          <Select v-model="activity_user.username" filterable>
+            <Option v-for="user in users" :value="user.username" :key="user.username" @on-query-change="onSelectUserChange">{{user.name}}</Option>
           </Select>
         </FormItem>
         <FormItem label="报名状态" prop="state" disabled>
@@ -44,9 +42,7 @@ export default {
   data () {
     return {
       activity_user: {
-        user: {
-          username:''
-        },
+        username:'',
         activity_type:'培训'
       },
 
@@ -54,13 +50,14 @@ export default {
       attend_states: AttendState,
       fin_states: FinAttendState,
       ruleValidate: {
-        user: [{
-          required: true,
-          trigger: 'change',
-          type: 'object',
-          message: '请选择教师',
-          fields: { username: { type: 'string', required: true, message: '请选择教师' } }
-        }],
+        // user: [{
+        //   required: true,
+        //   trigger: 'change',
+        //   type: 'object',
+        //   message: '请选择教师',
+        //   fields: { username: { type: 'string', required: true, message: '请选择教师' } }
+        // }],
+        username: [{ required: true, trigger: 'change', message: '请选择教师'}],
         state: [{ required: true, trigger: 'change', message: '请选择报名状态' }],
         fin_state: [{ required: true, trigger: 'change', message: '请选择参加状态' }]
       }
@@ -71,9 +68,7 @@ export default {
     handleOk () {
       this.$refs.activity_user_form.validate((valid) => {
         if (valid) {
-          this.$Message.success('添加成功！')
-
-          this.$emit('onOK', { username: this.activity_user.user.username, state: this.activity_user.state, fin_state: this.activity_user.fin_state ,
+          this.$emit('onOK', { username: this.activity_user.username, state: this.activity_user.state, fin_state: this.activity_user.fin_state ,
           activity_type:this.activity_user.activity_type})
           this.activity_user = {}
         } else {

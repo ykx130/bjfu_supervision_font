@@ -6,7 +6,7 @@
         <Row type="flex" justify="start" align="middle" class="code-row-bg">
           <Col span="8">
             <FormItem label="题目：" prop="title">
-              <Input style="width: 170px" type="text" v-model="activity.title" placeholder="题目" />
+              <Input style="width: 200px" type="text" v-model="activity.title" placeholder="题目" />
             </FormItem>
           </Col>
 <!--          <Col span="6">-->
@@ -17,7 +17,7 @@
 <!--          </Col>-->
           <Col span="8">
            <FormItem label="主讲人：" prop="presenter">  <!--新增-->
-              <Input style="width: 170px" type="text" v-model="activity.presenter" placeholder="主讲人" >
+              <Input style="width: 200px" type="text" v-model="activity.presenter" placeholder="主讲人" >
               </Input>
             </FormItem>
           </Col>
@@ -39,12 +39,14 @@
         <Row type="flex" justify="start" align="middle" class="code-row-bg">
           <Col span="8">
             <FormItem label="所属模块：" prop="module">
-              <Input style="width: 170px" type="text" v-model="activity.module" placeholder="所属模块" />
+              <Select v-model="activity.module"  style="width: 200px">
+                <Option v-for="item in moduleList" :value="item.module" :key="item.module">{{ item.module }}</Option>
+              </Select>
             </FormItem>
           </Col>
           <Col span="8">
             <FormItem label="培训地点：" prop="place">
-              <Input style="width: 170px" type="text" v-model="activity.place" placeholder="培训地点" />
+              <Input style="width: 200px" type="text" v-model="activity.place" placeholder="培训地点" />
             </FormItem>
           </Col>
         </Row>
@@ -60,12 +62,12 @@
         <Row type="flex" justify="start" align="middle" class="code-row-bg">
           <Col span="8">
             <FormItem label="主办单位：" prop="organizer">
-              <Input style="width: 170px" type="text" v-model="activity.organizer" placeholder="主办单位" />
+              <Input style="width: 200px" type="text" v-model="activity.organizer" placeholder="主办单位" />
             </FormItem>
           </Col>
           <Col span="8">
             <FormItem label="学时：" prop="period">
-              <InputNumber style="width: 170px" type="text" v-model="activity.period" placeholder="学时" />
+              <InputNumber style="width: 200px" type="text" v-model="activity.period" placeholder="学时" />
             </FormItem>
           </Col>
         </Row>
@@ -78,19 +80,29 @@
           </Col>
           <Col span="8">
             <FormItem label="总人数：" prop="all_num">
-              <InputNumber style="width: 170px" type="text" v-model="activity.all_num" placeholder="总人数" />
+              <InputNumber style="width: 200px" type="text" v-model="activity.all_num" placeholder="总人数" />
             </FormItem>
           </Col>
         </Row>
         <Row type="flex" justify="start" align="middle" class="code-row-bg">
           <Col span="8">
             <FormItem label="报名人数：" prop="attend_num">
-              <InputNumber readonly style="width: 170px" type="text" v-model="activity.attend_num" placeholder="报名人数" />
+              <InputNumber readonly style="width: 200px" type="text" v-model="activity.attend_num" placeholder="报名人数" />
             </FormItem>
           </Col>
           <Col span="8">
             <FormItem label="剩余名额：" prop="remainder_num">
-              <InputNumber readonly style="width: 170px" type="text" v-model="activity.remainder_num" placeholder="剩余名额" />
+              <InputNumber readonly style="width: 200px" type="text" v-model="activity.remainder_num" placeholder="剩余名额" />
+            </FormItem>
+          </Col>
+        </Row>
+
+        <Row type="flex" justify="start" align="middle" class="code-row-bg">
+          <Col span="8">
+            <FormItem label="是否必修：" prop="is_obligatory">
+              <RadioGroup v-model="activity.is_obligatory">
+                <Radio v-for="item in isMajorList" :label="item.value" :key="item.value" style="margin-right: 35px">{{item.label}}</Radio>
+              </RadioGroup>
             </FormItem>
           </Col>
         </Row>
@@ -118,16 +130,23 @@
 
     <ActivesUserUpdateModal
       :show="showUpdateActiveUser"
-      :active_id="activity_id"
-      :username="selected_username"
       :active_user="selected_activeuser"
       @onCancel="onUpdateActiveUserModalCancel"
       @onOK="onUpdateActiveUserModalOK">
     </ActivesUserUpdateModal>
 
+    <UpdateUsersStatesModal
+    :show="showBatchUpdateActiveUsersState"
+    @onCancel="onBatchUpdateStateCancel"
+    @onOK="onBatchUpdateStateOK"
+    >
+    </UpdateUsersStatesModal>
+
+
+
     <Card shadow>
       <p slot="title">报名信息</p>
-      <Table border stripe :columns="columns" :data="data"></Table>
+      <Table border stripe :columns="columns" :data="data" @on-selection-change="selectUsers"></Table>
 <Form inline>
   <FormItem>
       <Button type="primary" @click="showAddActiveUser=true"  v-role="['教发管理员']">新增参与人员</Button>
@@ -143,6 +162,9 @@
   <FormItem>
   <Button @click="onExportExcel" icon="ios-cloud-download-outline" type="primary" label="导出" v-role="['教发管理员']">导出报名名单</Button>
   </FormItem>
+  <FormItem>
+    <Button type="primary" @click="()=>{this.showBatchUpdateActiveUsersState = true}">批量修改状态</Button>
+  </FormItem>
 </Form>
 
     </Card>
@@ -151,16 +173,26 @@
 </template>
 
 <script>
-import { getActive, queryActivityUsers, putActive, postActiveUser, putActiveUser,uploadActivityUsersApi,exportRegisteredUsersExcel} from '../../service/api/actives'
+import {
+  getActive,
+  queryActivityUsers,
+  putActive,
+  postActiveUser,
+  putActiveUser,
+  uploadActivityUsersApi,
+  exportRegisteredUsersExcel,
+  queryActivityModules, batchActiveUsersState
+} from '../../service/api/actives'
 import {dateToString, updateWithinField} from 'Libs/tools'
 import ActivesUserAddModal from './components/ActivesUserAddModal'
 import ActivesUserUpdateModal from './components/ActivesUserUpdateModal'
 import {queryUsers} from "@/service/api/user";
-
+import {isMajor} from "Views/DevelopTrainManage/marcos";
+import UpdateUsersStatesModal from "Views/DevelopTrainDetail/components/UpdateUsersStatesModal";
 // import {lessonLevel} from '../marcos'
 export default {
   name: 'ActiveProfileModal',
-  components: { ActivesUserAddModal, ActivesUserUpdateModal },
+  components: {UpdateUsersStatesModal, ActivesUserAddModal, ActivesUserUpdateModal },
   props: {
     show: Boolean,
     //modal:Boolean,
@@ -174,9 +206,13 @@ export default {
       uploadActivityUsersApi:uploadActivityUsersApi,
       showAddActiveUser: false,
       showUpdateActiveUser: false,
+      showBatchUpdateActiveUsersState: false,
       selected_activeuser:{},
       selected_username:'',
+      selected_usernames: [],
       data: [],
+      moduleList: [],
+      isMajorList: isMajor,
       total: 0,
       count:0,
       pages: {
@@ -186,6 +222,7 @@ export default {
       activity: {
         id: '',
         title: '',
+        is_obligatory: 0,
         //teacher: '',
         place: '',
         module: '',
@@ -212,13 +249,18 @@ export default {
       // lessonLevel: lessonLevel
       columns: [
         {
-          title: 'id',
-          render: function (h, params) {
-            return (
-              <span>{ params.row.user.id }</span>
-            )
-          }
+          type: 'selection',
+          width: 60,
+          align: 'center'
         },
+        // {
+        //   title: 'id',
+        //   render: function (h, params) {
+        //     return (
+        //       <span>{ params.row.user.id }</span>
+        //     )
+        //   }
+        // },
         {
           title: '工号',
           render: function (h, params) {
@@ -295,8 +337,6 @@ export default {
                 },
                 on: {
                   click: () => {
-
-                    this.selected_username = params.row.user.username
                     this.selected_activeuser=params.row
                     this.showUpdateActiveUser = true
                   }
@@ -310,7 +350,12 @@ export default {
     }
   },
   methods: {
-
+    fetchActivityUsers(){
+      queryActivityUsers({activity_id:this.activity_id,activity_type:'培训'}).then((new_resp) => {
+        this.data = new_resp.data.activity_users
+        this.total = new_resp.data.total
+      })
+    },
 
     onUpdateActive: function () {
       this.$refs.activity_form.validate((valid) => {
@@ -338,10 +383,7 @@ export default {
       postActiveUser(this.activity_id, active_user).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '添加成功' })
-          queryActivityUsers({activity_id:this.activity_id,activity_type:'培训'}).then((new_resp) => {
-            this.data = new_resp.data.activity_users
-            this.total = new_resp.data.total
-          })
+          this.fetchActivityUsers()
         }
         this.showAddActiveUser = false
       })
@@ -351,13 +393,11 @@ export default {
     },
 
     onUpdateActiveUserModalOK: function (active_user) {
+      console.log('修改活动状态', active_user)
       putActiveUser(this.activity_id, active_user).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '更新成功' })
-          queryActivityUsers({activity_id:this.activity_id,activity_type:'培训'}).then((new_resp) => {
-            this.data = new_resp.data.activity_users
-            this.total = new_resp.data.total
-          })
+
         }
 
       })
@@ -373,6 +413,7 @@ export default {
           window.open('/api/' + response.fail_excel_path)
         } else {
           this.$Message.success({ content: '导入成功' })
+          this.fetchActivityUsers()
         }
       },
 
@@ -385,12 +426,41 @@ export default {
           window.open('/api/' + resp.data.filename)
         }
       })
+    },
+
+    selectUsers(selection) {
+      this.selected_usernames = selection.map((item) => {
+        return item.user.username
+      })
+    },
+
+    onBatchUpdateStateCancel() {
+      this.showBatchUpdateActiveUsersState = false
+    },
+    onBatchUpdateStateOK(data) {
+      console.log(data)
+      data['usernames'] = this.selected_usernames
+      console.log(data)
+      batchActiveUsersState(this.activity_id, data).then((resp => {
+        if(resp.data.code === 200){
+          this.$Message.success('批量修改成功')
+          this.fetchActivityUsers()
+        }else {
+          this.$Message.error('批量修改失败')
+        }
+      }))
+      this.showBatchUpdateActiveUsersState = false
     }
 
   },
   mounted: function () {
     getActive(this.activity_id).then((resp) => {
       this.activity = resp.data.activity
+      if(this.activity.is_obligatory === true){
+        this.activity.is_obligatory = 1
+      }else {
+        this.activity.is_obligatory = 0
+      }
     })
     queryActivityUsers({activity_id:this.activity_id,activity_type:'培训'}).then((usrresp) => {
       this.data = usrresp.data.activity_users
@@ -399,6 +469,9 @@ export default {
 
 
     })
+    queryActivityModules().then((resp => {
+      this.moduleList = resp.data.activity_modules
+    }))
   }
 }
 </script>
