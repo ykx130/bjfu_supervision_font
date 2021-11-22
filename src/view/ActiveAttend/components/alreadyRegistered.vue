@@ -27,9 +27,8 @@
       :show="showTrainEditModal"
       @onOK="onEditModalOK"
       @onCancel="onEditModalCancel"
-    :active_id="selected_activity_id"
-    :current_username="current_user_username"
-    :activity_user="selected_active_user">
+      :edit_activity="selected_activity"
+      :activity_user="selected_active_user">
     </TrainEditModal>
 
     <Table border stripe :columns="columns" :data="data"></Table>
@@ -81,6 +80,7 @@ export default {
       activityName: [],
       selected_activity_id: undefined, // 选中编辑的课程ids
       selected_active_user: {},
+      selected_activity: {},
       current_user_username:'',
       pages: {
         _page: 1,
@@ -204,9 +204,8 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.selected_activity_id = params.row.activity.id
-                    this.current_user_username = params.row.username
-                    this.selected_active_user = params.row
+                    this.selected_active_user = params.row.activtiy_user
+                    this.selected_activity = params.row.activity
                     this.showTrainEditModal = true
                   }
                 }
@@ -299,10 +298,10 @@ export default {
       this.showActiveAddModal = false
     },
     //编辑成功后，更新activity和active_user并且变为“待审核状态”
-    onEditModalOK(new_active_user){
-      console.log('外',new_active_user)
-      putActive(new_active_user.activity).then((resp1)=>{
-        putActiveUser(new_active_user.activity_id,new_active_user).then((resp2)=>{
+    onEditModalOK(activity, active_user){
+      console.log('外',acitvity, active_user)
+      putActive(activity).then((resp1)=>{
+        putActiveUser(active_user.activity_id,active_user).then((resp2)=>{
           if(resp1.data.code===200&&resp2.data.code===200){
             this.$Message.success({ content: '更新并提交成功' })
             this.fetchData()
