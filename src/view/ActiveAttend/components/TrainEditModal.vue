@@ -210,8 +210,9 @@ export default {
           this.activity.start_time = dateToString(this.activity.start_time, 'yyyy-MM-dd hh:mm:ss')
           this.active_user.activity_time=this.activity.start_time
           this.active_user.fin_state='待审核'
+          this.active_user.username = this.current_username
           updateWithinField(this.active_user.activity,this.activity)
-
+          console.log(this.active_user)
           this.$emit('onOK',{...this.active_user})
         }else {
           this.$Message.error('请填写完整信息!')
