@@ -121,6 +121,7 @@ export default {
 
       active_user:{
         activity:{},
+        username: '',
         activity_id:undefined,
         activity_time:undefined,
         user:{},
