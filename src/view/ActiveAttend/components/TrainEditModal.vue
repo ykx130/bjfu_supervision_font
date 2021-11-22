@@ -92,7 +92,7 @@
 <script>
 import {getUserByName} from "@/service/api/user";
 import {dateToString, updateWithinField} from "Libs/tools";
-import {queryActivityUsers, uploadPictureApi} from "@/service/api/actives";
+import {getActiveUser, queryActivityUsers, uploadPictureApi} from "@/service/api/actives";
 import {getCurrentTerms, queryTerms} from "@/service/api/term";
 
 export default {

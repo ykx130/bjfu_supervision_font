@@ -204,7 +204,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.selected_active_user = params.row.activtiy_user
+                    this.selected_active_user = params.row.activity_user
                     this.selected_activity = params.row.activity
                     this.showTrainEditModal = true
                   }
