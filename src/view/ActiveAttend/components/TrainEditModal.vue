@@ -104,9 +104,9 @@ export default {
     },
     onCancel: Function,
     onOK: Function,
-    active_id:Number,
-    current_username: String,
+    edit_activity: Object,
     activity_user: Object,
+
  },
   data(){
     return{
@@ -119,11 +119,9 @@ export default {
 
 
       active_user:{
-        activity:{},
         username: '',
         activity_id:undefined,
         activity_time:undefined,
-        user:{},
         user_unit:undefined,
         picpaths:[],
         fin_state:undefined,
@@ -201,9 +199,7 @@ export default {
           this.activity.start_time = dateToString(this.activity.start_time, 'yyyy-MM-dd hh:mm:ss')
           this.active_user.activity_time=this.activity.start_time
           this.active_user.fin_state='待审核'
-          updateWithinField(this.active_user.activity,this.activity)
-          console.log('编辑的user',this.active_user)
-          this.$emit('onOK',{...this.active_user})
+          this.$emit('onOK',this.activity,this.active_user)
         }else {
           this.$Message.error('请填写完整信息!')
         }
@@ -227,9 +223,9 @@ export default {
 
     onShowChange: function (show) {
       if (show) {
-        updateWithinField(this.active_user,this.activity_user)
-        updateWithinField(this.activity, this.activity_user.activity)
         this.imageUrlList=this.activity_user.picpaths
+        updateWithinField(this.active_user,this.activity_user)
+        updateWithinField(this.activity, this.edit_activity)
       }
     },
   }
