@@ -299,7 +299,7 @@ export default {
     },
     //编辑成功后，更新activity和active_user并且变为“待审核状态”
     onEditModalOK(activity, active_user){
-      console.log('外',acitvity, active_user)
+      console.log('外',activity, active_user)
       putActive(activity).then((resp1)=>{
         putActiveUser(active_user.activity_id,active_user).then((resp2)=>{
           if(resp1.data.code===200&&resp2.data.code===200){
