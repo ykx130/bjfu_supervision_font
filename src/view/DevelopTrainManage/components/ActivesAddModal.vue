@@ -7,7 +7,7 @@
       @on-cancel="handleCancel"
       :loading="loading"
       style="width: 600px;"><!--:load="loading"-->
-      <Form :label-width="100" style="width: 400px" ref="activity_form" :model="activity" :rules="ruleValidate">
+      <Form :label-width="100" style="width: 90%" ref="activity_form" :model="activity" :rules="ruleValidate">
         <form-item label="题目:" prop="title">
           <Row>
             <Col>
@@ -16,28 +16,16 @@
           </Row>
         </form-item>
         <form-item label="主讲人:" prop="presenter">
-          <Row>
-            <Col>
-              <Input v-model="activity.presenter" placeholder="主讲人姓名" style="width:200px" filterable>
+              <Input v-model="activity.presenter" placeholder="主讲人姓名"  filterable>
               </Input>
-            </Col>
-          </Row>
         </form-item>
         <FormItem label="学期：" prop="term" v-role ="['教师','教发管理员']">
-          <Select v-model="activity.term" style="width:200px">
+          <Select v-model="activity.term" style="width: 190px">
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </FormItem>
         <form-item label="培训时间:" prop="start_time">
-          <Row>
-            <Col span="11">
-              <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="开始日期" v-model="activity.start_time"></DatePicker>
-            </Col>
-            <!--            <Col span="2" style="text-align: center">-</Col>-->
-            <!--            <Col span="11">-->
-            <!--              <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="结束日期" v-model="activity.inputtime.end_time"></DatePicker>-->
-            <!--            </Col>-->
-          </Row>
+          <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="开始日期" v-model="activity.start_time"></DatePicker>
         </form-item>
         <form-item label="参与人数:" prop="all_num" v-role="['教发管理员']">
           <Row>
@@ -54,7 +42,9 @@
 <!--          </Row>-->
 <!--        </form-item>-->
         <FormItem label="所属模块:" prop="module">
-          <Cascader :data="ModuleCascader" v-model="activity.modulelist" ></Cascader>
+          <Select v-model="activity.module" >
+            <Option v-for="item in moduleList" :value="item.module" :key="item.module">{{ item.module }}</Option>
+          </Select>
         </FormItem>
         <form-item label="培训地点:" prop="place">
           <Row>
@@ -77,9 +67,9 @@
             </Col>
           </Row>
         </form-item>
-        <FormItem label="是否必修" prop="is_obligatory" v-role="['教发管理员']">
-          <RadioGroup v-model="activity.is_obligatory" >
-            <Radio v-for="item in isMajorList" :label="item.value" :key="item.value">{{item.label}}</Radio>
+        <FormItem label="是否必修：" prop="is_obligatory" v-role="['教发管理员']">
+          <RadioGroup v-model="activity.is_obligatory">
+            <Radio v-for="item in isMajorList" :label="item.value" :key="item.value" style="margin-right: 35px">{{item.label}}</Radio>
           </RadioGroup>
           <!--          <RadioGroup v-model="activity.is_obligatory" >-->
           <!--            <Radio v-for="item in activity.List" :label="item.value" :key="item.value">-->
@@ -89,8 +79,8 @@
         </FormItem>
 
         <FormItem label="请上传活动图片" prop="image" v-role="['教师']">
-          <div class="demo-upload-list" v-for="(item,index) in imageUrlList" :key="index">
-            <img :src="'/api'+item"  />
+          <div class="demo-upload-list" v-for="(item,index) in picpaths" :key="index">
+            <img :src="'/api/static/images/'+item"  />
             <div class="demo-upload-list-cover">
               <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
               <Icon type="ios-trash-outline" @click.native="handleRemoveList(index)"></Icon>
@@ -106,8 +96,8 @@
             multiple
             type="drag"
             :action="uploadPictureApi"
-            style="display: inline-block;width:58px;">
-            <div style="width: 58px;height:58px;line-height: 58px;">
+            style="display: inline-block;width:100px;">
+            <div style="width: 100px;height:100px;line-height: 100px;">
               <Icon type="ios-camera" size="20"></Icon>
             </div>
           </Upload>
@@ -124,7 +114,7 @@
                   :on-success="handleImportFileSucc"
                   name="filename"
                   style="display: block">
-            <Button  icon="ios-cloud-upload-outline" type="primary" size="small" style="">上传文件</Button>
+            <Button  icon="ios-cloud-upload-outline" type="primary" size="small">上传文件</Button>
           </Upload>
         </FormItem>
       </Form>
@@ -135,7 +125,7 @@
 <script>
   import { queryUsers } from '../../../service/api/user'
   import { queryTerms, getCurrentTerms } from '../../../service/api/term'
-  import { queryActives,uploadPictureApi,uploadFileApi } from '../../../service/api/actives'
+  import {queryActives, uploadPictureApi, uploadFileApi, queryActivityModules} from '../../../service/api/actives'
   import {isMajor, ModuleList} from '../marcos'
   import { dateToString } from '@/libs/tools'
   import UserMixin from "@/mixins/UserMixin";
@@ -163,14 +153,13 @@
         terms: [],
         users: [],
         data: [],
-        ModuleCascader:ModuleList,
-        imageUrlList: [],
+        moduleList: [],
         showImageUrl: '',
         visible: false,
         i:0,
 
         total: 0,
-        picpath:'',
+        picpaths:[],
         activity: {
           title: '',
           presenter: '',
@@ -187,17 +176,16 @@
           updated_at: '',
           start_time: '',
           path:'',
-          modulelist:[]
         },
         addActivity: {},
         ruleValidate: {
           title: [{required: true, trigger: 'blur', message: '请填写活动名称'}],
           presenter: [{required: true, trigger: 'blur', message: '请填写主讲人姓名'}],
-          start_time: [{required:true,type:'date', trigger:'change',message:'请选择培训时间'}],
+          start_time: [{required:true,type:'date',message:'请选择培训时间'}],
           all_num: [{required: true, type: 'number', min: 1, trigger: 'change', message: '参与人数必须大于等于1'}],
           place: [{required: true, trigger: 'blur', message: '请填写培训地点'}],
           organizer: [{required: true, trigger: 'blur', message: '请填写主办单位'}],
-          modulelist: [{trigger: 'change', message: '请填写所属模块'}],
+          module: [{trigger: 'change', message: '请选择所属模块'}],
           term: [{required: true, trigger: 'change', message: '请选择学期'}],
           period: [{required: true, type: 'number', min: 0.001, trigger: 'change',message:'学时必须大于0'}],
           is_obligatory:[{required:true}]
@@ -216,8 +204,7 @@
       handleOK: function () {
         this.changeLoading()
         this.$refs.activity_form.validate((valid) => {
-          this.picpath=this.imageUrlList.join(',')
-          if(this.picpath===''&& this.current_role!=='教发管理员'){
+          if(this.picpaths.length===0&& this.current_role!=='教发管理员'){
             valid=false
           }
 
@@ -234,7 +221,7 @@
               organizer:this.activity.organizer,
               period: this.activity.period,
               is_obligatory: this.activity.is_obligatory,
-              module: this.activity.modulelist[0],
+              module: this.activity.module,
               all_num: this.activity.all_num,
               place: this.activity.place,
               term: this.activity.term,
@@ -245,7 +232,7 @@
 
             }
 
-            this.$emit('onOK', this.addActivity,this.picpath)
+            this.$emit('onOK', this.addActivity,this.picpaths)
             this.activity = {}
 
           } else {
@@ -295,17 +282,17 @@
         })
       },
       handleView (imageUrl) {
-        this.showImageUrl = '/api'+imageUrl
+        this.showImageUrl = '/api/static/images/'+imageUrl
         this.visible = true
       },
       handleRemoveList (index) {
         // 删除
-        this.imageUrlList.splice(index, 1)
+        this.picpaths.splice(index, 1)
 
       },
       handleSuccessList:function (res, file) {
         if(res.code===500) {
-          this.imageUrlList.push(res.path)
+          this.picpaths.push(res.path)
           this.i++
 
 
@@ -328,12 +315,15 @@
         this.data = resp.data.activities
         this.total = resp.data.total
       })
+      queryActivityModules().then((resp) => {
+        this.moduleList = resp.data.activity_modules
+      })
     }
   }
 </script>
 <style scoped>
 .demo-upload-list {
-  display: inline-block;width: 60px;height: 60px;text-align: center;line-height: 60px;
+  display: inline-block;width: 100px;height: 100px;text-align: center;line-height: 100px;
   border: 1px solid transparent;border-radius: 4px;overflow: hidden;background: #fff;
   position: relative;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);margin-right: 4px;
 }

@@ -163,7 +163,7 @@ export default {
                     this.downloadFile(params.row.activity.path)
                   }
                 }
-              },params.row.activity.path.slice(-19))
+              },params.row.activity.path)
             ])
           }
         },
@@ -313,7 +313,7 @@ export default {
     downloadFile: function (path) {
       if(path!==''){
         this.$Message.success({content:'下载成功'})
-        window.open('/api/' + path)
+        window.open('/api/static/' + path)
       }
     }
   },

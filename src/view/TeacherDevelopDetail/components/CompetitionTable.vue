@@ -2,7 +2,7 @@
   <div>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="比赛名称：" prop="award_name">
-        <Input style="width: 180px" v-model="query.award_name" placeholder="请输入比赛名称" ></Input>
+        <Input style="width: 180px" v-model="query.award_name" placeholder="请输入比赛名称" clearable></Input>
       </FormItem>
       <FormItem>
         <Button type="primary" @click="onSearch">查询</Button>
@@ -25,8 +25,17 @@
       @onOK="onAddModalOK"
       @onCancel="onAddModalCancel">
     </AddCompetition>
+    <CompetitionUpdateModal
+      :modal="showUpdateCompetitionModal"
+      :competition="selected_competition"
+      @onOK="onUpdateCompetitionOK"
+      @onCancel="onUpdateCompetitionCancel">
+    </CompetitionUpdateModal>
+<!--    title_code控制Modal的标题显示-->
     <AddCompetitionUserModal
       :show="showAddCompetitionUser"
+      :active_user="selected_active_user"
+      :title_code=1
       @onCancel="onAddCompetitionUserCancel"
       @onOK="onAddCompetitionUserOK">
     </AddCompetitionUserModal>
@@ -42,29 +51,31 @@
 <script>
 
 
-  import {
-    postActiveUser,
-    postCompetition,
-    queryActivityUsers,
-    queryCompetition,
-    deleteCompetition,
-    uploadCompetitionUserApi,
-  } from "@/service/api/actives";
-  import {currentUser, queryUsers} from "@/service/api/user";
+import {
+  postActiveUser,
+  postCompetition,
+  queryCompetition,
+  deleteCompetition,
+  uploadCompetitionUserApi, putCompetition,
+} from "@/service/api/actives";
   import AddCompetition from "Views/TeachingDevelopment/components/Add/AddCompetition";
   import CompetitionUsers from "Views/TeachingDevelopment/components/CompetitionUsers";
   import AddCompetitionUserModal from "Views/TeacherDevelopDetail/components/AddCompetitionUserModal";
+  import CompetitionUpdateModal from "Views/TeacherDevelopDetail/components/ActivityProfile/CompetitionUpdateModal";
 
 
   export default {
     name: "CompetitionTable",
-    components:{AddCompetitionUserModal, AddCompetition,CompetitionUsers},
+    components:{CompetitionUpdateModal, AddCompetitionUserModal, AddCompetition,CompetitionUsers},
     data:function () {
       return{
         uploadCompetitionUserApi:uploadCompetitionUserApi,
         showCompetitionAddModal:false,
         showAddCompetitionUser:false,
-        selected_competition_id:undefined,
+        showUpdateCompetitionModal:false,
+        selected_active_user:{},
+        selected_competition_id:0,
+        selected_competition: {},
         data:[],
         query: {
           title: undefined,
@@ -133,6 +144,20 @@
             )
             }
           },
+          {
+            title: '比赛详情附件',
+            render: (h, params)=>{
+              return h('div',[
+                h('a',{
+                  on:{
+                    click:()=>{
+                      this.downloadFile(params.row.path)
+                    }
+                  }
+                },params.row.path)
+              ])
+            }
+          },
 
           {
             title: '操作',
@@ -142,7 +167,8 @@
                 h('Button', {
                   props: {
                     type: 'primary',
-                    size: 'small'
+                    size: 'small',
+                    disabled: !(params.row.create_by=== true)
                   },
                   directives: [{
                     name: 'role',
@@ -153,14 +179,16 @@
                   },
                   on: {
                     click: () => {
-
+                      this.selected_competition = params.row
+                      this.showUpdateCompetitionModal = true
                     }
                   }
                 }, '查看'),
                 h('Button', {
                   props: {
                     type: 'primary',
-                    size: 'small'
+                    size: 'small',
+                    disabled: !(params.row.create_by=== true)
                   },
                   directives: [{
                     name: 'role',
@@ -171,7 +199,7 @@
                   },
                   on: {
                     click: () => {
-                      this.selected_competition_id=params.row.id
+                      this.selected_competition_id = params.row.id
                       this.showAddCompetitionUser=true
                     }
                   }
@@ -180,7 +208,8 @@
                 h('Button', {
                   props: {
                     type: 'error',
-                    size: 'small'
+                    size: 'small',
+                    disabled: !(params.row.create_by=== true)
                   },
                   directives: [{
                     name: 'role',
@@ -249,8 +278,8 @@
         postCompetition(activity).then((resp) => {
           if (resp.data.code === 200) {
             this.$Message.success({ content: '比赛添加成功' })
+            this.showCompetitionAddModal = false
             this.fetchData()
-            this.showCompetitonAddModal = false
           }
         })
 
@@ -258,19 +287,42 @@
       onAddModalCancel () {
         this.showCompetitionAddModal = false
       },
+      onUpdateCompetitionOK(competition){
+        console.log(competition)
+        putCompetition(competition.id,competition).then((resp=>{
+          if(resp.data.code === 200){
+            this.fetchData()
+            this.$Message.success('修改成功')
+          }else {
+            this.$Message.error('修改失败')
+          }
+        }))
+        this.showUpdateCompetitionModal = false
+      },
+      onUpdateCompetitionCancel(){
+        this.showUpdateCompetitionModal = false
+      },
 
       onAddCompetitionUserOK: function (active_user) {
         postActiveUser(this.selected_competition_id, active_user).then((resp) => {
           if (resp.data.code === 200) {
             this.$Message.success({ content: '添加成功' })
+            this.showAddCompetitionUser = false
             this.fetchData()
           }
-          this.showAddCompetitionUser = false
+
         })
       },
       onAddCompetitionUserCancel: function () {
         this.showAddCompetitionUser = false
       },
+      downloadFile: function (path) {
+        if(path!==''){
+          window.location.href = '/api/static/' + path
+          this.$Message.success({content:'下载成功'})
+          // window.open('/api/static/' + path)
+        }
+      }
     },
     created() {
       queryCompetition().then((resp)=>{

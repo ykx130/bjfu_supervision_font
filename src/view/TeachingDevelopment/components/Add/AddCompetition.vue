@@ -51,6 +51,7 @@
                   :format="['doc','docx','pdf']"
                   :on-success="handleImportFileSucc"
                   name="filename"
+                  :show-upload-list="true"
                   style="display: block">
             <Button  icon="ios-cloud-upload-outline" type="primary" size="small" style="">上传文件</Button>
           </Upload>
@@ -197,13 +198,6 @@ export default {
   },
   mounted: function () {
     let args = this.$route.query
-    // queryTerms().then((resp) => {
-    //   this.terms = resp.data.terms
-    // })
-    // getCurrentTerms().then((termResp) => {
-    //   this.query.term = termResp.data.term.name
-    //   this.activity.term = termResp.data.term.name
-    // })
 
     queryCompetition(args).then((resp) => {
       this.data = resp.data.researchs

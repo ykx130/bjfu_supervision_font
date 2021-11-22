@@ -8,7 +8,7 @@
     :loading="loading"
     @on-visible-change="onShowChange"
     style="width: 600px;">
-    <Form :label-width="100" style="width: 400px" ref="activity_form" :model="activity" :rules="ruleValidate">
+    <Form :label-width="100" style="width: 90%" ref="activity_form" :model="activity" :rules="ruleValidate">
       <form-item label="题目:" prop="title">
         <Row>
           <Col>
@@ -57,9 +57,9 @@
           </Col>
         </Row>
       </form-item>
-      <FormItem label="请上传活动图片" prop="image" v-role="['教师']">
+      <FormItem label="活动图片：" prop="image" v-role="['教师']" >
         <div class="demo-upload-list" v-for="(item,index) in imageUrlList" :key="index">
-          <img :src="'/api'+item"  />
+          <img :src="'/api/static/images/'+item"  />
           <div class="demo-upload-list-cover">
             <Icon type="ios-eye-outline" @click.native="handleView(item)"></Icon>
             <Icon type="ios-trash-outline" @click.native="handleRemoveList(index)"></Icon>
@@ -75,8 +75,8 @@
           multiple
           type="drag"
           :action="uploadPictureApi"
-          style="display: inline-block;width:58px;">
-          <div style="width: 58px;height:58px;line-height: 58px;">
+          style="display: inline-block;width:100px;">
+          <div style="width: 100px;height:100px;line-height: 100px;">
             <Icon type="ios-camera" size="20"></Icon>
           </div>
         </Upload>
@@ -125,7 +125,7 @@ export default {
         activity_time:undefined,
         user:{},
         user_unit:undefined,
-        picpaths:undefined,
+        picpaths:[],
         fin_state:undefined,
         state:undefined,
         activity_type:'培训'
@@ -184,7 +184,7 @@ export default {
       })
     },
     handleView (imageUrl) {
-      this.showImageUrl = '/api'+imageUrl
+      this.showImageUrl = '/api/static/images/'+imageUrl
       this.visible = true
     },
     handleRemoveList (index) {
@@ -201,8 +201,8 @@ export default {
     handleOK: function () {
       this.changeLoading()
       this.$refs.activity_form.validate((valid) => {
-        this.active_user.picpaths = this.imageUrlList.join(',')
-        if (this.active_user.picpaths === '') {
+        this.active_user.picpaths = this.imageUrlList
+        if (this.active_user.picpaths.length === 0) {
           valid = false
         }
         if(valid){
@@ -228,7 +228,7 @@ export default {
           /* 用于更新src_obj的字典用另一个 */
          updateWithinField(this.activity, resp.data.activity_users[0].activity)
          updateWithinField(this.active_user,resp.data.activity_users[0])
-         this.imageUrlList=resp.data.activity_users[0].picpaths.split(',')
+         this.imageUrlList=resp.data.activity_users[0].picpaths
         })
       }
     },
@@ -238,7 +238,7 @@ export default {
 
 <style scoped>
 .demo-upload-list {
-  display: inline-block;width: 60px;height: 60px;text-align: center;line-height: 60px;
+  display: inline-block;width: 100px;height: 100px;text-align: center;line-height: 100px;
   border: 1px solid transparent;border-radius: 4px;overflow: hidden;background: #fff;
   position: relative;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);margin-right: 4px;
 }

@@ -49,11 +49,15 @@ export const postCurrentActiveUser = (active_id) => {
 
 // updataActiveUser
 export const putActiveUser = (active_id, params) => {
-  return axios.put('/api/activities/' + active_id + '/activity_users/' + params.user.username, params)
+  return axios.put('/api/activities/' + active_id + '/activity_users/' + params.username, params)
 }
 
 export const deleteActiveUser = (params) => {
   return axios.delete('/api/activities/activity_users', { params: params })
+}
+//批量修改参与者的参与及报名状态
+export const batchActiveUsersState = (id, params) => {
+  return axios.put('/api/activities/'+ id +'/batch_update_activity_users_state', params)
 }
 // 批量导入活动
 export const uploadActivitiesApi = '/api/acyivities/excel/import'
@@ -105,6 +109,9 @@ export const queryCompetition = (params) => {
 
 export const deleteCompetition = (id) => {
   return axios.delete('/api/competition/' + id)
+}
+export const putCompetition = (id, params) => {
+  return axios.put('/api/competition/'+ id,params)
 }
 // 研究
 export const postResearch = (params) => {

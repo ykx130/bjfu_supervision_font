@@ -133,6 +133,8 @@ export default {
         {
           title: '题目',
           align: 'center',
+          fixed: 'left',
+          width: 180,
           render: function (h, params) {
             return h('span', params.row.title)
           }
@@ -140,6 +142,7 @@ export default {
         {
           title: '主讲人',
           align: 'center',
+          width: 120,
           render: function (h, params) {
             return h('span', params.row.presenter)
           }
@@ -147,6 +150,7 @@ export default {
         {
           title: '所属模块',
           align: 'center',
+          width: 150,
           render: function (h, params) {
             return h('span', params.row.module)
           }
@@ -154,6 +158,7 @@ export default {
         {
           title: '培训时间',
           align: 'center',
+          width: 150,
           render: function (h, params) {
             return h('span', params.row.start_time)
           }
@@ -161,6 +166,7 @@ export default {
         {
           title: '培训地点',
           align: 'center',
+          width: 120,
           render: function (h, params) {
             return h('span', params.row.place)
           }
@@ -168,6 +174,7 @@ export default {
         {
           title: '主办单位',
           align: 'center',
+          width: 120,
           render: function (h, params) {
             return h('span', params.row.organizer)
           }
@@ -182,6 +189,8 @@ export default {
         },
         {
           title: '活动状态',
+          width: 120,
+          align: 'center',
           render: function (h, params) {
             return h('span', params.row.apply_state)
           }
@@ -200,6 +209,8 @@ export default {
         },
         {
           title: '活动详情附件',
+          align: 'center',
+          width: 160,
           render: (h, params)=>{
             return h('div',[
               h('a',{
@@ -208,7 +219,7 @@ export default {
                     this.downloadFile(params.row.path)
                   }
                 }
-              },params.row.path.slice(-19))
+              },params.row.path)
             ])
           }
         },
@@ -216,6 +227,7 @@ export default {
           title: '操作',
           align: 'center',
           width: '130px',
+          fixed: 'right',
           render: (h, params) => {
             return h('div', [
               h('Button', {
@@ -290,7 +302,7 @@ export default {
     downloadFile: function (path) {
       if(path!==''){
         this.$Message.success({content:'下载成功'})
-        window.open('/api/' + path)
+        window.open('/api/static/' + path)
       }
     },
 
