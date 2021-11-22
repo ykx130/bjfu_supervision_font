@@ -5,7 +5,6 @@
     title="修改"
     @on-ok="handleOK"
     @on-cancel="handleCancel"
-    :loading="loading"
     @on-visible-change="onShowChange"
     style="width: 600px;">
     <Form :label-width="100" style="width: 90%" ref="activity_form" :model="activity" :rules="ruleValidate">
@@ -106,12 +105,11 @@ export default {
     onCancel: Function,
     onOK: Function,
     active_id:Number,
-    current_username:''
+    current_username: String,
  },
   data(){
     return{
       uploadPictureApi:uploadPictureApi,
-      loading: true,
       imageUrlList: [],
       showImageUrl: '',
       visible: false,
@@ -170,14 +168,7 @@ export default {
     })
   },
   methods:{
-    changeLoading: function() {
-      setTimeout(()=>{
-        this.loading = false;
-        this.$nextTick(()=>{
-          this.loading = true
-        })
-      }, 500)
-    },
+
     handleMaxSize (file) {
       this.$Notice.warning({
         title: '图片大小限制',
@@ -200,7 +191,6 @@ export default {
       }
     },
     handleOK: function () {
-      this.changeLoading()
       this.$refs.activity_form.validate((valid) => {
         this.active_user.picpaths = this.imageUrlList
         if (this.active_user.picpaths.length === 0) {

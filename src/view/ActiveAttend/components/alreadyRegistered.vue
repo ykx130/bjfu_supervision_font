@@ -203,6 +203,7 @@ export default {
                 on: {
                   click: () => {
                     this.selected_activity_id = params.row.activity.id
+                    this.current_user_username = params.row.username
                     this.showTrainEditModal = true
                   }
                 }
