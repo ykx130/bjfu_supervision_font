@@ -98,6 +98,7 @@ export default {
         organizer: '',
         path: '',
         term: '',
+        create_by: false,
       },
       showImageUrl: '',
       i: 0,
