@@ -5,7 +5,6 @@
     title="修改"
     @on-ok="handleOK"
     @on-cancel="handleCancel"
-    :loading="loading"
     @on-visible-change="onShowChange"
     style="width: 600px;">
     <Form :label-width="100" style="width: 90%" ref="activity_form" :model="activity" :rules="ruleValidate">
@@ -106,12 +105,12 @@ export default {
     onCancel: Function,
     onOK: Function,
     active_id:Number,
-    current_username:''
+    current_username: String,
+    activity_user: Object,
  },
   data(){
     return{
       uploadPictureApi:uploadPictureApi,
-      loading: true,
       imageUrlList: [],
       showImageUrl: '',
       visible: false,
@@ -121,6 +120,7 @@ export default {
 
       active_user:{
         activity:{},
+        username: '',
         activity_id:undefined,
         activity_time:undefined,
         user:{},
@@ -169,14 +169,7 @@ export default {
     })
   },
   methods:{
-    changeLoading: function() {
-      setTimeout(()=>{
-        this.loading = false;
-        this.$nextTick(()=>{
-          this.loading = true
-        })
-      }, 500)
-    },
+
     handleMaxSize (file) {
       this.$Notice.warning({
         title: '图片大小限制',
@@ -199,7 +192,6 @@ export default {
       }
     },
     handleOK: function () {
-      this.changeLoading()
       this.$refs.activity_form.validate((valid) => {
         this.active_user.picpaths = this.imageUrlList
         if (this.active_user.picpaths.length === 0) {
@@ -210,7 +202,7 @@ export default {
           this.active_user.activity_time=this.activity.start_time
           this.active_user.fin_state='待审核'
           updateWithinField(this.active_user.activity,this.activity)
-
+          console.log('编辑的user',this.active_user)
           this.$emit('onOK',{...this.active_user})
         }else {
           this.$Message.error('请填写完整信息!')
@@ -221,15 +213,23 @@ export default {
     handleCancel: function () {
       this.$emit('onCancel')
     },
+    // onShowChange: function (show) {
+    //   if (show) {
+    //     // 显示的时候拉数据
+    //    queryActivityUsers({'activity_type':'培训','activity_id':this.active_id,'username':this.current_username}).then((resp) => {
+    //       /* 用于更新src_obj的字典用另一个 */
+    //      updateWithinField(this.activity, resp.data.activity_users[0].activity)
+    //      updateWithinField(this.active_user,resp.data.activity_users[0])
+    //      this.imageUrlList=resp.data.activity_users[0].picpaths
+    //     })
+    //   }
+    // },
+
     onShowChange: function (show) {
       if (show) {
-        // 显示的时候拉数据
-       queryActivityUsers({'activity_type':'培训','activity_id':this.active_id,'username':this.current_username}).then((resp) => {
-          /* 用于更新src_obj的字典用另一个 */
-         updateWithinField(this.activity, resp.data.activity_users[0].activity)
-         updateWithinField(this.active_user,resp.data.activity_users[0])
-         this.imageUrlList=resp.data.activity_users[0].picpaths
-        })
+        updateWithinField(this.active_user,this.activity_user)
+        updateWithinField(this.activity, this.activity_user.activity)
+        this.imageUrlList=this.activity_user.picpaths
       }
     },
   }
