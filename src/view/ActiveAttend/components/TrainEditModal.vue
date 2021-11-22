@@ -106,7 +106,6 @@ export default {
     onOK: Function,
     edit_activity: Object,
     activity_user: Object,
-
  },
   data(){
     return{
@@ -120,9 +119,7 @@ export default {
 
       active_user:{
         username: '',
-        activity_id:undefined,
-        activity_time:undefined,
-        user_unit:undefined,
+        activity_id:0,
         picpaths:[],
         fin_state:undefined,
         state:undefined,
@@ -142,7 +139,7 @@ export default {
         term:'',
         module: '',
         is_obligatory:undefined,
-        start_time: undefined,
+        start_time: '',
         path:'',
 
       },
@@ -190,15 +187,12 @@ export default {
       }
     },
     handleOK: function () {
+      this.active_user.picpaths = this.imageUrlList
       this.$refs.activity_form.validate((valid) => {
-        this.active_user.picpaths = this.imageUrlList
-        if (this.active_user.picpaths.length === 0) {
-          valid = false
-        }
         if(valid){
           this.activity.start_time = dateToString(this.activity.start_time, 'yyyy-MM-dd hh:mm:ss')
-          this.active_user.activity_time=this.activity.start_time
           this.active_user.fin_state='待审核'
+          console.log('111',this.activity,this.active_user)
           this.$emit('onOK',this.activity,this.active_user)
         }else {
           this.$Message.error('请填写完整信息!')
