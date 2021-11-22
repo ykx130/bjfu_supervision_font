@@ -4,8 +4,11 @@
     @on-ok="handleOK"
     @on-cancel="handleCancel"
     @on-visible-change="InitData"
-    title="查看比赛记录"
     style="width: 600px;">
+    <p slot="header">
+      <span v-if="title_code===1">查看</span>
+      <span v-else-if="title_code===2">修改</span>
+    </p>
     <Form ref="competition_user_form" :model="competition_user" :rules="competition_user_ruleValidate" style="width: 90%" :label-width="100">
       <div v-if="this.current_role === '教发管理员'">
       <FormItem label="教师工号:">
@@ -84,6 +87,7 @@ export default {
     onCancel: Function,
     activity_id: Number,
     active_user: Object,
+    title_code: Number,
     show: {
       type: Boolean,
       default: false
@@ -101,6 +105,7 @@ export default {
         picpaths: [],
         fin_state: '',
         state: '',
+        activity_id: 0,
         activity_type: '比赛',
         activity: {
           award_name: '',

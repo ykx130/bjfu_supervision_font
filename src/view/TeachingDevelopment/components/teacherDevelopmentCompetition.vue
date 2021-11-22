@@ -26,8 +26,16 @@
     <TeacherCompetitionProfile
     :show="showTeacherCompetitionProfile"
     :active_user="selected_active_user"
+    :title_code="1"
     @onOK="onCompetitionProfileOK"
     @onCancel="onCompetitionProfileCancel">
+    </TeacherCompetitionProfile>
+    <TeacherCompetitionProfile
+      :show="showUpdateTeacherCompetition"
+      :active_user="update_active_user"
+      :title_code="2"
+      @onOK="onUpdateCompetitionOK"
+      @onCancel="onUpdateCompetitionCancel">
     </TeacherCompetitionProfile>
 
     <Table border stripe :columns="columns" :data="data"></Table>
@@ -45,7 +53,7 @@
   import {
     deleteActiveUser,
     deleteCompetition, postActiveUser,
-    postCompetition,
+    postCompetition, putActiveUser, putCompetition,
     queryActivityUsers,
     queryCompetition
   } from "@/service/api/actives";
@@ -60,8 +68,10 @@
     data () {
       return {
         selected_active_user: {},
+        update_active_user: {},
         showTeacherCompetitionAddModal: false,
         showTeacherCompetitionProfile: false,
+        showUpdateTeacherCompetition: false,
         query: {
           //name_like: '',
           //state_like: ''
@@ -190,7 +200,23 @@
                       this.showTeacherCompetitionProfile = true
                     }
                   }
-                }, '查看')
+                }, '查看'),
+                h('Button', {
+                  props: {
+                    type: 'success',
+                    size: 'small',
+                    disabled: !(params.row.fin_state === '待修改')
+                  },
+                  style: {
+                    marginRight: '2px'
+                  },
+                  on: {
+                    click: () => {
+                      this.update_active_user = params.row
+                      this.showUpdateTeacherCompetition = true
+                    }
+                  }
+                }, '修改')
               ])
             }
           }
@@ -246,6 +272,23 @@
       },
       onCompetitionProfileCancel(){
         this.showTeacherCompetitionProfile = false
+      },
+      onUpdateCompetitionOK(data){
+        putCompetition(data.activity_id,data.activity).then((res1=>{
+          data['fin_state']='待审核'
+          putActiveUser(data.activity_id,data).then((res2=>{
+            if(res1.data.code === 200 && res2.data.code === 200){
+              this.$Message.success('修改成功')
+              this.fetchData()
+            }else {
+              this.$Message.error('失败')
+            }
+          }))
+        }))
+        this.showUpdateTeacherCompetition = false
+      },
+      onUpdateCompetitionCancel(){
+        this.showUpdateTeacherCompetition = false
       },
       onSearch () {
         this.pages._page = 1
