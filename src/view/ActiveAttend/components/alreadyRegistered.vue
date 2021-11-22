@@ -46,7 +46,16 @@
 </template>
 
 <script>
-import { deleteActive, putActive, putActiveUser, queryActives,  queryCurrentuserActives,postActiveUser,postActive } from '../../../service/api/actives'
+import {
+  deleteActive,
+  putActive,
+  putActiveUser,
+  queryActives,
+  queryCurrentuserActives,
+  postActiveUser,
+  postActive,
+  deleteActiveUser
+} from '../../../service/api/actives'
 import { queryTerms, getCurrentTerms } from '../../../service/api/term'
 import ActivesAddModal from 'Views/DevelopTrainManage/components/ActivesAddModal'
 import ActivesUserModifyModal from 'Views/ActiveDetail/components/ActivesUserModifyModal'
@@ -227,6 +236,15 @@ export default {
                         this.$Message.success('删除成功！')
                         this.fetchData()
                       })
+                    }
+                    if(params.row.activity.apply_state === '报名进行中'){
+                      deleteActiveUser({activity_id:params.row.activity.id, activity_type:'培训',
+                        username:params.row.activity_user.username}).then((res=>{
+                          if(res.data.code === 200){
+                            this.$Message.success('删除成功')
+                            this.fetchData()
+                          }
+                      }))
                     }
                   }
                 }
