@@ -133,7 +133,7 @@ export default {
         this.valid2 = valid2
       })
       if(this.valid1&&this.valid2){
-        this.$emit('onOK',this.competition,this.competition_user)
+        this.$emit('onOk',this.competition,this.competition_user)
       }else {
         this.$Message.error('请填写完整信息')
         this.$emit('onCancel')

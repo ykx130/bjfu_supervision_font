@@ -1,14 +1,12 @@
 <template>
   <div>
-    <h1>教师教学发展交流</h1>
+    <h1>教师教学发展项目</h1>
     <br>
-    <Form :label-width="80" :model="query" inline>
-      <FormItem label="名称查询：" prop="module">
-        <AutoComplete v-model="query.name_like" :data="name"
-                      style="width:180px"
-                      @on-search="handleSearchName"></AutoComplete>
+    <Form :label-width="100" :model="query" inline>
+      <FormItem label="名称查询：" >
+        <Input v-model="query.activity_title_like" style="width:200px"></Input>
       </FormItem>
-      <FormItem label="状态查询：" prop="fin_state">
+      <FormItem label="状态查询：" >
         <Select v-model="query.fin_state" style="width:200px"  clearable>
           <Option v-for="item in activity_statuss" :value="item" :key="item">{{ item }}</Option>
         </Select>
@@ -17,6 +15,13 @@
         <Button type="primary" @click=" onSearch">查询</Button>
       </FormItem>
     </Form>
+    <TeacherProjectUpdateModal
+      :show="showUpdateProjectModal"
+      :active_user="selected_active_user"
+      :title_code="2"
+      @onOK="onUpdateModalOK"
+      @onCancel="onUpdateModalCancel"
+    ></TeacherProjectUpdateModal>
 
     <AddProject
       :modal="showProjectAddModal"
@@ -39,20 +44,34 @@
 
 <script>
   import {currentUser} from "@/service/api/user";
-  import {deleteProject, postActiveUser, postProject, queryActivityUsers, queryProject,putProject} from "@/service/api/actives";
+  import {
+    deleteProject,
+    postActiveUser,
+    postProject,
+    queryActivityUsers,
+    queryProject,
+    putProject,
+    putCompetition, putActiveUser
+  } from "@/service/api/actives";
   import AddProject from "Views/TeachingDevelopment/components/Add/AddProject";
   import float_bar from "_c/float_bar/float_bar";
-  import {State} from "Views/TeacherDevelopDetail/marcos";
+  import UserMixin from "@/mixins/UserMixin";
+  import TeacherProjectUpdateModal from "Views/TeachingDevelopment/components/Profile/TeacherProjectUpdateModal";
+
   export default {
     name: 'teacherDevelopmentProject',
-    components: {AddProject,float_bar},
+    components: {TeacherProjectUpdateModal,  AddProject,float_bar},
+    mixins: [UserMixin],
     data () {
       return {
         query: {
-          username:undefined,
+          fin_state: '',
           activity_type:'项目',
+          activity_title_like: '',
         },
-        activity_statuss:State,
+        activity_statuss:['待审核','已完成','待修改'],
+        selected_active_user:{},
+        showUpdateProjectModal: false,
         total:0,
         showProjectAddModal:false,
         data:[],
@@ -150,15 +169,15 @@
                   props: {
                     type: 'primary',
                     size: 'small',
-                    disabled: !(params.row.fin_state === '待审核')
+                    disabled: (params.row.fin_state !== '待修改')
                   },
                   style: {
                     marginRight: '2px'
                   },
                   on: {
                     click: () => {
-                      // this.selected_activity_title = params.row.activity.title
-                      // this.showActiveAddModal = true
+                      this.selected_active_user = params.row
+                      this.showUpdateProjectModal = true
                     }
                   }
                 }, '编辑'),
@@ -192,6 +211,7 @@
     methods: {
       fetchData () {
         // 数据表发生变化请求数据
+        this.query.username = this.userInfo.userInfo.username
         let args = { ...this.query, ...this.pages }
         return queryActivityUsers(args).then((resp) => {
           this.data = resp.data.activity_users
@@ -219,7 +239,6 @@
               }).then((esp) => {
                 if (esp.data.code === 200) {
                   this.$Message.success({content: '项目添加成功'})
-
                   this.fetchData()
                 }
               })
@@ -231,8 +250,29 @@
       onAddModalCancel () {
         this.showProjectAddModal = false
       },
-      handleSearchName () {},
-      handleSearchStateName () {},
+      onUpdateModalOK(data) {
+        console.log('project',data)
+        let new_data = {
+          username: data.username,
+          fin_state: '待审核',
+          activity_type: '项目',
+          activity_id: data.activity_id,
+        }
+        putProject(data.activity_id,data.activity).then((res1=>{
+          putActiveUser(data.activity_id,new_data).then((res2=>{
+            if(res1.data.code === 200 && res2.data.code === 200){
+              this.$Message.success('修改成功')
+              this.fetchData()
+            }else {
+              this.$Message.error('失败')
+            }
+          }))
+        }))
+        this.showUpdateProjectModal = false
+      },
+      onUpdateModalCancel(){
+        this.showUpdateProjectModal = false
+      },
       onSearch () {
         // 查询变化
         this.pages._page = 1
@@ -240,14 +280,7 @@
       }
     },
     mounted:function (){
-      currentUser().then((userResp)=>{
-        this.query.username=userResp.data.current_user.username
-        queryActivityUsers({ ...this.query, ...this.pages }).then((resp) => {
-          this.data = resp.data.activity_users
-          this.total = resp.data.total
-
-        })
-      })
+     this.fetchData()
     }
   }
 </script>

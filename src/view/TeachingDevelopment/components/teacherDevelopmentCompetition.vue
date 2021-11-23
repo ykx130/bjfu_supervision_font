@@ -4,7 +4,7 @@
     <br>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="名称查询：">
-        <Input v-model="name" style="width: 160px;"></Input>
+        <Input v-model="query.activity_title_like" style="width: 160px;"></Input>
       </FormItem>
       <FormItem label="状态：" prop="fin_state" >
         <Select v-model="query.fin_state" clearable style="width:120px">
@@ -61,10 +61,12 @@
     from "Views/TeacherDevelopDetail/components/ActivityProfile/TeacherAddCompetitionModal";
   import TeacherCompetitionProfile
     from "Views/TeacherDevelopDetail/components/ActivityProfile/TeacherCompetitionProfile";
+  import UserMixin from "@/mixins/UserMixin";
 
   export default {
     name: 'teacherDevelopmentCompetition',
     components: {TeacherCompetitionProfile, TeacherAddCompetitionModal},
+    mixins: [UserMixin],
     data () {
       return {
         selected_active_user: {},
@@ -73,14 +75,11 @@
         showTeacherCompetitionProfile: false,
         showUpdateTeacherCompetition: false,
         query: {
-          //name_like: '',
-          //state_like: ''
-          username:undefined,
           activity_type:'比赛',
+          activity_title_like:'',
           fin_state: '',
         },
-        fin_stateList: ['已完成','待审核'],
-        name: '',
+        fin_stateList: ['已完成','待审核','待修改'],
         total:0,
         data:[],
         pages: {
@@ -225,7 +224,8 @@
     },
     methods: {
       fetchData () {
-        // 数据表发生变化请求数据
+        // 数据表发生变化请求数据---当前用户
+        this.query.username=this.userInfo.userInfo.username
         let args = { ...this.query, ...this.pages }
         return queryActivityUsers(args).then((resp) => {
           this.data = resp.data.activity_users
@@ -274,9 +274,15 @@
         this.showTeacherCompetitionProfile = false
       },
       onUpdateCompetitionOK(data){
+        let new_data = {
+          username: data.username,
+          fin_state: '待审核',
+          activity_type: '比赛',
+          activity_id: data.activity_id,
+          state: data.state,
+        }
         putCompetition(data.activity_id,data.activity).then((res1=>{
-          data['fin_state']='待审核'
-          putActiveUser(data.activity_id,data).then((res2=>{
+          putActiveUser(data.activity_id,new_data).then((res2=>{
             if(res1.data.code === 200 && res2.data.code === 200){
               this.$Message.success('修改成功')
               this.fetchData()
@@ -292,28 +298,11 @@
       },
       onSearch () {
         this.pages._page = 1
-        console.log('name',this.name)
-        if(this.name){
-          queryCompetition({award_name:this.name}).then((resp => {
-            if(resp.data.code === 200){
-              this.query.activity_id = resp.data.competitions.id
-            }else {
-              this.query.activity_id = 0
-            }
-          }))
-        }
         this.fetchData()
       }
     },
     mounted:function () {
-
-      currentUser().then((userResp)=>{
-        this.query.username=userResp.data.current_user.username
-        queryActivityUsers({ ...this.query, ...this.pages }).then((resp) => {
-          this.data = resp.data.activity_users
-          this.total = resp.data.total
-        })
-      })
+     this.fetchData()
     }
   }
 </script>

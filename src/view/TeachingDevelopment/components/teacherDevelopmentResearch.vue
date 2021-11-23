@@ -3,12 +3,10 @@
     <h1>教师教学发展交流</h1>
     <br>
     <Form :label-width="80" :model="query" inline>
-      <FormItem label="名称查询：" prop="module">
-        <AutoComplete v-model="query.name_like" :data="name"
-                      style="width:180px"
-                      @on-search="handleSearchName"></AutoComplete>
+      <FormItem label="名称查询：" >
+        <Input v-model="query.title_like" style="width:200px"></Input>
       </FormItem>
-      <FormItem label="状态查询：" prop="fin_state">
+      <FormItem label="状态查询：" >
         <Select v-model="query.fin_state" style="width:200px"  clearable>
           <Option v-for="item in activity_statuss" :value="item" :key="item">{{ item }}</Option>
         </Select>
@@ -17,6 +15,14 @@
         <Button type="primary" @click=" onSearch">查询</Button>
       </FormItem>
     </Form>
+
+    <TeacherResearchProfileModal
+      :show="showUpdateResearchModal"
+      :active_user="selected_active_user"
+      :title_code="2"
+      @onOK="onUpdateModalOK"
+      @onCancel="onUpdateModalCancel"
+    ></TeacherResearchProfileModal>
 
     <AddResearch
       :modal="showResearchAddModal"
@@ -45,23 +51,27 @@
     postActiveUser,
     postResearch,
     queryActivityUsers,
-    queryResearch
+    queryResearch, putActiveUser
   } from "@/service/api/actives";
   import float_bar from "_c/float_bar/float_bar";
   import AddResearch from "Views/TeachingDevelopment/components/Add/AddResearch";
-  import {State} from "Views/TeacherDevelopDetail/marcos";
+  import TeacherResearchProfileModal from "Views/TeachingDevelopment/components/Profile/TeacherResearchProfileModal";
+  import UserMixin from "@/mixins/UserMixin";
 
   export default {
     name: 'teacherDevelopmentResearch',
-    components:{AddResearch,float_bar},
+    components:{TeacherResearchProfileModal, AddResearch,float_bar},
+    mixins: [UserMixin],
     data () {
       return {
         query: {
-          username:undefined,
+          title_like:'',
           activity_type:'研究'
         },
         showResearchAddModal:false,
-        activity_statuss:State,
+        showUpdateResearchModal: false,
+        selected_active_user:{},
+        activity_statuss:['待审核','待修改','已完成'],
         total:0,
         data:[],
         name: [],
@@ -139,15 +149,15 @@
                   props: {
                     type: 'primary',
                     size: 'small',
-                    disabled: !(params.row.fin_state === '待审核')
+                    disabled: (params.row.fin_state !== '待修改')
                   },
                   style: {
                     marginRight: '2px'
                   },
                   on: {
                     click: () => {
-                      // this.selected_activity_title = params.row.activity.title
-                      // this.showActiveAddModal = true
+                      this.selected_active_user = params.row
+                      this.showUpdateResearchModal = true
                     }
                   }
                 }, '编辑'),
@@ -180,6 +190,7 @@
     methods: {
       fetchData () {
         // 数据表发生变化请求数据
+        this.query.username =this.userInfo.userInfo.username
         let args = { ...this.query, ...this.pages }
         return queryActivityUsers(args).then((resp) => {
           this.data = resp.data.activity_users
@@ -193,7 +204,6 @@
       },
 
       onAddModalOK (activity) {
-        activity.apply_state="待审核活动"
         postResearch(activity).then((resp) => {
           queryResearch({"title": activity.title}).then((newresp) => {
             this.activity_id = newresp.data.researchs[0].id
@@ -217,8 +227,30 @@
       onAddModalCancel () {
         this.showResearchAddModal = false
       },
-      handleSearchName () {},
-      handleSearchStateName () {},
+
+      onUpdateModalOK(data) {
+        let new_data = {
+          username: data.username,
+          fin_state: '待审核',
+          activity_type: '研究',
+          activity_id: data.activity_id,
+        }
+        putResearch(data.activity_id,data.activity).then((res1=>{
+          putActiveUser(data.activity_id,new_data).then((res2=>{
+            if(res1.data.code === 200 && res2.data.code === 200){
+              this.$Message.success('修改成功')
+              this.fetchData()
+            }else {
+              this.$Message.error('失败')
+            }
+          }))
+        }))
+        this.showUpdateResearchModal = false
+      },
+      onUpdateModalCancel(){
+        this.showUpdateResearchModal = false
+      },
+
       onSearch () {
         // 查询变化
         this.pages._page = 1
@@ -226,14 +258,7 @@
       }
     },
     mounted:function (){
-      currentUser().then((userResp)=>{
-        this.query.username=userResp.data.current_user.username
-        queryActivityUsers({ ...this.query, ...this.pages }).then((resp) => {
-          this.data = resp.data.activity_users
-          this.total = resp.data.total
-
-        })
-      })
+      this.fetchData()
     }
   }
 </script>

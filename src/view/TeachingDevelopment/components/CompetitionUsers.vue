@@ -4,6 +4,7 @@
     <TeacherCompetitionProfile
       :show="showTeacherCompetitionProfile"
       :active_user="selected_active_user"
+      :title_code="1"
       @onOK="onCompetitionProfileOK"
       @onCancel="onCompetitionProfileCancel">
     </TeacherCompetitionProfile>

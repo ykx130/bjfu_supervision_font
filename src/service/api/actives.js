@@ -124,9 +124,7 @@ export const queryResearch = (params) => {
 export const deleteResearch = (id) => {
   return axios.delete('/api/research/' + id)
 }
-export const putResearch = (params) => {
-  let id = params.id
-  params.id = undefined
+export const putResearch = (id,params) => {
   return axios.put('/api/research/' + id, params)
 }
 
@@ -141,9 +139,7 @@ export const queryProject = (params) => {
 export const deleteProject = (id) => {
   return axios.delete('/api/project/' + id)
 }
-export const putProject = (params) => {
-  let id = params.id
-  params.id = undefined
+export const putProject = (id,params) => {
   return axios.put('/api/project/' + id, params)
 }
 
