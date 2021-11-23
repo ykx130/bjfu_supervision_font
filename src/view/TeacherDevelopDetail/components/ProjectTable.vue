@@ -15,15 +15,6 @@
       </FormItem>
     </Form>
 
-    <ProjectProfileModal
-      :show="showProjectProfileModal"
-      @onOk="onProfileModalOK"
-      @onCancel="onProfileModalCancel"
-      :active_id="this.selected_activity_id"
-      :username="this.selected_username"
-      :active_type="this.activity_type"
-    ></ProjectProfileModal>
-
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
@@ -38,10 +29,10 @@
   import {State} from "Views/TeacherDevelopDetail/marcos";
   import {queryUsers} from "@/service/api/user";
   import {putActiveUser, queryActivityUsers} from "@/service/api/actives";
-  import ProjectProfileModal from "Views/TeacherDevelopDetail/components/ActivityProfile/ProjectProfileModal";
+
   export default {
     name: "ProjectTable",
-    components:{ProjectProfileModal},
+    components:{},
     data:function () {
       return{
         query:{
@@ -52,8 +43,7 @@
           }
         },
         showProjectProfileModal:false,
-        selected_activity_id:0,
-        selected_username:"",
+        selected_active_user: {},
         activity_statuss:State,
         data:[],
         total:0,
@@ -148,22 +138,21 @@
             width: '170px',
             render: (h, params) => {
               return h('div', [
-                h('Button', {
-                  props: {
-                    type: 'primary',
-                    size: 'small'
-                  },
-                  style: {
-                    marginRight: '2px'
-                  },
-                  on: {
-                    click: () => {
-                      this.selected_activity_id=params.row.activity_id
-                      this.selected_username=params.row.user.username
-                      this.showProjectProfileModal = true
-                    }
-                  }
-                }, '查看'),
+                // h('Button', {
+                //   props: {
+                //     type: 'primary',
+                //     size: 'small'
+                //   },
+                //   style: {
+                //     marginRight: '2px'
+                //   },
+                //   on: {
+                //     click: () => {
+                //       this.selected_active_user = params.row
+                //       this.showProjectProfileModal = true
+                //     }
+                //   }
+                // }, '查看'),
 
 
                 h('Button', {
@@ -231,12 +220,13 @@
     methods:{
       fetchData(){
         if(this.query.user.name) {
-          queryUsers({'name': this.query.user.name}).then((userresp) => {
+          queryUsers({'name_like': this.query.user.name}).then((userresp) => {
             this.query.user.username = userresp.data.users[0].username
             queryActivityUsers({
-              'username': this.query.user.username,
-              'fin_state': this.query.fin_state,
-              'activity_type':this.activity_type,
+              username: this.query.user.username,
+              fin_state: this.query.fin_state,
+              fin_state_ne: '待修改',
+              activity_type:this.activity_type,
               ...this.pages
             }).then((newresp) => {
               this.data = newresp.data.activity_users
@@ -246,7 +236,8 @@
           })
         }
         else{
-          queryActivityUsers({'activity_type':this.activity_type,...this.query,...this.pages}).then((newresp)=>{
+          queryActivityUsers({activity_type:this.activity_type,
+            fine_state:this.query.fin_state,fin_state_ne: '待修改',...this.pages}).then((newresp)=>{
             this.data=newresp.data.activity_users
             this.total=newresp.data.total
           })
@@ -254,7 +245,7 @@
       },
       putBack(active_user){
         this.activity_id=active_user.activity_id
-        active_user.fin_state='待审核'
+        active_user.fin_state='待修改'
         active_user.activity_type='项目'
         putActiveUser(this.activity_id,active_user).then((resp) => {
           if(resp.data.code===200){
@@ -300,7 +291,8 @@
       }
     },
     mounted: function () {
-      queryActivityUsers({'activity_type':this.activity_type,...this.pages}).then((userresp) => {
+      queryActivityUsers({fin_state: this.query.fin_state,
+        fin_state_ne: '待修改', activity_type:this.activity_type,...this.pages}).then((userresp) => {
         this.data = userresp.data.activity_users
         this.total=userresp.data.total
       })

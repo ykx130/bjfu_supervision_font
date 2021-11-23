@@ -2,21 +2,25 @@
   <div>
     <Form :label-width="80" :model="query" inline>
       <FormItem label="教师：" prop="user.name">
-        <Input style="width: 180px" v-model="query.user.name" placeholder="请输入教师姓名" ></Input>
+        <Input style="width: 200px" v-model="query.user.name" placeholder="请输入教师姓名" ></Input>
       </FormItem>
       <FormItem label="状态：" prop="fin_state" >
         <Select v-model="query.fin_state" style="width:200px" clearable>
           <Option v-for="item in activity_statuss" :value="item" :key="item">{{ item }}</Option>
         </Select>
       </FormItem>
-
-
       <FormItem>
         <Button type="primary" @click="onSearch">查询</Button>
       </FormItem>
 
-
     </Form>
+    <TeacherResearchProfileModal
+      :show="showResearchProfile"
+      :active_user="selected_active_user"
+      :title_code="1"
+      @onOK="onProfileModalOK"
+      @onCancel="onProfileModalCancel"
+    ></TeacherResearchProfileModal>
     <Table border stripe :columns="columns" :data="data"></Table>
     <div style="margin: 10px;overflow: hidden">
       <div style="float: right;">
@@ -31,10 +35,11 @@
   import {State} from "Views/TeacherDevelopDetail/marcos";
   import {putActiveUser, queryActivityUsers} from "@/service/api/actives";
   import {queryUsers} from "@/service/api/user";
+  import TeacherResearchProfileModal from "Views/TeachingDevelopment/components/Profile/TeacherResearchProfileModal";
 
   export default {
     name: "ResearchTable",
-
+    components: {TeacherResearchProfileModal},
     data:function () {
       return{
         query:{
@@ -45,6 +50,8 @@
           }
         },
         total:0,
+        showResearchProfile: false,
+        selected_active_user:{},
         activity_statuss:State,
         activity_type:'研究',
         data:[],
@@ -137,8 +144,8 @@
                   },
                   on: {
                     click: () => {
-                      //this.selected_activeuser=params.row
-                      //this.showTrainProfileModal = true
+                      this.selected_active_user=params.row
+                      this.showResearchProfile = true
                     }
                   }
                 }, '查看'),
@@ -212,9 +219,10 @@
           queryUsers({'name': this.query.user.name}).then((userresp) => {
             this.query.user.username = userresp.data.users[0].username
             queryActivityUsers({
-              'username': this.query.user.username,
-              'fin_state': this.query.fin_state,
-              'activity_type':this.activity_type,
+              username: this.query.user.username,
+              fin_state: this.query.fin_state,
+              activity_type:this.activity_type,
+              fin_state_ne: '待修改',
               ...this.pages
             }).then((newresp) => {
               this.data = newresp.data.activity_users
@@ -224,7 +232,8 @@
           })
         }
         else{
-          queryActivityUsers({'activity_type':this.activity_type,...this.query,...this.pages}).then((newresp)=>{
+          queryActivityUsers({activity_type:this.activity_type,
+            fin_state:this.query.fin_state,fin_state_ne:'待修改',...this.pages}).then((newresp)=>{
             this.data=newresp.data.activity_users
             this.total=newresp.data.total
           })
@@ -232,7 +241,7 @@
       },
       putBack(active_user){
         this.activity_id=active_user.activity_id
-        active_user.fin_state='待审核'
+        active_user.fin_state='待修改'
         active_user.activity_type='研究'
         putActiveUser(this.activity_id,active_user).then((resp) => {
           if(resp.data.code===200){
@@ -253,7 +262,12 @@
             this.fetchData()
           }
         })
-
+      },
+      onProfileModalOK(){
+        this.showResearchProfile = false
+      },
+      onProfileModalCancel(){
+        this.showResearchProfile = false
       },
       onSearch () {
         // 查询变化

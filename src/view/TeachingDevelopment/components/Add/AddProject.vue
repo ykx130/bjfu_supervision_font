@@ -7,55 +7,27 @@
       @on-cancel="handleCancel"
       :loading="loading"
       style="width: 600px;">
-      <Form :label-width="100" style="width: 400px" ref="activity_form" :model="activity" :rules="ruleValidate">
+      <Form :label-width="100" style="width: 80%" ref="activity_form" :model="activity" :rules="ruleValidate">
         <form-item label="项目名称:" prop="title">
-          <Row>
-            <Col>
-              <Input v-model="activity.title" placeholder="项目名称"></Input>
-            </Col>
-          </Row>
+          <Input v-model="activity.title" placeholder="项目名称"></Input>
         </form-item>
         <form-item label="级别:" prop="level">
-          <Row>
-            <Col>
-              <Input v-model="activity.level" placeholder="级别" style="width:200px" filterable>
-              </Input>
-            </Col>
-          </Row>
+          <Input v-model="activity.level" placeholder="级别" filterable></Input>
         </form-item>
         <form-item label="上级单位:" prop="superior_units">
-          <Row>
-            <Col>
-              <Input v-model="activity.superior_units" placeholder="上级单位" style="width:200px" filterable>
-              </Input>
-            </Col>
-          </Row>
+          <Input v-model="activity.superior_units" placeholder="上级单位"  filterable></Input>
         </form-item>
         <form-item label="负责人:" prop="leader">
-          <Row>
-            <Col>
-              <Input v-model="activity.leader" placeholder="负责人" style="width:200px" filterable>
-              </Input>
-            </Col>
-          </Row>
+          <Input v-model="activity.leader" placeholder="负责人" filterable></Input>
         </form-item>
         <form-item label="开始时间:" prop="start_time">
-          <Row>
-            <Col span="11">
-              <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="开始时间" v-model="activity.start_time"></DatePicker>
-            </Col>
-          </Row>
+          <DatePicker type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="开始时间" v-model="activity.start_time"></DatePicker>
         </form-item>
         <form-item label="结束时间:" prop="end_time">
-          <Row>
-            <Col span="11">
-              <DatePicker type="datetime" format="yyyy-MM-dd HH:mm" placeholder="结束时间" v-model="activity.end_time"></DatePicker>
-            </Col>
-          </Row>
+          <DatePicker type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="结束时间" v-model="activity.end_time"></DatePicker>
         </form-item>
-
         <form-item label="学期：" prop="term" >
-          <Select v-model="activity.term" style="width:200px">
+          <Select v-model="activity.term" style="width:200px" clearable>
             <Option v-for="item in terms" :value="item.name" :key="item.name">{{ item.name }}</Option>
           </Select>
         </form-item>
@@ -113,9 +85,9 @@ export default {
         level: [{required: true, trigger: 'blur', message: '请填写项目级别'}],
         superior_units: [{required: true, trigger: 'blur', message: '请填写上级单位'}],
         leader: [{required: true, trigger: 'blur', message: '请填写项目负责人'}],
-        start_time: [{required:true,type:'date', trigger:'blur',message:'请选择项目开始时间'}],
-        end_time: [{required:true,type:'date', trigger:'blur',message:'请选择项目结束时间'}],
-        term: [{required: true, trigger: 'blur', message: '请选择学期'}],
+        start_time: [{required:true,message:'请选择项目开始时间'}],
+        end_time: [{required:true,message:'请选择项目结束时间'}],
+        term: [{required: true, trigger: 'change', message: '请选择学期'}],
       }
     }
   },
