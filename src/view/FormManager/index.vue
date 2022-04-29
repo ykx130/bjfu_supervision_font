@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <h1>表单管理</h1>
+    <h1>听课评价表管理</h1>
     <Tabs v-model="query.status" type="line" size="small" @on-click="onTabClick">
       <TabPane name="全部" label="全部"></TabPane>
       <TabPane  name="已完成" label="已完成"></TabPane>
