@@ -5,7 +5,7 @@
         <FormItem label="题目标题:">
           <Row>
             <Col span="18">
-              <Input v-model="qsItem.title" placeholder="将在问卷上展示 可重复"></Input>
+              <Input v-model="qsItem.title" placeholder="将在听课评价表上展示 可重复"></Input>
             </Col>
           </Row>
         </FormItem>
@@ -56,7 +56,7 @@
 import Rule from '../rules'
 export default {
   name: 'checkbox_option',
-  components:{Rule},
+  components: {Rule},
   watch: {
     qsItem: {
       handler: function (val) {
@@ -65,7 +65,7 @@ export default {
       deep: true
     },
     rules: {
-      deep:true,
+      deep: true,
       handler: function () {
         this.ok()
       }
@@ -85,7 +85,7 @@ export default {
         value: ''
       }],
       index: 1,
-      rules:[]
+      rules: []
     }
   },
   props: {
@@ -106,7 +106,7 @@ export default {
     },
     ok () {
       this.$emit('onInput', {...this.qsItem,
-        payload: {options: this.qsInputOptions, rules:this.rules}})
+        payload: {options: this.qsInputOptions, rules: this.rules}})
     }
   }
 }

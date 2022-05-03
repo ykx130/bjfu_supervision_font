@@ -1,6 +1,6 @@
 <template>
   <Card>
-    <h1>表单管理</h1>
+    <h1>听课评价表管理</h1>
     <Tabs v-model="query.status" type="line" size="small" @on-click="onTabClick">
       <TabPane name="全部" label="全部"></TabPane>
       <TabPane  name="已完成" label="已完成"></TabPane>
@@ -20,7 +20,7 @@
         </Select>
       </FormItem>
 
-      <FormItem label="问卷名字：" prop="bind_meta_name" clearable	>
+      <FormItem label="评价体系名称：" prop="bind_meta_name" clearable	:label-width="100">
         <Input style="width: 180px" v-model="query.bind_meta_name" ></Input>
       </FormItem>
       <FormItem label="上课教师：" prop="meta.lesson.lesson_teacher_name" clearable	>
@@ -62,12 +62,12 @@ export default {
         bind_meta_name: undefined,
         meta: {
           create_by: undefined,
-          guider_group:undefined,
+          guider_group: undefined,
           lesson: {
             lesson_teacher_name: undefined
           }
         },
-        status: undefined,
+        status: undefined
 
       },
       total: 0,
@@ -112,7 +112,7 @@ export default {
             )
           }
         },
-          {
+        {
           title: '关注原因',
           render: function (h, params) {
             return (
@@ -189,10 +189,10 @@ export default {
                 },
                 on: {
                   click: () => {
-                    const {href}=this.$router.resolve({
+                    const {href} = this.$router.resolve({
                       path: `/dqs/form_show/${params.row._id}`
-                    });
-                    window.open(href,'_blank')
+                    })
+                    window.open(href, '_blank')
                   }
                 }
               }, '查看'),
@@ -212,7 +212,7 @@ export default {
                 on: {
                   click: () => {
                     this.$Modal.confirm({
-                      title: '确认打回问卷?',
+                      title: '确认打回听课评价表?',
                       onOk: () => {
                         this.putBack(params.row)
                       }
@@ -236,7 +236,7 @@ export default {
                 on: {
                   click: () => {
                     this.$Modal.confirm({
-                      title: '确认删除问卷?',
+                      title: '确认删除听课评价表?',
                       onOk: () => {
                         deleteForm(params.row._id).then((res) => {
                           this.fetchData()
@@ -295,14 +295,14 @@ export default {
       this.fetchData()
     },
     onExportExcel: function (form_choose) {
-      if(this.current_role==='小组长'){
-        this.query.meta.guider_group=this.userInfo.userInfo.guider.group_name
+      if (this.current_role === '小组长') {
+        this.query.meta.guider_group = this.userInfo.userInfo.guider.group_name
       }
       exporFormsExcel({
         'meta.term': this.query.meta.term,
         'bind_meta_name': form_choose,
         'status': this.query.status,
-        'meta.guider_group':this.query.meta.guider_group
+        'meta.guider_group': this.query.meta.guider_group
       }).then((resp) => {
         if (resp.data.code === 200) {
           this.$Message.success({ content: '导出成功' })

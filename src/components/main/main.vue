@@ -4,7 +4,10 @@
       <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
         <!-- 需要放在菜单上面的内容，如Logo，写在side-menu标签内部，如下 -->
         <div class="logo-con">
-          <div  v-show="!collapsed" ><span style="font-size: 20px;padding-left: 5px;color: #eeeeee;"><img :src="maxLogo" key="max-logo" style="float: left" />教发中心业务平台</span></div>
+          <div  v-show="!collapsed" ><span style="font-size: 19px;padding-left: 5px;color: #eeeeee;">
+<!--            <img :src="maxLogo" key="max-logo" style="float: left" />-->
+<!--            教发中心业务平台</span></div>-->
+            本科教学督导评教业务系统</span></div>
           <img v-show="collapsed" :src="minLogo" key="min-logo" />
         </div>
       </side-menu>
@@ -118,6 +121,7 @@ export default {
       'setBreadCrumb',
       'setTagNavList',
       'addTag',
+      'closeTag',
       'setLocal',
       'setCurrentAccess'
     ]),
@@ -145,13 +149,25 @@ export default {
     handleCollapsedChange (state) {
       this.collapsed = state
     },
+    // handleCloseTag (res, type, route) {
+    //   if (type === 'all') {
+    //     this.turnToPage(this.$config.homeName)
+    //   } else if (routeEqual(this.$route, route)) {
+    //     if (type !== 'others') {
+    //       const nextRoute = getNextRoute(this.tagNavList, route)
+    //       this.$router.push(nextRoute)
+    //     }
+    //   }
+    //   this.setTagNavList(res)
+    // },
     handleCloseTag (res, type, route) {
-      if (type === 'all') {
-        this.turnToPage(this.$config.homeName)
-      } else if (routeEqual(this.$route, route)) {
-        if (type !== 'others') {
-          const nextRoute = getNextRoute(this.tagNavList, route)
-          this.$router.push(nextRoute)
+      if (type !== 'others') {
+        if (type === 'all') {
+          this.turnToPage(this.$config.homeName)
+        } else {
+          if (routeEqual(this.$route, route)) {
+            this.closeTag(route)
+          }
         }
       }
       this.setTagNavList(res)
@@ -160,6 +176,8 @@ export default {
       this.turnToPage(item)
     },
     handleClickToGuider (value) {
+      this.setTagNavList([])
+      // 切换用户时将tag清空
       if (value === '督导') {
         this.$router.push({ name: '督导端' })
         this.setCurrentAccess(value)
@@ -198,7 +216,7 @@ export default {
     /**
      * @description 初始化设置面包屑导航和标签导航
      */
-    this.setTagNavList()
+    this.setTagNavList([])
     this.addTag({
       route: this.$store.state.app.homeRoute
     })

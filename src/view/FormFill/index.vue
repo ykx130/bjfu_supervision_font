@@ -24,7 +24,7 @@
         <Alert type="error" v-html="form_meta.toptip">
         </Alert>
         <br />
-        <divider orientation="left">问卷内容</divider>
+        <divider orientation="left">评价体系项目</divider>
         <FormShow
           class="form_wrapper"
           v-model="form_values"
@@ -90,18 +90,17 @@
     </ABackTop>
   </div>
 
-
 </template>
 <script>
-import { getFormMeta, postForm } from "../../service/api/dqs";
+import { getFormMeta, postForm } from '../../service/api/dqs'
 import {
   getLesson,
   updateModelLessonsVote,
   postModelLessonsVote
-} from "../../service/api/lesson";
-import Lesson from "@/view/components/form_show/lesson_meta_form.vue";
-import FormShow from "@/view/components/form_show/form_show.vue";
-import UserMixin from "@/mixins/UserMixin.js";
+} from '../../service/api/lesson'
+import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
+import FormShow from '@/view/components/form_show/form_show.vue'
+import UserMixin from '@/mixins/UserMixin.js'
 import ABackTop from '../../components/a-back-top'
 
 export default {
@@ -111,37 +110,37 @@ export default {
     ABackTop
   },
   mixins: [UserMixin],
-  name: "FormFill",
+  name: 'FormFill',
   watch: {
-    "meta.lesson": {
+    'meta.lesson': {
       deep: true,
-      handler: function() {
+      handler: function () {
         if (
-          (this.meta.lesson.lesson_model === "推荐为好评课" ||
-            this.meta.lesson.lesson_model === "待商榷") && this.meta.lesson.guiders.some((element) =>{
-            return element["username"] ===this.userInfo.userName;
+          (this.meta.lesson.lesson_model === '推荐为好评课' ||
+            this.meta.lesson.lesson_model === '待商榷') && this.meta.lesson.guiders.some((element) => {
+            return element['username'] === this.userInfo.userName
           })
         ) {
-          this.show_recommend = true;
+          this.show_recommend = true
         } else {
-          this.show_recommend = false;
+          this.show_recommend = false
         }
       },
       immediate: true
     }
   },
   computed: {
-    currentUser: function() {
-      return this.$store.getters.userInfo;
+    currentUser: function () {
+      return this.$store.getters.userInfo
     },
-    lessonInfo: function() {
-      return this.$refs.lesson_info;
+    lessonInfo: function () {
+      return this.$refs.lesson_info
     },
-    formInfo: function() {
-      return this.$refs.form_info;
+    formInfo: function () {
+      return this.$refs.form_info
     }
   },
-  data() {
+  data () {
     return {
       form_meta: {
         _id: undefined,
@@ -150,128 +149,128 @@ export default {
       form_values: {},
       meta: { lesson: {} },
       recommend_model: undefined,
-      recommend_reason: "",
+      recommend_reason: '',
       show_recommend: false,
       pageshow: [false, true]
-    };
+    }
   },
-  mounted() {
-    this.fetchFormMeta();
+  mounted () {
+    this.fetchFormMeta()
   },
   methods: {
-    formValue2Items() {
+    formValue2Items () {
       this.form_meta.items.map((item, index) => {
-        if (item.type === "form_item") {
-          this.form_meta.items[index].value = this.form_values[item.item_name];
+        if (item.type === 'form_item') {
+          this.form_meta.items[index].value = this.form_values[item.item_name]
         }
-      });
-      return this.form_meta.items;
+      })
+      return this.form_meta.items
     },
-    nextPage: function() {
-      this.$refs.form_info.nextPage();
+    nextPage: function () {
+      this.$refs.form_info.nextPage()
     },
-    prePage: function() {
-      this.$refs.form_info.prePage();
+    prePage: function () {
+      this.$refs.form_info.prePage()
     },
-    judgePage: function(pageShow) {
-      this.pageshow = pageShow;
+    judgePage: function (pageShow) {
+      this.pageshow = pageShow
     },
 
-    fetchFormMeta() {
-      let args = this.$route.params;
+    fetchFormMeta () {
+      let args = this.$route.params
 
       return getFormMeta(args).then(resp => {
         resp.data.form_meta.items.forEach(item => {
           // 添加数据
-          if (item.type === "form_item") {
-            if (item.item_type === "checkbox_option") {
-              this.form_values[item.item_name] = [];
+          if (item.type === 'form_item') {
+            if (item.item_type === 'checkbox_option') {
+              this.form_values[item.item_name] = []
             } else {
-              this.form_values[item.item_name] = "";
+              this.form_values[item.item_name] = ''
             }
           }
-        });
-        this.form_meta = resp.data.form_meta;
-      });
+        })
+        this.form_meta = resp.data.form_meta
+      })
     },
-    back() {
-      this.$router.push({ name: "督导我的提交" });
+    back () {
+      this.$router.push({ name: '督导我的提交' })
     },
 
-    produceFrom(status) {
+    produceFrom (status) {
       let form = {
         bind_meta_id: this.form_meta._id,
         bind_meta_name: this.form_meta.name,
         bind_meta_version: this.form_meta.version,
         meta: this.meta,
         status: status,
-        toptip:this.form_meta.toptip,
+        toptip: this.form_meta.toptip,
         pages: this.form_meta.pages,
         values: this.formValue2Items()
-      };
-      form["model_lesson"] = {
+      }
+      form['model_lesson'] = {
         recommend: this.recommend_model,
         recommend_reason: this.recommend_reason,
         is_model_lesson: this.show_recommend
-      };
-      return form;
+      }
+      return form
     },
 
-    handleSubmit() {
+    handleSubmit () {
       this.lessonInfo.validate(valid_lesson => {
         if (valid_lesson) {
           this.formInfo.validate(valid => {
             if (valid) {
-              if(this.show_recommend&&(this.recommend_model===undefined||this.recommend_reason==="")){
-                  this.$Modal.warning({
-                    title:"检查好评课堂问题是否填写完整:",
-                    content:"请选择是否推荐为好评课,并填写推荐理由或意见及建议!"
-                  });
-                }else{
-                  let form = this.produceFrom("已完成");
-                  postForm(form).then(resp => {
-                    if (resp.data.code === 200) {
-                      this.$Message.success("新建成功！");
-                      this.back();
-                    }
-                  });
-                }
+              if (this.show_recommend && (this.recommend_model === undefined || this.recommend_reason === '')) {
+                this.$Modal.warning({
+                  title: '检查好评课堂问题是否填写完整:',
+                  content: '请选择是否推荐为好评课,并填写推荐理由或意见及建议!'
+                })
               } else {
+                let form = this.produceFrom('已完成')
+                postForm(form).then(resp => {
+                  if (resp.data.code === 200) {
+                    this.$Message.success('新建成功！')
+                    this.back()
+                  }
+                })
+              }
+            } else {
               this.$Modal.warning({
-                title:"检查问卷信息是否填写完整",
-                content:this.form_meta.toptip
-              });
+                title: '检查问卷信息是否填写完整',
+                content: this.form_meta.toptip
+              })
             }
-          });
+          })
         } else {
           this.$Modal.warning({
-            title:"检查课程信息是否填写完整",
+            title: '检查课程信息是否填写完整'
 
-          });
+          })
         }
-      });
+      })
     },
 
-    handleSave() {
+    handleSave () {
       this.lessonInfo.validate(valid_lesson => {
         if (valid_lesson) {
-          let form = this.produceFrom("草稿");
+          let form = this.produceFrom('草稿')
           postForm(form).then(resp => {
             if (resp.data.code === 200) {
-              this.$Message.success({ content: "保存成功" });
-              this.back();
+              this.$Message.success({ content: '保存成功' })
+              this.back()
             }
-          });
+          })
         } else {
-          this.$Modal.warning({ title:"检查课程信息是否填写完整"});
+          this.$Modal.warning({ title: '检查课程信息是否填写完整'})
         }
-      });
+      })
     },
-    handleCancel() {
-      this.back();
+    handleCancel () {
+      this.back()
     }
   }
-};
+}
 </script>
 
 <style lang="less">

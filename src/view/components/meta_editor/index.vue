@@ -9,9 +9,9 @@
       <!--form meta start-->
       <div id="form-header">
         <br>
-        <Form ref="meta_form" :model="value" type="text" :label-width="100" inline label-position="left">
-          <FormItem label="问卷名称：" required  prop="name">
-            <Input v-model="value.name" placeholder="问卷名称..." style="width: 180px" ></Input>
+        <Form ref="meta_form" :model="value" type="text" :label-width="110" inline label-position="left">
+          <FormItem label="评价体系名称：" required  prop="name">
+            <Input v-model="value.name" placeholder="评价体系名称..." style="width: 200px" ></Input>
           </FormItem>
         </Form>
       </div>
@@ -19,16 +19,16 @@
       <!--form meta end-->
 
       <!--meta start-->
-      <div id="form-detail">
-        <Card :bordered="false">
-          <p slot="title">{{ value.meta.create_at }}</p >
-          <p>{{ value.meta.guider }}</p >
-        </Card>
-      </div>
+<!--      <div id="form-detail">-->
+<!--        <Card :bordered="false">-->
+<!--          <p slot="title">{{ value.meta.create_at }}</p >-->
+<!--          <p>{{ value.meta.guider }}</p >-->
+<!--        </Card>-->
+<!--      </div>-->
 
       <!--meta end-->
 
-      <Divider orientation="left">问卷题目</Divider>
+      <Divider orientation="left">评价体系项目</Divider>
 
       <!--form blocks start-->
 
@@ -44,7 +44,7 @@
           </Tabs>
           <Button style='position: absolute;right:24px;top:22px;' @click="page_visible=true"> + </Button>
 
-          <Form label-position="left" label-width="150" class="form-card-form">
+          <Form label-position="left" :label-width="150" class="form-card-form">
             <draggable v-model="value.items" style="padding-bottom: 30px; width: 100%;" @update="onMoveEnd">
 
               <div  v-for="(item, index) in value.items " >

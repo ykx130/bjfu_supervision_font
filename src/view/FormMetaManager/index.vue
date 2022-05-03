@@ -1,7 +1,7 @@
 <template>
   <Card>
-    <Form :label-width="80" :model="query" inline>
-      <FormItem label="问卷名字：" prop="name">
+    <Form :label-width="100" :model="query" inline>
+      <FormItem label="评价体系名称：" prop="name">
         <Input style="width: 180px" v-model="query.name" @on-change=" onSearch"></Input>
       </FormItem>
     </Form>
@@ -35,10 +35,10 @@ export default {
         //   }
         // },
         {
-          title: '问卷名',
+          title: '评价体系名称',
           render: function (h, params) {
             return (
-              <span>{ params.row.name }</span>
+              <span>{params.row.name}</span>
             )
           }
         },

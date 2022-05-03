@@ -40,7 +40,7 @@ export default {
     handleSubmit: function () {
       putFormMeta(this.form_meta).then(function (resp) {
         if (resp.data.code === 200) {
-          this.$Message.success('问卷修改成功')
+          this.$Message.success('听课评价表修改成功')
           this.$router.push({ name: '问卷管理' })
         }
       })

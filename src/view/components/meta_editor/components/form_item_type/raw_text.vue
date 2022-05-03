@@ -9,7 +9,7 @@
         <FormItem label="题目标题:">
           <Row>
             <Col span="18">
-              <Input v-model="qsItem.title" placeholder="将在问卷上展示 可重复"></Input>
+              <Input v-model="qsItem.title" placeholder="将在问听课评价表上展示 可重复"></Input>
             </Col>
           </Row>
         </FormItem>
