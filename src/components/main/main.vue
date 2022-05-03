@@ -121,6 +121,7 @@ export default {
       'setBreadCrumb',
       'setTagNavList',
       'addTag',
+      'closeTag',
       'setLocal',
       'setCurrentAccess'
     ]),
@@ -148,21 +149,38 @@ export default {
     handleCollapsedChange (state) {
       this.collapsed = state
     },
+    // handleCloseTag (res, type, route) {
+    //   if (type === 'all') {
+    //     this.turnToPage(this.$config.homeName)
+    //   } else if (routeEqual(this.$route, route)) {
+    //     if (type !== 'others') {
+    //       const nextRoute = getNextRoute(this.tagNavList, route)
+    //       this.$router.push(nextRoute)
+    //     }
+    //   }
+    //   this.setTagNavList(res)
+    // },
     handleCloseTag (res, type, route) {
-      if (type === 'all') {
-        this.turnToPage(this.$config.homeName)
-      } else if (routeEqual(this.$route, route)) {
-        if (type !== 'others') {
-          const nextRoute = getNextRoute(this.tagNavList, route)
-          this.$router.push(nextRoute)
+      if (type !== 'others') {
+        if (type === 'all') {
+          this.turnToPage(this.$config.homeName)
+        } else {
+          if (routeEqual(this.$route, route)) {
+            this.closeTag(route)
+          }
         }
       }
       this.setTagNavList(res)
     },
+
+
     handleClick (item) {
       this.turnToPage(item)
     },
     handleClickToGuider (value) {
+      this.setTagNavList([])
+      // 切换用户时将tag清空
+
       if (value === '督导') {
         this.$router.push({ name: '督导端' })
         this.setCurrentAccess(value)
@@ -173,6 +191,7 @@ export default {
       } else {
         this.$router.push({ name: 'home', query: { time: new Date().getTime() } })
         this.setCurrentAccess(value)
+
       }
     },
     getBtnType: function (value) {
@@ -201,7 +220,7 @@ export default {
     /**
      * @description 初始化设置面包屑导航和标签导航
      */
-    this.setTagNavList()
+    this.setTagNavList([])
     this.addTag({
       route: this.$store.state.app.homeRoute
     })
