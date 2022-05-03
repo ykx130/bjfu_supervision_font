@@ -1,15 +1,17 @@
 import { loginUser, logoutUser, currentUser } from '@/service/api/user'
 import { setToken, getToken } from '@/libs/util'
+import avatorImg from '@/assets/images/avatorImg.png'
 export default {
   state: {
     userName: '',
     userId: '',
-    avatorImgPath: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540923904688&di=94081d4d1750f77b411fef5b3288b48c&imgtype=0&src=http%3A%2F%2Fimg.liexue.cn%2Fuploadfile%2F2015%2F0129%2F20150129031441717.jpg',
+    // avatorImgPath: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1540923904688&di=94081d4d1750f77b411fef5b3288b48c&imgtype=0&src=http%3A%2F%2Fimg.liexue.cn%2Fuploadfile%2F2015%2F0129%2F20150129031441717.jpg',
+    avatorImgPath: avatorImg,
     token: getToken(),
     access: [],
     hasGetInfo: false,
     userInfo: {},
-    guiderInfo: {},
+    guiderInfo: {}
   },
   mutations: {
     setAvator (state, avatorPath) {
@@ -36,19 +38,17 @@ export default {
       state.userId = resData.id
       state.userName = resData.username
     },
-    setCurrentAccess(state,status){
-      state.access= [status]
+    setCurrentAccess (state, status) {
+      state.access = [status]
     },
-    judgeSuperAccess(state,resData){
-      let arr= ['管理员','校级管理员','教发管理员', '大组长', '学院领导', '小组长', '督导', '教师']
-      for(let i=0;i<arr.length;i++){
-        if(resData.role_names.indexOf(arr[i])>-1){
-          state.access=[arr[i]]
-          if(state.access.indexOf())
-          break
-        }
-        else {
-          state.access=[]
+    judgeSuperAccess (state, resData) {
+      let arr = ['管理员', '校级管理员', '教发管理员', '大组长', '学院领导', '小组长', '督导', '教师']
+      for (let i = 0; i < arr.length; i++) {
+        if (resData.role_names.indexOf(arr[i]) > -1) {
+          state.access = [arr[i]]
+          if (state.access.indexOf()) { break }
+        } else {
+          state.access = []
         }
       }
     }
@@ -90,15 +90,14 @@ export default {
     // 获取用户相关信息
     getUserInfo ({ state, commit }) {
       return new Promise((resolve, reject) => {
-          currentUser().then(res => {
-            const data = res.data
-            commit('setUserInfo', data.current_user)
-            commit('judgeSuperAccess', data.current_user)
-            resolve(data)
-          }).catch(err => {
-
-            reject(err)
-          })
+        currentUser().then(res => {
+          const data = res.data
+          commit('setUserInfo', data.current_user)
+          commit('judgeSuperAccess', data.current_user)
+          resolve(data)
+        }).catch(err => {
+          reject(err)
+        })
       })
     }
   },
@@ -110,13 +109,11 @@ export default {
       return state.userInfo
     },
     current_rolename: state => {
-      if(state.access.length===0){
+      if (state.access.length === 0) {
         return ''
-      }
-      else{
+      } else {
         return state.access[0]
       }
-
     }
   }
 }

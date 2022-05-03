@@ -18,7 +18,7 @@ export default {
       data: [],
       columns: [
         {
-          title: '问卷名',
+          title: '评价体系名称',
           render: function (h, params) {
             return (
               <span>{ params.row.name }</span>

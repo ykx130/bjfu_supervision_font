@@ -54,7 +54,7 @@ export default {
           }
         },
         {
-          title: '问卷状态',
+          title: '听课评价表状态',
           render: (h, params) => {
             if (params.row.status === '待提交') {
               return h('Tag', { props: { color: 'red' } }, params.row.status)

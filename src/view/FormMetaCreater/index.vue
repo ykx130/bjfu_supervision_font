@@ -39,7 +39,7 @@ export default {
     handleSubmit: function () {
       postFormMeta(this.form_meta).then((resp) => {
         if (resp.data.code === 200) {
-          this.$Message.success('问卷创建成功')
+          this.$Message.success('评价体系创建成功')
           this.$router.push({ name: '问卷管理' })
         }
       })

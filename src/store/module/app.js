@@ -11,8 +11,6 @@ import {
   localSave,
   localRead
 } from '@/libs/util'
-import beforeClose from '@/router/before-close'
-import { saveErrorLogger } from '@/api/data'
 import router from '@/router'
 import routers from '@/router/routers'
 import config from '@/config'
@@ -43,34 +41,55 @@ export default {
     setBreadCrumb (state, route) {
       state.breadCrumbList = getBreadCrumbList(route, state.homeRoute)
     },
+    // setTagNavList (state, list) {
+    //   // let tagList = []
+    //   // if (list) {
+    //   //   tagList = [...list]
+    //   // } else tagList = getTagNavListFromLocalstorage() || []
+    //   // if (tagList[0] && tagList[0].name !== homeName) tagList.shift()
+    //   // let homeTagIndex = tagList.findIndex(item => item.name === homeName)
+    //   // if (homeTagIndex > 0) {
+    //   //   let homeTag = tagList.splice(homeTagIndex, 1)[0]
+    //   //   tagList.unshift(homeTag)
+    //   // }
+    //   // state.tagNavList = tagList
+    //   // setTagNavListInLocalstorage([...tagList])
+    // },
     setTagNavList (state, list) {
-      // let tagList = []
-      // if (list) {
-      //   tagList = [...list]
-      // } else tagList = getTagNavListFromLocalstorage() || []
-      // if (tagList[0] && tagList[0].name !== homeName) tagList.shift()
-      // let homeTagIndex = tagList.findIndex(item => item.name === homeName)
-      // if (homeTagIndex > 0) {
-      //   let homeTag = tagList.splice(homeTagIndex, 1)[0]
-      //   tagList.unshift(homeTag)
-      // }
-      // state.tagNavList = tagList
-      // setTagNavListInLocalstorage([...tagList])
+      let tagList = []
+      if (list) {
+        tagList = [...list]
+      } else tagList = getTagNavListFromLocalstorage() || []
+      if (tagList[0] && tagList[0].name !== homeName) tagList.shift()
+      let homeTagIndex = tagList.findIndex(item => item.name === homeName)
+      if (homeTagIndex > 0) {
+        let homeTag = tagList.splice(homeTagIndex, 1)[0]
+        tagList.unshift(homeTag)
+      }
+      state.tagNavList = tagList
+      setTagNavListInLocalstorage([...tagList])
     },
+    // closeTag (state, route) {
+    //   let tag = state.tagNavList.filter(item => routeEqual(item, route))
+    //   route = tag[0] ? tag[0] : null
+    //   if (!route) return
+    //   if (route.meta && route.meta.beforeCloseName && route.meta.beforeCloseName in beforeClose) {
+    //     new Promise(beforeClose[route.meta.beforeCloseName]).then(close => {
+    //       if (close) {
+    //         closePage(state, route)
+    //       }
+    //     })
+    //   } else {
+    //     closePage(state, route)
+    //   }
+    // },
     closeTag (state, route) {
       let tag = state.tagNavList.filter(item => routeEqual(item, route))
       route = tag[0] ? tag[0] : null
       if (!route) return
-      if (route.meta && route.meta.beforeCloseName && route.meta.beforeCloseName in beforeClose) {
-        new Promise(beforeClose[route.meta.beforeCloseName]).then(close => {
-          if (close) {
-            closePage(state, route)
-          }
-        })
-      } else {
-        closePage(state, route)
-      }
+      closePage(state, route)
     },
+
     addTag (state, { route, type = 'unshift' }) {
       let router = getRouteTitleHandled(route)
       if (!routeHasExist(state.tagNavList, router)) {
@@ -104,7 +123,7 @@ export default {
         userId,
         userName
       }
-       commit('addError', data)
+      commit('addError', data)
       // saveErrorLogger(info).then(() => {
       //   commit('addError', data)
       // })

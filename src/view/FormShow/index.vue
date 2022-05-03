@@ -11,7 +11,7 @@
         <br/>
       <Alert type="error" v-html="form.toptip">
       </Alert>
-        <divider orientation="left">问卷内容</divider>
+        <divider orientation="left">评价体系内容</divider>
         <div>
 
           <FormShow v-model="form_values" :pages="form.pages" :items="form.values" :disabled="disabled" ref="form_info" @judgePage="judgePage">
@@ -81,7 +81,7 @@
 import { getForm, postForm, putForm } from '../../service/api/dqs'
 import Lesson from '@/view/components/form_show/lesson_meta_form.vue'
 import FormShow from '@/view/components/form_show/form_show.vue'
-import UserMixin from "@/mixins/UserMixin.js";
+import UserMixin from '@/mixins/UserMixin.js'
 import { getLesson, updateModelLessonsVote, postModelLessonsVote } from '../../service/api/lesson'
 export default {
   components: {
@@ -92,29 +92,29 @@ export default {
     currentUser: function () {
       return this.$store.getters.userInfo
     },
-    lessonInfo: function() {
-      return this.$refs.lesson_info;
+    lessonInfo: function () {
+      return this.$refs.lesson_info
     },
-    formInfo :function () {
+    formInfo: function () {
       return this.$refs.form_info
     }
   },
   watch: {
-    "form.meta":{
+    'form.meta': {
       deep: true,
       handler: function () {
         if (
-          (this.form.meta.lesson.lesson_model === "推荐为好评课" ||
-            this.form.meta.lesson.lesson_model === "待商榷") && (this.form.meta.lesson.guiders.some((element) =>{
-            return element["username"] ===this.userInfo.userName;
-          })||this.current_role==='管理员'||this.current_role==='小组长')
+          (this.form.meta.lesson.lesson_model === '推荐为好评课' ||
+            this.form.meta.lesson.lesson_model === '待商榷') && (this.form.meta.lesson.guiders.some((element) => {
+            return element['username'] === this.userInfo.userName
+          }) || this.current_role === '管理员' || this.current_role === '小组长')
         ) {
-          this.form.model_lesson.is_model_lesson=true;
-          this.form.model_lesson.show_recommend = true;
+          this.form.model_lesson.is_model_lesson = true
+          this.form.model_lesson.show_recommend = true
         } else {
-          this.form.model_lesson.is_model_lesson=false;
-          this.form.model_lesson.show_recommend = false;
-          this.form.model_lesson.recommend = undefined;
+          this.form.model_lesson.is_model_lesson = false
+          this.form.model_lesson.show_recommend = false
+          this.form.model_lesson.recommend = undefined
         }
       },
       immediate: true
@@ -131,7 +131,7 @@ export default {
       form: {
         meta: { lesson: {} },
         values: [],
-        model_lesson:{}
+        model_lesson: {}
       },
       disabled: false,
       meta: { lesson: {} },
@@ -147,15 +147,15 @@ export default {
         ]
       },
       ruleValidate: {},
-      pageshow:[false,true]
+      pageshow: [false, true]
     }
   },
   mounted () {
     this.fetchForm()
   },
   methods: {
-    Lessonchange(value){
-      this.form.meta=value
+    Lessonchange (value) {
+      this.form.meta = value
     },
     formValue2Items () {
       this.form.values.map((item, index) => {
@@ -170,7 +170,7 @@ export default {
         status: status,
         meta: this.form.meta,
         values: this.formValue2Items(),
-        model_lesson : this.form.model_lesson
+        model_lesson: this.form.model_lesson
       }
       return form
     },
@@ -189,52 +189,51 @@ export default {
         })
       })
     },
-    nextPage:function(){
+    nextPage: function () {
       this.$refs.form_info.nextPage()
     },
-    prePage:function(){
+    prePage: function () {
       this.$refs.form_info.prePage()
     },
-    judgePage:function(pageShow){
-      this.pageshow=pageShow
+    judgePage: function (pageShow) {
+      this.pageshow = pageShow
     },
     back () {
       this.$router.back()
     },
     handleSubmit () {
       this.lessonInfo.validate(valid_lesson => {
-          if (valid_lesson) {
-            this.formInfo.validate(valid => {
-              if (valid) {
-                if(this.form.model_lesson.is_model_lesson&&(this.form.model_lesson.recommend===undefined||this.form.model_lesson.recommend_reason==="")){
-                    this.$Modal.warning({
-                      title:"检查好评课堂问题是否填写完整:",
-                      content:"请选择是否推荐为好评课,并填写推荐理由或意见及建议!"
-                    });
-                  }else{
-                    let form = this.produceFrom("已完成");
-                    putForm(this.form_id, form).then((resp) => {
-                      if (resp.data.code === 200) {
-                        this.$Message.success("新建成功！");
-                        this.back();
-                      }
-                    });
-                  }
-              } else {
+        if (valid_lesson) {
+          this.formInfo.validate(valid => {
+            if (valid) {
+              if (this.form.model_lesson.is_model_lesson && (this.form.model_lesson.recommend === undefined || this.form.model_lesson.recommend_reason === '')) {
                 this.$Modal.warning({
-                  title:"检查问卷信息是否填写完整",
-                  content:"（1）教师授课情况“总体评价”为“非常满意”，需同时满足三个条件：①6个项目中，评价等级为“非常满意”的项目数≥4；②标★项目的评价等级必须为非常满意；③没有项目的评价等级为“存在不足”及以下。\n" +
-                    "（2）教师授课情况“总体评价”为“存在明显不足”，需满足的条件：6个项目中，评价等级为“存在明显不足”的项目数≥3。"
+                  title: '检查好评课堂问题是否填写完整:',
+                  content: '请选择是否推荐为好评课,并填写推荐理由或意见及建议!'
+                })
+              } else {
+                let form = this.produceFrom('已完成')
+                putForm(this.form_id, form).then((resp) => {
+                  if (resp.data.code === 200) {
+                    this.$Message.success('新建成功！')
+                    this.back()
+                  }
                 })
               }
-            })
-          } else {
-            this.$Modal.warning({
-              title:"检查课程信息是否填写完整",
-            });
-          }
-      });
-
+            } else {
+              this.$Modal.warning({
+                title: '检查听课评价表信息是否填写完整',
+                content: '（1）教师授课情况“总体评价”为“非常满意”，需同时满足三个条件：①6个项目中，评价等级为“非常满意”的项目数≥4；②标★项目的评价等级必须为非常满意；③没有项目的评价等级为“存在不足”及以下。\n' +
+                    '（2）教师授课情况“总体评价”为“存在明显不足”，需满足的条件：6个项目中，评价等级为“存在明显不足”的项目数≥3。'
+              })
+            }
+          })
+        } else {
+          this.$Modal.warning({
+            title: '检查课程信息是否填写完整'
+          })
+        }
+      })
     },
     handleSave () {
       this.lessonInfo.validate(valid_lesson => {
@@ -246,10 +245,10 @@ export default {
               this.back()
             }
           })
-        }else {
-          this.$Modal.warning({ title:"检查课程信息是否填写完整"});
+        } else {
+          this.$Modal.warning({ title: '检查课程信息是否填写完整'})
         }
-      });
+      })
     },
     handleCancel () {
       this.back()
@@ -274,4 +273,3 @@ export default {
     opacity:0.5;
   }
 </style>
-
