@@ -82,22 +82,22 @@
                   课程表
                 </MenuItem>
 
-                <MenuItem name="attend" v-role="['教师']">
-                  <Icon type="ios-people"/>
-                  培训报名
-                </MenuItem>
-                <MenuItem name="consult_apply" v-role="['教师']">
-                  <Icon type="ios-construct"/>
-                  咨询申请
-                </MenuItem>
-                <MenuItem name="leader_lookup" v-role="['督导','管理员']">
-                  <Icon type="ios-body"/>
-                  学院教学院长
-                </MenuItem>
-                <MenuItem name="teacher_training" v-role="['教师', '督导','管理员']">
-                  <Icon type="ios-bookmarks-outline" />
-                  教学与发展
-                </MenuItem>
+<!--                <MenuItem name="attend" v-role="['教师']">-->
+<!--                  <Icon type="ios-people"/>-->
+<!--                  培训报名-->
+<!--                </MenuItem>-->
+<!--                <MenuItem name="consult_apply" v-role="['教师']">-->
+<!--                  <Icon type="ios-construct"/>-->
+<!--                  咨询申请-->
+<!--                </MenuItem>-->
+<!--                <MenuItem name="leader_lookup" v-role="['督导','管理员']">-->
+<!--                  <Icon type="ios-body"/>-->
+<!--                  学院教学院长-->
+<!--                </MenuItem>-->
+<!--                <MenuItem name="teacher_training" v-role="['教师', '督导','管理员']">-->
+<!--                  <Icon type="ios-bookmarks-outline" />-->
+<!--                  教学与发展-->
+<!--                </MenuItem>-->
               </Submenu>
             </div>
             <div v-else>
@@ -121,22 +121,22 @@
                 <Icon type="ios-list-box-outline"/>
                 课程表
               </MenuItem>
-              <MenuItem name="attend" v-role="['教师']">
-                <Icon type="ios-people"/>
-                培训报名
-              </MenuItem>
-              <MenuItem name="consult_apply" v-role="['教师']">
-                <Icon type="ios-construct"/>
-                咨询申请
-              </MenuItem>
-              <MenuItem name="leader_lookup" v-role="['督导','管理员']">
-                <Icon type="ios-body"/>
-                学院教学院长
-              </MenuItem>
-              <MenuItem name="teacher_training" v-role="['教师', '督导','管理员']">
-                <Icon type="ios-bookmarks-outline" />
-                教学与发展
-              </MenuItem>
+<!--              <MenuItem name="attend" v-role="['教师']">-->
+<!--                <Icon type="ios-people"/>-->
+<!--                培训报名-->
+<!--              </MenuItem>-->
+<!--              <MenuItem name="consult_apply" v-role="['教师']">-->
+<!--                <Icon type="ios-construct"/>-->
+<!--                咨询申请-->
+<!--              </MenuItem>-->
+<!--              <MenuItem name="leader_lookup" v-role="['督导','管理员']">-->
+<!--                <Icon type="ios-body"/>-->
+<!--                学院教学院长-->
+<!--              </MenuItem>-->
+<!--              <MenuItem name="teacher_training" v-role="['教师', '督导','管理员']">-->
+<!--                <Icon type="ios-bookmarks-outline" />-->
+<!--                教学与发展-->
+<!--              </MenuItem>-->
             </div>
 
           </div>
@@ -315,14 +315,13 @@ export default {
     }
   },
   mounted () {
-    if (this.current_role === '大组长' || this.current_role === '小组长' || this.current_role === '管理员' || this.current_role === '学院领导' || this.current_role === '校级管理员'|| this.current_role === '教发管理员') {
+    if (this.current_role === '大组长' || this.current_role === '小组长' || this.current_role === '管理员' || this.current_role === '学院领导' || this.current_role === '校级管理员' || this.current_role === '教发管理员') {
       this.$router.push({ name: 'home' })
     }
     if (this.$route.path === '/_guider') {
-      if(this.current_role==='督导'){
+      if (this.current_role === '督导') {
         this.$router.replace('/_guider/my_form')
-      }
-      else{
+      } else {
         this.$router.push({ name: 'guider_active_attend', query: { time: new Date().getTime() } })
       }
 

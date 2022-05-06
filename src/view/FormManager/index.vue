@@ -21,7 +21,10 @@
       </FormItem>
 
       <FormItem label="评价体系名称：" prop="bind_meta_name" clearable	:label-width="100">
-        <Input style="width: 180px" v-model="query.bind_meta_name" ></Input>
+<!--        <Input style="width: 180px" v-model="query.bind_meta_name" ></Input>-->
+        <Select v-model="query.bind_meta_name" style="width:200px" 	clearable>
+          <Option v-for="item in meta_names" :value="item.name" :key="item.name">{{ item.name }}</Option>
+        </Select>
       </FormItem>
       <FormItem label="上课教师：" prop="meta.lesson.lesson_teacher_name" clearable	>
         <Input style="width: 180px" v-model="query.meta.lesson.lesson_teacher_name" ></Input>
@@ -46,12 +49,13 @@
 </template>
 
 <script>
-import { queryForms, putForm, exporFormsExcel, deleteForm } from '../../service/api/dqs'
+import {queryForms, putForm, exporFormsExcel, deleteForm, queryFormMetas} from '../../service/api/dqs'
 import { updateWithinField } from 'Libs/tools'
 import { getCurrentTerms, queryTerms } from '@/service/api/term'
 import { queryGroups } from '@/service/api/user'
 import FormExportChoose from './components/form_export_choose'
 import UserMixin from '@/mixins/UserMixin.js'
+import {queryWorkPlan} from '@/service/api/work_plan'
 
 export default {
   components: { FormExportChoose },
@@ -73,11 +77,13 @@ export default {
       total: 0,
       terms: [],
       groups: [],
+      meta_names: [],
       export_option_visible: false,
       mate_name: '',
       pages: {
         _page: 1,
-        _per_page: 10
+        _per_page: 10,
+        _sort: 'meta.created_at'
       },
       columns: [
         {
@@ -311,6 +317,7 @@ export default {
       })
       this.export_option_visible = false
     }
+
   },
   mounted: function () {
     queryTerms().then((resp) => {
@@ -325,6 +332,9 @@ export default {
         this.data = resp.data.forms
         this.total = resp.data.total
       })
+    })
+    queryFormMetas({}).then(res => {
+      this.meta_names = res.data.form_metas
     })
   }
 }

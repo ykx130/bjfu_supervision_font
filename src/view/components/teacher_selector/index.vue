@@ -1,10 +1,25 @@
 <template>
   <div >
-    <Input @on-focus="show_drop = true" v-model="value" @change="handleInputChange"></Input>
+    <Input @on-focus="show_drop = true" v-model="value" @change="handleInputChange" readonly></Input>
     <div class="teacher_selector" :transfer="true" v-show="show_drop">
       <div>
         <Row>
-          <Col :span="18">
+
+          <Col :span="8">
+            <div class="section_title">学院</div>
+            <ul>
+              <template v-for="unit in unit_list">
+                <li @click="()=>{handleUnitClick(unit)}" v-if="select_unit === unit" class="underline selected_item"
+                    style="list-style: none;line-height: 25px">
+                  {{unit}}
+                </li>
+                <li @click="()=>{handleUnitClick(unit)}"  v-else class="underline " style="list-style: none;line-height: 25px">
+                  {{unit}}
+                </li>
+              </template>
+            </ul>
+          </Col>
+          <Col :span="16">
             <div class="section_title">教师名字</div>
             <div class="name_content">
               <div v-if="!letter_names_list.length">
@@ -18,20 +33,6 @@
                 </ul>
               </Row>
             </div>
-          </Col>
-          <Col :span="6">
-            <div class="section_title">学院</div>
-            <ul>
-              <template v-for="unit in unit_list">
-                <li @click="()=>{handleUnitClick(unit)}" v-if="select_unit === unit" class="underline selected_item"
-                    style="list-style: none;line-height: 25px">
-                  {{unit}}
-                </li>
-                <li @click="()=>{handleUnitClick(unit)}"  v-else class="underline " style="list-style: none;line-height: 25px">
-                  {{unit}}
-                </li>
-              </template>
-            </ul>
           </Col>
         </Row>
         <Row>
@@ -57,9 +58,9 @@ export default {
   props: {
     empty_text: {
       type: String,
-      default: '暂无数据',
+      default: '暂无数据'
     },
-    term: {type:String, default: ''},
+    term: {type: String, default: ''}
   },
   data () {
     return {
@@ -75,8 +76,8 @@ export default {
       this.$emit('onUnitChange', this.select_unit)
       this.fetchUserAndLetter()
     },
-    term:  function () {
-        this.fetchUserAndLetter()
+    term: function () {
+      this.fetchUserAndLetter()
     }
   },
   computed: {
@@ -86,8 +87,8 @@ export default {
       // 分割
       this.teacher_names.forEach((item, index) => {
         let py = pinyin(item, {
-            style: pinyin.STYLE_FIRST_LETTER
-          }
+          style: pinyin.STYLE_FIRST_LETTER
+        }
         )
         let ckey = '#'
         if (py.length) {
@@ -107,14 +108,14 @@ export default {
           'names': res[key]
         })
       })
-      letter_names = letter_names.sort((a,b)=>{
-        return a.ckey < b.ckey ? -1 :1
+      letter_names = letter_names.sort((a, b) => {
+        return a.ckey < b.ckey ? -1 : 1
       })
       return letter_names
     }
   },
   methods: {
-    handleUnitClick(unit) {
+    handleUnitClick (unit) {
       this.select_unit = unit
     },
     handleInputChange (value) {

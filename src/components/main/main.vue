@@ -1,14 +1,18 @@
 <template>
   <Layout style="height: 100%" class="main">
-    <Sider hide-trigger collapsible :width="256" :collapsed-width="64" v-model="collapsed" class="left-sider" :style="{overflow: 'hidden'}">
+    <Sider hide-trigger collapsible :width="220" :collapsed-width="64" v-model="collapsed" class="left-sider" :style="{overflow: 'hidden'}">
       <side-menu accordion ref="sideMenu" :active-name="$route.name" :collapsed="collapsed" @on-select="turnToPage" :menu-list="menuList">
         <!-- 需要放在菜单上面的内容，如Logo，写在side-menu标签内部，如下 -->
         <div class="logo-con">
-          <div  v-show="!collapsed" ><span style="font-size: 19px;padding-left: 5px;color: #eeeeee;">
+          <div  v-show="!collapsed" >
+            <span style="font-size: 21px;padding-left: 20px;color: #eeeeee;display: inline-block">
 <!--            <img :src="maxLogo" key="max-logo" style="float: left" />-->
 <!--            教发中心业务平台</span></div>-->
-            本科教学督导评教业务系统</span></div>
-          <img v-show="collapsed" :src="minLogo" key="min-logo" />
+            本科教学督导</span>
+            <span style="font-size: 21px;padding-left: 20px;color: #eeeeee;display: inline-block">
+            评教业务系统</span>
+          </div>
+<!--          <img v-show="collapsed" :src="minLogo" key="min-logo" />-->
         </div>
       </side-menu>
     </Sider>
