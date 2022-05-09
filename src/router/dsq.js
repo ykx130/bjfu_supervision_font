@@ -7,8 +7,9 @@ export default{
   path: '/dqs',
   meta: {
     icon: 'ios-book',
-    title: '评价管理',
-    access: ['管理员','大组长','小组长','校级管理员','学院领导'],
+    title: '评价体系',
+    // access: ['管理员','大组长','小组长','校级管理员','学院领导'],
+    access: ['管理员','校级管理员'],
   },
   component: Main,
   children: [
@@ -45,44 +46,9 @@ export default{
       path: 'form_fill/:name/:version', // 问卷填写
       meta: {
         hideInMenu: true,
-        title: '评价填写'
+        title: '评价体系查看'
       },
       component: resolve => require(['Views/FormFill/index'], resolve)
-    },
-    {
-      name: '问卷展示',
-      path: 'form_show/:id', // hmx问卷查看
-      meta: {
-        hideInMenu: true,
-        title: '评价展示'
-      },
-      component: resolve => require(['Views/FormShow/index'], resolve)
-    },
-    {
-      name: '问卷管理',
-      path: 'form_manager', // xzl
-      meta: {
-        title: '评价结果管理'
-      },
-      component: resolve => require(['Views/FormManager/index'], resolve)
-    },
-    {
-      name: '评价情况查看',
-      path: 'lesson_records', // xzl
-      meta: {
-        access: ['管理员','大组长','小组长','校级管理员'],
-
-      },
-      component: resolve => require(['Views/GroupLessonList/index'], resolve)
-    },
-    {
-      name: '问卷数据分析',
-      path: 'form_sa', // xzl
-      meta: {
-        access: ['管理员','校级管理员'],
-        title: '评价结果预览'
-      },
-      component: resolve => require(['Views/FormStatic/index'], resolve)
     },
     {
       path: 'form_choose', // 问卷选择

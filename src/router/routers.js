@@ -1,6 +1,7 @@
 import Main from '@/components/main'
 import parentView from '@/components/parent-view'
 import dsq from './dsq'
+import dresult from "@/router/dresult";
 import user from './user'
 import actives from './actives'
 import lesson from './lesson'
@@ -53,6 +54,7 @@ export default [
       }
     ]
   },
+  dresult,
   dsq,
   user,
   lesson,

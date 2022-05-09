@@ -196,7 +196,7 @@ export default {
                 on: {
                   click: () => {
                     const {href} = this.$router.resolve({
-                      path: `/dqs/form_show/${params.row._id}`
+                      path: `/dresult/form_show/${params.row._id}`
                     })
                     window.open(href, '_blank')
                   }
