@@ -54,7 +54,7 @@ export default {
       groups: [],
       pages: {
         _page: 1,
-        _per_page: 10
+        _per_page: 15
       }, // 分页
       columns: [
         {
@@ -188,7 +188,7 @@ export default {
       this.query.group_name = value
       this.pages = {
         _page: 1,
-        _per_page: 10
+        _per_page: 15
       }
       this.fetchData()
     },
