@@ -24,7 +24,8 @@
     </Row>
     <Row>
       <Card shadow>
-        <ChartBar style="height: 360px;" :value="CurrentTermBarData" :text="'2021-2022-2 各学院评价情况'"/>
+<!--        <ChartBar style="height: 360px;" :value="CurrentTermBarData" :text="'2021-2022-2 各学院评价情况'"/>-->
+        <ChartBar style="height: 360px;" :value="CurrentTermBarData" :text="current_term +'各学院评价情况'"/>
       </Card>
     </Row>
     <Row>
@@ -42,6 +43,7 @@ import LessonTable from './lesson_table'
 import { ChartPie, ChartBar } from '_c/charts'
 import Example from './example.vue'
 import {queryPagedata} from '../../../service/api/page_data'
+import {getCurrentTerms} from '@/service/api/term'
 
 export default {
   name: 'home',
@@ -55,6 +57,7 @@ export default {
   },
   data () {
     return {
+      current_term: '',
       inforCardData: [
         { title: '本学期提交评价表', icon: 'md-locate', count: 0, color: '#19be6b' },
         { title: '本学期待提交评价表', icon: 'md-help-circle', count: 0, color: '#ff9900' },
@@ -77,7 +80,6 @@ export default {
         form_sum[formsumsort[key]] = resp.data.data['sys:form_num'][formsumsort[key]]
       }
 
-
       var form_sum_term = {}
       for (var key in formsumsort) {
         form_sum_term[formsumsort[key]] = resp.data.data['sys:current_term_form_num'][formsumsort[key]]
@@ -93,6 +95,11 @@ export default {
       this.pieData = [{name: '总体一般', value: resp.data.data['sys:form_just_num']},
         {name: '总体好评', value: resp.data.data['sys:form_statisfy_num']},
         {name: '总体较差', value: resp.data.data['sys:form_unsatisfy_num']}]
+    })
+  },
+  created () {
+    getCurrentTerms().then((termResp) => {
+      this.current_term = termResp.data.term.name
     })
   }
 }
