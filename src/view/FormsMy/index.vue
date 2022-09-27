@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { queryMyForms,deleteForm } from '../../service/api/dqs'
+import { queryMyForms, deleteForm } from '../../service/api/dqs'
 import { getCurrentTerms, queryTerms } from '../../service/api/term'
 import font_image from '@/view/components/form_meta_card/font_image.vue'
 
@@ -85,7 +85,7 @@ export default {
         title: '听课课程',
         slot: 'lesson_name'
       },
-        {
+      {
         title: '上课教师',
         slot: 'teacher_name'
       },
@@ -120,13 +120,13 @@ export default {
         meta: { term: undefined }
       },
       pages: {
-        _per_page: 5,
+        _per_page: 50,
         _page: 1
       }
     }
   },
   methods: {
-      fetchForms () {
+    fetchForms () {
       return queryMyForms({ ...this.query, ...this.pages }).then((resp) => {
         this.data = resp.data.forms
         this.total = resp.data.total
@@ -148,7 +148,7 @@ export default {
     handleChangeWatch (form) {
       this.$router.push({ path: `/_guider/judge/form_show/${form._id}` })
     },
-    handleChangeDelete(form){
+    handleChangeDelete (form) {
       this.$Modal.confirm({
         title: '是否确认删除?',
         onOk: () => {
@@ -161,14 +161,14 @@ export default {
             }
           })
         },
-        onCancel:()=>{}
+        onCancel: () => {}
       })
     }
   },
   created: function () {
     queryTerms().then((resp) => {
       this.terms = resp.data.terms
-      getCurrentTerms().then((term_resp)=>{
+      getCurrentTerms().then((term_resp) => {
         this.query.meta.term = term_resp.data.term.name
         this.fetchForms()
       })
