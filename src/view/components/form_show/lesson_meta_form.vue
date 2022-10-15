@@ -75,7 +75,7 @@
           </FormItem>
         </Col>
         <Col :sm="24" :md="12" :lg="4">
-          <FormItem label="听课级别" prop="lesson.lesson_level">
+          <FormItem label="听课类型" prop="lesson.lesson_level">
             <Input v-model="value.lesson.lesson_level" disabled class="inline-form-item"></Input>
           </FormItem>
         </Col>

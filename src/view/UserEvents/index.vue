@@ -131,7 +131,7 @@ export default {
                 },
                 on: {
                   click: () => {
-                    this.$router.push({ path: `/dqs/form_show/${params.row._id}` })
+                    this.$router.push({ path: `/dresult/form_show/${params.row._id}` })
                   }
                 }
               }, '查看')

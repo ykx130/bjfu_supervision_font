@@ -15,6 +15,12 @@
           </Select>
         </FormItem>
 
+        <FormItem label="组别：" prop="group_name" v-role="['管理员','大组长']">
+          <Select v-model="query.group_name" style="width:200px" clearable	>
+            <Option v-for="item in groups" :value="item.group_name" :key="item.group_name">{{ item.group_name }}</Option>
+          </Select>
+        </FormItem>
+
         <FormItem >
           <Button type="primary" @click=" onSearch">查询</Button>
         </FormItem>
@@ -52,14 +58,23 @@ import UserProfileModal from './UserProfileModal'
 import { updateWithinField } from 'Libs/tools'
 import UserAddModal from './UserAddModal'
 import { queryTerms, getCurrentTerms } from '../../../service/api/term'
-import { querySupervisors, putUser, postUser, postSupervisors, putSupervisor } from '../../../service/api/user'
+import {
+  querySupervisors,
+  putUser,
+  postUser,
+  postSupervisors,
+  putSupervisor,
+  queryGroups
+} from '../../../service/api/user'
 export default {
   components: { UserProfileModal, UserAddModal },
   data: function () {
     return {
+      groups: [],
       query: {
         term: '',
-        name_like: undefined
+        name_like: undefined,
+        group_name: ''
       }, // 查询用的参数
       total: 0, // 总数量
       data: [], // 数据
@@ -69,7 +84,7 @@ export default {
       showUserAddModal: false,
       pages: {
         _page: 1,
-        _per_page: 10
+        _per_page: 15
       }, // 分页
       columns: [
         {
@@ -241,6 +256,9 @@ export default {
     getCurrentTerms().then((termResp) => {
       this.query.term = termResp.data.term.name
       this.fetchData()
+    })
+    queryGroups().then((resp) => {
+      this.groups = resp.data.groups
     })
   }
 }

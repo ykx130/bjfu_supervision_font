@@ -21,13 +21,17 @@
       <FormItem >
         <Button @click="onExportExcel" icon="ios-cloud-download-outline" type="primary" >导出</Button>
       </FormItem>
-      <FormItem v-role ="['管理员']">
+      <FormItem v-role ="['管理员']" >
         <Upload :action="uploadModelLessonApi"
                 :on-success="handleImportExcelSucc"
-                name="filename">
+                name="filename" style="display:inline-block;">
           <Button  icon="ios-cloud-upload-outline" type="primary"  >导入</Button>
         </Upload>
+        <a href="/api/static/template/model_lesson_import_template.xlsx" download="好评课导入模板.xlsx"
+         style=" margin-left: 25px; display:inline-block;">
+          好评课堂导入模板下载</a>
       </FormItem>
+
     </Form>
 
     <LessonProfileModal
@@ -75,7 +79,16 @@ import LessonProfileModal from './components/LessonProfileModal'
 import ModelLessonAdd from './components/ModelLessonAdd'
 import LessonGroupAssign from './components/LessonGroupAssign'
 import OtherModelShow from './components/OtherModelShow'
-import { queryModelLessons, putLesson, uploadModelLessonApi, getModelLesson, exporModelLessonExcel, putModelLesson, postModelLesson } from '@/service/api/lesson'
+import {
+  queryModelLessons,
+  putLesson,
+  uploadModelLessonApi,
+  getModelLesson,
+  exporModelLessonExcel,
+  putModelLesson,
+  postModelLesson,
+  exportTemplateExcel
+} from '@/service/api/lesson'
 import { queryTerms, getCurrentTerms } from '@/service/api/term'
 import FloatBar from '_c/float_bar/float_bar'
 import { updateWithinField } from 'Libs/tools'

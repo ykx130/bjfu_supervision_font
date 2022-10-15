@@ -40,12 +40,12 @@
 import { queryGroupLesson, putLesson } from '../../service/api/lesson'
 import { queryGroups } from '../../service/api/user'
 import { getCurrentTerms, queryTerms } from '@/service/api/term'
-import {exporLessonRecordExcel}from '@/service/api/lesson'
+import {exporLessonRecordExcel} from '@/service/api/lesson'
 export default {
   data: function () {
     return {
       query: {
-        group_name: '第一组',
+        group_name: '',
         term: ''
       }, // 查询用的参数
       total: 0, // 总数量
@@ -54,7 +54,7 @@ export default {
       groups: [],
       pages: {
         _page: 1,
-        _per_page: 10
+        _per_page: 15
       }, // 分页
       columns: [
         {
@@ -62,7 +62,7 @@ export default {
           render: function (h, params) {
             return (
               <span>{ params.row.name }</span>
-          )
+            )
           }
         },
         {
@@ -96,35 +96,35 @@ export default {
               <span>{ params.row.has_submitted }</span>
             )
           }
-        },{
+        }, {
           title: '完成总课时',
           render: function (h, params) {
             return (
               <span>{ params.row.finish_total_times }</span>
             )
           }
-        },{
+        }, {
           title: '只听一节课',
           render: function (h, params) {
             return (
               <span>{ params.row.finish_1_times }</span>
             )
           }
-        },{
+        }, {
           title: '连续完成2课时',
           render: function (h, params) {
             return (
               <span>{ params.row.finish_2_times }</span>
             )
           }
-        },{
+        }, {
           title: '连续完成3课时',
           render: function (h, params) {
             return (
               <span>{ params.row.finish_3_times }</span>
             )
           }
-        },{
+        }, {
           title: '连续完成4课时',
           render: function (h, params) {
             return (
@@ -139,7 +139,7 @@ export default {
               <span>{ params.row.total_times }</span>
             )
           }
-        },
+        }
         // {
         //   title: '操作',
         //   align: 'center',
@@ -188,7 +188,7 @@ export default {
       this.query.group_name = value
       this.pages = {
         _page: 1,
-        _per_page: 10
+        _per_page: 15
       }
       this.fetchData()
     },
@@ -219,8 +219,6 @@ export default {
         })
       })
     })
-
-
   }
 }
 </script>

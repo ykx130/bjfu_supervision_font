@@ -1,6 +1,7 @@
 import Main from '@/components/main'
 import parentView from '@/components/parent-view'
 import dsq from './dsq'
+import dresult from "@/router/dresult";
 import user from './user'
 import actives from './actives'
 import lesson from './lesson'
@@ -45,7 +46,7 @@ export default [
         name: 'home',
         meta: {
           title: '首页',
-          access: ['管理员', '学院领导', '大组长', '小组长','校级管理员','教发管理员'],
+          access: ['管理员', '学院领导', '大组长', '小组长', '校级管理员', '教发管理员'],
           notCache: true,
           icon: 'md-home'
         },
@@ -53,13 +54,14 @@ export default [
       }
     ]
   },
+  dresult,
   dsq,
   user,
   lesson,
   guider,
   // actives,发展中心以前的版本
-  develop,//教师发展中心
-  consult,
+  // develop,//教师发展中心
+  // consult,
   report,
   {
     path: '/error_logger',

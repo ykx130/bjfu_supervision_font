@@ -22,10 +22,10 @@ export default {
       data: [], // 数据
       terms: [],
       groups: [],
-      selected_group_name: '第一组',
+      selected_group_name: '',
       pages: {
         _page: 1,
-        _per_page: 10
+        _per_page: 15
       }, // 分页
       columns: [
         {

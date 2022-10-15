@@ -26,9 +26,12 @@
         <Upload :action="uploadNoticeLessonApi"
                 :on-success="handleImportExcelSucc"
                 :show-upload-list="false"
-                name="filename">
+                name="filename" style="display:inline-block;">
           <Button  icon="ios-cloud-upload-outline" type="primary" >导入</Button>
         </Upload>
+        <a href="/api/static/template/notice_lesson_import_template.xlsx" download="关注课程导入模板.xlsx"
+           style=" margin-left: 25px; display: inline-block;">
+          关注课程导入模板下载</a>
       </FormItem>
     </Form>
     <LessonProfileModal
